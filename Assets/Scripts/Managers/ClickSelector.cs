@@ -1,27 +1,45 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ClickSelector : MonoBehaviour
 {
+    private InputAction interactAction;
 
-    public float raycastDistance = 100f; // How far the ray will travel
+    public float raycastDistance = 100f;
 
-    void Update()
+    private void Awake()
     {
+        interactAction = InputSystem.actions.FindAction("Interact");
+    }
+
+    private void OnEnable()
+    {
+        interactAction.Enable();
+        interactAction.performed += OnInteractReleased;
+    }
+
+    private void OnDisable()
+    {
+        interactAction.performed -= OnInteractReleased;
+        interactAction.Disable();
+    }
+
+    private void OnInteractReleased(InputAction.CallbackContext ctx)
+    {
+        // Only trigger on RELEASE
+        if (ctx.phase != InputActionPhase.Performed) return;
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        // Draw the ray in the Scene view for debugging
         Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.yellow);
 
-        if (Input.GetMouseButtonDown(0))
+        if (Physics.Raycast(ray, out hit, raycastDistance))
         {
-            if (Physics.Raycast(ray, out hit, raycastDistance))
+            Interactable interactable = hit.collider.GetComponent<Interactable>();
+            if (interactable != null)
             {
-                Interactable interactable = hit.collider.GetComponent<Interactable>();
-                if (interactable != null)
-                {
-                    interactable.OnInteract();
-                }
+                interactable.OnInteract();
             }
         }
     }

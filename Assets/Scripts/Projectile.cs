@@ -3,6 +3,9 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private GameObject slipIce;
+    [SerializeField] private float slipDuration = 3.0f;
+
+    private bool spawnedSlip = false;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -13,10 +16,22 @@ public class Projectile : MonoBehaviour
         if (other.CompareTag("Player")) return;
 
         // Only react to ground (and only for water)
-        if (CompareTag("WaterAttack") && other.CompareTag("Ground"))
+        if (!spawnedSlip && CompareTag("WaterAttack") && other.CompareTag("Ground"))
         {
-            GameObject clone = Instantiate(slipIce, transform.position, Quaternion.identity);
-            Destroy(clone, 3.0f);
+            spawnedSlip = true;
+
+            if (slipIce == null)
+            {
+                Debug.LogWarning($"{nameof(Projectile)} on {name} has no slipIce assigned.");
+                Destroy(gameObject);
+                return;
+            }
+
+            //Spawn at closest point on collider instead of transform.position
+            Vector3 spawnPos = transform.position;
+
+            GameObject clone = Instantiate(slipIce, spawnPos, Quaternion.identity);
+            Destroy(clone, slipDuration);
 
             Destroy(gameObject);
             return;
