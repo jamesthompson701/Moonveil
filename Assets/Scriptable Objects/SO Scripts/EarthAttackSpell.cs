@@ -14,7 +14,7 @@ public class EarthAttackSpell : SO_Spells
     {
         if (SpellPrefab == null) return;
 
-        Transform originT = ctx.castOrigin != null ? ctx.castOrigin : ctx.caster.transform;
+        Transform originT = ctx.attackCastOrigin != null ? ctx.attackCastOrigin : ctx.caster.transform;
 
         if (ctx.inCombatArea)
         {

@@ -25,90 +25,10 @@ public abstract class SO_Spells : ScriptableObject
 
     protected void SetVelocity(Rigidbody rb, Vector3 vel)
     {
+#if UNITY_6000_0_OR_NEWER
         rb.linearVelocity = vel;
+#else
+    rb.velocity = vel;
+#endif
     }
 }
-
-/// <summary>
-/// Attack spells for each of the four elements
-/// </summary>
-
-//[CreateAssetMenu(fileName = "FireAttackSpells", menuName = "Scriptable Objects/FireAttackSpells")]
-//public class FireAttackSpells : SO_Spells
-//{
-//    public override void CastSpell(Transform castOrigin, Camera aimCamera, LayerMask aimMask, float aimDistance)
-//    {
-//        SpellPrefab = Instantiate(SpellPrefab, castOrigin.position + castOrigin.forward * spawnOffset, castOrigin.rotation);
-//        throw new System.NotImplementedException();
-//    }
-//}
-//
-//[CreateAssetMenu(fileName = "WaterAttackSpells", menuName = "Scriptable Objects/WaterAttackSpells")]
-//public class WaterAttackSpells : SO_Spells
-//{
-//    public override void CastSpell(Transform castOrigin, Camera aimCamera, LayerMask aimMask, float aimDistance)
-//    {
-//        SpellPrefab = Instantiate(SpellPrefab, castOrigin.position + castOrigin.forward * spawnOffset, castOrigin.rotation);
-//        throw new System.NotImplementedException();
-//    }
-//}
-//
-//[CreateAssetMenu(fileName = "AirAttackSpells", menuName = "Scriptable Objects/AirAttackSpells")]
-//public class AirAttackSpells : SO_Spells
-//{
-//    public override void CastSpell(Transform castOrigin, Camera aimCamera, LayerMask aimMask, float aimDistance)
-//    {
-//        SpellPrefab = Instantiate(SpellPrefab, castOrigin.position + castOrigin.forward * spawnOffset, castOrigin.rotation);
-//        throw new System.NotImplementedException();
-//    }
-//}
-//
-//[CreateAssetMenu(fileName = "EarthAttackSpells", menuName = "Scriptable Objects/EarthAttackSpells")]
-//public class EarthAttackSpells : SO_Spells
-//{
-//    public override void CastSpell(Transform castOrigin, Camera aimCamera, LayerMask aimMask, float aimDistance)
-//    {
-//        SpellPrefab = Instantiate(SpellPrefab, castOrigin.position + castOrigin.forward * spawnOffset, castOrigin.rotation);
-//        throw new System.NotImplementedException();
-//    }
-//}
-//
-///// <summary>
-///// Farming spells for each of the four elements
-///// </summary>
-//
-//[CreateAssetMenu(fileName = "FireFarmSpells", menuName = "Scriptable Objects/FireFarmSpells")]
-//public class FireFarmSpells : SO_Spells
-//{
-//    public override void CastSpell(Transform castOrigin, Camera aimCamera, LayerMask aimMask, float aimDistance)
-//    {
-//        throw new System.NotImplementedException();
-//    }
-//}
-//
-//[CreateAssetMenu(fileName = "WaterFarmSpells", menuName = "Scriptable Objects/WaterFarmSpells")]
-//public class WaterFarmSpells : SO_Spells
-//{
-//    public override void CastSpell(Transform castOrigin, Camera aimCamera, LayerMask aimMask, float aimDistance)
-//    {
-//        throw new System.NotImplementedException();
-//    }
-//}
-//
-//[CreateAssetMenu(fileName = "AirFarmSpells", menuName = "Scriptable Objects/AirFarmSpells")]
-//public class AirFarmSpells : SO_Spells
-//{
-//    public override void CastSpell(Transform castOrigin, Camera aimCamera, LayerMask aimMask, float aimDistance)
-//    {
-//        throw new System.NotImplementedException();
-//    }
-//}
-//
-//[CreateAssetMenu(fileName = "EarthFarmSpells", menuName = "Scriptable Objects/EarthFarmSpells")]
-//public class EarthFarmSpells : SO_Spells
-//{
-//    public override void CastSpell(Transform castOrigin, Camera aimCamera, LayerMask aimMask, float aimDistance)
-//    {
-//        throw new System.NotImplementedException();
-//    }
-//}
