@@ -29,6 +29,8 @@ public abstract class SO_Spells : ScriptableObject
     }
 }
 
+// Old Code Before SO refactor keeping for referance
+
 /// <summary>
 /// Attack spells for each of the four elements
 /// </summary>
