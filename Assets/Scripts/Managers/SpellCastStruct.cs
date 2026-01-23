@@ -2,7 +2,8 @@ using UnityEngine;
 
 public struct SpellCastContext
 {
-    public Transform castOrigin;
+    public Transform attackCastOrigin;
+    public Transform farmCastOrigin;
     public GameObject caster;
     public Camera aimCamera;
     public LayerMask aimMask;
@@ -18,4 +19,6 @@ public struct SpellCastContext
     public bool hasHit;
 
     public Collider hitCollider;
+
+    public Vector3 cameraPlanarForward;
 }

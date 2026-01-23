@@ -11,7 +11,7 @@ public class ProjectileSpells : SO_Spells
     {
         if (SpellPrefab == null) return;
 
-        Transform originT = ctx.castOrigin != null ? ctx.castOrigin : ctx.caster.transform;
+        Transform originT = ctx.attackCastOrigin != null ? ctx.attackCastOrigin : ctx.caster.transform;
         Vector3 origin = originT.position;
 
         Vector3 dir;

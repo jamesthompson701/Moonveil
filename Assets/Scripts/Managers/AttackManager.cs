@@ -11,8 +11,9 @@ public class AttackManager : MonoBehaviour
 
     [Header("References")]
     public GameObject player;
-    [SerializeField] private Transform castOrigin; // Origin point for spell casting
+    [SerializeField] private Transform attackCastOrigin; // Origin point for spell casting
     [SerializeField] private Camera aimCamera;
+    [SerializeField] private Transform farmCastOrigin;
 
     [Header("Aiming")]
     [SerializeField] private LayerMask aimMask = ~0; // Layer mask for aiming raycast
@@ -30,8 +31,6 @@ public class AttackManager : MonoBehaviour
 
     private bool attackTriggered = false;
     public bool inCombatArea = false;
-
-    Collider hitCol = null;
 
     private void Awake()
     {
@@ -87,8 +86,42 @@ public class AttackManager : MonoBehaviour
             return;
         }
 
-        Transform originT = castOrigin != null ? castOrigin : player.transform;
-        Vector3 origin = originT.position;
+        Vector3 planarForward = Vector3.ProjectOnPlane(aimCamera.transform.forward, Vector3.up).normalized;
+        if (planarForward.sqrMagnitude < 0.0001f) planarForward = aimCamera.transform.forward.normalized;
+
+        if (!inCombatArea)
+        {
+            Transform farmOriginT = farmCastOrigin != null ? farmCastOrigin : player.transform;
+
+            SpellCastContext farmCtx = new SpellCastContext
+            {
+                caster = player,
+
+                attackCastOrigin = attackCastOrigin,     
+                farmCastOrigin = farmOriginT,      
+
+                aimCamera = aimCamera,
+                aimMask = aimMask,
+                aimDistance = aimDistance,
+
+                inCombatArea = false,
+
+                combatSpawnOffset = spawnOffset,
+                farmSpawnOffset = farmSpawnOffset,
+
+                hasHit = false,
+                hitCollider = null,
+                aimPoint = farmOriginT.position + planarForward * aimDistance,
+                aimNormal = Vector3.up,
+
+                cameraPlanarForward = planarForward 
+            };
+
+            spell.CastSpell(farmCtx);
+            return;
+        }
+
+        Transform originT = attackCastOrigin != null ? attackCastOrigin : player.transform;
 
         Ray ray = aimCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
@@ -96,6 +129,8 @@ public class AttackManager : MonoBehaviour
         Vector3 aimNormal = Vector3.up;
 
         bool hasHit = Physics.Raycast(ray, out RaycastHit hit, aimDistance, aimMask, QueryTriggerInteraction.Ignore);
+        Collider hitCol = null;
+
         if (hasHit)
         {
             aimPoint = hit.point;
@@ -106,7 +141,8 @@ public class AttackManager : MonoBehaviour
         SpellCastContext ctx = new SpellCastContext
         {
             caster = player,
-            castOrigin = castOrigin,
+            attackCastOrigin = attackCastOrigin,
+            farmCastOrigin = farmCastOrigin,
             aimCamera = aimCamera,
             aimMask = aimMask,
             aimDistance = aimDistance,
