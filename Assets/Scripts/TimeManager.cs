@@ -9,7 +9,7 @@ using System.Collections.Generic;
 public class TimeManager : MonoBehaviour
 {
     //list of plants
-    private List<PlantObject> plantObjects = new List<PlantObject>();
+    public List<PlantObject> plantObjects = new List<PlantObject>();
 
     public static TimeManager instance;
 
