@@ -380,9 +380,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoilObject
   soilContent: 0
+  mySoilObj: {fileID: 7679866990650106550}
   weedObj: {fileID: 8364481879961100509, guid: 4fb6d628464e17445875f5a62b119414, type: 3}
-  plantObj: {fileID: 8718851830716946807, guid: 64b05b6c9145ecd489e1e29f17dbe1aa, type: 3}
+  wetSoil: {fileID: 2100000, guid: 35d9d9834f1b93e4ca9f51f85720c46a, type: 2}
+  drySoil: {fileID: 2100000, guid: 6e52278511290034ea663ac88bbaf5c1, type: 2}
+  plantPrefab: {fileID: 8718851830716946807, guid: 64b05b6c9145ecd489e1e29f17dbe1aa, type: 3}
   isWet: 0
+  wateredAtTime: 0
+  wetnessDuration: 5
 --- !u!65 &5807077677623683494
 BoxCollider:
   m_ObjectHideFlags: 0

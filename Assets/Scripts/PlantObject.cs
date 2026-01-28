@@ -7,28 +7,36 @@ public class PlantObject : MonoBehaviour
 {
     [SerializeField] private PlantSO plant;
 
+    //current stage of growth
     private int currentStage;
     //how long since it last grew
     private float currentTime;
+
+    //harvestability
+    private bool isHarvestable;
+
     //plant object
     private GameObject currentPlant;
-    private GameObject mySoil;
+    private SoilObject soilScript;
 
     void Start()
     {
         //add to time manager and instantiate the first prefab
+        currentStage = 0;
         TimeManager.instance.RegisterPlant(this);
-        currentPlant = Instantiate(plant.GetPrefabByStage(0), transform);
+        currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
     }
 
     public void CheckPlant(float deltaTime)
     {
+        
         //update currentTime
         currentTime = currentTime + deltaTime;
 
         //if it's time to grow, reset timer
         if (currentTime >= plant.CropTime)
         {
+            Debug.Log("before growth: " + currentStage);
             currentTime = 0;
 
             //then increment, but not past the max
@@ -36,14 +44,9 @@ public class PlantObject : MonoBehaviour
             {
                 currentStage++;
             }
-            else
-            {
-                currentStage = plant.MaxStage;
-            }
-            
-            Debug.Log(currentStage);
             if (currentStage == plant.MaxStage)
             {
+                isHarvestable = true;
                 Debug.Log("Harvestable!");
             }
             
@@ -54,30 +57,28 @@ public class PlantObject : MonoBehaviour
                 Destroy(currentPlant);
                 currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
             }
+            Debug.Log("after growth: " + currentStage);
         }
+        
     }
 
     //returns true if the plant is at max growth a.k.a. harvestable
     public bool Harvestable()
     {
-        return currentStage == plant.MaxStage;
+        return isHarvestable;
     }
 
     public void Harvest()
     {
         Debug.Log("Harvested");
+        Destroy(currentPlant);
+        TimeManager.instance.UnregisterPlant(this);
+        Destroy(this);
+    }
 
-        if (plant.GetPrefabByStage(currentStage) != null)
-        {
-            
-            /*Debug.Log("pre-harvest: " + currentStage);
-            currentStage = plant.MaxStage - 1;
-            Debug.Log("post-harvest: " + currentStage);*/
-
-            Destroy(currentPlant);
-            TimeManager.instance.UnregisterPlant(this);
-            Destroy(this);
-
-        }
+    //function to be called by SoilObject 
+    public void SetSoil(SoilObject _soil)
+    {
+        soilScript = _soil;
     }
 }

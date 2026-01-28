@@ -11,6 +11,9 @@ public class TimeManager : MonoBehaviour
     //list of plants
     public List<PlantObject> plantObjects = new List<PlantObject>();
 
+    //list of soil spots
+    private List<SoilObject> soilObjects = new List<SoilObject>();
+
     public static TimeManager instance;
 
     private void Awake()
@@ -31,12 +34,28 @@ public class TimeManager : MonoBehaviour
         plantObjects.Remove(plantObject);
     }
 
+    //add or remove soil spots
+    public void RegisterSoil(SoilObject soilObject)
+    {
+        soilObjects.Add(soilObject);
+    }
+    public void UnregisterSoil(SoilObject soilObject)
+    {
+        soilObjects.Remove(soilObject);
+    }
+
     public void Update()
     {
         //check each plant in the list
         foreach (PlantObject plantObject in plantObjects)
         {
             plantObject.CheckPlant(Time.deltaTime);
+        }
+
+        //check each soil spot in the list
+        foreach (SoilObject soilObject in soilObjects)
+        {
+            soilObject.CheckSoil(Time.deltaTime);
         }
     }
 }

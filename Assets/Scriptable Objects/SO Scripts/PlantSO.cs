@@ -12,13 +12,14 @@ public class PlantSO : ScriptableObject
     public string plantName;
     public float CropTime;
     public List<GameObject> plantPrefabs;
+    public GameObject seedPrefab;
 
-    public int MaxStage { get { return plantPrefabs.Count; } }
+    public int MaxStage { get { return plantPrefabs.Count - 1; } }
 
     //returns the correct prefab for the growth stage inputted
     public GameObject GetPrefabByStage(int stage)
     {
-        if (stage >= MaxStage)
+        if (stage >= MaxStage + 1)
         {
             return null;
         }
