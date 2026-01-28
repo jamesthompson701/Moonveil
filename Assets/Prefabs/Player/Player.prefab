@@ -1039,7 +1039,7 @@ GameObject:
   - component: {fileID: 4416926081852918493}
   - component: {fileID: 4098229971842555846}
   - component: {fileID: 9155286179125228740}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1156,7 +1156,7 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
-  attackManager: {fileID: 0}
+  attackManager: {fileID: 9155286179125228740}
 --- !u!114 &5885216827943657505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1323,7 +1323,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 00b3fcee90c84ae4ea9d4bd2230a796e, type: 2}
   - {fileID: 11400000, guid: 99db7f0b4d701de42b6634552a1816a8, type: 2}
   farmSpells:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 30aa123db53222d43991dd2442d07525, type: 2}
   - {fileID: 11400000, guid: a34f33880250ed848a5d3845beb32682, type: 2}
   - {fileID: 11400000, guid: c71b66f1616a6be4cafcfbbd78e99a9b, type: 2}
   - {fileID: 11400000, guid: 01824e77eddb6b74aac17245365f3699, type: 2}
@@ -1339,7 +1339,7 @@ MonoBehaviour:
   avgSpeed: 15
   fastSpeed: 25
   farmSpawnOffset: 1.2
-  inCombatArea: 1
+  inCombatArea: 0
 --- !u!1 &4523139366846529165
 GameObject:
   m_ObjectHideFlags: 0
@@ -2257,7 +2257,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
