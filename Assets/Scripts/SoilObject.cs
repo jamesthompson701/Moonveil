@@ -24,24 +24,21 @@ public class SoilObject : MonoBehaviour
     //plant to generate (temporary)
     public GameObject plantPrefab;
 
-    //current time
-    private float currentTime;
-
     //wet bool and wetness timer
     public bool isWet = false;
-    public float wateredAtTime;
+    private float waterTimer;
     public float wetnessDuration;
 
     private void Start()
     {
+        //Register myself with the time manager
+        TimeManager.instance.RegisterSoil(this);
+
         //if this has been predetermined as a crop, spawn a plant
         //for testing purposes only; normal plants will probably be spawned through other means
         if (soilContent == SoilContent.crop)
         {
-            Debug.Log("crop spawned");
-            plantObj = Instantiate(plantPrefab, gameObject.transform.position, gameObject.transform.rotation);
-            plantScript = plantObj.GetComponent<PlantObject>();
-            plantScript.SetSoil(this);
+            SpawnCrop();
         }
         else
         {
@@ -60,17 +57,18 @@ public class SoilObject : MonoBehaviour
 
     public void CheckSoil(float deltaTime)
     {
-        //update currentTime
-        currentTime = currentTime + deltaTime;
 
         //if the soil is wet, make it the wet material and check how long ago it was watered
-        if (isWet == true)
+        if (isWet)
         {
+            waterTimer = waterTimer + deltaTime;
             mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
+            Debug.Log("its wet its working");
+
             //if it's been wet for longer than the wetness duration, make it dry
-            if (currentTime - wateredAtTime > wetnessDuration)
+            if (waterTimer > wetnessDuration)
             {
-                currentTime = 0;
+                waterTimer = 0;
                 isWet = false;
                 mySoilObj.GetComponent<MeshRenderer>().material = drySoil;
                 Debug.Log("Soil dry");
@@ -85,9 +83,16 @@ public class SoilObject : MonoBehaviour
         if (other.CompareTag("WateringSpell"))
         {
             isWet = true;
-            wateredAtTime = currentTime;
+            mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
             Debug.Log("Soil wet");
         }
+
+        if (other.CompareTag("TillSpell"))
+        {
+            //nothing here yets
+        }
+
+        //if it's a harvest spell, harvest if able
         if (other.CompareTag("HarvestSpell") && plantScript != null)
         {
             if (plantScript.Harvestable())
@@ -96,5 +101,22 @@ public class SoilObject : MonoBehaviour
             }
         }
 
+        //if it's a fire spell, destroy crop unless it's watered
+        if (other.CompareTag("FireSpell") && !isWet && plantScript != null)
+        {
+            Debug.Log("FireSpelled");
+            plantScript.Destroy();
+        }
+
+    }
+
+    //spawns a crop
+    //later, may need to take input to determine what kind of crop
+    public void SpawnCrop()
+    {
+        Debug.Log("crop spawned");
+        plantObj = Instantiate(plantPrefab, gameObject.transform.position, gameObject.transform.rotation);
+        plantScript = plantObj.GetComponent<PlantObject>();
+        plantScript.SetSoil(this);
     }
 }

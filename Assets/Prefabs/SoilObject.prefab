@@ -344,6 +344,7 @@ GameObject:
   - component: {fileID: 891126372701072223}
   - component: {fileID: 1814952456998148509}
   - component: {fileID: 5807077677623683494}
+  - component: {fileID: 4781147284124653518}
   m_Layer: 0
   m_Name: SoilObject
   m_TagString: Soil
@@ -386,7 +387,6 @@ MonoBehaviour:
   drySoil: {fileID: 2100000, guid: 6e52278511290034ea663ac88bbaf5c1, type: 2}
   plantPrefab: {fileID: 8718851830716946807, guid: 64b05b6c9145ecd489e1e29f17dbe1aa, type: 3}
   isWet: 0
-  wateredAtTime: 0
   wetnessDuration: 5
 --- !u!65 &5807077677623683494
 BoxCollider:
@@ -409,3 +409,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 3.0652537, z: 1}
   m_Center: {x: 0, y: 1.0326269, z: 0}
+--- !u!114 &4781147284124653518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9039089786928699830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20dc610626fa5644d87a924f1d64a0f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable

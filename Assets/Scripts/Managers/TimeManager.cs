@@ -14,6 +14,9 @@ public class TimeManager : MonoBehaviour
     //list of soil spots
     private List<SoilObject> soilObjects = new List<SoilObject>();
 
+    //Time
+    private float time;
+
     public static TimeManager instance;
 
     private void Awake()
@@ -46,16 +49,18 @@ public class TimeManager : MonoBehaviour
 
     public void Update()
     {
+        time = Time.deltaTime;
+
         //check each plant in the list
         foreach (PlantObject plantObject in plantObjects)
         {
-            plantObject.CheckPlant(Time.deltaTime);
+            plantObject.CheckPlant(time);
         }
 
         //check each soil spot in the list
         foreach (SoilObject soilObject in soilObjects)
         {
-            soilObject.CheckSoil(Time.deltaTime);
+            soilObject.CheckSoil(time);
         }
     }
 }

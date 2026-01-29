@@ -70,7 +70,16 @@ public class PlantObject : MonoBehaviour
 
     public void Harvest()
     {
+        PlayerInventory.instance.AddSeeds(2);
         Debug.Log("Harvested");
+        Destroy(currentPlant);
+        TimeManager.instance.UnregisterPlant(this);
+        Destroy(this);
+    }
+
+    public void Destroy()
+    {
+        Debug.Log("Destroyed");
         Destroy(currentPlant);
         TimeManager.instance.UnregisterPlant(this);
         Destroy(this);

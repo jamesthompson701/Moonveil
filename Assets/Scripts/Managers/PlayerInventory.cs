@@ -6,6 +6,8 @@ public class PlayerInventory : MonoBehaviour
     //just tracks Supposed Cactus seeds
     public static PlayerInventory instance;
 
+    public int seeds;
+
     private void Awake()
     {
         if (instance == null)
@@ -14,5 +16,9 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    public void AddSeeds(int _amount)
+    {
+        seeds = seeds + _amount;
+    }
 
 }

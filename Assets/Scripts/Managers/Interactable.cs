@@ -1,9 +1,13 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
     private Renderer rend;
     private Color originalColor;
+
+    //temporary? reference to soil script
+    private SoilObject soil;
 
     void Start()
     {
@@ -14,8 +18,19 @@ public class Interactable : MonoBehaviour
     // This method will be called by our ClickSelector
     public void OnInteract()
     {
-        // Change to a random color
-        rend.material.color = Random.ColorHSV();
+        if (gameObject.CompareTag("Soil"))
+        {
+            soil = gameObject.GetComponent<SoilObject>();
+            soil.SpawnCrop();
+            PlayerInventory.instance.AddSeeds(-1);
+
+        }
+        else
+        {
+            // Change to a random color
+            rend.material.color = Random.ColorHSV();
+        }
+
     }
 
     // Optional: A method to reset the color
