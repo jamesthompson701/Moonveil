@@ -14,8 +14,9 @@ public class SoilObject : MonoBehaviour
     private GameObject plantObj;
     private PlantObject plantScript;
 
-    //weed to generate
+    //weed to generate and weed that has been generated
     public GameObject weedObj;
+    private GameObject weed;
 
     //colors
     public Material wetSoil;
@@ -50,7 +51,7 @@ public class SoilObject : MonoBehaviour
             }
             if (soilContent == SoilContent.weed)
             {
-                Instantiate(weedObj, gameObject.transform.position, gameObject.transform.rotation);
+                weed = Instantiate(weedObj, gameObject.transform.position, gameObject.transform.rotation);
             }
         }
     }
@@ -98,6 +99,7 @@ public class SoilObject : MonoBehaviour
             if (plantScript.Harvestable())
             {
                 plantScript.Harvest();
+                soilContent = SoilContent.empty;
             }
         }
 
@@ -106,8 +108,22 @@ public class SoilObject : MonoBehaviour
         {
             Debug.Log("FireSpelled");
             plantScript.Destroy();
+            soilContent = SoilContent.empty;
         }
 
+        //fire spell destroys weeds also
+        if (other.CompareTag("FireSpell") && soilContent == SoilContent.weed)
+        {
+            Destroy(weed);
+            soilContent = SoilContent.empty;
+        }
+
+    }
+
+    //return wetness (used by plant)
+    public bool Wet()
+    {
+        return isWet;
     }
 
     //spawns a crop
@@ -118,5 +134,6 @@ public class SoilObject : MonoBehaviour
         plantObj = Instantiate(plantPrefab, gameObject.transform.position, gameObject.transform.rotation);
         plantScript = plantObj.GetComponent<PlantObject>();
         plantScript.SetSoil(this);
+        soilContent = SoilContent.crop;
     }
 }

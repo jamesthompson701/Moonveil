@@ -34,30 +34,35 @@ public class PlantObject : MonoBehaviour
         currentTime = currentTime + deltaTime;
 
         //if it's time to grow, reset timer
-        if (currentTime >= plant.CropTime)
+        if (currentTime >= plant.CropTime )
         {
-            Debug.Log("before growth: " + currentStage);
-            currentTime = 0;
+            //check wetness before growing
+            if (soilScript.Wet())
+            {
+                Debug.Log("before growth: " + currentStage);
+                currentTime = 0;
 
-            //then increment, but not past the max
-            if (currentStage < plant.MaxStage)
-            {
-                currentStage++;
+                //then increment, but not past the max
+                if (currentStage < plant.MaxStage)
+                {
+                    currentStage++;
+                }
+                if (currentStage == plant.MaxStage)
+                {
+                    isHarvestable = true;
+                    Debug.Log("Harvestable!");
+                }
+
+                //if a prefab exists for the current stage,
+                //destroy the current object and make a new one at the new growth stage
+                if (plant.GetPrefabByStage(currentStage) != null)
+                {
+                    Destroy(currentPlant);
+                    currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
+                }
+                Debug.Log("after growth: " + currentStage);
             }
-            if (currentStage == plant.MaxStage)
-            {
-                isHarvestable = true;
-                Debug.Log("Harvestable!");
-            }
-            
-            //if a prefab exists for the current stage,
-            //destroy the current object and make a new one at the new growth stage
-            if (plant.GetPrefabByStage(currentStage) != null)
-            {
-                Destroy(currentPlant);
-                currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
-            }
-            Debug.Log("after growth: " + currentStage);
+
         }
         
     }
@@ -75,6 +80,7 @@ public class PlantObject : MonoBehaviour
         Destroy(currentPlant);
         TimeManager.instance.UnregisterPlant(this);
         Destroy(this);
+        PlayerInventory.instance.UpdateSeeds();
     }
 
     public void Destroy()

@@ -21,8 +21,22 @@ public class Interactable : MonoBehaviour
         if (gameObject.CompareTag("Soil"))
         {
             soil = gameObject.GetComponent<SoilObject>();
-            soil.SpawnCrop();
-            PlayerInventory.instance.AddSeeds(-1);
+            if (PlayerInventory.instance.CheckSeeds() > 0)
+            {
+                if (soil.GetComponent<SoilObject>().soilContent == SoilContent.empty)
+                {
+                    soil.SpawnCrop();
+                    PlayerInventory.instance.AddSeeds(-1);
+                    PlayerInventory.instance.UpdateSeeds();
+                    Debug.Log("Seed Planted");
+                    Debug.Log("Seeds Remaining: " + PlayerInventory.instance.CheckSeeds());
+                }
+
+            }
+            else
+            {
+                Debug.Log("Out of seeds");
+            }
 
         }
         else
