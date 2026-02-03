@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerInventory : MonoBehaviour
 {
     //this might be a temporary script
-    //just tracks Supposed Cactus seeds
+    //just tracks seeds
     public static PlayerInventory instance;
     public TMP_Text seedCount;
 
