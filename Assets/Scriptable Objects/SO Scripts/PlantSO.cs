@@ -12,7 +12,6 @@ public class PlantSO : ScriptableObject
     public string plantName;
     public float CropTime;
     public List<GameObject> plantPrefabs;
-    public GameObject seedPrefab;
 
     public int MaxStage { get { return plantPrefabs.Count - 1; } }
 
