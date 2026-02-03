@@ -6,7 +6,7 @@ using UnityEngine;
 
 using UnityEngine.AI;
 
-public class fishMovement : MonoBehaviour
+public class FishMovement : MonoBehaviour
 
 {
 
