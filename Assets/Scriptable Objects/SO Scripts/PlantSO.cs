@@ -9,10 +9,21 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlantSO", menuName = "Scriptable Objects/PlantSO")]
 public class PlantSO : ScriptableObject
 {
+    //name of the plant (unsure if neccessary)
     public string plantName;
+
+    //how long the plant takes to increment 1 stage
     public float CropTime;
+
+    //item IDs of the seed, fruit, and a placeholder if we need it
+    public int seedID;
+    public int fruitID;
+    public int secretThirdThingID;
+
+    //prefabs for each growth stage of the plant
     public List<GameObject> plantPrefabs;
 
+    //used for harvestability
     public int MaxStage { get { return plantPrefabs.Count - 1; } }
 
     //returns the correct prefab for the growth stage inputted
