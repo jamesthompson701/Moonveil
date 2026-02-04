@@ -33,7 +33,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void UpdateSeeds()
     {
-        seedCount.text = "" + seeds;
+        seedCount.text = "Seeds: " + seeds;
     }
 
 }
