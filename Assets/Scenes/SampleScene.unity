@@ -243,11 +243,11 @@ GameObject:
   - component: {fileID: 330585547}
   m_Layer: 0
   m_Name: Fishing Camera
-  m_TagString: MainCamera
+  m_TagString: fishingCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!81 &330585544
 AudioListener:
   m_ObjectHideFlags: 0
@@ -255,7 +255,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &330585545
 Camera:
   m_ObjectHideFlags: 0
@@ -263,7 +263,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -274,7 +274,7 @@ Camera:
   m_ShutterSpeed: 0.005
   m_Aperture: 16
   m_FocusDistance: 10
-  m_FocalLength: 50
+  m_FocalLength: 26.392607
   m_BladeCount: 5
   m_Curvature: {x: 2, y: 11}
   m_BarrelClipping: 0.25
@@ -292,7 +292,7 @@ Camera:
   field of view: 48.9
   orthographic: 0
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 10
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -946,7 +946,7 @@ Camera:
   field of view: 48.9
   orthographic: 0
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -2355,6 +2355,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 330585545}
+    - target: {fileID: 288084592498464725, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
+      propertyPath: m_PlaneDistance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 358366890885560264, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
       propertyPath: m_Name
       value: IowerLimitRing
@@ -2453,7 +2457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4261905565827543652, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
       propertyPath: m_Color.a
-      value: 0.039215688
+      value: 0.003921569
       objectReference: {fileID: 0}
     - target: {fileID: 4261905565827543652, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
       propertyPath: m_Color.b
