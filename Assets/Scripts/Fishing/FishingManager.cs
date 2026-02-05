@@ -1,0 +1,238 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
+public class FishingManager : MonoBehaviour
+{
+    [Header("References")]
+    public Camera mainCamera;
+    public Camera fishingCamera; // current area's camera; swapped to
+    public GameObject player;
+    public FishingRod fishingRodPrefab;
+    public Transform rodParent; // where to parent the rod when shown
+    public Canvas uiCanvas;
+    public FishingMiniGameUI miniGameUI;
+
+    [Header("Input Settings")]
+    public string startFishingInput = "Fire2"; // right mouse to start
+    public string castInput = "Fire1";         // left mouse to cast
+    public string reelInput = "Jump";          // space to start reeling when bite occurs, and used inside minigame
+
+    [Header("Timings")]
+    public float postCastDelay = 1f; // delay between cast and bait appearing
+
+    private FishingRod currentRod;
+    public FishingArea currentArea;
+    private Coroutine biteCoroutine;
+    private bool inFishingMode = false;
+    private bool lineIsCasted = false;
+
+    public static FishingManager Instance;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Debug.Log("Destroy New AudioManager");
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
+    void Start()
+    {
+        if (mainCamera == null) mainCamera = Camera.main;
+        if (uiCanvas) miniGameUI.gameObject.SetActive(false);
+    }
+
+    void Update()
+    {
+        /*
+        // Start fishing when in a fishing area and player presses startFishingInput
+        if (currentArea != null && !inFishingMode && Input.GetButtonDown(startFishingInput))
+        {
+            EnterFishingMode(currentArea);
+        }
+        */
+
+        // Exit fishing (likely to change input)
+        if (inFishingMode && Input.GetKeyDown(KeyCode.Z))
+        {
+            ExitFishingMode();
+        }
+    }
+
+    public void EnterFishingMode(FishingArea area)
+    {
+        inFishingMode = true;
+        currentArea = area;
+
+        // switch cameras
+        if (mainCamera) mainCamera.enabled = false;
+        if (area.fishingCamera)
+        {
+            fishingCamera = area.fishingCamera;
+            fishingCamera.enabled = true;
+        }
+
+        // show rod
+        if (currentRod == null)
+        {
+            currentRod = Instantiate(fishingRodPrefab, rodParent);
+            currentRod.Initialize(this, reelInput);
+        }
+        else
+        {
+            currentRod.gameObject.SetActive(true);
+            currentRod.Initialize(this, reelInput);
+        }
+
+        Debug.Log("Entered fishing mode in area: " + area.areaName + ". Press " + startFishingInput + " to cast (or " + castInput + " depending on config).");
+    }
+
+    public void ExitFishingMode()
+    {
+        inFishingMode = false;
+        currentArea = null;
+
+        if (mainCamera) mainCamera.enabled = true;
+        if (fishingCamera) fishingCamera.enabled = false;
+
+        if (currentRod) currentRod.gameObject.SetActive(false);
+
+        if (biteCoroutine != null)
+        {
+            StopCoroutine(biteCoroutine);
+            biteCoroutine = null;
+        }
+
+        if (miniGameUI) miniGameUI.EndGameCleanup();
+    }
+
+    // Called by FishingRod when cast completed
+    public void OnRodCasted(Vector3 baitPosition)
+    {
+        if (lineIsCasted) return;
+        lineIsCasted = true;
+        // start bite loop
+        biteCoroutine = StartCoroutine(BiteLoop());
+    }
+
+    // Called by FishingRod when rod is pulled (cancel cast)
+    public void OnRodPulled()
+    {
+        lineIsCasted = false;
+        if (biteCoroutine != null)
+        {
+            StopCoroutine(biteCoroutine);
+            biteCoroutine = null;
+        }
+        Debug.Log("Rod pulled - canceled casting");
+    }
+
+    IEnumerator BiteLoop()
+    {
+        while (lineIsCasted)
+        {
+            // pick a fish for this opportunity
+            FishData fish = currentArea.GetRandomFish();
+            if (fish == null)
+            {
+                Debug.Log("No fish configured for this area.");
+                yield break;
+            }
+
+            // random bite time per fish
+            float wait = Random.Range(fish.biteDelayMin, fish.biteDelayMax);
+            yield return new WaitForSeconds(wait);
+
+            // fish bites now -> prompt player to reel
+            Debug.Log("Fish is biting! Press '" + reelInput + "' to reel fish.");
+
+            // window to start reeling
+            float reelWindow = 2.5f; // configurable globally or per fish if you want
+            float timer = 0f;
+            bool startedMinigame = false;
+            while (timer < reelWindow)
+            {
+                if (Input.GetButtonDown(reelInput))
+                {
+                    // begin minigame
+                    Debug.Log("Starting reeling minigame...");
+                    startedMinigame = true;
+                    StartMiniGame(fish);
+                    break;
+                }
+                timer += Time.deltaTime;
+                yield return null;
+            }
+
+            if (!startedMinigame)
+            {
+                Debug.Log("Player didn't reel in time. Fish got away (or next opportunity starts).");
+                // continue loop to wait for next bite (cast remains)
+                yield return new WaitForSeconds(0.5f);
+            }
+            else
+            {
+                // the minigame drives the result; wait until it finishes before continuing the outer loop
+                while (miniGameUI.IsActiveAndPlaying)
+                    yield return null;
+
+                // after game ends: if rod is no longer casted (on success you might auto-pull), handle accordingly
+                // For now, we reset lineIsCasted to false only if the fishing rod code pulled it.
+                // Wait a tiny bit then allow next chance if still casted
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
+    }
+
+    void StartMiniGame(FishData fish)
+    {
+        if (miniGameUI == null)
+        {
+            Debug.Log("MiniGameUI not assigned in FishingManager.");
+            return;
+        }
+
+        // configure the mini game from fish parameters
+        miniGameUI.gameObject.SetActive(true);
+        miniGameUI.StartMiniGame(fish, reelInput, OnMiniGameResult);
+    }
+
+    // callback from mini game
+    void OnMiniGameResult(bool success, FishData caughtFish)
+    {
+        if (success)
+        {
+            Debug.Log("You caught a " + caughtFish.fishName + "!");
+            // TODO: add fish to inventory.
+            
+            // After success, consider pulling the rod / end cast:
+            lineIsCasted = false;
+            if (currentRod) currentRod.OnCaughtFish(); // let rod handle visuals
+        }
+        else
+        {
+            Debug.Log("Fish escaped.");
+            // keep the line casted? For this version, keep casted so next opportunity continues
+        }
+    }
+
+    public void SetCurrentArea(FishingArea area)
+    {
+        currentArea = area;
+    }
+
+    public void ClearCurrentArea(FishingArea area)
+    {
+        if (currentArea == area)
+        {
+            currentArea = null;
+        }
+    }
+}

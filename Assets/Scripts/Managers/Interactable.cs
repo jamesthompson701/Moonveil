@@ -11,8 +11,12 @@ public class Interactable : MonoBehaviour
 
     void Start()
     {
-        rend = GetComponent<Renderer>();
-        originalColor = rend.material.color;
+        if (gameObject.CompareTag("Soil"))
+        {
+            rend = GetComponent<Renderer>();
+            originalColor = rend.material.color;
+        }
+            
     }
 
     // This method will be called by our ClickSelector
@@ -38,6 +42,11 @@ public class Interactable : MonoBehaviour
                 Debug.Log("Out of seeds");
             }
 
+        }
+        else if(gameObject.CompareTag("fishingArea"))
+        {
+            Debug.Log("Fishing Interacted With");
+            FishingManager.Instance.EnterFishingMode(FishingManager.Instance.currentArea);
         }
         else
         {

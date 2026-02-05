@@ -37,6 +37,7 @@ public class ClickSelector : MonoBehaviour
         if (Physics.Raycast(ray, out hit, raycastDistance))
         {
             Interactable interactable = hit.collider.GetComponent<Interactable>();
+            Debug.Log(hit.collider);
             if (interactable != null)
             {
                 interactable.OnInteract();
