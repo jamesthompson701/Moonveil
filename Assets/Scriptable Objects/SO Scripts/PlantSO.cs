@@ -23,6 +23,9 @@ public class PlantSO : ScriptableObject
     //prefabs for each growth stage of the plant
     public List<GameObject> plantPrefabs;
 
+    //prefab for dead plant
+    public GameObject deadPrefab;
+
     //used for harvestability
     public int MaxStage { get { return plantPrefabs.Count - 1; } }
 
