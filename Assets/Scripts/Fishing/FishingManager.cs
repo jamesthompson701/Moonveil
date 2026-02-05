@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -5,6 +6,8 @@ using TMPro;
 
 public class FishingManager : MonoBehaviour
 {
+    public static event Action<FishData> OnFishCaught;
+
     [Header("References")]
     public Camera mainCamera;
     public Camera fishingCamera; // current area's camera; swapped to
@@ -13,6 +16,11 @@ public class FishingManager : MonoBehaviour
     public Transform rodParent; // where to parent the rod when shown
     public Canvas uiCanvas;
     public FishingMiniGameUI miniGameUI;
+
+    [Header("UI Prompt")]
+    public TMP_Text promptText;
+    [Header("Gameplay Prompt")]
+    public TMP_Text startFishingPrompt;
 
     [Header("Input Settings")]
     public string startFishingInput = "Fire2"; // right mouse to start
@@ -51,18 +59,27 @@ public class FishingManager : MonoBehaviour
 
     void Update()
     {
-        /*
         // Start fishing when in a fishing area and player presses startFishingInput
         if (currentArea != null && !inFishingMode && Input.GetButtonDown(startFishingInput))
         {
             EnterFishingMode(currentArea);
         }
-        */
 
         // Exit fishing (likely to change input)
         if (inFishingMode && Input.GetKeyDown(KeyCode.Z))
         {
             ExitFishingMode();
+        }
+
+        // player side UI. show prompt to go into fishing mode
+        if (currentArea != null && !inFishingMode)
+        {
+            startFishingPrompt.gameObject.SetActive(true);
+            startFishingPrompt.text = "Press " + startFishingInput + " to start fishing";
+        }
+        else
+        {
+            startFishingPrompt.gameObject.SetActive(false);
         }
     }
 
@@ -91,6 +108,7 @@ public class FishingManager : MonoBehaviour
             currentRod.Initialize(this, reelInput);
         }
 
+        ShowPrompt("Press " + castInput + " to cast your rod");
         Debug.Log("Entered fishing mode in area: " + area.areaName + ". Press " + startFishingInput + " to cast (or " + castInput + " depending on config).");
     }
 
@@ -110,6 +128,7 @@ public class FishingManager : MonoBehaviour
             biteCoroutine = null;
         }
 
+        HidePrompt();
         if (miniGameUI) miniGameUI.EndGameCleanup();
     }
 
@@ -120,6 +139,7 @@ public class FishingManager : MonoBehaviour
         lineIsCasted = true;
         // start bite loop
         biteCoroutine = StartCoroutine(BiteLoop());
+        ShowPrompt("Waiting for a bite...");
     }
 
     // Called by FishingRod when rod is pulled (cancel cast)
@@ -147,10 +167,11 @@ public class FishingManager : MonoBehaviour
             }
 
             // random bite time per fish
-            float wait = Random.Range(fish.biteDelayMin, fish.biteDelayMax);
+            float wait = UnityEngine.Random.Range(fish.biteDelayMin, fish.biteDelayMax);
             yield return new WaitForSeconds(wait);
 
             // fish bites now -> prompt player to reel
+            ShowPrompt("Press " + reelInput + " to reel!");
             Debug.Log("Fish is biting! Press '" + reelInput + "' to reel fish.");
 
             // window to start reeling
@@ -198,6 +219,7 @@ public class FishingManager : MonoBehaviour
             Debug.Log("MiniGameUI not assigned in FishingManager.");
             return;
         }
+        ShowPrompt("Keep the blue ring inside the dark rings! " + "Press " + reelInput + " to shrink the ring!");
 
         // configure the mini game from fish parameters
         miniGameUI.gameObject.SetActive(true);
@@ -207,11 +229,32 @@ public class FishingManager : MonoBehaviour
     // callback from mini game
     void OnMiniGameResult(bool success, FishData caughtFish)
     {
+        HidePrompt();
         if (success)
         {
             Debug.Log("You caught a " + caughtFish.fishName + "!");
-            // TODO: add fish to inventory.
-            
+
+            // add fish to inventory.
+            // notify inventory / UI systems
+            OnFishCaught?.Invoke(caughtFish);
+
+            /* rough code to add into UI script
+            void OnEnable()
+            {
+                FishingManager.OnFishCaught += AddFish;
+            }
+
+            void OnDisable()
+            {
+                FishingManager.OnFishCaught -= AddFish;
+            }
+
+            void AddFish(FishData fish)
+            {
+                inventory.Add(fish);
+                // update UI
+            }*/
+
             // After success, consider pulling the rod / end cast:
             lineIsCasted = false;
             if (currentRod) currentRod.OnCaughtFish(); // let rod handle visuals
@@ -221,6 +264,28 @@ public class FishingManager : MonoBehaviour
             Debug.Log("Fish escaped.");
             // keep the line casted? For this version, keep casted so next opportunity continues
         }
+
+        if (success)
+        {
+            ShowPrompt(caughtFish.fishName + " fish caught!" + "  Press " + castInput + " to recast your rod" + " or press z to exit");
+        }
+        else
+        {
+            ShowPrompt("The fish escaped..." + " Press " + castInput + " to recast your rod" + " or press z to exit");
+        }
+    }
+
+    public void ShowPrompt(string message)
+    {
+        if (promptText == null) return;
+        promptText.text = message;
+        promptText.gameObject.SetActive(true);
+    }
+
+    public void HidePrompt()
+    {
+        if (promptText == null) return;
+        promptText.gameObject.SetActive(false);
     }
 
     public void SetCurrentArea(FishingArea area)
