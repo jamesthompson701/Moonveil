@@ -2,6 +2,7 @@ using UnityEngine;
 
 public abstract class SO_FarmSpellBase : SO_Spells
 {
+    [SerializeField] eEffects soundEffect;
     [Header("Farm Movement")]
     [SerializeField] protected float travelDistance = 10f;
 
@@ -31,7 +32,7 @@ public abstract class SO_FarmSpellBase : SO_Spells
         FarmSpellMover mover = rb.GetComponent<FarmSpellMover>();
         if (mover == null) mover = rb.gameObject.AddComponent<FarmSpellMover>();
 
-        mover.Init(forward, Speed, travelDistance, Lifetime);
+        mover.Init(forward, Speed, travelDistance, Lifetime, soundEffect);
 
         OnFarmSpellSpawned(rb, ctx);
     }

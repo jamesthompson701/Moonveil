@@ -24,11 +24,12 @@ public class PlantObject : MonoBehaviour
     public Canvas myCanvas;
     public TMP_Text growthTimer;
 
-    void Start()
+    void Awake()
     {
         //add to time manager and instantiate the first prefab
         currentStage = 0;
         TimeManager.instance.RegisterPlant(this);
+        currentTime = plant.CropTime;
         currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
     }
 
@@ -36,19 +37,17 @@ public class PlantObject : MonoBehaviour
     {
         
         //update currentTime
-        currentTime = currentTime + deltaTime;
-
-        //update growth timer UI
-        growthTimer.text = "" + Mathf.Round(currentTime);
-
-        //if it's time to grow, reset timer
-        if (currentTime >= plant.CropTime )
+        if(currentTime > 0)
+        {
+            currentTime = currentTime - deltaTime;
+        }
+        else
         {
             //check wetness before growing
             if (soilScript.Wet())
             {
                 Debug.Log("before growth: " + currentStage);
-                currentTime = 0;
+                currentTime = plant.CropTime;
 
                 //then increment, but not past the max
                 if (currentStage < plant.MaxStage)
@@ -71,12 +70,16 @@ public class PlantObject : MonoBehaviour
                 }
                 Debug.Log("after growth: " + currentStage);
             }
-            else
-            {
-                //we dont need to do anything if not wet
-            }
+
 
         }
+
+        //update growth timer UI
+        growthTimer.text = "" + Mathf.Round(currentTime);
+
+        
+        
+        
         
     }
 

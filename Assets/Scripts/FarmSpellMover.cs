@@ -10,7 +10,7 @@ public class FarmSpellMover : MonoBehaviour
     private Vector3 startPos;
     private float aliveTime;
 
-    public void Init(Vector3 dir, float spd, float travelDist, float life)
+    public void Init(Vector3 dir, float spd, float travelDist, float life, eEffects soundEffect)
     {
         direction = dir.normalized;
         speed = spd;
@@ -19,6 +19,10 @@ public class FarmSpellMover : MonoBehaviour
 
         startPos = transform.position;
         aliveTime = 0f;
+
+        AudioManager.PlayOneShot(soundEffect, transform, 100);
+
+        Debug.Log("playing sound" + soundEffect);
     }
 
     private void Update()
