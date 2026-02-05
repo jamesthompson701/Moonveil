@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using TMPro;
 
 //Plants can grow
 //Tracks its own current growth stage, how long since it last grew, and its current object in the world
@@ -15,9 +16,13 @@ public class PlantObject : MonoBehaviour
     //harvestability
     private bool isHarvestable;
 
-    //plant object
+    //plant object & soil
     private GameObject currentPlant;
     private SoilObject soilScript;
+
+    //canvas and growth timer
+    public Canvas myCanvas;
+    public TMP_Text growthTimer;
 
     void Start()
     {
@@ -32,6 +37,9 @@ public class PlantObject : MonoBehaviour
         
         //update currentTime
         currentTime = currentTime + deltaTime;
+
+        //update growth timer UI
+        growthTimer.text = "" + Mathf.Round(currentTime);
 
         //if it's time to grow, reset timer
         if (currentTime >= plant.CropTime )
@@ -50,6 +58,7 @@ public class PlantObject : MonoBehaviour
                 if (currentStage == plant.MaxStage)
                 {
                     isHarvestable = true;
+                    Destroy(growthTimer);
                     Debug.Log("Harvestable!");
                 }
 
@@ -62,10 +71,15 @@ public class PlantObject : MonoBehaviour
                 }
                 Debug.Log("after growth: " + currentStage);
             }
+            else
+            {
+                //we dont need to do anything if not wet
+            }
 
         }
         
     }
+
 
     //returns true if the plant is at max growth a.k.a. harvestable
     public bool Harvestable()
@@ -79,6 +93,7 @@ public class PlantObject : MonoBehaviour
         Debug.Log("Harvested");
         Destroy(currentPlant);
         TimeManager.instance.UnregisterPlant(this);
+        Destroy(myCanvas);
         Destroy(this);
         PlayerInventory.instance.UpdateSeeds();
     }
@@ -88,6 +103,7 @@ public class PlantObject : MonoBehaviour
         Debug.Log("Destroyed");
         Destroy(currentPlant);
         TimeManager.instance.UnregisterPlant(this);
+        Destroy(myCanvas);
         Destroy(this);
     }
 
