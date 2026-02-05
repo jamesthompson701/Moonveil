@@ -73,7 +73,7 @@ public class PlantObject : MonoBehaviour
             }
             else
             {
-                currentTime = 0;
+                //we dont need to do anything if not wet
             }
 
         }
