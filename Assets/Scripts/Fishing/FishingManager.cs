@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using StarterAssets;
 
 public class FishingManager : MonoBehaviour
 {
@@ -88,6 +89,9 @@ public class FishingManager : MonoBehaviour
         inFishingMode = true;
         currentArea = area;
 
+        player.GetComponent<ThirdPersonController>().enabled = false;
+        player.GetComponent<ClickSelector>().enabled = false;
+
         // switch cameras
         if (mainCamera) mainCamera.enabled = false;
         if (area.fishingCamera)
@@ -116,6 +120,9 @@ public class FishingManager : MonoBehaviour
     {
         inFishingMode = false;
         currentArea = null;
+
+        player.GetComponent<ThirdPersonController>().enabled = true;
+        player.GetComponent<ClickSelector>().enabled = true;
 
         if (mainCamera) mainCamera.enabled = true;
         if (fishingCamera) fishingCamera.enabled = false;
