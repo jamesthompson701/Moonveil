@@ -7,9 +7,41 @@ public class CanvasManager : MonoBehaviour
     public GameObject menuCanvas;
     bool isActive = false;
 
- 
+    public InputActionAsset input;
     InputAction openInv;
+    InputAction openPause;
 
+    InputActionMap player;
+    InputActionMap UI;
+
+
+    private void Awake()
+    {
+        openInv = input.FindAction("Inventory");
+        openPause = input.FindAction("Pause");
+
+
+        player = input.FindActionMap("Player");
+        UI = input.FindActionMap("UI");
+
+
+    }
+
+    private void Update()
+    {
+        bool inv = openInv.WasPressedThisFrame();
+        if (inv == true)
+        {
+            Debug.Log("ITS PRESSED");
+            OpenInventory();
+        }
+
+        bool pause = openPause.WasPressedThisFrame();
+        if (pause == true)
+        {
+            OpenPause();
+        }
+    }
 
     public void OpenInventory()
     {
@@ -18,43 +50,57 @@ public class CanvasManager : MonoBehaviour
         {
             isActive = true;
             inventoryCanvas.SetActive(true);
+            OpenMenu();
 
         }
         else
         {
             isActive = false;
             inventoryCanvas.SetActive(false);
+            CloseMenu();
         }
+        openInv = input.FindAction("Inventory");
     }
 
-    public void OpenMainMenu()
+    public void OpenPause()
     {
         if (!isActive)
         {
             isActive = true;
             menuCanvas.SetActive(true);
+            OpenMenu();
+
         }
         else
         {
             isActive = false;
             menuCanvas.SetActive(false);
+            CloseMenu();
         }
+        openPause = input.FindAction("Pause");
     }
 
-
-    private void Awake()
+    public void OpenMenu()
     {
-        openInv = InputSystem.actions.FindAction("Open Inventory");
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        player.Disable();
+        UI.Enable();
+ 
+
     }
 
-    private void Update()
+    public void CloseMenu()
     {
-        bool inv = openInv.IsPressed();
-        if (inv == true)
-        {
-            OpenInventory();
-        }
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        player.Enable();
+        UI.Disable();
+        openInv = input.FindAction("Inventory");
     }
+
 
 
 }

@@ -34,7 +34,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void ResetSeeds()
     {
-        if (invSO.InventoryItems[0].amount <5)
+        if (invSO.InventoryItems[0].amount != 5)
         {
             invSO.InventoryItems[0].amount = 5;
         }

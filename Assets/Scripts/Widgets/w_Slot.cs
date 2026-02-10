@@ -16,7 +16,7 @@ public class w_Slot : MonoBehaviour, IPointerEnterHandler
     //Finds inventory manager
     private void Awake()
     {
-        GameObject managerObj = GameObject.Find("Inventory");
+        GameObject managerObj = GameObject.Find("PlayerInventoryUI");
         managerRef = managerObj.GetComponent<InventoryManager>();
     }
 
@@ -39,4 +39,5 @@ public class w_Slot : MonoBehaviour, IPointerEnterHandler
         }
 
     }
+
 }
