@@ -20,14 +20,17 @@ public class SoilObject : MonoBehaviour
     //colors
     public Material wetSoil;
     public Material drySoil;
+    public Material untilledSoil;
 
     //plant to generate (temporary)
     public GameObject plantPrefab;
 
-    //wet bool and wetness timer
-    public bool isWet = false;
+    //wetness timer
     private float waterTimer;
-    public float wetnessDuration;
+
+    //bools for tilled and wet
+    public bool tilled;
+    public bool isWet;
 
     private void Start()
     {
@@ -57,23 +60,32 @@ public class SoilObject : MonoBehaviour
 
     public void CheckSoil(float deltaTime)
     {
-
-        //if the soil is wet, make it the wet material and check how long ago it was watered
-        if (isWet)
+        //if the soil is tilled or untilled, update it accordingly
+        if (!tilled)
         {
-            waterTimer = waterTimer + deltaTime;
-            mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
-            Debug.Log("its wet its working");
+            mySoilObj.GetComponent<MeshRenderer>().material = untilledSoil;
+        }
+        else
+        {
+            mySoilObj.GetComponent<MeshRenderer>().material = drySoil;
 
-            //if it's been wet for longer than the wetness duration, make it dry
-            if (waterTimer > wetnessDuration)
+            //if the soil is wet, make it the wet material and check how long ago it was watered
+            if (isWet)
             {
-                waterTimer = 0;
-                isWet = false;
-                mySoilObj.GetComponent<MeshRenderer>().material = drySoil;
-                Debug.Log("Soil dry");
+                waterTimer = waterTimer - deltaTime;
+                mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
+
+                //if its wetness time is up, make it dry
+                if (waterTimer < 0)
+                {
+                    waterTimer = soil.wetnessDuration;
+                    isWet = false;
+                    mySoilObj.GetComponent<MeshRenderer>().material = drySoil;
+                    //Debug.Log("Soil dry");
+                }
             }
         }
+
 
     }
 
@@ -83,13 +95,17 @@ public class SoilObject : MonoBehaviour
         if (other.CompareTag("WateringSpell"))
         {
             isWet = true;
+            waterTimer = soil.wetnessDuration;
             mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
-            Debug.Log("Soil wet");
+            //Debug.Log("Soil wet");
         }
 
         if (other.CompareTag("TillSpell"))
         {
-            //nothing here yets
+            if(!tilled && soilContent == SoilContent.empty)
+            {
+                tilled = true;
+            }
         }
 
         //if it's a harvest spell, harvest if able
@@ -123,7 +139,7 @@ public class SoilObject : MonoBehaviour
 
     }
 
-    public void OnInteract()
+    /*public void OnInteract()
     {
         if (gameObject.CompareTag("Soil"))
         {
@@ -146,7 +162,7 @@ public class SoilObject : MonoBehaviour
 
         }
 
-    }
+    }*/
 
     //return wetness (used by plant)
     public bool Wet()
