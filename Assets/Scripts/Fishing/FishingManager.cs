@@ -115,7 +115,7 @@ public class FishingManager : MonoBehaviour
     public void ExitFishingMode()
     {
         inFishingMode = false;
-        //currentArea = null;
+        currentArea = null;
 
         if (mainCamera) mainCamera.enabled = true;
         if (fishingCamera) fishingCamera.enabled = false;
