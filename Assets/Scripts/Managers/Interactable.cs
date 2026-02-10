@@ -9,11 +9,7 @@ public class Interactable : MonoBehaviour
     //temporary? reference to soil script
     private SoilObject soil;
 
-    void Start()
-    {
-        rend = GetComponent<Renderer>();
-        originalColor = rend.material.color;
-    }
+
 
     // This method will be called by our ClickSelector
     public void OnInteract()
@@ -39,17 +35,17 @@ public class Interactable : MonoBehaviour
             }
 
         }
+        else if(gameObject.CompareTag("fishingArea"))
+        {
+            FishingManager.Instance.EnterFishingMode(FishingManager.Instance.currentArea);
+        }
         else
         {
-            // Change to a random color
-            rend.material.color = Random.ColorHSV();
+            Debug.Log("Nothing interactable hit");
         }
 
     }
 
     // Optional: A method to reset the color
-    public void ResetColor()
-    {
-        rend.material.color = originalColor;
-    }
+
 }
