@@ -27,7 +27,6 @@ public class Interactable : MonoBehaviour
                 {
                     soil.SpawnCrop();
                     PlayerInventory.instance.AddSeeds(-1);
-                    PlayerInventory.instance.UpdateSeeds();
                     Debug.Log("Seed Planted");
                     Debug.Log("Seeds Remaining: " + PlayerInventory.instance.CheckSeeds());
                 }

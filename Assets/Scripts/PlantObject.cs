@@ -98,7 +98,6 @@ public class PlantObject : MonoBehaviour
         TimeManager.instance.UnregisterPlant(this);
         Destroy(myCanvas);
         Destroy(this);
-        PlayerInventory.instance.UpdateSeeds();
     }
 
     public void Destroy()

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4315254311588947265}
   - component: {fileID: 5951948978001883520}
   - component: {fileID: 2784783278174531931}
-  - component: {fileID: 5363394492927783139}
+  - component: {fileID: 8610158943054719959}
   m_Layer: 5
   m_Name: InventorySlot
   m_TagString: Untagged
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5363394492927783139
+--- !u!114 &8610158943054719959
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,15 +87,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1812072158863045800}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb8873d618cf4714995ddb202b53129a, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c089dff679fbae43835e1a6783d7ad7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Slot
+  m_EditorClassIdentifier: Assembly-CSharp::w_Slot
   item:
     item: {fileID: 0}
     amount: 0
   button: {fileID: 1915540154374007984}
   image: {fileID: 5624948387753701477}
   amount: {fileID: 6909247156015491166}
+  managerRef: {fileID: 0}
 --- !u!1 &1915540154374007984
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +163,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1

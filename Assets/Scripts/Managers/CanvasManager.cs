@@ -49,8 +49,8 @@ public class CanvasManager : MonoBehaviour
 
     private void Update()
     {
-        float inv = openInv.ReadValue<float>();
-        if (inv == 1)
+        bool inv = openInv.IsPressed();
+        if (inv == true)
         {
             OpenInventory();
         }
