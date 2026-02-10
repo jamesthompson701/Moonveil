@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class SoilObject : MonoBehaviour
 {
-    //don't need this yet
-    //[SerializeField] private SoilSO soil;
+    [SerializeField] private SoilSO soil;
 
     //public for now so it can be tested, but eventually this'll default to empty
     public SoilContent soilContent;
@@ -120,6 +119,31 @@ public class SoilObject : MonoBehaviour
         {
             Destroy(weed);
             soilContent = SoilContent.empty;
+        }
+
+    }
+
+    public void OnInteract()
+    {
+        if (gameObject.CompareTag("Soil"))
+        {
+            if (PlayerInventory.instance.CheckSeeds() > 0)
+            {
+                if (soilContent == SoilContent.empty)
+                {
+                    SpawnCrop();
+                    PlayerInventory.instance.AddSeeds(-1);
+                    PlayerInventory.instance.UpdateSeeds();
+                    Debug.Log("Seed Planted");
+                    Debug.Log("Seeds Remaining: " + PlayerInventory.instance.CheckSeeds());
+                }
+
+            }
+            else
+            {
+                Debug.Log("Out of seeds");
+            }
+
         }
 
     }
