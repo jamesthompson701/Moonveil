@@ -37,7 +37,6 @@ public class Interactable : MonoBehaviour
         }
         else if(gameObject.CompareTag("fishingArea"))
         {
-            Debug.Log("Fishing Interacted With");
             FishingManager.Instance.EnterFishingMode(FishingManager.Instance.currentArea);
         }
         else

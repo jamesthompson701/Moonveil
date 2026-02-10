@@ -36,12 +36,24 @@ public class ClickSelector : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, raycastDistance))
         {
+ 
             Interactable interactable = hit.collider.GetComponent<Interactable>();
-            Debug.Log(hit.collider);
+            
+            //If its a fishin area tells the manager to change the fishing area
+            FishingArea currentArea;
+            if (currentArea = hit.collider.GetComponent<FishingArea>())
+            {
+                Debug.Log("Fishing Area set to" + currentArea);
+                FishingManager.Instance.currentArea = currentArea;
+            }
+
+            Debug.Log("Interacted with " + hit.collider);
             if (interactable != null)
             {
                 interactable.OnInteract();
             }
         }
+
+        
     }
 }
