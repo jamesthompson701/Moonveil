@@ -104,11 +104,15 @@ public class SoilObject : MonoBehaviour
         }
 
         //if it's a fire spell, destroy crop unless it's watered
-        if (other.CompareTag("FireSpell") && !isWet && plantScript != null)
+        if (other.CompareTag("FireSpell") && plantScript != null)
         {
-            Debug.Log("FireSpelled");
-            plantScript.Destroy();
-            soilContent = SoilContent.empty;
+            if(!isWet || plantScript.isDead)
+            {
+                Debug.Log("FireSpelled");
+                plantScript.Destroy();
+                soilContent = SoilContent.empty;
+            }
+
         }
 
         //fire spell destroys weeds also

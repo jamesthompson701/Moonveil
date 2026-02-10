@@ -13,7 +13,10 @@ public class PlantSO : ScriptableObject
     public string plantName;
 
     //how long the plant takes to increment 1 stage
-    public float CropTime;
+    public float cropTime;
+
+    //how long the plant can be dry for before dying
+    public float droughtResistance;
 
     //item IDs of the seed, fruit, and a placeholder if we need it
     public int seedID;
@@ -22,6 +25,9 @@ public class PlantSO : ScriptableObject
 
     //prefabs for each growth stage of the plant
     public List<GameObject> plantPrefabs;
+
+    //prefab for when the plant is dead
+    public GameObject plantDead;
 
     //used for harvestability
     public int MaxStage { get { return plantPrefabs.Count - 1; } }

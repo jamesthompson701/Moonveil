@@ -2,16 +2,19 @@ using System;
 using UnityEngine;
 using TMPro;
 
-//Plants can grow
-//Tracks its own current growth stage, how long since it last grew, and its current object in the world
+//Tracks its own current growth stage, how long since it last grew, how long its been dry and its current object in the world
 public class PlantObject : MonoBehaviour
 {
     [SerializeField] private PlantSO plant;
 
     //current stage of growth
     private int currentStage;
-    //how long since it last grew
-    private float currentTime;
+    public bool isDead;
+
+    //timers
+    //these get set to their respective maximums based on plantSO, and then count down as appropriate via CheckPlant
+    private float growthTime;
+    private float dryTime;
 
     //harvestability
     private bool isHarvestable;
@@ -29,25 +32,48 @@ public class PlantObject : MonoBehaviour
         //add to time manager and instantiate the first prefab
         currentStage = 0;
         TimeManager.instance.RegisterPlant(this);
-        currentTime = plant.CropTime;
+        growthTime = plant.cropTime;
+        dryTime = plant.droughtResistance;
         currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
     }
 
     public void CheckPlant(float deltaTime)
     {
-        
-        //update currentTime
-        if(currentTime > 0)
+
+        //if the soil is dry, this functionally pauses the growth timer by negating it
+        //increment the dry timer while dry
+        if(!soilScript.Wet())
         {
-            currentTime = currentTime - deltaTime;
+            growthTime = growthTime + deltaTime;
+
+            //if it's been dry too long, then it dies
+            if (dryTime > 0)
+            {
+                dryTime = dryTime - deltaTime;
+
+            }
+            else
+            {
+                isDead = true;
+                Destroy(growthTimer);
+                Destroy(currentPlant);
+                currentPlant = Instantiate(plant.plantDead, transform);
+            }
+        }
+
+        //update growth time
+        if(growthTime > 0)
+        {
+            growthTime = growthTime - deltaTime;
         }
         else
         {
-            //check wetness before growing
-            if (soilScript.Wet())
+            //check wetness and make sure the plant is alive before growing
+            if (soilScript.Wet() && !isDead)
             {
                 Debug.Log("before growth: " + currentStage);
-                currentTime = plant.CropTime;
+                growthTime = plant.cropTime;
+                dryTime = plant.droughtResistance;
 
                 //then increment, but not past the max
                 if (currentStage < plant.MaxStage)
@@ -70,16 +96,10 @@ public class PlantObject : MonoBehaviour
                 }
                 Debug.Log("after growth: " + currentStage);
             }
-
-
         }
 
         //update growth timer UI
-        growthTimer.text = "" + Mathf.Round(currentTime);
-
-        
-        
-        
+        growthTimer.text = "" + Mathf.Round(growthTime);
         
     }
 
