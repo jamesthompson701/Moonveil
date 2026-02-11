@@ -28,6 +28,7 @@ public class EnemyAI : MonoBehaviour
 
     [Header("Projectile Attack")]
     public GameObject projectile;
+    public Transform firePt;
     public float marginOfError = 1.5f;
     public float projectileSpeed = 25;
     Vector3 targetLastPosition;
@@ -37,7 +38,7 @@ public class EnemyAI : MonoBehaviour
     [Header("States")]
     public bool playerInSightRange, playerInAttackRange;
     [SerializeField] private bool isRanged = false;
-    [SerializeField] private bool isDamagable = true;
+    //[SerializeField] private bool isDamagable = true;
 
     [Header("NavMesh Checks")]
     [SerializeField] private float navMeshSnapTolerance = 0.25f;
@@ -66,7 +67,7 @@ public class EnemyAI : MonoBehaviour
         player = GameObject.Find("Player").transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
 
-        target = player; // Ensure target is assigned
+        target = player.GetComponent<SpellManager>().hitPt; // Ensure target is assigned
         _path = new NavMeshPath(); // Cache path object
     }
 
@@ -159,7 +160,7 @@ public class EnemyAI : MonoBehaviour
                 break;
 
             case State.Reset:
-                isDamagable = false;
+                //isDamagable = false;
 
                 // go back to the position we were at when we first spotted the player
                 if (_hasResetPosition) 
@@ -209,7 +210,7 @@ public class EnemyAI : MonoBehaviour
         if (timer > interval)
         {
             timer = 0f;
-            Vector3 targetPosition = player.position + (Trajectory() * TimeToReach());
+            Vector3 targetPosition = target.position + (Trajectory() * TimeToReach());
             FireProjectile(targetPosition);
         }
     }
@@ -244,8 +245,16 @@ public class EnemyAI : MonoBehaviour
         interval = Random.Range(1f, 4f);
     }
 
+    bool hasAcquiredTarget = false;
+
     Vector3 Trajectory()
     {
+        if (!hasAcquiredTarget) 
+        { 
+            targetLastPosition = target.position;
+            hasAcquiredTarget = true;
+        }
+        
         Vector3 direction = target.position - targetLastPosition;
         targetLastPosition = target.position;
         Vector3 inaccuracy = new(
@@ -253,12 +262,13 @@ public class EnemyAI : MonoBehaviour
             Random.Range(-marginOfError, marginOfError),
             Random.Range(-marginOfError, marginOfError)
         );
+        Debug.Log("direction = " + direction);
         return direction + inaccuracy;
     }
 
     void FireProjectile(Vector3 targetPosition)
     {
-        GameObject newProjectile = Instantiate(projectile, transform.position, Quaternion.identity);
+        GameObject newProjectile = Instantiate(projectile, firePt.position, Quaternion.identity);
 
         EnemyProjectile ep = newProjectile.GetComponent<EnemyProjectile>();
         ep.Init(targetPosition, projectileSpeed, projectileUseArc, projectileArcHeight);

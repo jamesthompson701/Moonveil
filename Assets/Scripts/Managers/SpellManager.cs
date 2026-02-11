@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class AttackManager : MonoBehaviour
+public class SpellManager : MonoBehaviour
 {
     InputAction attackAction;
     public int attackChoice = 0;
@@ -11,6 +11,7 @@ public class AttackManager : MonoBehaviour
 
     [Header("References")]
     public GameObject player;
+    public Transform hitPt;
     [SerializeField] private Transform attackCastOrigin; // Origin point for spell casting
     [SerializeField] private Camera aimCamera;
     [SerializeField] private Transform farmCastOrigin;

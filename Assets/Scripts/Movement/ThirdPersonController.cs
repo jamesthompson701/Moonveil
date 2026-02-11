@@ -99,7 +99,7 @@ namespace StarterAssets
         private int _animIDMotionSpeed;
 
         // Check for combat zone restrictions
-        public AttackManager attackManager;
+        public SpellManager attackManager;
 
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
@@ -255,8 +255,9 @@ namespace StarterAssets
             Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
 
             // Check if the player is in a combat area
-            if (attackManager.inCombatArea)
-            {
+            // Un-Comment the If Else to reinstate different camera styles
+            //if (attackManager.inCombatArea)
+            //{
                 // In combat area, restrict rotation and allow strafing
                 if (_input.move != Vector2.zero)
                 {
@@ -270,28 +271,28 @@ namespace StarterAssets
                 // move the player
                 _controller.Move(targetDirection * (_speed * Time.deltaTime) +
                                  new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-            }
-            else
-            {
-                // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-                // if there is a move input rotate player when the player is moving
-                if (_input.move != Vector2.zero)
-                {
-                    _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                      _mainCamera.transform.eulerAngles.y;
-                    float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
-                        RotationSmoothTime);
-
-                    // rotate to face input direction relative to camera position
-                    transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
-                }
-
-                Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-
-                // move the player
-                _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-                                 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-            }
+            //}
+            //else
+            //{
+            //    // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
+            //    // if there is a move input rotate player when the player is moving
+            //    if (_input.move != Vector2.zero)
+            //    {
+            //        _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
+            //                          _mainCamera.transform.eulerAngles.y;
+            //        float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
+            //            RotationSmoothTime);
+            //
+            //        // rotate to face input direction relative to camera position
+            //        transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+            //    }
+            //
+            //    Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+            //
+            //    // move the player
+            //    _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+            //                     new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            //}
 
             // update animator if using character
             if (_hasAnimator)
@@ -303,6 +304,7 @@ namespace StarterAssets
 
         private void JumpAndGravity()
         {
+            
             if (Grounded)
             {
                 // reset the fall timeout timer
@@ -327,7 +329,11 @@ namespace StarterAssets
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
+                    // consume the jump input so it doesn't trigger again immediately
                     _input.jump = false;
+
+                    // reset jump timeout to prevent immediate re-jumping
+                    _jumpTimeoutDelta = JumpTimeout;
 
                     // update animator if using character
                     if (_hasAnimator)
