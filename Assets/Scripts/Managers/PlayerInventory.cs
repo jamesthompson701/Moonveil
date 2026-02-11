@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Linq;
 
 
 public class PlayerInventory : MonoBehaviour
@@ -11,6 +12,9 @@ public class PlayerInventory : MonoBehaviour
     public InventorySO invSO;
 
     public static int seeds;
+    public static int fish;
+
+    public ItemSO fishRef;
 
     private void Awake()
     {
@@ -19,7 +23,10 @@ public class PlayerInventory : MonoBehaviour
             instance = this;
         }
         ResetSeeds();
+        ResetInv();
     }
+
+    //EVERYTHING IS SEEDS
 
     public void AddSeeds(int _amount)
     {
@@ -39,6 +46,33 @@ public class PlayerInventory : MonoBehaviour
             invSO.InventoryItems[0].amount = 5;
         }
         seeds = invSO.InventoryItems[0].amount;
+    }
+
+    //EVERYTHING IS FISH
+
+    public void AddFish(int _amount)
+    {
+        if (invSO.InventoryItems.Any(item => item.item.itemName == "IceFish"))
+        {
+            fish = invSO.InventoryItems[1].amount + _amount;
+            invSO.InventoryItems[1].amount = fish;
+        }
+        else
+        {
+            invSO.AddItem(fishRef, _amount);
+        }
+        
+
+    }
+
+    public void ResetInv()
+    {
+        if (invSO.InventoryItems[1].amount != 0)
+        {
+            invSO.InventoryItems.RemoveAt(1);
+        }
+
+        fish = 0;
     }
 
 }

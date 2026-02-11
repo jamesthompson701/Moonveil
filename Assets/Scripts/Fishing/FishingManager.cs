@@ -245,11 +245,15 @@ public class FishingManager : MonoBehaviour
             // notify inventory / UI systems
             OnFishCaught?.Invoke(caughtFish);
 
+            PlayerInventory.instance.AddFish(1);
+            
             /* rough code to add into UI script
             void OnEnable()
             {
                 FishingManager.OnFishCaught += AddFish;
             }
+
+      
 
             void OnDisable()
             {
