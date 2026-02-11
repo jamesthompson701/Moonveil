@@ -14,11 +14,26 @@ public class FishingManager : MonoBehaviour
     public GameObject player;
     public FishingRod fishingRodPrefab;
     public Transform rodParent; // where to parent the rod when shown
-    public Canvas uiCanvas;
+    public Canvas uiCanvasWater;
+    public Canvas uiCanvasFire;
+    public Canvas uiCanvasIce;
     public FishingMiniGameUI miniGameUI;
 
     [Header("UI Prompt")]
-    public TMP_Text promptText;
+    [Header("Biome UI")]
+    public FishingBiomeUI[] biomeUIs;
+    private FishingBiomeUI activeBiomeUI;
+
+    [System.Serializable]
+    public class FishingBiomeUI
+    {
+        public FishingBiome biome;
+        public Camera fishingCamera;
+        public Canvas fishingCanvas;
+        public FishingMiniGameUI miniGameUI;
+        public TMP_Text promptText;
+    }
+
     [Header("Gameplay Prompt")]
     public TMP_Text startFishingPrompt;
 
@@ -39,7 +54,12 @@ public class FishingManager : MonoBehaviour
     void Start()
     {
         if (mainCamera == null) mainCamera = Camera.main;
-        if (uiCanvas) miniGameUI.gameObject.SetActive(false);
+        //Water biome UI
+        if (uiCanvasWater) miniGameUI.gameObject.SetActive(false);
+        //Fire biome UI
+        if (uiCanvasFire) miniGameUI.gameObject.SetActive(false);
+        //Ice biome UI
+        if (uiCanvasIce) miniGameUI.gameObject.SetActive(false);
     }
 
     void Update()
@@ -70,6 +90,25 @@ public class FishingManager : MonoBehaviour
 
     public void EnterFishingMode(FishingArea area)
     {
+        activeBiomeUI = null;
+
+        foreach (var ui in biomeUIs)
+        {
+            ui.fishingCamera.gameObject.SetActive(false);
+            ui.fishingCanvas.gameObject.SetActive(false);
+
+            if (ui.biome == area.biome)
+            {
+                activeBiomeUI = ui;
+            }
+        }
+
+        if (activeBiomeUI == null)
+        {
+            Debug.LogError("No UI configured for biome: " + area.biome);
+            return;
+        }
+
         inFishingMode = true;
         currentArea = area;
 
@@ -92,6 +131,13 @@ public class FishingManager : MonoBehaviour
             currentRod.gameObject.SetActive(true);
             currentRod.Initialize(this, reelInput);
         }
+
+        fishingCamera = activeBiomeUI.fishingCamera;
+        fishingCamera.gameObject.SetActive(true);
+        fishingCamera.enabled = true;
+
+        activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
+        miniGameUI = activeBiomeUI.miniGameUI;
 
         ShowPrompt("Press " + castInput + " to cast your rod");
         Debug.Log("Entered fishing mode in area: " + area.areaName + ". Press " + startFishingInput + " to cast (or " + castInput + " depending on config).");
@@ -262,15 +308,17 @@ public class FishingManager : MonoBehaviour
 
     public void ShowPrompt(string message)
     {
-        if (promptText == null) return;
-        promptText.text = message;
-        promptText.gameObject.SetActive(true);
+        if (activeBiomeUI == null || activeBiomeUI.promptText == null) return;
+
+        activeBiomeUI.promptText.text = message;
+        activeBiomeUI.promptText.gameObject.SetActive(true);
     }
 
     public void HidePrompt()
     {
-        if (promptText == null) return;
-        promptText.gameObject.SetActive(false);
+        if (activeBiomeUI == null || activeBiomeUI.promptText == null) return;
+
+        activeBiomeUI.promptText.gameObject.SetActive(false);
     }
 
     public void SetCurrentArea(FishingArea area)

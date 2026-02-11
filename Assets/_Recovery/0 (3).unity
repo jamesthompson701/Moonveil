@@ -927,8 +927,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 76b1e76d885cd4cc8ad70d67c3cede8a, type: 2}
   - {fileID: 11400000, guid: 61430b104fdc2479794aba55a68d9178, type: 2}
   - {fileID: 11400000, guid: 3fc889e12e0ed4a9b95ad5ff110c26ec, type: 2}
-  areaName: Magma Crater
-  biome: 1
+  areaName: Magma
 --- !u!65 &295149148
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2446,22 +2445,9 @@ MonoBehaviour:
   uiCanvasFire: {fileID: 849296393}
   uiCanvasIce: {fileID: 1781708876}
   miniGameUI: {fileID: 368637480}
-  biomeUIs:
-  - biome: 0
-    fishingCamera: {fileID: 330585545}
-    fishingCanvas: {fileID: 1741444544}
-    miniGameUI: {fileID: 368637480}
-    promptText: {fileID: 140322503}
-  - biome: 1
-    fishingCamera: {fileID: 1960510443}
-    fishingCanvas: {fileID: 849296393}
-    miniGameUI: {fileID: 934402035}
-    promptText: {fileID: 1497839143}
-  - biome: 2
-    fishingCamera: {fileID: 1629076584}
-    fishingCanvas: {fileID: 1781708876}
-    miniGameUI: {fileID: 1961592049}
-    promptText: {fileID: 1517869986}
+  promptTextWater: {fileID: 140322503}
+  promptTextFire: {fileID: 1497839143}
+  promptTextIce: {fileID: 1517869986}
   startFishingPrompt: {fileID: 44240343}
   startFishingInput: Fire2
   castInput: Fire1
@@ -2630,7 +2616,7 @@ Transform:
   m_GameObject: {fileID: 741270478}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 28.46, y: 0.98, z: -1.82}
+  m_LocalPosition: {x: -29.13, y: 0.98, z: -1.82}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3093,17 +3079,6 @@ Transform:
   - {fileID: 1163812595}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &934402035 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8044672911224937250, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
-  m_PrefabInstance: {fileID: 849296389}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fba04ddae7d6a43c4bce363f3eb5aabe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FishingMiniGameUI
 --- !u!1 &1092594656
 GameObject:
   m_ObjectHideFlags: 0
@@ -3158,8 +3133,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7c3ab968fcc964efdb7f7e19fcafff07, type: 2}
   - {fileID: 11400000, guid: 774a7d658703a4386b017f6421ed0bec, type: 2}
   - {fileID: 11400000, guid: df996a93c32034f85908fe21e251d841, type: 2}
-  areaName: Frosty Fish town
-  biome: 2
+  areaName: Frost
 --- !u!65 &1092594659
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4960,8 +4934,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bb3170c4fee13418c9c7062af4756f15, type: 2}
   - {fileID: 11400000, guid: 7822f746f3cb042c5878a5f11b7fc383, type: 2}
   - {fileID: 11400000, guid: 557d4d29bbbc949078429bc08cdc5f1b, type: 2}
-  areaName: Lake Moon
-  biome: 0
+  areaName: Lake
 --- !u!1 &1587636205
 GameObject:
   m_ObjectHideFlags: 0
@@ -6375,17 +6348,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
---- !u!114 &1961592049 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8044672911224937250, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
-  m_PrefabInstance: {fileID: 1781708872}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fba04ddae7d6a43c4bce363f3eb5aabe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FishingMiniGameUI
 --- !u!1001 &2039722373
 PrefabInstance:
   m_ObjectHideFlags: 0

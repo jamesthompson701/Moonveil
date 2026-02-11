@@ -6,9 +6,9 @@ using System.Collections;
 public class FishingMiniGameUI : MonoBehaviour
 {
     [Header("UI Elements")]
+    public RectTransform upperBound;  // visual max bound
     public RectTransform innerRing;   // the player-controlled ring (scale)
     public RectTransform lowerBound;  // visual min bound
-    public RectTransform upperBound;  // visual max bound
 
     [Header("Tuning")]
     public float visualScaleMultiplier = 1f; // to map float scale -> rect scale easily
@@ -99,6 +99,7 @@ public class FishingMiniGameUI : MonoBehaviour
 
     void UpdateInnerVisual()
     {
+        //Ring UI Water
         if (innerRing != null)
         {
             float s = innerScale * visualScaleMultiplier;
