@@ -25,6 +25,9 @@ public class SoilObject : MonoBehaviour
     //plant to generate (temporary)
     public GameObject plantPrefab;
 
+    //fire particles
+    public GameObject fire;
+
     //wetness timer
     private float waterTimer;
 
@@ -126,6 +129,7 @@ public class SoilObject : MonoBehaviour
                 Debug.Log("FireSpelled");
                 plantScript.Destroy();
                 soilContent = SoilContent.empty;
+                Instantiate(fire, transform);
             }
 
         }
@@ -135,6 +139,7 @@ public class SoilObject : MonoBehaviour
         {
             Destroy(weed);
             soilContent = SoilContent.empty;
+            Instantiate(fire, transform);
         }
 
     }
