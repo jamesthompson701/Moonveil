@@ -9785,7 +9785,7 @@ GameObject:
   - component: {fileID: 4600991541695076860}
   - component: {fileID: 6133467790170409542}
   - component: {fileID: 6262830123492028782}
-  - component: {fileID: 2451681059462841632}
+  - component: {fileID: 3136037501331246011}
   m_Layer: 0
   m_Name: FireFarmSpell
   m_TagString: FireSpell
@@ -9905,8 +9905,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23a227f0e316cc248ae62de1dc9bcf4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmSpellMover
---- !u!135 &2451681059462841632
-SphereCollider:
+--- !u!65 &3136037501331246011
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -9920,11 +9920,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Size: {x: 1, y: 4, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6600022482340280422
 GameObject:
@@ -14890,7 +14890,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 3.673418e-39, y: -9.1835e-41, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 9.61e-43, y: 8e-44, z: 0, w: 4.3e-44}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0

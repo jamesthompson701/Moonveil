@@ -55,6 +55,7 @@ public class PlantObject : MonoBehaviour
             else
             {
                 isDead = true;
+                isHarvestable = false;
                 Destroy(growthTimer);
                 Destroy(currentPlant);
                 currentPlant = Instantiate(plant.plantDead, transform);

@@ -92,7 +92,7 @@ public class SoilObject : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //if it's a water spell, soil becomes wet
-        if (other.CompareTag("WateringSpell"))
+        if (other.CompareTag("WateringSpell") && tilled)
         {
             isWet = true;
             waterTimer = soil.wetnessDuration;

@@ -16,10 +16,12 @@ public class Interactable : MonoBehaviour
     {
         if (gameObject.CompareTag("Soil"))
         {
+            //reference to soil being clicked
             soil = gameObject.GetComponent<SoilObject>();
             if (PlayerInventory.instance.CheckSeeds() > 0)
             {
-                if (soil.GetComponent<SoilObject>().soilContent == SoilContent.empty)
+                //make sure soil is empty and tilled before removing a seed and spawning the crop
+                if (soil.GetComponent<SoilObject>().soilContent == SoilContent.empty && soil.tilled)
                 {
                     soil.SpawnCrop();
                     PlayerInventory.instance.AddSeeds(-1);
