@@ -8,9 +8,9 @@ public class PlayerInventory : MonoBehaviour
     //this might be a temporary script
     //just tracks seeds
     public static PlayerInventory instance;
-    public TMP_Text seedCount;
+    public InventorySO invSO;
 
-    public int seeds;
+    public static int seeds;
 
     private void Awake()
     {
@@ -18,12 +18,13 @@ public class PlayerInventory : MonoBehaviour
         {
             instance = this;
         }
-        UpdateSeeds();
+        ResetSeeds();
     }
 
     public void AddSeeds(int _amount)
     {
-        seeds = seeds + _amount;
+        seeds = invSO.InventoryItems[0].amount + _amount;
+        invSO.InventoryItems[0].amount = seeds;
     }
 
     public int CheckSeeds()
@@ -31,9 +32,13 @@ public class PlayerInventory : MonoBehaviour
         return seeds;
     }
 
-    public void UpdateSeeds()
+    public void ResetSeeds()
     {
-        seedCount.text = "Seeds: " + seeds;
+        if (invSO.InventoryItems[0].amount != 5)
+        {
+            invSO.InventoryItems[0].amount = 5;
+        }
+        seeds = invSO.InventoryItems[0].amount;
     }
 
 }
