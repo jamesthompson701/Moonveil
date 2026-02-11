@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 9078993845375825671}
   - component: {fileID: 7000656136940558643}
   - component: {fileID: 5202704368411101493}
+  - component: {fileID: 8447732361133686359}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -30,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 8944336655422409498}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.69132894, z: -0, w: -0.72254026}
-  m_LocalPosition: {x: 20.03916, y: 3.42, z: -1.3508786}
+  m_LocalPosition: {x: 42.54189, y: 5.49, z: -61.96523}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -184,3 +185,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCamera
   myCamera: {fileID: 8944336655422409496}
+--- !u!114 &8447732361133686359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8944336655422409498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.PhysicsRaycaster
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0

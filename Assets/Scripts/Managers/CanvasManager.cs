@@ -5,6 +5,7 @@ public class CanvasManager : MonoBehaviour
 {
     public GameObject inventoryCanvas;
     public GameObject menuCanvas;
+    public GameObject HUD;
     bool isActive = false;
 
     public InputActionAsset input;
@@ -87,6 +88,8 @@ public class CanvasManager : MonoBehaviour
 
         player.Disable();
         UI.Enable();
+
+        HUD.SetActive(false);
  
 
     }
@@ -99,6 +102,8 @@ public class CanvasManager : MonoBehaviour
         player.Enable();
         UI.Disable();
         openInv = input.FindAction("Inventory");
+
+        HUD.SetActive(true);
     }
 
 
