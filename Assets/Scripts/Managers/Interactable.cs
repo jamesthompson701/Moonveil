@@ -16,15 +16,21 @@ public class Interactable : MonoBehaviour
     {
         if (gameObject.CompareTag("Soil"))
         {
+            //reference to soil being clicked
             soil = gameObject.GetComponent<SoilObject>();
             if (PlayerInventory.instance.CheckSeeds() > 0)
             {
-                if (soil.GetComponent<SoilObject>().soilContent == SoilContent.empty)
+                //make sure soil is empty and tilled before removing a seed and spawning the crop
+                if (soil.GetComponent<SoilObject>().soilContent == SoilContent.empty && soil.tilled)
                 {
                     soil.SpawnCrop();
                     PlayerInventory.instance.AddSeeds(-1);
                     Debug.Log("Seed Planted");
                     Debug.Log("Seeds Remaining: " + PlayerInventory.instance.CheckSeeds());
+                }
+                else
+                {
+                    Debug.Log("Not ready for planting, Tilled status: " + soil.tilled + ", Soil Content: " + soil.GetComponent<SoilObject>().soilContent);
                 }
 
             }
@@ -40,7 +46,7 @@ public class Interactable : MonoBehaviour
         }
         else
         {
-            Debug.Log("Nothing interactable hit");
+            Debug.Log("Nothing interactable hit, tag is: " + gameObject.tag);
         }
 
     }

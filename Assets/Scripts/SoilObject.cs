@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class SoilObject : MonoBehaviour
 {
-    //don't need this yet
-    //[SerializeField] private SoilSO soil;
+    [SerializeField] private SoilSO soil;
 
     //public for now so it can be tested, but eventually this'll default to empty
     public SoilContent soilContent;
@@ -21,14 +20,20 @@ public class SoilObject : MonoBehaviour
     //colors
     public Material wetSoil;
     public Material drySoil;
+    public Material untilledSoil;
 
     //plant to generate (temporary)
     public GameObject plantPrefab;
 
-    //wet bool and wetness timer
-    public bool isWet = false;
+    //fire particles
+    public GameObject fire;
+
+    //wetness timer
     private float waterTimer;
-    public float wetnessDuration;
+
+    //bools for tilled and wet
+    public bool tilled;
+    public bool isWet;
 
     private void Start()
     {
@@ -58,39 +63,52 @@ public class SoilObject : MonoBehaviour
 
     public void CheckSoil(float deltaTime)
     {
-
-        //if the soil is wet, make it the wet material and check how long ago it was watered
-        if (isWet)
+        //if the soil is tilled or untilled, update it accordingly
+        if (!tilled)
         {
-            waterTimer = waterTimer + deltaTime;
-            mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
-            Debug.Log("its wet its working");
+            mySoilObj.GetComponent<MeshRenderer>().material = untilledSoil;
+        }
+        else
+        {
+            mySoilObj.GetComponent<MeshRenderer>().material = drySoil;
 
-            //if it's been wet for longer than the wetness duration, make it dry
-            if (waterTimer > wetnessDuration)
+            //if the soil is wet, make it the wet material and check how long ago it was watered
+            if (isWet)
             {
-                waterTimer = 0;
-                isWet = false;
-                mySoilObj.GetComponent<MeshRenderer>().material = drySoil;
-                Debug.Log("Soil dry");
+                waterTimer = waterTimer - deltaTime;
+                mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
+
+                //if its wetness time is up, make it dry
+                if (waterTimer < 0)
+                {
+                    waterTimer = soil.wetnessDuration;
+                    isWet = false;
+                    mySoilObj.GetComponent<MeshRenderer>().material = drySoil;
+                    //Debug.Log("Soil dry");
+                }
             }
         }
+
 
     }
 
     private void OnTriggerEnter(Collider other)
     {
         //if it's a water spell, soil becomes wet
-        if (other.CompareTag("WateringSpell"))
+        if (other.CompareTag("WateringSpell") && tilled)
         {
             isWet = true;
+            waterTimer = soil.wetnessDuration;
             mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
-            Debug.Log("Soil wet");
+            //Debug.Log("Soil wet");
         }
 
         if (other.CompareTag("TillSpell"))
         {
-            //nothing here yets
+            if(!tilled && soilContent == SoilContent.empty)
+            {
+                tilled = true;
+            }
         }
 
         //if it's a harvest spell, harvest if able
@@ -111,6 +129,7 @@ public class SoilObject : MonoBehaviour
                 Debug.Log("FireSpelled");
                 plantScript.Destroy();
                 soilContent = SoilContent.empty;
+                Instantiate(fire, transform);
             }
 
         }
@@ -120,9 +139,35 @@ public class SoilObject : MonoBehaviour
         {
             Destroy(weed);
             soilContent = SoilContent.empty;
+            Instantiate(fire, transform);
         }
 
     }
+
+    /*public void OnInteract()
+    {
+        if (gameObject.CompareTag("Soil"))
+        {
+            if (PlayerInventory.instance.CheckSeeds() > 0)
+            {
+                if (soilContent == SoilContent.empty)
+                {
+                    SpawnCrop();
+                    PlayerInventory.instance.AddSeeds(-1);
+                    PlayerInventory.instance.UpdateSeeds();
+                    Debug.Log("Seed Planted");
+                    Debug.Log("Seeds Remaining: " + PlayerInventory.instance.CheckSeeds());
+                }
+
+            }
+            else
+            {
+                Debug.Log("Out of seeds");
+            }
+
+        }
+
+    }*/
 
     //return wetness (used by plant)
     public bool Wet()

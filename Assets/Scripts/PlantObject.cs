@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 //Tracks its own current growth stage, how long since it last grew, how long its been dry and its current object in the world
 public class PlantObject : MonoBehaviour
@@ -26,6 +27,7 @@ public class PlantObject : MonoBehaviour
     //canvas and growth timer
     public Canvas myCanvas;
     public TMP_Text growthTimer;
+    public Image growthProgressBar;
 
     void Awake()
     {
@@ -55,7 +57,8 @@ public class PlantObject : MonoBehaviour
             else
             {
                 isDead = true;
-                Destroy(growthTimer);
+                isHarvestable = false;
+                Destroy(myCanvas);
                 Destroy(currentPlant);
                 currentPlant = Instantiate(plant.plantDead, transform);
             }
@@ -83,7 +86,7 @@ public class PlantObject : MonoBehaviour
                 if (currentStage == plant.MaxStage)
                 {
                     isHarvestable = true;
-                    Destroy(growthTimer);
+                    Destroy(myCanvas);
                     Debug.Log("Harvestable!");
                 }
 
@@ -100,7 +103,8 @@ public class PlantObject : MonoBehaviour
 
         //update growth timer UI
         growthTimer.text = "" + Mathf.Round(growthTime);
-        
+        growthProgressBar.fillAmount = growthTime / plant.cropTime;
+
     }
 
 
