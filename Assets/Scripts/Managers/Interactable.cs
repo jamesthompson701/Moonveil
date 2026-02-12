@@ -29,6 +29,10 @@ public class Interactable : MonoBehaviour
                     Debug.Log("Seed Planted");
                     Debug.Log("Seeds Remaining: " + PlayerInventory.instance.CheckSeeds());
                 }
+                else
+                {
+                    Debug.Log("Not ready for planting, Tilled status: " + soil.tilled + ", Soil Content: " + soil.GetComponent<SoilObject>().soilContent);
+                }
 
             }
             else
@@ -37,13 +41,13 @@ public class Interactable : MonoBehaviour
             }
 
         }
-        if(gameObject.CompareTag("fishingArea"))
+        else if(gameObject.CompareTag("fishingArea"))
         {
             FishingManager.Instance.EnterFishingMode(FishingManager.Instance.currentArea);
         }
         else
         {
-            Debug.Log("Nothing interactable hit");
+            Debug.Log("Nothing interactable hit, tag is: " + gameObject.tag);
         }
 
     }
