@@ -118,6 +118,7 @@ public class SoilObject : MonoBehaviour
             {
                 plantScript.Harvest();
                 soilContent = SoilContent.empty;
+                tilled = false;
             }
         }
 
