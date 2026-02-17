@@ -12,9 +12,9 @@ public class Interactable : MonoBehaviour
 
 
     // This method will be called by our ClickSelector
-    public void OnInteract()
+    public virtual void OnInteract()
     {
-        if (gameObject.CompareTag("Soil"))
+        if (gameObject.CompareTag("Soil"))                 
         {
             //reference to soil being clicked
             soil = gameObject.GetComponent<SoilObject>();

@@ -101,6 +101,9 @@ namespace StarterAssets
         // Check for combat zone restrictions
         public AttackManager attackManager;
 
+        //Singleton
+        public static ThirdPersonController Instance;
+
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
 #endif
@@ -132,6 +135,17 @@ namespace StarterAssets
             if (_mainCamera == null)
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+            }
+
+            //Singleton
+            if (Instance != null && Instance != this)
+            {
+                Debug.Log("Destroy New AudioManager");
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                Instance = this;
             }
         }
 

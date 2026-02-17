@@ -15,9 +15,12 @@ public class CanvasManager : MonoBehaviour
     InputActionMap player;
     InputActionMap UI;
 
+    public static CanvasManager Instance;
+
 
     private void Awake()
     {
+
         openInv = input.FindAction("Inventory");
         openPause = input.FindAction("Pause");
 
@@ -25,6 +28,16 @@ public class CanvasManager : MonoBehaviour
         player = input.FindActionMap("Player");
         UI = input.FindActionMap("UI");
 
+        //Making canvas manager a singleton
+        if (Instance != null && Instance != this)
+        {
+            Debug.Log("Destroy New AudioManager");
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
 
     }
 
@@ -104,6 +117,11 @@ public class CanvasManager : MonoBehaviour
         openInv = input.FindAction("Inventory");
 
         HUD.SetActive(true);
+    }
+
+    public void OpenFastTravel()
+    {
+        Debug.Log("Fast tavel opened");
     }
 
 
