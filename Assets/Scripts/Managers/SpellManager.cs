@@ -119,6 +119,7 @@ public class SpellManager : MonoBehaviour
             };
 
             spell.CastSpell(farmCtx);
+
             return;
         }
 

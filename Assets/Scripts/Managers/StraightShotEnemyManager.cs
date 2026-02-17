@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MeleeEnemyManager : CreatureDefs
+public class StraightShotEnemyManager : CreatureDefs
 {
     private void Awake()
-    {  
+    {
         currentState = AIState.Patrol;
-        player= GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player");
         target = player.GetComponent<SpellManager>().hitPt;
         navMeshAgent = GetComponent<NavMeshAgent>();
         _path = new NavMeshPath();
@@ -59,7 +59,7 @@ public class MeleeEnemyManager : CreatureDefs
                         currentState = AIState.Combat;
                     }
                 }
-                    break;
+                break;
 
             case AIState.Combat:
                 // Immediate reset if player is above height threshold and grounded.
@@ -71,7 +71,7 @@ public class MeleeEnemyManager : CreatureDefs
 
                 if (navMeshAgent.enabled == true)
                 {
-                    navMeshAgent.SetDestination(playerTransform.position);  
+                    navMeshAgent.SetDestination(playerTransform.position);
                 }
 
                 distanceToTarget = Vector3.Distance(navMeshAgent.transform.position, playerTransform.position);
@@ -84,11 +84,8 @@ public class MeleeEnemyManager : CreatureDefs
                         isAttacking = true;
                         navMeshAgent.enabled = false;
                         StartCoroutine(DelayAttack(delay));
-                        GameObject clone = Instantiate(attackObject, attackPt.position, Quaternion.identity);
+                        ProjectileAttack();
 
-                        Destroy(clone, 2f);
-                        // Melee attack logic here
-                        Debug.Log("Melee Attack!");
                         // Set attack cooldown
                         alreadyAttacked = true;
                         StartCoroutine(attackCooldown());
@@ -116,19 +113,19 @@ public class MeleeEnemyManager : CreatureDefs
                         if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= 0.75f)
                         {
                             _hasResetPosition = false;
-                            _wasPlayerInSightRange = false; 
+                            _wasPlayerInSightRange = false;
                         }
                     }
                     else
                     {
                         // If we can't find navmesh near home, just patrol
-                        _hasResetPosition = false; 
+                        _hasResetPosition = false;
                     }
                 }
                 else
                 {
                     // Fallback behavior (no stored reset point)
-                    navMeshAgent.ResetPath();                 
+                    navMeshAgent.ResetPath();
                 }
 
                 currentState = AIState.Idle;

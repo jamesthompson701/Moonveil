@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5747548661795799812}
   - component: {fileID: 357011339338880759}
   - component: {fileID: 4191572720826619148}
-  - component: {fileID: 2673921598837372156}
+  - component: {fileID: -616287366933312773}
   m_Layer: 0
   m_Name: FireAttack1
   m_TagString: FireAttack
@@ -130,7 +130,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -141,7 +141,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2673921598837372156
+--- !u!114 &-616287366933312773
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,7 +150,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 9046440832612074922}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f39d65bee5dbe354d892c2fd3ee2e3f1, type: 3}
+  m_Script: {fileID: 11500000, guid: 412a8409f8807d546bd624820fb95d3d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  slipIce: {fileID: 3631146033759876465, guid: 1ab51f6f54e4ead4d9e143ce200b3f92, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::SpellDamageManager
+  damage: 5
+  force: 10

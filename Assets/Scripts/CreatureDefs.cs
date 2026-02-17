@@ -1,5 +1,6 @@
 using StarterAssets;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -22,23 +23,27 @@ public class CreatureDefs : MonoBehaviour
     public GameObject player;
     public LayerMask playerLayerMask;
     public float sightRange;
-    public float attackDamage;
-    public float maxHealth;
+    public int attackDamage;
+    public float maxHealth = 50;
     public float currentHealth;
     public float idleTimer;
     public float distanceToTarget;
     public Vector3[] wayPoints;
     public Vector3 _resetPosition;
+    [Tooltip("Bool determines whether the AI used set waypoints or just wanders")]
     public bool isRoamingAI;
     public bool _hasResetPosition;
     public bool _wasPlayerInSightRange;
     public float playerHeight;
     public ThirdPersonController playerController;
+    [Tooltip("Max height the player is allowed to be. If above the set amount the AI will reset. Adjust based on read playerHeight by the AI to prevent the AI from getting stuck in a state loop when the player is on a higher level or platform.")]
+    public float playerMaxHeight;
 
 
     [Header("Patroling")]
     public Vector3 walkPoint;
     public bool walkPointSet;
+    [Tooltip("Max distance the AI look for a place to move. Adjust the navmesh stopping distance so they do not get stuck in a state loop")]
     public float walkPointRange;
     public bool targetFound;
     public int currentWaypoint;
@@ -50,20 +55,21 @@ public class CreatureDefs : MonoBehaviour
     public GameObject attackObject;
     public float attackRange;
     public Transform attackPt;
+    public float delay;
+    [Tooltip("The angle at which the projectile will be launched.")]
+    public float aimAngle = 45f;
 
     [Header("Projectile Attack")]
+    [Tooltip("The amount of random inaccuracy applied to the projectile's trajectory. Keep below 1. I find 0.5 is enough")]
     public float marginOfError;
-    public float projectileSpeed;
+    [Tooltip("Speed at which the projectile or the creature will be pushed when attacking")]
+    public float speed;
 
     [Header("NavMesh Checks")]
     public float navMeshSnapTolerance = 0.25f;
-    public Vector3 navCheckPoint;
-    public float _airborneGraceTimer = 0f;
-    public float airborneGraceTime = 0.5f; // seconds to allow "airborne" player to still be reachable
     public LayerMask groundLayers;
 
     // raycast settings to find ground under player
-    public float playerGroundRayDistance = 6f;
     public NavMeshPath _path;
 
     public bool TrySetDestination(Vector3 targetPosition)
@@ -88,10 +94,7 @@ public class CreatureDefs : MonoBehaviour
         distanceToTarget = Vector3.Distance(navMeshAgent.transform.position, target.position);
         playerHeight = target.position.y;
 
-        // Check NavMesh under the player instead of at player's current (possibly airborne) position
-        Vector3 navCheckPoint = target.position;
-
-        if (distanceToTarget < 15 && playerHeight < 2)
+        if (distanceToTarget < 15 && playerHeight < playerMaxHeight)
         {
             navMeshAgent.destination = target.position;
             targetFound = true;
@@ -139,18 +142,18 @@ public class CreatureDefs : MonoBehaviour
     // Sets a random walk point and moves to it
     public void Roam()
     {
-        if (!walkPointSet) 
-        { 
-            SearchWalkPoint(); 
+        if (!walkPointSet)
+        {
+            SearchWalkPoint();
         }
 
-        if (walkPointSet) 
-        { 
-            navMeshAgent.SetDestination(walkPoint); 
+        if (walkPointSet)
+        {
+            navMeshAgent.SetDestination(walkPoint);
         }
 
         if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance && walkPointSet)
-        { 
+        {
             walkPointSet = false;
             currentState = AIState.Idle;
         }
@@ -166,7 +169,7 @@ public class CreatureDefs : MonoBehaviour
             navMeshAgent.SetDestination(wayPoints[currentWaypoint]);
             currentWaypoint = (currentWaypoint + 1) % wayPoints.Length;
             return;
-        }      
+        }
     }
 
     // Idle state before resuming patrol
@@ -188,5 +191,97 @@ public class CreatureDefs : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         navMeshAgent.enabled = true;
+    }
+
+    public IEnumerator DelayAttack(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+    }
+
+    public void ProjectileAttack()
+    {
+        // Calculate direction to player
+        Vector3 direction = (target.position - attackPt.position).normalized;
+        // Add some random inaccuracy
+        direction += new Vector3(Random.Range(-marginOfError, marginOfError), Random.Range(-marginOfError, marginOfError), Random.Range(-marginOfError, marginOfError));
+        direction.Normalize();
+        // Instantiate projectile and set its velocity
+        GameObject projectile = Instantiate(attackObject, attackPt.position, Quaternion.LookRotation(direction));
+
+        Rigidbody rb = projectile.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = direction * speed;
+        }
+    }
+
+    public void ArcingProjectile()
+    {
+        // Calculate direction to player
+        Vector3 toTarget = target.position - attackPt.position;
+        Vector3 horizontal = new Vector3(toTarget.x, 0, toTarget.z); // Horizontal distance to target
+        float horizontalDistance = horizontal.magnitude; // Magnitude of horizontal distance
+        float verticalDistance = toTarget.y; // Vertical distance to target
+
+        // Calculate the initial velocity required to hit the target
+        float gravity = Physics.gravity.magnitude;
+        float angle = Mathf.Deg2Rad * aimAngle; // Launch angle (45 degrees for optimal range)
+        float speedSquared = (gravity * horizontalDistance * horizontalDistance) /
+                             (2 * Mathf.Pow(Mathf.Cos(angle), 2) * (horizontalDistance * Mathf.Tan(angle) - verticalDistance));
+
+        if (speedSquared <= 0)
+        {
+            Debug.LogWarning("Target is out of range for the given parameters.");
+            return;
+        }
+
+        float speed = Mathf.Sqrt(speedSquared);
+
+        // Calculate the velocity vector
+        Vector3 velocity = horizontal.normalized * Mathf.Cos(angle) * speed;
+        velocity.y = Mathf.Sin(angle) * speed;
+
+        // Add some random inaccuracy
+        velocity += new Vector3(Random.Range(-marginOfError, marginOfError), Random.Range(-marginOfError, marginOfError), Random.Range(-marginOfError, marginOfError));
+
+        // Instantiate projectile and set its velocity
+        GameObject projectile = Instantiate(attackObject, attackPt.position, Quaternion.identity);
+        Rigidbody rb = projectile.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = velocity;
+        }
+    }
+
+    public void ChargeAttack()
+    {
+
+        // Calculate direction to player
+        Vector3 direction = (playerTransform.position - navMeshAgent.transform.position).normalized;
+        // Add some random inaccuracy
+        direction += new Vector3(Random.Range(-marginOfError, marginOfError), 0, Random.Range(-marginOfError, marginOfError));
+        direction.Normalize();
+        // Set velocity towards player
+        navMeshAgent.velocity = direction * speed;
+
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (isDamagable == false) return;
+
+        currentHealth -= damage;
+        Debug.Log(name + " took damage: " + damage);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log(name + " Died");
+        Destroy(gameObject);
     }
 }

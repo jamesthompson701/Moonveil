@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5664007625373950557}
   - component: {fileID: 4952062480536111410}
   - component: {fileID: 6567017998287268704}
-  - component: {fileID: 7179082726444896363}
+  - component: {fileID: -4149274500016725913}
   m_Layer: 0
   m_Name: RockAttack1
   m_TagString: EarthAttack
@@ -143,7 +143,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 10
   m_CollisionDetection: 0
---- !u!114 &7179082726444896363
+--- !u!114 &-4149274500016725913
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,8 +152,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 3048089454243541231}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f39d65bee5dbe354d892c2fd3ee2e3f1, type: 3}
+  m_Script: {fileID: 11500000, guid: 412a8409f8807d546bd624820fb95d3d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  slipIce: {fileID: 3631146033759876465, guid: 1ab51f6f54e4ead4d9e143ce200b3f92, type: 3}
-  slipDuration: 3
+  m_EditorClassIdentifier: Assembly-CSharp::SpellDamageManager
+  damage: 5
+  force: 10
