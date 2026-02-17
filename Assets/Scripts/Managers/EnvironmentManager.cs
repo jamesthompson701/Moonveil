@@ -25,7 +25,7 @@ public class EnvironmentManager : MonoBehaviour
     public void Travel(eFastTravel destination)
     {
         Transform playerTransform = ThirdPersonController.Instance.transform;
-        playerTransform = location.transform;
+        playerTransform = fastTravelShrines[(int)destination].transform;
     }
 
 }
