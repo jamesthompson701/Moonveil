@@ -40,6 +40,16 @@ public class ProjectileSpells : SO_Spells
         Rigidbody clone = Spawn(SpellPrefab, spawnPos, rot);
         SetVelocity(clone, dir * usedSpeed);
 
+        SpellDamageManager dmg = clone.GetComponent<SpellDamageManager>();
+        if (dmg != null)
+        {
+            SpellManager sm = ctx.caster.GetComponent<SpellManager>();
+            int choice = sm != null ? sm.attackChoice : 0;
+
+            // Use SO damage, and a reasonable force (or add Force to SO later)
+            dmg.Init(choice, damage, 12f);
+        }
+
         Destroy(clone.gameObject, usedLifetime);
-    }
+    }  
 }
