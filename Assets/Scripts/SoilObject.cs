@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SoilObject : MonoBehaviour
@@ -22,8 +23,9 @@ public class SoilObject : MonoBehaviour
     public Material drySoil;
     public Material untilledSoil;
 
-    //plant to generate (temporary)
+    //plant to generate and SO to use
     public GameObject plantPrefab;
+    public PlantSO currentPlantSO;
 
     //fire particles
     public GameObject fire;
@@ -39,16 +41,7 @@ public class SoilObject : MonoBehaviour
     {
         //Register myself with the time manager
         TimeManager.instance.RegisterSoil(this);
-
-        //if this has been predetermined as a crop, spawn a plant
-        //for testing purposes only; normal plants will probably be spawned through other means
-        if (soilContent == SoilContent.crop)
-        {
-            SpawnCrop();
-        }
-        else
-        {
-            //randomly generate a weed if it isn't a crop square
+            //randomly generate a weed
             int randomNum = Random.Range(3, 8);
             if (randomNum == 7)
             {
@@ -58,7 +51,6 @@ public class SoilObject : MonoBehaviour
             {
                 weed = Instantiate(weedObj, gameObject.transform.position, gameObject.transform.rotation);
             }
-        }
     }
 
     public void CheckSoil(float deltaTime)
@@ -145,31 +137,6 @@ public class SoilObject : MonoBehaviour
 
     }
 
-    /*public void OnInteract()
-    {
-        if (gameObject.CompareTag("Soil"))
-        {
-            if (PlayerInventory.instance.CheckSeeds() > 0)
-            {
-                if (soilContent == SoilContent.empty)
-                {
-                    SpawnCrop();
-                    PlayerInventory.instance.AddSeeds(-1);
-                    PlayerInventory.instance.UpdateSeeds();
-                    Debug.Log("Seed Planted");
-                    Debug.Log("Seeds Remaining: " + PlayerInventory.instance.CheckSeeds());
-                }
-
-            }
-            else
-            {
-                Debug.Log("Out of seeds");
-            }
-
-        }
-
-    }*/
-
     //return wetness (used by plant)
     public bool Wet()
     {
@@ -177,13 +144,19 @@ public class SoilObject : MonoBehaviour
     }
 
     //spawns a crop
-    //later, may need to take input to determine what kind of crop
     public void SpawnCrop()
     {
         Debug.Log("crop spawned");
-        plantObj = Instantiate(plantPrefab, gameObject.transform.position, gameObject.transform.rotation);
+        plantObj = Instantiate(currentPlantSO.prefab, gameObject.transform.position, gameObject.transform.rotation);
         plantScript = plantObj.GetComponent<PlantObject>();
+        plantScript.plant = currentPlantSO;
         plantScript.SetSoil(this);
         soilContent = SoilContent.crop;
+    }
+
+    //set the plantSO to the info taken from the seed item the player is currently weilding
+    public void SetPlantType(SeedItemSO _plantData)
+    {
+        currentPlantSO = _plantData.plantType;
     }
 }

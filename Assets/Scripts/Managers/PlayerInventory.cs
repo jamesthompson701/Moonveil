@@ -6,7 +6,6 @@ using System.Linq;
 
 public class PlayerInventory : MonoBehaviour
 {
-    //this might be a temporary script
     //just tracks seeds
     public static PlayerInventory instance;
     public InventorySO invSO;
@@ -14,6 +13,7 @@ public class PlayerInventory : MonoBehaviour
     public static int seeds;
     public static int fish;
 
+    public SeedItemSO seedRef;
     public ItemSO fishRef;
 
     private void Awake()

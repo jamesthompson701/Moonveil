@@ -6,7 +6,7 @@ using UnityEngine.UI;
 //Tracks its own current growth stage, how long since it last grew, how long its been dry and its current object in the world
 public class PlantObject : MonoBehaviour
 {
-    [SerializeField] private PlantSO plant;
+    [SerializeField] public PlantSO plant;
 
     //current stage of growth
     private int currentStage;
@@ -29,18 +29,27 @@ public class PlantObject : MonoBehaviour
     public TMP_Text growthTimer;
     public Image growthProgressBar;
 
+    //bool to toggle if it's been setup
+    private bool isSet;
+
     void Awake()
     {
-        //add to time manager and instantiate the first prefab
+        //add to time manager
         currentStage = 0;
         TimeManager.instance.RegisterPlant(this);
-        growthTime = plant.cropTime;
-        dryTime = plant.droughtResistance;
-        currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
+
     }
 
     public void CheckPlant(float deltaTime)
     {
+        if (!isSet)
+        {
+            //set the plant SO correctly based on the seed used
+            growthTime = plant.cropTime;
+            dryTime = plant.droughtResistance;
+            currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
+            isSet = true;
+        }
 
         //if the soil is dry, this functionally pauses the growth timer by negating it
         //increment the dry timer while dry
