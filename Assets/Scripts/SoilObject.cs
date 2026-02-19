@@ -41,16 +41,7 @@ public class SoilObject : MonoBehaviour
     {
         //Register myself with the time manager
         TimeManager.instance.RegisterSoil(this);
-
-        //if this has been predetermined as a crop, spawn a plant
-        //for testing purposes only; normal plants will probably be spawned through other means
-        if (soilContent == SoilContent.crop)
-        {
-            SpawnCrop();
-        }
-        else
-        {
-            //randomly generate a weed if it isn't a crop square
+            //randomly generate a weed
             int randomNum = Random.Range(3, 8);
             if (randomNum == 7)
             {
@@ -60,7 +51,6 @@ public class SoilObject : MonoBehaviour
             {
                 weed = Instantiate(weedObj, gameObject.transform.position, gameObject.transform.rotation);
             }
-        }
     }
 
     public void CheckSoil(float deltaTime)
@@ -154,20 +144,19 @@ public class SoilObject : MonoBehaviour
     }
 
     //spawns a crop
-    //later, may need to take input to determine what kind of crop
     public void SpawnCrop()
     {
         Debug.Log("crop spawned");
-        plantObj = Instantiate(plantPrefab, gameObject.transform.position, gameObject.transform.rotation);
+        plantObj = Instantiate(currentPlantSO.prefab, gameObject.transform.position, gameObject.transform.rotation);
         plantScript = plantObj.GetComponent<PlantObject>();
-        plantScript.SetSoil(this);
         plantScript.plant = currentPlantSO;
+        plantScript.SetSoil(this);
         soilContent = SoilContent.crop;
     }
 
+    //set the plantSO to the info taken from the seed item the player is currently weilding
     public void SetPlantType(SeedItemSO _plantData)
     {
-        plantPrefab = _plantData.plantType.plantPrefabs[0];
         currentPlantSO = _plantData.plantType;
     }
 }

@@ -26,6 +26,9 @@ public class PlantSO : ScriptableObject
     //prefabs for each growth stage of the plant
     public List<GameObject> plantPrefabs;
 
+    //prefab for the plant object
+    public GameObject prefab;
+
     //prefab for when the plant is dead
     public GameObject plantDead;
 
