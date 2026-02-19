@@ -125,7 +125,7 @@ public class PlantObject : MonoBehaviour
 
     public void Harvest()
     {
-        PlayerInventory.instance.AddSeeds(2);
+        PlayerInventory.instance.AddSeeds(2, plant.seed);
         Debug.Log("Harvested");
         Destroy(currentPlant);
         TimeManager.instance.UnregisterPlant(this);

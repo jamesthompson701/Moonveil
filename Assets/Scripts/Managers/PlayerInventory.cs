@@ -31,21 +31,22 @@ public class PlayerInventory : MonoBehaviour
 
     //EVERYTHING IS SEEDS
 
-    public void AddSeeds(int _amount)
+    public void AddSeeds(int _amount, SeedItemSO _type)
     {
-        //Eye of Newt Seeds
-        if (soilRef.currentPlantSO.plantName == "EyeOfNewt")
+        //two kinds  Seeds
+        switch (_type.itemName)
         {
-            newtSeeds = invSO.InventoryItems[0].amount + _amount;
-            invSO.InventoryItems[0].amount = newtSeeds;
+            case "Eye Of Newt Seed":
+                newtSeeds = invSO.InventoryItems[0].amount + _amount;
+                invSO.InventoryItems[0].amount = newtSeeds;
+                break;
+            case "Wool Of Bat Seed":
+                woolSeeds = invSO.InventoryItems[1].amount + _amount;
+                invSO.InventoryItems[1].amount = woolSeeds;
+                break;
         }
+           
 
-        //Wool of Bat Seeds
-        else
-        {
-            woolSeeds = invSO.InventoryItems[1].amount + _amount;
-            invSO.InventoryItems[1].amount = woolSeeds;
-        }
     }
 
 
