@@ -10,7 +10,10 @@ public class PlayerInventory : MonoBehaviour
     public static PlayerInventory instance;
     public InventorySO invSO;
 
-    public static int seeds;
+    public SoilObject soilRef;
+
+    public static int newtSeeds;
+    public static int woolSeeds;
     public static int fish;
 
     public SeedItemSO seedRef;
@@ -30,22 +33,56 @@ public class PlayerInventory : MonoBehaviour
 
     public void AddSeeds(int _amount)
     {
-        seeds = invSO.InventoryItems[0].amount + _amount;
-        invSO.InventoryItems[0].amount = seeds;
+        //Eye of Newt Seeds
+        if (soilRef.currentPlantSO.plantName == "EyeOfNewt")
+        {
+            newtSeeds = invSO.InventoryItems[0].amount + _amount;
+            invSO.InventoryItems[0].amount = newtSeeds;
+        }
+
+        //Wool of Bat Seeds
+        else
+        {
+            woolSeeds = invSO.InventoryItems[1].amount + _amount;
+            invSO.InventoryItems[1].amount = woolSeeds;
+        }
     }
+
 
     public int CheckSeeds()
     {
-        return seeds;
+        if (seedRef.itemName == "Eye Of Newt Seed")
+        {
+            return newtSeeds;
+        }
+        else
+        {
+            return woolSeeds;
+        }
     }
 
     public void ResetSeeds()
     {
-        if (invSO.InventoryItems[0].amount != 5)
-        {
-            invSO.InventoryItems[0].amount = 5;
-        }
-        seeds = invSO.InventoryItems[0].amount;
+        //Reset Newt
+            if (invSO.InventoryItems[0].amount != 5)
+            {
+                invSO.InventoryItems[0].amount = 5;
+            }
+            newtSeeds = invSO.InventoryItems[0].amount;
+
+        //Reset Wool
+ 
+            if (invSO.InventoryItems[1].amount != 5)
+            {
+                invSO.InventoryItems[1].amount = 5;
+            }
+            woolSeeds = invSO.InventoryItems[1].amount;
+        
+
+
+           
+
+   
     }
 
     //EVERYTHING IS FISH
@@ -54,8 +91,8 @@ public class PlayerInventory : MonoBehaviour
     {
         if (invSO.InventoryItems.Any(item => item.item.itemName == "IceFish"))
         {
-            fish = invSO.InventoryItems[1].amount + _amount;
-            invSO.InventoryItems[1].amount = fish;
+            fish = invSO.InventoryItems[2].amount + _amount;
+            invSO.InventoryItems[2].amount = fish;
         }
         else
         {
@@ -67,7 +104,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void ResetInv()
     {
-        if (invSO.InventoryItems[1].amount != 0)
+        if (invSO.InventoryItems[2].amount != 0)
         {
             invSO.InventoryItems.RemoveAt(1);
         }

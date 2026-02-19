@@ -5,12 +5,14 @@ public class CanvasManager : MonoBehaviour
 {
     public GameObject inventoryCanvas;
     public GameObject menuCanvas;
+    public GameObject selectionCanvas;
     public GameObject HUD;
     bool isActive = false;
 
     public InputActionAsset input;
     InputAction openInv;
     InputAction openPause;
+    InputAction openSelection;
 
     InputActionMap player;
     InputActionMap UI;
@@ -20,6 +22,8 @@ public class CanvasManager : MonoBehaviour
     {
         openInv = input.FindAction("Inventory");
         openPause = input.FindAction("Pause");
+        openSelection = input.FindAction("Selection");
+        
 
 
         player = input.FindActionMap("Player");
@@ -41,6 +45,12 @@ public class CanvasManager : MonoBehaviour
         if (pause == true)
         {
             OpenPause();
+        }
+
+        bool selection = openSelection.WasPressedThisFrame();
+        if (selection == true)
+        {
+            OpenSelectionWheel();
         }
     }
 
@@ -79,6 +89,24 @@ public class CanvasManager : MonoBehaviour
             CloseMenu();
         }
         openPause = input.FindAction("Pause");
+    }
+
+    public void OpenSelectionWheel()
+    {
+        if (!isActive)
+        {
+            isActive = true;
+            selectionCanvas.SetActive(true);
+            OpenMenu();
+
+        }
+        else
+        {
+            isActive = false;
+            selectionCanvas.SetActive(false);
+            CloseMenu();
+        }
+        openSelection = input.FindAction("Selection");
     }
 
     public void OpenMenu()
