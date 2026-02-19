@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SoilObject : MonoBehaviour
@@ -22,8 +23,9 @@ public class SoilObject : MonoBehaviour
     public Material drySoil;
     public Material untilledSoil;
 
-    //plant to generate (temporary)
+    //plant to generate and SO to use
     public GameObject plantPrefab;
+    public PlantSO currentPlantSO;
 
     //fire particles
     public GameObject fire;
@@ -145,31 +147,6 @@ public class SoilObject : MonoBehaviour
 
     }
 
-    /*public void OnInteract()
-    {
-        if (gameObject.CompareTag("Soil"))
-        {
-            if (PlayerInventory.instance.CheckSeeds() > 0)
-            {
-                if (soilContent == SoilContent.empty)
-                {
-                    SpawnCrop();
-                    PlayerInventory.instance.AddSeeds(-1);
-                    PlayerInventory.instance.UpdateSeeds();
-                    Debug.Log("Seed Planted");
-                    Debug.Log("Seeds Remaining: " + PlayerInventory.instance.CheckSeeds());
-                }
-
-            }
-            else
-            {
-                Debug.Log("Out of seeds");
-            }
-
-        }
-
-    }*/
-
     //return wetness (used by plant)
     public bool Wet()
     {
@@ -184,6 +161,13 @@ public class SoilObject : MonoBehaviour
         plantObj = Instantiate(plantPrefab, gameObject.transform.position, gameObject.transform.rotation);
         plantScript = plantObj.GetComponent<PlantObject>();
         plantScript.SetSoil(this);
+        plantScript.plant = currentPlantSO;
         soilContent = SoilContent.crop;
+    }
+
+    public void SetPlantType(SeedItemSO _plantData)
+    {
+        plantPrefab = _plantData.plantType.plantPrefabs[0];
+        currentPlantSO = _plantData.plantType;
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 //Tracks its own current growth stage, how long since it last grew, how long its been dry and its current object in the world
 public class PlantObject : MonoBehaviour
 {
-    [SerializeField] private PlantSO plant;
+    [SerializeField] public PlantSO plant;
 
     //current stage of growth
     private int currentStage;
@@ -31,6 +31,8 @@ public class PlantObject : MonoBehaviour
 
     void Awake()
     {
+        //set the plant SO correctly based on the seed used
+
         //add to time manager and instantiate the first prefab
         currentStage = 0;
         TimeManager.instance.RegisterPlant(this);

@@ -9,7 +9,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlantSO", menuName = "Scriptable Objects/PlantSO")]
 public class PlantSO : ScriptableObject
 {
-    //name of the plant (unsure if neccessary)
+    //name of the plant
     public string plantName;
 
     //how long the plant takes to increment 1 stage
