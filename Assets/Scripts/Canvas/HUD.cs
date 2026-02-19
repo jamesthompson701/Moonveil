@@ -4,7 +4,7 @@ using UnityEngine;
 public class HUD : MonoBehaviour
 {
     GameObject playerRef;
-    AttackManager attackManagerRef;
+    SpellManager attackManagerRef;
 
     public GameObject[] highlight;
 
@@ -13,7 +13,7 @@ public class HUD : MonoBehaviour
     private void Awake()
     {
         playerRef = GameObject.Find("Player");
-        attackManagerRef = playerRef.GetComponent<AttackManager>();
+        attackManagerRef = playerRef.GetComponent<SpellManager>();
          
 
     }
