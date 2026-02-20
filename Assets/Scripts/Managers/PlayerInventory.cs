@@ -7,6 +7,7 @@ using System.Linq;
 public class PlayerInventory : MonoBehaviour
 {
     //just tracks seeds
+    // ^does not, in fact, just track seeds anymore
     public static PlayerInventory instance;
     public InventorySO invSO;
 
@@ -14,6 +15,7 @@ public class PlayerInventory : MonoBehaviour
 
     public static int newtSeeds;
     public static int woolSeeds;
+    public static int lizardSeeds;
     public static int fish;
 
     public SeedItemSO seedRef;
@@ -33,7 +35,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void AddSeeds(int _amount, SeedItemSO _type)
     {
-        //two kinds  Seeds
+        //three seed kinds
         switch (_type.itemName)
         {
             case "Eye Of Newt Seed":
@@ -44,8 +46,11 @@ public class PlayerInventory : MonoBehaviour
                 woolSeeds = invSO.InventoryItems[1].amount + _amount;
                 invSO.InventoryItems[1].amount = woolSeeds;
                 break;
+            case "Lizard's Legs Seed":
+                lizardSeeds = invSO.InventoryItems[2].amount + _amount;
+                invSO.InventoryItems[1].amount = lizardSeeds;
+                break;
         }
-           
 
     }
 
@@ -56,9 +61,13 @@ public class PlayerInventory : MonoBehaviour
         {
             return newtSeeds;
         }
-        else
+        else if (seedRef.itemName == "Wool Of Bat Seed")
         {
             return woolSeeds;
+        }
+        else
+        {
+            return lizardSeeds;
         }
     }
 
@@ -78,12 +87,15 @@ public class PlayerInventory : MonoBehaviour
                 invSO.InventoryItems[1].amount = 5;
             }
             woolSeeds = invSO.InventoryItems[1].amount;
-        
 
+        //Reset Legs
 
-           
+        if (invSO.InventoryItems[2].amount != 5)
+        {
+            invSO.InventoryItems[2].amount = 5;
+        }
+        woolSeeds = invSO.InventoryItems[2].amount;
 
-   
     }
 
     //EVERYTHING IS FISH

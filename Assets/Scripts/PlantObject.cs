@@ -123,6 +123,7 @@ public class PlantObject : MonoBehaviour
         return isHarvestable;
     }
 
+    //add the correct items to the player's inventory and then unregisters and destroys the plant
     public void Harvest()
     {
         PlayerInventory.instance.AddSeeds(2, plant.seed);
@@ -133,6 +134,7 @@ public class PlantObject : MonoBehaviour
         Destroy(this);
     }
 
+    //same as harvest but doesn't add anything to the player's inventory
     public void Destroy()
     {
         Debug.Log("Destroyed");

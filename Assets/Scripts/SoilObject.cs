@@ -143,7 +143,7 @@ public class SoilObject : MonoBehaviour
         return isWet;
     }
 
-    //spawns a crop
+    //spawns a crop and sets it up to be connected with this soil script
     public void SpawnCrop()
     {
         Debug.Log("crop spawned");
@@ -154,7 +154,7 @@ public class SoilObject : MonoBehaviour
         soilContent = SoilContent.crop;
     }
 
-    //set the plantSO to the info taken from the seed item the player is currently weilding
+    //set the plantSO to the SO taken from the seed item the player is currently weilding
     public void SetPlantType(SeedItemSO _plantData)
     {
         currentPlantSO = _plantData.plantType;

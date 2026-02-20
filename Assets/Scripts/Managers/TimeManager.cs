@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 //This is the Universal Time Manager
-//It keeps a list of all the (crop) plants in existence and updates their growth in Update
+//It keeps a list of all the crops and soil objects in existence and updates their status in Update
 //Also contains functions to add and remove plants from the list
 
 public class TimeManager : MonoBehaviour

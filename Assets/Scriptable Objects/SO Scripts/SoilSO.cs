@@ -4,7 +4,6 @@ using UnityEngine;
 
 //SO for a square of soil
 //has an enum for weed, empty, or crop
-//has a bool for tilled/untilled and wet/not wet
 
 public enum SoilContent { empty, weed, crop }
 

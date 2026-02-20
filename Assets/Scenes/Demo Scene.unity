@@ -12494,6 +12494,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab667f5135f039e4b9c782c1552626f0, type: 3}
+--- !u!1 &1965179468
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1965179470}
+  - component: {fileID: 1965179469}
+  m_Layer: 0
+  m_Name: CraftingManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1965179469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965179468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bfc8193d7b94c34799ac6002b2836f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CraftingManager
+  currentRecipe: {fileID: 0}
+--- !u!4 &1965179470
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965179468}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1966736879 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3399744421897028414, guid: 6cb63a6c3b4f741e79c7b4861db54e5a, type: 3}
@@ -16202,6 +16247,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c71b66f1616a6be4cafcfbbd78e99a9b, type: 2}
   - {fileID: 11400000, guid: 01824e77eddb6b74aac17245365f3699, type: 2}
   player: {fileID: 4416926082426931733}
+  hitPt: {fileID: 0}
   attackCastOrigin: {fileID: 604838202602733351}
   aimCamera: {fileID: 7507885078669305871}
   farmCastOrigin: {fileID: 42764938950022327}
@@ -16243,6 +16289,7 @@ SceneRoots:
   - {fileID: 555350702}
   - {fileID: 2140084298}
   - {fileID: 1774117091}
+  - {fileID: 1965179470}
   - {fileID: 1863940332}
   - {fileID: 428375331}
   - {fileID: 1636684644}
