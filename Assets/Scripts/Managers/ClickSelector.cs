@@ -7,8 +7,22 @@ public class ClickSelector : MonoBehaviour
 
     public float raycastDistance = 100f;
 
+    //Singleton
+    public static ClickSelector Instance;
+
     private void Awake()
     {
+        //Singleton
+        if (Instance != null && Instance != this)
+        {
+            Debug.Log("Destroy New AudioManager");
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         interactAction = InputSystem.actions.FindAction("Interact");
     }
 

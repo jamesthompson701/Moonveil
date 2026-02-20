@@ -105,6 +105,7 @@ public class CanvasManager : MonoBehaviour
             isActive = false;
             selectionCanvas.SetActive(false);
             CloseMenu();
+
         }
         openSelection = input.FindAction("Selection");
     }
@@ -113,6 +114,7 @@ public class CanvasManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        ClickSelector.Instance.enabled = false;
 
         player.Disable();
         UI.Enable();
@@ -126,6 +128,7 @@ public class CanvasManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        ClickSelector.Instance.enabled = true;
 
         player.Enable();
         UI.Disable();
