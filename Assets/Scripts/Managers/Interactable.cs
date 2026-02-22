@@ -1,15 +1,17 @@
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class Interactable : MonoBehaviour
 {
     private Renderer rend;
     private Color originalColor;
 
-    //temporary? reference to soil script
+    //reference to soil script
     private SoilObject soil;
 
-
+    //temporary recipe for testing purposes
+    public RecipeSO trailMix;
 
     // This method will be called by our ClickSelector
     public void OnInteract()
@@ -27,7 +29,6 @@ public class Interactable : MonoBehaviour
                     soil.SpawnCrop();
                     PlayerInventory.instance.AddSeeds(-1, PlayerInventory.instance.seedRef);
                     Debug.Log("Seed Planted");
-                   // Debug.Log("Seeds Remaining: " + PlayerInventory.instance.CheckSeeds());
                 }
                 else
                 {
@@ -45,10 +46,16 @@ public class Interactable : MonoBehaviour
         {
             FishingManager.Instance.EnterFishingMode(FishingManager.Instance.currentArea);
         }
+        else if (gameObject.CompareTag("Crafting"))
+        {
+            CraftingManager.instance.CraftFromInventory(trailMix);
+        }
         else
         {
             Debug.Log("Nothing interactable hit, tag is: " + gameObject.tag);
         }
+
+        
 
     }
 

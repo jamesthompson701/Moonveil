@@ -5,7 +5,7 @@ public class SoilObject : MonoBehaviour
 {
     [SerializeField] private SoilSO soil;
 
-    //public for now so it can be tested, but eventually this'll default to empty
+    //what's in the soil (weed, crop, tilled, empty)
     public SoilContent soilContent;
 
     //current game object and plant object

@@ -13,9 +13,9 @@ public class PlayerInventory : MonoBehaviour
 
     public SoilObject soilRef;
 
-    public static int newtSeeds;
-    public static int woolSeeds;
-    public static int lizardSeeds;
+    public int newtSeeds;
+    public int woolSeeds;
+    public int lizardSeeds;
     public static int fish;
 
     public SeedItemSO seedRef;
@@ -48,7 +48,7 @@ public class PlayerInventory : MonoBehaviour
                 break;
             case "Lizard's Legs Seed":
                 lizardSeeds = invSO.InventoryItems[2].amount + _amount;
-                invSO.InventoryItems[1].amount = lizardSeeds;
+                invSO.InventoryItems[2].amount = lizardSeeds;
                 break;
         }
 
@@ -90,11 +90,11 @@ public class PlayerInventory : MonoBehaviour
 
         //Reset Legs
 
-        if (invSO.InventoryItems[2].amount != 5)
-        {
-            invSO.InventoryItems[2].amount = 5;
-        }
-        woolSeeds = invSO.InventoryItems[2].amount;
+            if (invSO.InventoryItems[2].amount != 5)
+            {
+                invSO.InventoryItems[2].amount = 5;
+            }
+            lizardSeeds = invSO.InventoryItems[2].amount;
 
     }
 
@@ -104,8 +104,8 @@ public class PlayerInventory : MonoBehaviour
     {
         if (invSO.InventoryItems.Any(item => item.item.itemName == "IceFish"))
         {
-            fish = invSO.InventoryItems[2].amount + _amount;
-            invSO.InventoryItems[2].amount = fish;
+            fish = invSO.InventoryItems[3].amount + _amount;
+            invSO.InventoryItems[3].amount = fish;
         }
         else
         {
@@ -114,12 +114,11 @@ public class PlayerInventory : MonoBehaviour
         
 
     }
-
     public void ResetInv()
     {
-        if (invSO.InventoryItems[2].amount != 0)
+        if (invSO.InventoryItems[3].amount != 0)
         {
-            invSO.InventoryItems.RemoveAt(1);
+            invSO.InventoryItems.RemoveAt(3);
         }
 
         fish = 0;

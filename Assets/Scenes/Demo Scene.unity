@@ -5026,6 +5026,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20dc610626fa5644d87a924f1d64a0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  trailMix: {fileID: 0}
 --- !u!1 &860692422 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6990110931968421229, guid: 81422671c1cf56e4aab47a60ec9f8b7c, type: 3}
@@ -5586,6 +5587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20dc610626fa5644d87a924f1d64a0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  trailMix: {fileID: 0}
 --- !u!1 &934213135
 GameObject:
   m_ObjectHideFlags: 0
@@ -7258,6 +7260,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 5963674387cdc2c4db9f70693ddcb1cf, type: 2}
+    - target: {fileID: -3998209231611118418, guid: 81422671c1cf56e4aab47a60ec9f8b7c, type: 3}
+      propertyPath: m_TagString
+      value: Crafting
+      objectReference: {fileID: 0}
     - target: {fileID: -3770338434821971723, guid: 81422671c1cf56e4aab47a60ec9f8b7c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -7396,6 +7402,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -3998209231611118418, guid: 81422671c1cf56e4aab47a60ec9f8b7c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1714242897}
+    - targetCorrespondingSourceObject: {fileID: -3998209231611118418, guid: 81422671c1cf56e4aab47a60ec9f8b7c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1714242900}
     - targetCorrespondingSourceObject: {fileID: -6990110931968421229, guid: 81422671c1cf56e4aab47a60ec9f8b7c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 860692424}
@@ -9839,6 +9848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20dc610626fa5644d87a924f1d64a0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  trailMix: {fileID: 0}
 --- !u!114 &1584996871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10699,6 +10709,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Cauldron
   fire: {fileID: 2014912446}
+--- !u!114 &1714242900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714242890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20dc610626fa5644d87a924f1d64a0f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  trailMix: {fileID: 11400000, guid: 42f745d525e2fcf4fafd83bc6406265a, type: 2}
 --- !u!1 &1724402206 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5201981083037669996, guid: 81422671c1cf56e4aab47a60ec9f8b7c, type: 3}
@@ -10839,6 +10862,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
   invSO: {fileID: 11400000, guid: acc2de9322b7d98469f1a5d43d2f58f0, type: 2}
   soilRef: {fileID: 0}
+  newtSeeds: 0
+  woolSeeds: 0
+  lizardSeeds: 0
   seedRef: {fileID: 11400000, guid: 383be75cc3938d340a487524efa16685, type: 2}
   fishRef: {fileID: 11400000, guid: fbba5d63372d362449a189b976b38699, type: 2}
 --- !u!4 &1774117091
@@ -12523,7 +12549,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bfc8193d7b94c34799ac6002b2836f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CraftingManager
-  currentRecipe: {fileID: 0}
 --- !u!4 &1965179470
 Transform:
   m_ObjectHideFlags: 0

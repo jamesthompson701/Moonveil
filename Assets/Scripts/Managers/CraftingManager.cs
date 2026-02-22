@@ -5,8 +5,6 @@ using UnityEngine;
 //Has functions that work with inventory manager to add/remove appropriate items
 public class CraftingManager : MonoBehaviour
 {
-    public RecipeSO currentRecipe;
-
     public static CraftingManager instance;
 
     private void Awake()
@@ -17,9 +15,16 @@ public class CraftingManager : MonoBehaviour
         }
     }
 
-    public void CraftFromInventory()
+    public void CraftFromInventory(RecipeSO _recipe)
     {
-        
+        if (PlayerInventory.instance.newtSeeds >= 0 && PlayerInventory.instance.woolSeeds >= 0 && PlayerInventory.instance.lizardSeeds >= 0)
+        {
+            PlayerInventory.instance.AddSeeds(-1, (SeedItemSO)_recipe.ingr1);
+            PlayerInventory.instance.AddSeeds(-1, (SeedItemSO)_recipe.ingr2);
+            PlayerInventory.instance.AddSeeds(-1, (SeedItemSO)_recipe.ingr3);
+            PlayerInventory.instance.invSO.AddItem(_recipe.output, 1);
+        }
+
     }
     
 }
