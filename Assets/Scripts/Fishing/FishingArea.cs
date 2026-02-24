@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+public enum FishingBiome
+{Water, Fire, Ice}
 [RequireComponent(typeof(Collider))]
 public class FishingArea : MonoBehaviour
 {
@@ -12,6 +14,8 @@ public class FishingArea : MonoBehaviour
 
     [Tooltip("Optional display name for the area")]
     public string areaName = "Lake";
+
+    public FishingBiome biome;
 
     // Called by fishingManager to request a fish from this area
     public FishData GetRandomFish()
