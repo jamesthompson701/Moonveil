@@ -23,9 +23,10 @@ public class Interactable : MonoBehaviour
                 //make sure soil is empty and tilled before removing a seed and spawning the crop
                 if (soil.GetComponent<SoilObject>().soilContent == SoilContent.empty && soil.tilled)
                 {
-                    soil.SetPlantType(PlayerInventory.instance.seedRef);
+                    soil.SetPlantType(PlayerInventory.instance.curSeed);
                     soil.SpawnCrop();
-                    PlayerInventory.instance.AddSeeds(-1, PlayerInventory.instance.seedRef);
+                    //PlayerInventory.instance.AddSeeds(-1, PlayerInventory.instance.curSeed);
+                    PlayerInventory.instance.invSO.RemoveItem(PlayerInventory.instance.curSeed, -1);
                     Debug.Log("Seed Planted");
                    // Debug.Log("Seeds Remaining: " + PlayerInventory.instance.CheckSeeds());
                 }

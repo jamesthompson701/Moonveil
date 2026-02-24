@@ -10,15 +10,15 @@ public class PlayerInventory : MonoBehaviour
     // ^does not, in fact, just track seeds anymore
     public static PlayerInventory instance;
     public InventorySO invSO;
-
-    public SoilObject soilRef;
-
+    public DatabaseSO database;
+    
+    //tracks amount of each item
     public static int newtSeeds;
     public static int woolSeeds;
     public static int lizardSeeds;
     public static int fish;
 
-    public SeedItemSO seedRef;
+    public SeedItemSO curSeed;
     public ItemSO fishRef;
 
     private void Awake()
@@ -27,74 +27,79 @@ public class PlayerInventory : MonoBehaviour
         {
             instance = this;
         }
-        ResetSeeds();
         ResetInv();
     }
 
     //EVERYTHING IS SEEDS
 
-    public void AddSeeds(int _amount, SeedItemSO _type)
-    {
-        //three seed kinds
-        switch (_type.itemName)
-        {
-            case "Eye Of Newt Seed":
-                newtSeeds = invSO.InventoryItems[0].amount + _amount;
-                invSO.InventoryItems[0].amount = newtSeeds;
-                break;
-            case "Wool Of Bat Seed":
-                woolSeeds = invSO.InventoryItems[1].amount + _amount;
-                invSO.InventoryItems[1].amount = woolSeeds;
-                break;
-            case "Lizard's Legs Seed":
-                lizardSeeds = invSO.InventoryItems[2].amount + _amount;
-                invSO.InventoryItems[1].amount = lizardSeeds;
-                break;
-        }
+    //public void AddSeeds(int _amount, SeedItemSO _type)
+    //{
+    //    //three seed kinds
+    //    switch (_type.itemName)
+    //    {
+    //        case "Eye Of Newt Seed":
+    //            if (invSO.InventoryItems.Any(item => item.item.itemID == 8))
+    //            {
+    //                fish = invSO.InventoryItems[2].amount + _amount;
+    //                invSO.InventoryItems[2].amount = fish;
+    //            }
 
-    }
+    //            newtSeeds = invSO.InventoryItems[0].amount + _amount;
+          
+    //            invSO.InventoryItems[0].amount = newtSeeds;
+    //            break;
+    //        case "Wool Of Bat Seed":
+    //            woolSeeds = invSO.InventoryItems[1].amount + _amount;
+    //            invSO.InventoryItems[1].amount = woolSeeds;
+    //            break;
+    //        case "Lizard's Legs Seed":
+    //            lizardSeeds = invSO.InventoryItems[2].amount + _amount;
+    //            invSO.InventoryItems[1].amount = lizardSeeds;
+    //            break;
+    //    }
+
+    //}
 
 
     public int CheckSeeds()
     {
-        if (seedRef.itemName == "Eye Of Newt Seed")
+        foreach(var item in invSO.InventoryItems)
         {
-            return newtSeeds;
+            if (item.item.itemID == curSeed.itemID)
+            {
+                return item.amount;
+            }
         }
-        else if (seedRef.itemName == "Wool Of Bat Seed")
-        {
-            return woolSeeds;
-        }
-        else
-        {
-            return lizardSeeds;
-        }
+        return 0;
+        //if (curSeed.itemName == "Eye Of Newt Seed")
+        //{
+        //    return newtSeeds;
+        //}
+        //else if (curSeed.itemName == "Wool Of Bat Seed")
+        //{
+        //    return woolSeeds;
+        //}
+        //else
+        //{
+        //    return lizardSeeds;
+        //}
     }
 
     public void ResetSeeds()
     {
         //Reset Newt
-            if (invSO.InventoryItems[0].amount != 5)
-            {
-                invSO.InventoryItems[0].amount = 5;
-            }
-            newtSeeds = invSO.InventoryItems[0].amount;
+        invSO.AddItem(database.ReferenceItem(8), 5);
 
         //Reset Wool
- 
-            if (invSO.InventoryItems[1].amount != 5)
-            {
-                invSO.InventoryItems[1].amount = 5;
-            }
-            woolSeeds = invSO.InventoryItems[1].amount;
+        invSO.AddItem(database.ReferenceItem(2), 5);
 
         //Reset Legs
 
-        if (invSO.InventoryItems[2].amount != 5)
-        {
-            invSO.InventoryItems[2].amount = 5;
-        }
-        woolSeeds = invSO.InventoryItems[2].amount;
+        //if (invSO.InventoryItems[2].amount != 5)
+        //{
+        //    invSO.InventoryItems[2].amount = 5;
+        //}
+        //woolSeeds = invSO.InventoryItems[2].amount;
 
     }
 
@@ -117,10 +122,13 @@ public class PlayerInventory : MonoBehaviour
 
     public void ResetInv()
     {
-        if (invSO.InventoryItems[2].amount != 0)
-        {
-            invSO.InventoryItems.RemoveAt(1);
-        }
+        //if (invSO.InventoryItems[2].amount != 0)
+        //{
+        //    invSO.InventoryItems.RemoveAt(1);
+        //}
+
+        invSO.InventoryItems.Clear();
+        ResetSeeds();
 
         fish = 0;
     }
