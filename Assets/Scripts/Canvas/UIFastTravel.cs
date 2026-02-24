@@ -10,6 +10,7 @@ public class UIFastTravel : MonoBehaviour
     }
     public void OnFastTravelClicked()
     {
+        Debug.Log("Fast Travel Clicked");
         EnvironmentManager.Instance.Travel(eFastTravel.home);
     }
 }

@@ -9,6 +9,10 @@ public class EnvironmentManager : MonoBehaviour
 
     public static EnvironmentManager Instance;
 
+    public GameObject player;
+    public CharacterController characterController;
+    //public ThirdPersonController thirdPersonController;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -24,8 +28,10 @@ public class EnvironmentManager : MonoBehaviour
 
     public void Travel(eFastTravel destination)
     {
-        Transform playerTransform = ThirdPersonController.Instance.transform;
-        playerTransform = fastTravelShrines[(int)destination].transform;
+        Debug.Log("Teleport player to " +  destination + " at these cords: " + fastTravelShrines[(int)destination].transform.position);
+        characterController.enabled = false;
+        player.transform.position = fastTravelShrines[(int)destination].transform.position;
+        characterController.enabled = true;
     }
 
 }

@@ -424,5 +424,11 @@ namespace StarterAssets
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
             }
         }
+
+        //public void Teleport(Vector3 destination)
+        //{
+        //    Debug.Log("Teleport player to these cords: " + destination);
+        //    _controller.Move(destination);
+        //}
     }
 }

@@ -5,6 +5,7 @@ public class CanvasManager : MonoBehaviour
 {
     public GameObject inventoryCanvas;
     public GameObject menuCanvas;
+    public GameObject fastTravelCanvas;
     public GameObject HUD;
     bool isActive = false;
 
