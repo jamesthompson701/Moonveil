@@ -6,14 +6,22 @@ using System.Linq;
 
 public class PlayerInventory : MonoBehaviour
 {
-    //this might be a temporary script
     //just tracks seeds
+    // ^does not, in fact, just track seeds anymore
     public static PlayerInventory instance;
     public InventorySO invSO;
 
-    public static int seeds;
+    public SoilObject soilRef;
+
+    public int newtSeeds;
+    public int woolSeeds;
+    public int lizardSeeds;
     public static int fish;
 
+    //player currency counter
+    public int crescants;
+
+    public SeedItemSO seedRef;
     public ItemSO fishRef;
 
     private void Awake()
@@ -28,24 +36,69 @@ public class PlayerInventory : MonoBehaviour
 
     //EVERYTHING IS SEEDS
 
-    public void AddSeeds(int _amount)
+    public void AddSeeds(int _amount, SeedItemSO _type)
     {
-        seeds = invSO.InventoryItems[0].amount + _amount;
-        invSO.InventoryItems[0].amount = seeds;
+        //three seed kinds
+        switch (_type.itemName)
+        {
+            case "Eye Of Newt Seed":
+                newtSeeds = invSO.InventoryItems[0].amount + _amount;
+                invSO.InventoryItems[0].amount = newtSeeds;
+                break;
+            case "Wool Of Bat Seed":
+                woolSeeds = invSO.InventoryItems[1].amount + _amount;
+                invSO.InventoryItems[1].amount = woolSeeds;
+                break;
+            case "Lizard's Legs Seed":
+                lizardSeeds = invSO.InventoryItems[2].amount + _amount;
+                invSO.InventoryItems[2].amount = lizardSeeds;
+                break;
+        }
+
     }
+
 
     public int CheckSeeds()
     {
-        return seeds;
+        if (seedRef.itemName == "Eye Of Newt Seed")
+        {
+            return newtSeeds;
+        }
+        else if (seedRef.itemName == "Wool Of Bat Seed")
+        {
+            return woolSeeds;
+        }
+        else
+        {
+            return lizardSeeds;
+        }
     }
 
     public void ResetSeeds()
     {
-        if (invSO.InventoryItems[0].amount != 5)
-        {
-            invSO.InventoryItems[0].amount = 5;
-        }
-        seeds = invSO.InventoryItems[0].amount;
+        //Reset Newt
+            if (invSO.InventoryItems[0].amount != 5)
+            {
+                invSO.InventoryItems[0].amount = 5;
+            }
+            newtSeeds = invSO.InventoryItems[0].amount;
+
+        //Reset Wool
+ 
+            if (invSO.InventoryItems[1].amount != 5)
+            {
+                invSO.InventoryItems[1].amount = 5;
+            }
+            woolSeeds = invSO.InventoryItems[1].amount;
+
+        //Reset Legs
+
+            if (invSO.InventoryItems[2].amount != 5)
+            {
+                invSO.InventoryItems[2].amount = 5;
+            }
+            lizardSeeds = invSO.InventoryItems[2].amount;
+
     }
 
     //EVERYTHING IS FISH
@@ -54,8 +107,8 @@ public class PlayerInventory : MonoBehaviour
     {
         if (invSO.InventoryItems.Any(item => item.item.itemName == "IceFish"))
         {
-            fish = invSO.InventoryItems[1].amount + _amount;
-            invSO.InventoryItems[1].amount = fish;
+            fish = invSO.InventoryItems[3].amount + _amount;
+            invSO.InventoryItems[3].amount = fish;
         }
         else
         {
@@ -64,12 +117,11 @@ public class PlayerInventory : MonoBehaviour
         
 
     }
-
     public void ResetInv()
     {
-        if (invSO.InventoryItems[1].amount != 0)
+        if (invSO.InventoryItems[3].amount != 0)
         {
-            invSO.InventoryItems.RemoveAt(1);
+            invSO.InventoryItems.RemoveAt(3);
         }
 
         fish = 0;

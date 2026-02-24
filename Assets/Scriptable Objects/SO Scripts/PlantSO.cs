@@ -9,7 +9,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlantSO", menuName = "Scriptable Objects/PlantSO")]
 public class PlantSO : ScriptableObject
 {
-    //name of the plant (unsure if neccessary)
+    //name of the plant
     public string plantName;
 
     //how long the plant takes to increment 1 stage
@@ -18,13 +18,15 @@ public class PlantSO : ScriptableObject
     //how long the plant can be dry for before dying
     public float droughtResistance;
 
-    //item IDs of the seed, fruit, and a placeholder if we need it
-    public int seedID;
-    public int fruitID;
-    public int secretThirdThingID;
+    //itemSOs of the seed, fruit
+    public SeedItemSO seed;
+    public ItemSO fruit;
 
     //prefabs for each growth stage of the plant
     public List<GameObject> plantPrefabs;
+
+    //prefab for the plant object
+    public GameObject prefab;
 
     //prefab for when the plant is dead
     public GameObject plantDead;

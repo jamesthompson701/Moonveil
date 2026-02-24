@@ -10,7 +10,7 @@ public abstract class SO_Spells : ScriptableObject
     public Rigidbody SpellPrefab;
 
     [Header("Stats")]
-    public int Damage;
+    public int damage;
     public float Speed = 15f;
 
     [Header("Lifetime")]
@@ -25,10 +25,6 @@ public abstract class SO_Spells : ScriptableObject
 
     protected void SetVelocity(Rigidbody rb, Vector3 vel)
     {
-#if UNITY_6000_0_OR_NEWER
         rb.linearVelocity = vel;
-#else
-    rb.velocity = vel;
-#endif
     }
 }

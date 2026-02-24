@@ -19,7 +19,7 @@ public class InventorySO : ScriptableObject
                 if (item.item == newItem)
                 {
                     item.AddAmount(newAmount);
-                    break;
+                    return;
                 }
             }
         }
