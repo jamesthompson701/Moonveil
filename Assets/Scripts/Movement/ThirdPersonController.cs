@@ -86,6 +86,8 @@ namespace StarterAssets
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
+        private PlayerImpactReceiver _impactReceiver;
+        private Vector3 motion;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -138,7 +140,7 @@ namespace StarterAssets
         private void Start()
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-            
+
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
@@ -258,19 +260,24 @@ namespace StarterAssets
             // Un-Comment the If Else to reinstate different camera styles
             //if (attackManager.inCombatArea)
             //{
-                // In combat area, restrict rotation and allow strafing
-                if (_input.move != Vector2.zero)
-                {
-                    // Keep the character facing the same direction as the camera
-                    _targetRotation = _mainCamera.transform.eulerAngles.y;
-                    transform.rotation = Quaternion.Euler(0.0f, _targetRotation, 0.0f);
-                }
+            // In combat area, restrict rotation and allow strafing
+            if (_input.move != Vector2.zero)
+            {
+                // Keep the character facing the same direction as the camera
+                _targetRotation = _mainCamera.transform.eulerAngles.y;
+                transform.rotation = Quaternion.Euler(0.0f, _targetRotation, 0.0f);
+            }
 
-                Vector3 targetDirection = Quaternion.Euler(0.0f, _mainCamera.transform.eulerAngles.y, 0.0f) * new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+            Vector3 targetDirection = Quaternion.Euler(0.0f, _mainCamera.transform.eulerAngles.y, 0.0f) * new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
 
-                // move the player
-                _controller.Move(targetDirection * (_speed * Time.deltaTime) +
-                                 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            motion = targetDirection * (_speed * Time.deltaTime) +
+                                 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime;
+
+            if (_impactReceiver != null)
+                motion += _impactReceiver.ConsumeDisplacement(Time.deltaTime);
+
+            // move the player
+            _controller.Move(motion);
             //}
             //else
             //{
@@ -304,7 +311,7 @@ namespace StarterAssets
 
         private void JumpAndGravity()
         {
-            
+
             if (Grounded)
             {
                 // reset the fall timeout timer
