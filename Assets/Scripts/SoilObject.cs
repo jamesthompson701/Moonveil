@@ -95,6 +95,14 @@ public class SoilObject : MonoBehaviour
             //Debug.Log("Soil wet");
         }
 
+        if (other.CompareTag("WateringSpellSmall") && tilled)
+        {
+            isWet = true;
+            waterTimer = soil.wetnessDuration;
+            mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
+            Destroy(other.gameObject);
+        }
+
         if (other.CompareTag("TillSpell"))
         {
             if(!tilled && soilContent == SoilContent.empty)
