@@ -18,6 +18,9 @@ public class PlayerInventory : MonoBehaviour
     public int lizardSeeds;
     public static int fish;
 
+    //player currency counter
+    public int crescants;
+
     public SeedItemSO seedRef;
     public ItemSO fishRef;
 

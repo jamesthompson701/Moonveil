@@ -10,8 +10,11 @@ public class Interactable : MonoBehaviour
     //reference to soil script
     private SoilObject soil;
 
-    //temporary recipe for testing purposes
+    //for testing purposes
     public RecipeSO trailMix;
+
+    //if this is a dispenser, what it dispenses
+    public SeedItemSO dispenserItem;
 
     // This method will be called by our ClickSelector
     public void OnInteract()
@@ -55,8 +58,11 @@ public class Interactable : MonoBehaviour
             Debug.Log("Nothing interactable hit, tag is: " + gameObject.tag);
         }
 
-        
-
+        //add an item to inventory when clicked, must be set in editor
+        if (gameObject.CompareTag("Dispenser"))
+        {
+            PlayerInventory.instance.invSO.AddItem(dispenserItem, 1);
+        }
     }
 
     // Optional: A method to reset the color
