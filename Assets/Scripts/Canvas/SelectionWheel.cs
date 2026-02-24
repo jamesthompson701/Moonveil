@@ -4,7 +4,6 @@ public class SelectionWheel : MonoBehaviour
 
 {
 
-
     public SeedItemSO newtSeed;
     public SeedItemSO woolSeed;
     public SeedItemSO lizardSeed;
