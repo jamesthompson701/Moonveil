@@ -120,6 +120,7 @@ public class SoilObject : MonoBehaviour
             if(!isWet || plantScript.isDead)
             {
                 Debug.Log("FireSpelled");
+                Destroy(other);
                 plantScript.Destroy();
                 soilContent = SoilContent.empty;
                 Instantiate(fire, transform);
@@ -130,6 +131,7 @@ public class SoilObject : MonoBehaviour
         //fire spell destroys weeds also
         if (other.CompareTag("FireSpell") && soilContent == SoilContent.weed)
         {
+            Destroy(other);
             Destroy(weed);
             soilContent = SoilContent.empty;
             Instantiate(fire, transform);
