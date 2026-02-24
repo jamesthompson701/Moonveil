@@ -12,5 +12,6 @@ public class UIFastTravel : MonoBehaviour
     {
         Debug.Log("Fast Travel Clicked");
         EnvironmentManager.Instance.Travel(eFastTravel.home);
+        CanvasManager.Instance.OpenFastTravel();
     }
 }

@@ -53,6 +53,10 @@ public class Interactable : MonoBehaviour
         {
             CraftingManager.instance.CraftFromInventory(trailMix);
         }
+        else if (gameObject.CompareTag("FastTravel"))
+        {
+            CanvasManager.Instance.OpenFastTravel();
+        }
         else
         {
             Debug.Log("Nothing interactable hit, tag is: " + gameObject.tag);

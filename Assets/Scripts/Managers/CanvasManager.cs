@@ -87,6 +87,24 @@ public class CanvasManager : MonoBehaviour
         openInv = input.FindAction("Inventory");
     }
 
+    public void OpenFastTravel()
+    {
+
+        if (!isActive)
+        {
+            isActive = true;
+            fastTravelCanvas.SetActive(true);
+            OpenMenu();
+
+        }
+        else
+        {
+            isActive = false;
+            fastTravelCanvas.SetActive(false);
+            CloseMenu();
+        }
+    }
+
     public void OpenPause()
     {
         if (!isActive)
@@ -150,12 +168,4 @@ public class CanvasManager : MonoBehaviour
 
         HUD.SetActive(true);
     }
-
-    public void OpenFastTravel()
-    {
-        Debug.Log("Fast tavel opened");
-    }
-
-
-
 }
