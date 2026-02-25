@@ -11,13 +11,13 @@ public class SelectionWheel : MonoBehaviour
 
     public void SelectNewt()
     {
-        PlayerInventory.instance.curSeed = newtSeed;
+        PlayerInventory.instance.seedRef = newtSeed;
         Debug.Log("EYE OF NEWT SEEDS SELECTED");
 
     }
     public void SelectWool()
     {
-        PlayerInventory.instance.curSeed = woolSeed;
+        PlayerInventory.instance.seedRef = woolSeed;
         Debug.Log("WOOL OF BAT SEEDS SELECTED");
     }
     public void SelectLizard()
