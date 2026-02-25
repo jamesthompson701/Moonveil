@@ -22,7 +22,7 @@ public class SelectionWheel : MonoBehaviour
     }
     public void SelectLizard()
     {
-        PlayerInventory.instance.seedRef = lizardSeed;
+        PlayerInventory.instance.curSeed = lizardSeed;
         Debug.Log("LIZARD'S LEGS SEEDS SELECTED");
     }
 
