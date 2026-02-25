@@ -17,13 +17,10 @@ public class CraftingManager : MonoBehaviour
 
     public void CraftFromInventory(RecipeSO _recipe)
     {
-        if (PlayerInventory.instance.newtSeeds > 0 && PlayerInventory.instance.woolSeeds > 0 && PlayerInventory.instance.lizardSeeds > 0)
-        {
-            PlayerInventory.instance.AddSeeds(-1, (SeedItemSO)_recipe.ingr1);
-            PlayerInventory.instance.AddSeeds(-1, (SeedItemSO)_recipe.ingr2);
-            PlayerInventory.instance.AddSeeds(-1, (SeedItemSO)_recipe.ingr3);
+            PlayerInventory.instance.invSO.AddItem(_recipe.ingr1, -1);
+            PlayerInventory.instance.invSO.AddItem(_recipe.ingr2, -1);
+            PlayerInventory.instance.invSO.AddItem(_recipe.ingr3, -1);
             PlayerInventory.instance.invSO.AddItem(_recipe.output, 1);
-        }
 
     }
     
