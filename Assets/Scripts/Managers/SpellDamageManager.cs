@@ -22,6 +22,11 @@ public class SpellDamageManager : MonoBehaviour
             return;
         }
 
+        MeleeEnemyManager melee = other.GetComponent<MeleeEnemyManager>();
+        ChargingEnemyManager charge = other.GetComponent<ChargingEnemyManager>();
+        StraightShotEnemyManager straight = other.GetComponent<StraightShotEnemyManager>();
+        ArcShotEnemyManager arc = other.GetComponent<ArcShotEnemyManager>();
+
         if (attackChoice == 1)
         {
             Collider[] hits = Physics.OverlapSphere(transform.position, 3f);
@@ -65,15 +70,28 @@ public class SpellDamageManager : MonoBehaviour
         CreatureDefs creature = target.GetComponentInParent<CreatureDefs>();
         if (creature != null)
         {
+            creature.TakeDamage(damage);
             return;
         }
+
+        MeleeEnemyManager melee = target.GetComponentInParent<MeleeEnemyManager>();
+        if (melee != null) melee.TakeDamage(damage);
+
+        ChargingEnemyManager charge = target.GetComponentInParent<ChargingEnemyManager>();
+        if (charge != null) charge.TakeDamage(damage);
+
+        StraightShotEnemyManager straight = target.GetComponentInParent<StraightShotEnemyManager>();
+        if (straight != null) straight.TakeDamage(damage);
+
+        ArcShotEnemyManager arc = target.GetComponentInParent<ArcShotEnemyManager>();
+        if (arc != null) arc.TakeDamage(damage);
     }
 
     private void ApplyDamageAndForce(Collider target)
     {
         ApplyDamage(target);
 
-        PlayerDamageReceiver player = target.GetComponent<PlayerDamageReceiver>();
+        PlayerManager player = target.GetComponent<PlayerManager>();
         if (player != null)
         {
             Rigidbody rb = player.GetComponent<Rigidbody>();

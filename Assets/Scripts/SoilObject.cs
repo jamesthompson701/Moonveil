@@ -5,7 +5,7 @@ public class SoilObject : MonoBehaviour
 {
     [SerializeField] private SoilSO soil;
 
-    //what's in the soil (weed, crop, tilled, empty)
+    //public for now so it can be tested, but eventually this'll default to empty
     public SoilContent soilContent;
 
     //current game object and plant object
@@ -95,14 +95,6 @@ public class SoilObject : MonoBehaviour
             //Debug.Log("Soil wet");
         }
 
-        if (other.CompareTag("WateringSpellSmall") && tilled)
-        {
-            isWet = true;
-            waterTimer = soil.wetnessDuration;
-            mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
-            Destroy(other.gameObject);
-        }
-
         if (other.CompareTag("TillSpell"))
         {
             if(!tilled && soilContent == SoilContent.empty)
@@ -128,7 +120,6 @@ public class SoilObject : MonoBehaviour
             if(!isWet || plantScript.isDead)
             {
                 Debug.Log("FireSpelled");
-                Destroy(other.gameObject);
                 plantScript.Destroy();
                 soilContent = SoilContent.empty;
                 Instantiate(fire, transform);
@@ -139,7 +130,6 @@ public class SoilObject : MonoBehaviour
         //fire spell destroys weeds also
         if (other.CompareTag("FireSpell") && soilContent == SoilContent.weed)
         {
-            Destroy(other.gameObject);
             Destroy(weed);
             soilContent = SoilContent.empty;
             Instantiate(fire, transform);
