@@ -546,7 +546,7 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
     private void Die()
     {
-        if (meleeHitbox) meleeHitbox.enabled = false;
+        //if (meleeHitbox) meleeHitbox.enabled = false;
         if (physicsCollider) physicsCollider.enabled = false;
         Destroy(gameObject);
     }
