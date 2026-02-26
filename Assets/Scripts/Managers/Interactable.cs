@@ -17,9 +17,9 @@ public class Interactable : MonoBehaviour
     public SeedItemSO dispenserItem;
 
     // This method will be called by our ClickSelector
-    public void OnInteract()
+    public virtual void OnInteract()
     {
-        if (gameObject.CompareTag("Soil"))
+        if (gameObject.CompareTag("Soil"))                 
         {
             //reference to soil being clicked
             soil = gameObject.GetComponent<SoilObject>();
@@ -52,6 +52,10 @@ public class Interactable : MonoBehaviour
         else if (gameObject.CompareTag("Crafting"))
         {
             CraftingManager.instance.CraftFromInventory(trailMix);
+        }
+        else if (gameObject.CompareTag("FastTravel"))
+        {
+            CanvasManager.Instance.OpenFastTravel();
         }
         else
         {

@@ -5,6 +5,7 @@ public class CanvasManager : MonoBehaviour
 {
     public GameObject inventoryCanvas;
     public GameObject menuCanvas;
+    public GameObject fastTravelCanvas;
     public GameObject selectionCanvas;
     public GameObject HUD;
     bool isActive = false;
@@ -17,9 +18,12 @@ public class CanvasManager : MonoBehaviour
     InputActionMap player;
     InputActionMap UI;
 
+    public static CanvasManager Instance;
+
 
     private void Awake()
     {
+
         openInv = input.FindAction("Inventory");
         openPause = input.FindAction("Pause");
         openSelection = input.FindAction("Selection");
@@ -29,6 +33,16 @@ public class CanvasManager : MonoBehaviour
         player = input.FindActionMap("Player");
         UI = input.FindActionMap("UI");
 
+        //Making canvas manager a singleton
+        if (Instance != null && Instance != this)
+        {
+            Debug.Log("Destroy New AudioManager");
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
 
     }
 
@@ -71,6 +85,24 @@ public class CanvasManager : MonoBehaviour
             CloseMenu();
         }
         openInv = input.FindAction("Inventory");
+    }
+
+    public void OpenFastTravel()
+    {
+
+        if (!isActive)
+        {
+            isActive = true;
+            fastTravelCanvas.SetActive(true);
+            OpenMenu();
+
+        }
+        else
+        {
+            isActive = false;
+            fastTravelCanvas.SetActive(false);
+            CloseMenu();
+        }
     }
 
     public void OpenPause()
@@ -136,7 +168,4 @@ public class CanvasManager : MonoBehaviour
 
         HUD.SetActive(true);
     }
-
-
-
 }
