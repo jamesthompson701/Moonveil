@@ -320,6 +320,9 @@ namespace StarterAssets
             {
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
                 _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+                _animator.SetFloat("MoveX", _input.move.x);
+                _animator.SetFloat("MoveY", _input.move.y);
+
             }
         }
 
