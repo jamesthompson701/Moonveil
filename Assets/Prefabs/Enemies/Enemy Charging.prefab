@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1075230274740201203}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.423, z: 0}
   m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -108,7 +108,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -336,9 +336,9 @@ MonoBehaviour:
   player: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 128
   sightRange: 10
-  attackDamage: 2
+  attackDamage: 10
   maxHealth: 20
   currentHealth: 20
   idleTimer: 3
@@ -351,7 +351,7 @@ MonoBehaviour:
   playerHeight: 0
   playerController: {fileID: 0}
   playerMaxHeight: 2
-  creatureCollider: {fileID: 3385335087156132673}
+  attackCollider: {fileID: 0}
   walkPoint: {x: 0, y: 0, z: 0}
   walkPointSet: 0
   walkPointRange: 10
@@ -364,8 +364,9 @@ MonoBehaviour:
   attackRange: 5
   attackPt: {fileID: 6575861028010808028}
   delay: 3
+  aimAngle: 45
   marginOfError: 0
-  projectileSpeed: 10
+  speed: 10
   navMeshSnapTolerance: 0.25
   groundLayers:
     serializedVersion: 2
@@ -393,7 +394,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
-  m_CollisionDetection: 0
+  m_Constraints: 84
+  m_CollisionDetection: 1
