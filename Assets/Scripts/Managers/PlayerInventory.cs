@@ -36,18 +36,14 @@ public class PlayerInventory : MonoBehaviour
     //EVERYTHING IS SEEDS - no longer; we are now seed agnostic
     public int CheckSeeds()
     {
-        if (seedRef.itemName == "Eye Of Newt Seed")
+        foreach (var item in invSO.InventoryItems)
         {
-            return newtSeeds;
+            if ( item.item.itemID == seedRef.itemID)
+            {
+                return item.amount;
+            }
         }
-        else if (seedRef.itemName == "Wool Of Bat Seed")
-        {
-            return woolSeeds;
-        }
-        else
-        {
-            return lizardSeeds;
-        }
+        return 0;
     }
 
     //EVERYTHING IS FISH
