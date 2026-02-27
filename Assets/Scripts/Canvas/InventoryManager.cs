@@ -17,21 +17,9 @@ public class InventoryManager: MonoBehaviour
 
     private void OnEnable()
     {
-        //Resets entire Inv if no items in Inventory SO
-        if (inventory.InventoryItems.Count != 0)
-        {
-            DisplayInventory();
-          
-            
-        }
-        else
-        {
-            for (int i = 0; i < InventorySlots.Length; i++)
-            {
-                InventorySlots[i].ResetSlot();
-            }
+        //inventory.AddItem(itemRef, 2);
+        DisplayInventory();
 
-        }
         itemImage.sprite = null;
         itemDescription.text = "";
     }
@@ -39,24 +27,20 @@ public class InventoryManager: MonoBehaviour
 
     public void DisplayInventory()
     {
-
-        //Checks slots in Inventory UI
+        
+        //Checks how many slots
         for (int i = 0; i < InventorySlots.Length; i++)
         {
-            //Clears slot if item amount is 0
-            if (InventorySlots[i].item.amount == 0)
-            {
-                InventorySlots[i].ResetSlot();
-            }
             //Checks items in inventory
             for (int j = 0; j < inventory.InventoryItems.Count; j++)
-            { 
+            {
                 //Assigns item to slot
                 InventoryItem curItem = inventory.InventoryItems[j];
-                InventorySlots[j].SetSlot(curItem);
-            }
-        }
+                InventorySlots[j].SetItem(curItem);
 
+            }
+
+        }
     }
 
     public void DisplayInfo(InventoryItem hoveredItem)
