@@ -9,7 +9,7 @@ using UnityEngine;
 public class CreatureDefs : MonoBehaviour, IDamageable
 {
     public enum RoamMode { Waypoints, RandomRoam }
-    public enum AttackMode { Melee, ProjectileStraight, ProjectileArc }
+    public enum AttackMode { Melee, ProjectileStraight, ProjectileArc, Charger }
 
     [Header("References")]
     [Tooltip("Optional. If empty, will auto-find the Player by tag.")]
@@ -41,8 +41,8 @@ public class CreatureDefs : MonoBehaviour, IDamageable
     [Tooltip("How quickly the enemy rotates to face target/movement (degrees/sec).")]
     [SerializeField, Min(0f)] private float turnSpeedDegPerSec = 720f;
 
-    [Tooltip("Preferred combat distance for ranged styles (meters). Ignored for melee.")]
-    [SerializeField, Min(0f)] private float rangedHoldDistance = 6f;
+    [Tooltip("Preferred combat distance for ranged styles (meters). Melee uses it to back away and wait for their next allowed attack.")]
+    [SerializeField, Min(0f)] private float HoldDistance = 6f;
 
     [Tooltip("Stop steering briefly after being hit/knocked back (seconds) so physics actually 'wins'.")]
     [SerializeField, Min(0f)] private float controlLockSecondsOnHit = 0.15f;
@@ -92,6 +92,9 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
     [Tooltip("Projectile speed for straight shots (m/s).")]
     [SerializeField, Min(0f)] private float projectileSpeed = 14f;
+
+    [Tooltip("Speed that chargers launch at the player (m/s).")]
+    [SerializeField, Min(0f)] private float chargeSpeed = 14f;
 
     [Tooltip("For arc shots: extra height of the arc apex above the higher of start/target (meters).")]
     [SerializeField, Min(0f)] private float arcApexHeight = 3f;
@@ -234,12 +237,20 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
         if (attackMode == AttackMode.Melee)
         {
+            // Has the melee enemy stay at a distance and circle the player until it gets permission to attack
+            if (!_isAttacking)
+            {
+                Vector3 tangent2 = Vector3.Cross(Vector3.up, dirToTarget) * _orbitSign;
+                desiredDir = (dirToTarget + tangent2 * 0.5f).normalized;
+                desiredSpeed = Mathf.Lerp(minSpeed, maxSpeed, steerMultiplier);
+                return;
+            }
             desiredDir = dirToTarget;
             desiredSpeed = Mathf.Lerp(minSpeed, maxSpeed, steerMultiplier);
             return;
         }
 
-        float hold = Mathf.Max(attackRange * 0.85f, rangedHoldDistance);
+        float hold = Mathf.Max(attackRange * 0.85f, HoldDistance);
         float deadBand = 0.6f;
 
         Vector3 radial;
@@ -427,6 +438,9 @@ public class CreatureDefs : MonoBehaviour, IDamageable
             case AttackMode.ProjectileArc:
                 DoArcProjectile();
                 break;
+            case AttackMode.Charger:
+                yield return DoChargeAttack();
+                break;
         }
 
         _nextAttackTime = Time.time + attackCooldownSeconds;
@@ -472,6 +486,17 @@ public class CreatureDefs : MonoBehaviour, IDamageable
             proj.linearVelocity = v;
         else
             proj.linearVelocity = (end - start).normalized * projectileSpeed;
+    }
+
+    // Target faces the enemy, waits for a short windup, then dashes forward in a straight line. Bonks into the player then retreats. Kinda funny.
+    private IEnumerator DoChargeAttack()
+    {
+        if (!target) yield break;
+        ApplySteering((target.position - transform.position).normalized, 0f);
+        yield return new WaitForSeconds(attackWindupSeconds);
+        Vector3 dir = (target.position - transform.position).normalized;
+        _rb.AddForce(dir * chargeSpeed, ForceMode.Impulse);
+        yield return new WaitForSeconds(1f);
     }
 
     private static bool TryComputeBallisticVelocity(Vector3 start, Vector3 end, float apexExtraHeight, out Vector3 initialVelocity)
