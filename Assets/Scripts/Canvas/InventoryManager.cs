@@ -17,7 +17,6 @@ public class InventoryManager: MonoBehaviour
 
     private void OnEnable()
     {
-        //inventory.AddItem(itemRef, 2);
         DisplayInventory();
 
         itemImage.sprite = null;
@@ -28,15 +27,22 @@ public class InventoryManager: MonoBehaviour
     public void DisplayInventory()
     {
         
-        //Checks how many slots
+        //Handles inventory slots
         for (int i = 0; i < InventorySlots.Length; i++)
         {
-            //Checks items in inventory
+            Debug.Log(InventorySlots[i].item.amount);
+            if (InventorySlots[i].item.amount == 0)
+            {
+                InventorySlots[i].ResetSlot();
+                
+            }
+            //Handles items in inventorySO
             for (int j = 0; j < inventory.InventoryItems.Count; j++)
             {
+                
                 //Assigns item to slot
                 InventoryItem curItem = inventory.InventoryItems[j];
-                InventorySlots[j].SetItem(curItem);
+                InventorySlots[j].SetSlot(curItem);
 
             }
 
