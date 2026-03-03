@@ -42,7 +42,6 @@ GameObject:
   - component: {fileID: 4438757397670859709}
   - component: {fileID: 1640754877332116354}
   - component: {fileID: 6495694274051667332}
-  - component: {fileID: 8185140895839545652}
   m_Layer: 8
   m_Name: EnemyBody
   m_TagString: Enemy
@@ -124,100 +123,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8185140895839545652
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1571184205379751763}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &4383899108982476978
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3719786508888210013}
-  - component: {fileID: 1704016700808472751}
-  - component: {fileID: 8566742586712056557}
-  m_Layer: 8
-  m_Name: MeleeCollider
-  m_TagString: EnemyAttack
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3719786508888210013
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4383899108982476978}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.70657855, y: -0, z: -0, w: 0.70763475}
-  m_LocalPosition: {x: 0, y: 0.752, z: 0.78}
-  m_LocalScale: {x: 1, y: 0.7836253, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5705294641964212808}
-  m_LocalEulerAnglesHint: {x: 89.921, y: 0, z: 0}
---- !u!136 &1704016700808472751
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4383899108982476978}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.25
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8566742586712056557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4383899108982476978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f810c10614bfb684a83a146b57ed9050, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttacks
-  Damage: 10
-  IsMelee: 1
-  damageCooldownSeconds: 0.35
-  targetTag: Player
-  destroyOnHit: 1
 --- !u!1 &6764426932034110233
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,13 +246,16 @@ GameObject:
   - component: {fileID: 5705294641964212808}
   - component: {fileID: 3130285881321736486}
   - component: {fileID: 3759362837618422138}
+  - component: {fileID: 2905539543924090654}
+  - component: {fileID: 5301291473155093320}
+  - component: {fileID: 6358879265903657422}
   m_Layer: 8
   m_Name: Enemy Melee
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5705294641964212808
 Transform:
   m_ObjectHideFlags: 0
@@ -362,7 +270,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4438757397670859709}
-  - {fileID: 3719786508888210013}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &3130285881321736486
@@ -389,9 +296,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Interpolate: 1
+  m_Constraints: 80
+  m_CollisionDetection: 2
 --- !u!114 &3759362837618422138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,7 +313,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CreatureDefs
   target: {fileID: 0}
   attackPoint: {fileID: 3372040541221016123}
-  physicsCollider: {fileID: 8185140895839545652}
+  physicsCollider: {fileID: 2905539543924090654}
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -415,7 +322,7 @@ MonoBehaviour:
   maxSpeed: 6
   maxAcceleration: 25
   turnSpeedDegPerSec: 720
-  rangedHoldDistance: 10
+  HoldDistance: 6
   controlLockSecondsOnHit: 0.15
   roamMode: 1
   waypoints: []
@@ -425,13 +332,14 @@ MonoBehaviour:
   aggroDistance: 14
   deaggroDistance: 18
   attackMode: 0
-  attackRange: 2
+  attackRange: 1.36
   attackCooldownSeconds: 1.2
   attackWindupSeconds: 0.25
   meleeActiveSeconds: 0.2
-  meleeHitbox: {fileID: 1704016700808472751}
+  meleeHitbox: {fileID: 6358879265903657422}
   projectilePrefab: {fileID: 0}
   projectileSpeed: 14
+  chargeSpeed: 14
   arcApexHeight: 3
   separationRadius: 1.2
   separationStrength: 20
@@ -439,3 +347,65 @@ MonoBehaviour:
   useAttackDirector: 1
   directorRequestInterval: 0.15
   drawGizmos: 0
+--- !u!65 &2905539543924090654
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6884222217625323323}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5223541, y: 0.9058327, z: 0.5211754}
+  m_Center: {x: -0.0019226074, y: 0.53983545, z: 0.0000705719}
+--- !u!114 &5301291473155093320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6884222217625323323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f810c10614bfb684a83a146b57ed9050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttacks
+  Damage: 10
+  IsMelee: 1
+  damageCooldownSeconds: 0.35
+  targetTag: Player
+  destroyOnHit: 1
+  destroyDelay: 3
+--- !u!136 &6358879265903657422
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6884222217625323323}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.18656552
+  m_Height: 0.8756294
+  m_Direction: 2
+  m_Center: {x: 0, y: 0.7575476, z: 0.6905155}
