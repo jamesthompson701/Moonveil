@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 /// <summary>
 /// Attach to enemy melee hitboxes OR enemy projectile prefabs.
-/// Handles damage + stun pushback with a short per-target cooldown.
+/// Handles damage with a short per-target cooldown.
 /// </summary>
 public class EnemyAttacks : MonoBehaviour
 {
@@ -19,10 +20,6 @@ public class EnemyAttacks : MonoBehaviour
     [Tooltip("Seconds before the same target can be damaged again by this same attack object.")]
     [SerializeField, Min(0f)] private float damageCooldownSeconds = 0.35f;
 
-    [Header("Stun Push")]
-    [Tooltip("Impulse applied to the player on hit (handled through PlayerImpactReceiver for CharacterController).")]
-    [SerializeField, Min(0f)] private float stunImpulse = 3.0f;
-
     [Header("Target Filtering")]
     [Tooltip("Tags that this attack is allowed to damage. Default setup uses Player tag.")]
     [SerializeField] private string targetTag = "Player";
@@ -31,12 +28,16 @@ public class EnemyAttacks : MonoBehaviour
     [Tooltip("If true (projectiles), destroy on first valid hit.")]
     [SerializeField] private bool destroyOnHit = true;
 
+    [Tooltip("Time before the projectile is automatically destroyed if it doesn't hit anything.")]
+    [SerializeField] private float destroyDelay = 3f;
+
     private readonly Dictionary<int, float> _lastHitTime = new Dictionary<int, float>(8);
     private readonly HashSet<int> _hitThisSwing = new HashSet<int>();
 
     /// <summary>
     /// Call this right before enabling a melee hitbox for a new attack swing.
     /// </summary>
+
     public void ResetPerAttackMemory()
     {
         _hitThisSwing.Clear();
@@ -48,6 +49,7 @@ public class EnemyAttacks : MonoBehaviour
 
     private void TryHit(Collider other)
     {
+        Debug.Log("Enemy attack collided with " + other.name);
         if (!other) return;
 
         if (!string.IsNullOrWhiteSpace(targetTag) && !other.CompareTag(targetTag))
@@ -75,16 +77,16 @@ public class EnemyAttacks : MonoBehaviour
             PlayerDamageReceiver receiver = other.GetComponentInParent<PlayerDamageReceiver>();
             if (receiver) receiver.TakeDamage(Damage);
         }
-
-        PlayerImpactReceiver impact = other.GetComponentInParent<PlayerImpactReceiver>();
-        if (impact && stunImpulse > 0f)
-            impact.AddImpulse(dir * stunImpulse);
-
+        Debug.Log("Enemy attack hit " + other.name + " for " + Damage + " damage!");
         _lastHitTime[targetId] = Time.time;
         if (IsMelee) _hitThisSwing.Add(targetId);
 
         if (!IsMelee && destroyOnHit)
+        {
             Destroy(gameObject);
+            Destroy(gameObject, destroyDelay); // Destroy after set time in case it misses.
+        }
+            
     }
 }
 

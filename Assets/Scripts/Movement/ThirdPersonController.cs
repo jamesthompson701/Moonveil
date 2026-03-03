@@ -86,7 +86,6 @@ namespace StarterAssets
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
-        private PlayerImpactReceiver _impactReceiver;
         private Vector3 motion;
 
         // timeout deltatime
@@ -286,10 +285,6 @@ namespace StarterAssets
 
             motion = targetDirection * (_speed * Time.deltaTime) +
                                  new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime;
-
-            if (_impactReceiver != null)
-                motion += _impactReceiver.ConsumeDisplacement(Time.deltaTime);
-
             // move the player
             _controller.Move(motion);
             //}
