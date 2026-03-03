@@ -18578,7 +18578,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 5b134ad6111b55845ab36f985e0efa5a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 23.95
+      value: 22.64
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5b134ad6111b55845ab36f985e0efa5a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -18586,7 +18586,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5b134ad6111b55845ab36f985e0efa5a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -86.83
+      value: -86.39
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5b134ad6111b55845ab36f985e0efa5a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -18639,6 +18639,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5b134ad6111b55845ab36f985e0efa5a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1914173847}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5b134ad6111b55845ab36f985e0efa5a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1914173849}
   m_SourcePrefab: {fileID: 100100000, guid: 5b134ad6111b55845ab36f985e0efa5a, type: 3}
 --- !u!1 &1914173846 stripped
 GameObject:
@@ -18659,6 +18662,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Interactable
   trailMix: {fileID: 11400000, guid: 42f745d525e2fcf4fafd83bc6406265a, type: 2}
   dispenserItem: {fileID: 0}
+--- !u!65 &1914173849
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914173846}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.1219262, y: 1.831736, z: 2.1095405}
+  m_Center: {x: 0.22899331, y: 0.877363, z: -10.486321}
 --- !u!1001 &1916268872
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19259,6 +19283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bfc8193d7b94c34799ac6002b2836f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CraftingManager
+  curRecipe: {fileID: 11400000, guid: 42f745d525e2fcf4fafd83bc6406265a, type: 2}
 --- !u!4 &1965179470
 Transform:
   m_ObjectHideFlags: 0

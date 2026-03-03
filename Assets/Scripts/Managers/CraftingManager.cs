@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using UnityEngine;
 
 //The crafting manager
@@ -5,7 +6,14 @@ using UnityEngine;
 //Has functions that work with inventory manager to add/remove appropriate items
 public class CraftingManager : MonoBehaviour
 {
+    //references
+    public RecipeSO curRecipe;
     public static CraftingManager instance;
+
+    //used during crafting to check if the inventory has the neccessary items
+    private bool hasItem1;
+    private bool hasItem2;
+    private bool hasItem3;
 
     private void Awake()
     {
@@ -15,12 +23,39 @@ public class CraftingManager : MonoBehaviour
         }
     }
 
-    public void CraftFromInventory(RecipeSO _recipe)
+    public void CraftFromInventory()
     {
-            PlayerInventory.instance.invSO.RemoveItem(_recipe.ingr1, -1);
-            PlayerInventory.instance.invSO.RemoveItem(_recipe.ingr2, -1);
-            PlayerInventory.instance.invSO.RemoveItem(_recipe.ingr3, -1);
-            PlayerInventory.instance.invSO.AddItem(_recipe.output, 1);
+
+        //checks every item in the player's inventory to see which of the ingredients the player has
+        foreach (InventoryItem _item in PlayerInventory.instance.invSO.InventoryItems)
+        {
+            if (_item.item == curRecipe.ingr1)
+            {
+                hasItem1 = true;
+            }
+            if (_item.item == curRecipe.ingr2)
+            {
+                hasItem2 = true;
+            }
+            if (_item.item == curRecipe.ingr3)
+            {
+                hasItem3 = true;
+            }
+        }
+
+        //if the player has all three ingredients, take one of each and give them the recipe output
+        if (hasItem1 && hasItem2 && hasItem3)
+        {
+            PlayerInventory.instance.invSO.RemoveItem(curRecipe.ingr1, -1);
+            PlayerInventory.instance.invSO.RemoveItem(curRecipe.ingr2, -1);
+            PlayerInventory.instance.invSO.RemoveItem(curRecipe.ingr3, -1);
+            PlayerInventory.instance.invSO.AddItem(curRecipe.output, 1);
+
+            //reset the bools
+            hasItem1 = false;
+            hasItem2 = false;
+            hasItem3 = false;
+        }
 
     }
     
