@@ -131,7 +131,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7408430592022992878
 Transform:
   m_ObjectHideFlags: 0
@@ -173,7 +173,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &8354106555923698578
 MonoBehaviour:
@@ -198,7 +198,7 @@ MonoBehaviour:
   maxSpeed: 6
   maxAcceleration: 25
   turnSpeedDegPerSec: 720
-  rangedHoldDistance: 10
+  HoldDistance: 6
   controlLockSecondsOnHit: 0.15
   roamMode: 1
   waypoints: []
@@ -215,6 +215,7 @@ MonoBehaviour:
   meleeHitbox: {fileID: 0}
   projectilePrefab: {fileID: 9028756490494239848, guid: e187230905e0f0a489cf64f350585883, type: 3}
   projectileSpeed: 14
+  chargeSpeed: 14
   arcApexHeight: 3
   separationRadius: 1.2
   separationStrength: 20
