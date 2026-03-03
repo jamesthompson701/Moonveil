@@ -246,9 +246,9 @@ GameObject:
   - component: {fileID: 5705294641964212808}
   - component: {fileID: 3130285881321736486}
   - component: {fileID: 3759362837618422138}
-  - component: {fileID: 2905539543924090654}
-  - component: {fileID: 5301291473155093320}
-  - component: {fileID: 6358879265903657422}
+  - component: {fileID: 8179868634205398757}
+  - component: {fileID: 1903094163592407428}
+  - component: {fileID: 6882333701873858578}
   m_Layer: 8
   m_Name: Enemy Melee
   m_TagString: Enemy
@@ -313,7 +313,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CreatureDefs
   target: {fileID: 0}
   attackPoint: {fileID: 3372040541221016123}
-  physicsCollider: {fileID: 2905539543924090654}
+  physicsCollider: {fileID: 8179868634205398757}
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -336,7 +336,7 @@ MonoBehaviour:
   attackCooldownSeconds: 1.2
   attackWindupSeconds: 0.25
   meleeActiveSeconds: 0.2
-  meleeHitbox: {fileID: 6358879265903657422}
+  meleeHitbox: {fileID: 6882333701873858578}
   projectilePrefab: {fileID: 0}
   projectileSpeed: 14
   chargeSpeed: 14
@@ -347,7 +347,7 @@ MonoBehaviour:
   useAttackDirector: 1
   directorRequestInterval: 0.15
   drawGizmos: 0
---- !u!65 &2905539543924090654
+--- !u!65 &8179868634205398757
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -368,7 +368,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.5223541, y: 0.9058327, z: 0.5211754}
   m_Center: {x: -0.0019226074, y: 0.53983545, z: 0.0000705719}
---- !u!114 &5301291473155093320
+--- !u!114 &1903094163592407428
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -386,7 +386,7 @@ MonoBehaviour:
   targetTag: Player
   destroyOnHit: 1
   destroyDelay: 3
---- !u!136 &6358879265903657422
+--- !u!136 &6882333701873858578
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
