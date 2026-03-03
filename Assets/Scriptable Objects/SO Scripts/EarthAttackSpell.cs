@@ -44,18 +44,18 @@ public class EarthAttackSpell : SO_Spells
             // Start position: on the surface, pushed out by half height so it isn't inside the ground
             Vector3 earthPos = ctx.aimPoint + ctx.aimNormal * halfHeight;
 
-            Rigidbody clone = Spawn(SpellPrefab, earthPos, earthRot);
+            Rigidbody clone = Spawn(SpellPrefab, Vector3.up, earthRot);
             SetVelocity(clone, Vector3.zero);
 
             // Grow upward: increase Y and push up by half the added amount so bottom stays planted
             Vector3 s = clone.transform.localScale;
             float oldY = s.y;
-
+            
             s.y = Mathf.Min(s.y + AddY, MaxY);
             clone.transform.localScale = s;
-
+            
             float deltaY = s.y - oldY;
-
+            
             // move up along the surface normal so growth doesn't sink into the ground
             if (deltaY > 0f)
                 clone.transform.position += ctx.aimNormal * (deltaY * 0.5f);
