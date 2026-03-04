@@ -8,6 +8,7 @@ public class CanvasManager : MonoBehaviour
     public GameObject fastTravelCanvas;
     public GameObject selectionCanvas;
     public GameObject HUD;
+    public GameObject workbenchCanvas;
     bool isActive = false;
 
     public InputActionAsset input;
@@ -101,6 +102,22 @@ public class CanvasManager : MonoBehaviour
         {
             isActive = false;
             fastTravelCanvas.SetActive(false);
+            CloseMenu();
+        }
+    }
+
+    public void OpenWorkbench()
+    {
+        if(!isActive)
+        {
+            isActive = true;
+            workbenchCanvas.SetActive(true);
+            OpenMenu();
+        }
+        else
+        {
+            isActive = false;
+            workbenchCanvas.SetActive(false);
             CloseMenu();
         }
     }

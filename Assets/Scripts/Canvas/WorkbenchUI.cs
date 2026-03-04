@@ -14,6 +14,7 @@ public class WorkbenchUI : MonoBehaviour
     public TMP_Text itemName2;
     public TMP_Text itemName3;
     public TMP_Text outputName;
+    public TMP_Text ouputName2;
 
 
     public void RecipeClicked(RecipeSO _recipe)
@@ -24,5 +25,10 @@ public class WorkbenchUI : MonoBehaviour
     public void CraftClicked()
     {
         CraftingManager.instance.CraftFromInventory();
+    }
+
+    public void ExitCrafting()
+    {
+        CanvasManager.Instance.OpenWorkbench();
     }
 }
