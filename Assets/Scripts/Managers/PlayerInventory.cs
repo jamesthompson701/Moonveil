@@ -30,7 +30,7 @@ public class PlayerInventory : MonoBehaviour
         ResetInv();
     }
 
-    //EVERYTHING IS SEEDS - no longer; we are now seed agnostic
+    //EVERYTHING IS SEEDS
     public int CheckSeeds()
     {
         foreach (var item in invSO.InventoryItems)
