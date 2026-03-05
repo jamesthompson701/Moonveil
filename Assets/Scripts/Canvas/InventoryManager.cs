@@ -24,6 +24,7 @@ public class InventoryManager: MonoBehaviour
         itemDescription.text = "";
     }
 
+    // make it so items can be dragged
 
     public void DisplayInventory()
     {

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -76,7 +77,6 @@ public class CanvasManager : MonoBehaviour
             isActive = true;
             inventoryCanvas.SetActive(true);
             OpenMenu();
-
         }
         else
         {
@@ -167,5 +167,16 @@ public class CanvasManager : MonoBehaviour
         openInv = input.FindAction("Inventory");
 
         HUD.SetActive(true);
+    }
+
+
+    // handles taking screenshot
+    IEnumerator TakeScreenshot()
+    {
+        yield return new WaitForEndOfFrame();
+
+        ScreenCapture.CaptureScreenshotAsTexture();
+
+
     }
 }
