@@ -45,18 +45,9 @@ public class PlayerInventory : MonoBehaviour
 
     //EVERYTHING IS FISH
 
-    public void AddFish(int _amount)
+    public void AddFish(FishData _fish, int _amount)
     {
-        if (invSO.InventoryItems.Any(item => item.item.itemName == "IceFish"))
-        {
-            fish = invSO.InventoryItems[3].amount + _amount;
-            invSO.InventoryItems[3].amount = fish;
-        }
-        else
-        {
-            invSO.AddItem(fishRef, _amount);
-        }
-        
+        invSO.AddItem(_fish.fishItem, _amount);
 
     }
     public void ResetInv()

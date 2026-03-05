@@ -21,4 +21,7 @@ public class FishData : ScriptableObject
     // Optional probability or rarity
     public float catchWeight = 1f;
     public bool isShiny;
+
+    // ItemSO
+    public ItemSO fishItem;
 }
