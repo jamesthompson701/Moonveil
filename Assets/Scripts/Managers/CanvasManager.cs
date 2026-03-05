@@ -216,7 +216,6 @@ public class CanvasManager : MonoBehaviour
 
         HUD.SetActive(false);
  
-
     }
 
     public void CloseMenu()
