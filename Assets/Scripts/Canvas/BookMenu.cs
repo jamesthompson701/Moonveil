@@ -14,7 +14,11 @@ public class BookMenu : MonoBehaviour
         DisplayRecipes();
     }
 
+    // capture gameplay screen and display on book
 
+    // for each recipe in recipe list instantiate a new page prefab
+
+    // cleaner disabling
 
     public void DisplayRecipes()
     {
