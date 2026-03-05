@@ -25,36 +25,50 @@ public class CraftingManager : MonoBehaviour
 
     public void CraftFromInventory()
     {
-
-        //checks every item in the player's inventory to see which of the ingredients the player has
-        foreach (InventoryItem _item in PlayerInventory.instance.invSO.InventoryItems)
+        if (curRecipe != null)
         {
-            if (_item.item == curRecipe.ingr1)
+            //checks every item in the player's inventory to see which of the ingredients the player has
+            foreach (InventoryItem _item in PlayerInventory.instance.invSO.InventoryItems)
             {
-                hasItem1 = true;
+                if (_item.item == curRecipe.ingr1)
+                {
+                    hasItem1 = true;
+                }
+                if (_item.item == curRecipe.ingr2)
+                {
+                    hasItem2 = true;
+                }
+                if (_item.item == curRecipe.ingr3)
+                {
+                    hasItem3 = true;
+                }
             }
-            if (_item.item == curRecipe.ingr2)
+
+            //if the player has all three ingredients, take one of each and give them the recipe output
+            if (hasItem1 && hasItem2 && hasItem3)
             {
-                hasItem2 = true;
+                PlayerInventory.instance.invSO.RemoveItem(curRecipe.ingr1, -1);
+                PlayerInventory.instance.invSO.RemoveItem(curRecipe.ingr2, -1);
+                PlayerInventory.instance.invSO.RemoveItem(curRecipe.ingr3, -1);
+                PlayerInventory.instance.invSO.AddItem(curRecipe.output, 1);
+
+                //reset the bools
+                hasItem1 = false;
+                hasItem2 = false;
+                hasItem3 = false;
+
+                WorkbenchUI.instance.SuccessfulCraft();
+                Debug.Log("Item Crafted");
             }
-            if (_item.item == curRecipe.ingr3)
+            else
             {
-                hasItem3 = true;
+                WorkbenchUI.instance.FailedCraft();
+                Debug.Log("Insufficient Materials");
             }
         }
-
-        //if the player has all three ingredients, take one of each and give them the recipe output
-        if (hasItem1 && hasItem2 && hasItem3)
+        else
         {
-            PlayerInventory.instance.invSO.RemoveItem(curRecipe.ingr1, -1);
-            PlayerInventory.instance.invSO.RemoveItem(curRecipe.ingr2, -1);
-            PlayerInventory.instance.invSO.RemoveItem(curRecipe.ingr3, -1);
-            PlayerInventory.instance.invSO.AddItem(curRecipe.output, 1);
-
-            //reset the bools
-            hasItem1 = false;
-            hasItem2 = false;
-            hasItem3 = false;
+            Debug.Log("No recipe selected");
         }
 
     }
