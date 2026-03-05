@@ -30,7 +30,7 @@ public class InventoryManager: MonoBehaviour
         //Handles inventory slots
         for (int i = 0; i < InventorySlots.Length; i++)
         {
-            Debug.Log(InventorySlots[i].item.amount);
+            Debug.Log("Number of items in " + i + " slot: " + InventorySlots[i].item.amount);
             if (InventorySlots[i].item.amount == 0)
             {
                 InventorySlots[i].ResetSlot();

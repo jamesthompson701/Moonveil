@@ -10,6 +10,9 @@ public class CanvasManager : MonoBehaviour
     public GameObject HUD;
     bool isActive = false;
 
+    //In awake this was initialize with all the canvases that we want to close with esc
+    [SerializeField] private GameObject[] escCloseableCanvases;
+
     public InputActionAsset input;
     InputAction openInv;
     InputAction openPause;
@@ -23,6 +26,8 @@ public class CanvasManager : MonoBehaviour
 
     private void Awake()
     {
+        //When adding a new menu you want to close with esc add it to this array
+        escCloseableCanvases = new GameObject[]{fastTravelCanvas, workbenchCanvas};
 
         openInv = input.FindAction("Inventory");
         openPause = input.FindAction("Pause");
@@ -58,7 +63,23 @@ public class CanvasManager : MonoBehaviour
         bool pause = openPause.WasPressedThisFrame();
         if (pause == true)
         {
-            OpenPause();
+            Debug.Log("Esc Pressed");
+            bool canvasClosed = false;
+            foreach (GameObject canvas in escCloseableCanvases)
+            {
+                Debug.Log("Canvas " +  canvas.name + " is " + canvas.activeInHierarchy);
+                if(canvas.activeInHierarchy)
+                {
+                    isActive = false;
+                    canvas.SetActive(false);
+                    CloseMenu();
+                    canvasClosed = true;
+                }
+            }
+            if (!canvasClosed)
+            {
+                OpenPause();
+            }
         }
 
         bool selection = openSelection.WasPressedThisFrame();
