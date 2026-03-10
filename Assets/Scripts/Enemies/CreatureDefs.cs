@@ -432,11 +432,11 @@ public class CreatureDefs : MonoBehaviour, IDamageable
                 break;
 
             case AttackMode.ProjectileStraight:
-                DoStraightProjectile();
+                yield return DoStraightProjectile();
                 break;
 
             case AttackMode.ProjectileArc:
-                DoArcProjectile();
+                yield return DoArcProjectile();
                 break;
             case AttackMode.Charger:
                 yield return DoChargeAttack();
@@ -461,20 +461,22 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         Debug.Log("Melee hitbox = " + meleeHitbox.enabled);
     }
 
-    private void DoStraightProjectile()
+    private IEnumerator DoStraightProjectile()
     {
-        if (!projectilePrefab) return;
+        if (!projectilePrefab) yield break;
 
         Transform origin = attackPoint ? attackPoint : transform;
         Rigidbody proj = Instantiate(projectilePrefab, origin.position, origin.rotation);
 
         Vector3 dir = (target.position - origin.position).normalized;
         proj.linearVelocity = dir * projectileSpeed;
+
+        yield break;
     }
 
-    private void DoArcProjectile()
+    private IEnumerator DoArcProjectile()
     {
-        if (!projectilePrefab) return;
+        if (!projectilePrefab) yield break;
 
         Transform origin = attackPoint ? attackPoint : transform;
         Rigidbody proj = Instantiate(projectilePrefab, origin.position, origin.rotation);
@@ -486,6 +488,8 @@ public class CreatureDefs : MonoBehaviour, IDamageable
             proj.linearVelocity = v;
         else
             proj.linearVelocity = (end - start).normalized * projectileSpeed;
+
+        yield break;
     }
 
     // Target faces the enemy, waits for a short windup, then dashes forward in a straight line. Bonks into the player then retreats. Kinda funny.
@@ -569,11 +573,11 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         return mult;
     }
 
-    private void Die()
+    private IEnumerator Die()
     {
         //if (meleeHitbox) meleeHitbox.enabled = false;
         if (physicsCollider) physicsCollider.enabled = false;
-        Destroy(gameObject);
+        return null;
     }
 
     private void TryFindTargetByTag(string tag)
