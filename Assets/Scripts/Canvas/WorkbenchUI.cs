@@ -51,14 +51,14 @@ public class WorkbenchUI : MonoBehaviour
 
     public void FailedCraft()
     {
-        Invoke("ToggleCraftFailed", 0f);
-        Invoke("ToggleCraftFailed", 2f);
+        Invoke("CraftFailedOn", 0f);
+        Invoke("CraftFailedOff", 1f);
     }
 
     public void SuccessfulCraft()
     {
-        Invoke("ToggleCraftSuccess", 0f);
-        Invoke("ToggleCraftSuccess", 2f);
+        Invoke("CraftSuccessOn", 0f);
+        Invoke("CraftSuccessOff", 1f);
     }
 
     public void CraftClicked()
@@ -72,26 +72,21 @@ public class WorkbenchUI : MonoBehaviour
     }
 
     //chud invokeable functions
-    public void ToggleCraftFailed()
+    public void CraftFailedOn()
     {
-        if(craftFailed.activeInHierarchy)
-        {
-            craftFailed.SetActive(false);
-        }    
-        else
-        {
             craftFailed.SetActive(true);
-        }
     }
-    public void ToggleCraftSuccess()
+    public void CraftFailedOff()
     {
-        if (craftSuccess.activeInHierarchy)
-        {
-            craftSuccess.SetActive(false);
-        }
-        else
-        {
+        craftFailed.SetActive(false);
+    }
+
+    public void CraftSuccessOn()
+    {
             craftSuccess.SetActive(true);
-        }
+    }
+    public void CraftSuccessOff()
+    {
+        craftSuccess.SetActive(false);
     }
 }
