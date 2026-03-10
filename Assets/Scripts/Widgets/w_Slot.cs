@@ -34,7 +34,7 @@ public class w_Slot : MonoBehaviour, IPointerEnterHandler
         button.SetActive(false);
         amount.text = string.Empty;
         image.sprite = null;
-
+        item = null;
     }
 
 
