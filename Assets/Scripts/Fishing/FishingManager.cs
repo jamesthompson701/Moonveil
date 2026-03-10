@@ -71,7 +71,7 @@ public class FishingManager : MonoBehaviour
         }
 
         // Exit fishing (likely to change input)
-        if (inFishingMode && Input.GetKeyDown(KeyCode.Z))
+        if (inFishingMode && Input.GetKeyDown(KeyCode.Escape))
         {
             ExitFishingMode();
         }
@@ -298,11 +298,11 @@ public class FishingManager : MonoBehaviour
 
         if (success)
         {
-            ShowPrompt(caughtFish.fishName + " fish caught!" + "  Press " + castInput + " to recast your rod" + " or press z to exit");
+            ShowPrompt(caughtFish.fishName + " fish caught!" + "  Press " + castInput + " to recast your rod" + " or press Escape to exit");
         }
         else
         {
-            ShowPrompt("The fish escaped..." + " Press " + castInput + " to recast your rod" + " or press z to exit");
+            ShowPrompt("The fish escaped..." + " Press " + castInput + " to recast your rod" + " or press Escape to exit");
         }
     }
 
