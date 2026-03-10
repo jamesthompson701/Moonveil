@@ -339,7 +339,6 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         {
             //Sets the speed paramater in the animator compontent to the speed of the creature  
             animator.SetFloat("Speed", animSmoothSpeed);
-            Debug.Log("Speed set to " + animSmoothSpeed);
         }
     }
 
