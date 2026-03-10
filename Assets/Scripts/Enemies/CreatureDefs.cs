@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 /// <summary>
 /// Master enemy script. Drives physics-based movement, spacing, targeting, and attack pacing.
@@ -23,6 +24,9 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
     [Tooltip("Enemy layer mask for separation (anti-clump). Typically set to the Enemy layer only.")]
     [SerializeField] private LayerMask enemyLayerMask;
+
+    [Tooltip("The Animator Component).")]
+    [SerializeField] private Animator animator;
 
     [Header("Core Stats")]
     [Tooltip("Max health for this enemy.")]
@@ -148,6 +152,10 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
     private const string DefaultPlayerTag = "PlayerHitPt";
 
+    //For Animation
+    private float animSmoothSpeed;
+    private bool hasAnimator;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -169,6 +177,9 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         // Start with melee hitbox off.
         if (meleeHitbox)
             meleeHitbox.enabled = false;
+
+        // Sets bool thats used to check if we have animator before trying to call it, just to avoid errors
+        hasAnimator = TryGetComponent(out animator);
     }
 
     private void FixedUpdate()
@@ -262,6 +273,17 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
         desiredDir = (radial + tangent * 0.65f).normalized;
         desiredSpeed = Mathf.Lerp(minSpeed, maxSpeed, steerMultiplier);
+
+        //The speed used in the animation blend tree is set
+        animSmoothSpeed = Mathf.Lerp(animSmoothSpeed, desiredSpeed, Time.deltaTime * steerMultiplier);
+        if (animSmoothSpeed < 0.01f) animSmoothSpeed = 0f;
+
+        if (hasAnimator)
+        {
+            //Sets the speed paramater in the animator compontent to the speed of the creature  
+            animator.SetFloat("Speed", animSmoothSpeed);
+            Debug.Log("Speed set to " + animSmoothSpeed);
+        }
     }
 
     private void RoamMove(out Vector3 desiredDir, out float desiredSpeed)
@@ -308,6 +330,17 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
         desiredDir = (dist > 0.001f) ? (toPointFlat / dist) : Vector3.zero;
         desiredSpeed = Mathf.Lerp(minSpeed, maxSpeed, 0.35f);
+
+        //The speed used in the animation blend tree is set
+        animSmoothSpeed = Mathf.Lerp(animSmoothSpeed, desiredSpeed, Time.deltaTime * GetSteerMultiplier());
+        if (animSmoothSpeed < 0.01f) animSmoothSpeed = 0f;
+
+        if (hasAnimator)
+        {
+            //Sets the speed paramater in the animator compontent to the speed of the creature  
+            animator.SetFloat("Speed", animSmoothSpeed);
+            Debug.Log("Speed set to " + animSmoothSpeed);
+        }
     }
 
     private void PickRandomRoamTarget()
@@ -459,6 +492,9 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         if (meleeActiveSeconds > 0f) yield return new WaitForSeconds(meleeActiveSeconds);
         meleeHitbox.enabled = false;
         Debug.Log("Melee hitbox = " + meleeHitbox.enabled);
+
+        //Tells Animator to play attack anim
+        animator.SetTrigger("Attack");
     }
 
     private void DoStraightProjectile()
@@ -470,6 +506,9 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
         Vector3 dir = (target.position - origin.position).normalized;
         proj.linearVelocity = dir * projectileSpeed;
+
+        //Tells Animator to play attack anim
+        animator.SetTrigger("Attack");
     }
 
     private void DoArcProjectile()
@@ -486,6 +525,9 @@ public class CreatureDefs : MonoBehaviour, IDamageable
             proj.linearVelocity = v;
         else
             proj.linearVelocity = (end - start).normalized * projectileSpeed;
+
+        //Tells Animator to play attack anim
+        animator.SetTrigger("Attack");
     }
 
     // Target faces the enemy, waits for a short windup, then dashes forward in a straight line. Bonks into the player then retreats. Kinda funny.
@@ -497,6 +539,9 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         Vector3 dir = (target.position - transform.position).normalized;
         _rb.AddForce(dir * chargeSpeed, ForceMode.Impulse);
         yield return new WaitForSeconds(1f);
+
+        //Tells Animator to play attack anim
+        animator.SetTrigger("Attack");
     }
 
     private static bool TryComputeBallisticVelocity(Vector3 start, Vector3 end, float apexExtraHeight, out Vector3 initialVelocity)
@@ -552,6 +597,9 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
         if (_health <= 0f)
             Die();
+
+        //Tells animator to play damaged animation
+        animator.SetTrigger("Damaged");
     }
 
     public void ApplySlip(float durationSeconds, float steerMultiplier)
@@ -573,6 +621,12 @@ public class CreatureDefs : MonoBehaviour, IDamageable
     {
         //if (meleeHitbox) meleeHitbox.enabled = false;
         if (physicsCollider) physicsCollider.enabled = false;
+
+        //***TODO*** turn this into a coroutine to make the anim finish playing before destroying game object
+        //Tells Animator to play Death anim
+        animator.SetTrigger("Death");
+
+
         Destroy(gameObject);
     }
 
