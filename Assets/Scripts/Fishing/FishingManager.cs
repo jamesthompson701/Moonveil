@@ -292,7 +292,8 @@ public class FishingManager : MonoBehaviour
             // notify inventory / UI systems
             OnFishCaught?.Invoke(caughtFish);
 
-            PlayerInventory.instance.AddFish(1);
+            PlayerInventory.instance.AddFish(caughtFish, 1);
+
             /* rough code to add into UI script
             void OnEnable()
             {
@@ -306,13 +307,14 @@ public class FishingManager : MonoBehaviour
 
             void AddFish(FishData fish)
             {
-                inventory.Add(fish);
+                PlayerInventory.instance.invSO.AddItem(fish.fishItem, 1);
                 // update UI
-            }*/
+            }
 
             // After success, consider pulling the rod / end cast:
             lineIsCasted = false;
             if (currentRod) currentRod.OnCaughtFish(); // let rod handle visuals
+            */
         }
         else
         {
