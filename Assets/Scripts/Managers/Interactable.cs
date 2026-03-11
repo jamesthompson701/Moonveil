@@ -45,7 +45,7 @@ public class Interactable : MonoBehaviour
             }
 
         }
-        else if(gameObject.CompareTag("fishingArea"))
+        else if(gameObject.CompareTag("Dock"))
         {
             FishingManager.Instance.EnterFishingMode(FishingManager.Instance.currentArea);
         }
