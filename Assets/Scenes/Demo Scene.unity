@@ -20783,6 +20783,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Straight
       objectReference: {fileID: 0}
+    - target: {fileID: 888579090868862294, guid: bb7bd1f54cebd2b4dab074ebc0f7fa52, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7941753566101397876, guid: bb7bd1f54cebd2b4dab074ebc0f7fa52, type: 3}
       propertyPath: m_LocalPosition.x
       value: 96.98
@@ -21015,6 +21019,10 @@ PrefabInstance:
     - target: {fileID: 792440819834715892, guid: 93baaa498a236f9409e87ae71dbaaa09, type: 3}
       propertyPath: m_Name
       value: Enemy Charger
+      objectReference: {fileID: 0}
+    - target: {fileID: 792440819834715892, guid: 93baaa498a236f9409e87ae71dbaaa09, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4113238653169323784, guid: 93baaa498a236f9409e87ae71dbaaa09, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21626,6 +21634,10 @@ PrefabInstance:
     - target: {fileID: 4506743262962159528, guid: 491a1fae143c2604e975b6974db4fd92, type: 3}
       propertyPath: m_Name
       value: Enemy Arcing
+      objectReference: {fileID: 0}
+    - target: {fileID: 4506743262962159528, guid: 491a1fae143c2604e975b6974db4fd92, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7408430592022992878, guid: 491a1fae143c2604e975b6974db4fd92, type: 3}
       propertyPath: m_LocalPosition.x
@@ -23037,16 +23049,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackChoice: 0
-  combatSpells:
+  combatSpellsTier1:
   - {fileID: 11400000, guid: f8e10f7e8526b9549814c30bead50ede, type: 2}
   - {fileID: 11400000, guid: 2994f850910f3df489556b6ad27e7ac3, type: 2}
   - {fileID: 11400000, guid: 00b3fcee90c84ae4ea9d4bd2230a796e, type: 2}
   - {fileID: 11400000, guid: 99db7f0b4d701de42b6634552a1816a8, type: 2}
-  farmSpells:
+  combatSpellsTier2:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  combatSpellsTier3:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  combatSpellsTier4:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  farmSpellsTier1:
   - {fileID: 11400000, guid: 30aa123db53222d43991dd2442d07525, type: 2}
   - {fileID: 11400000, guid: a34f33880250ed848a5d3845beb32682, type: 2}
   - {fileID: 11400000, guid: adf2bcea23a3f4346bdbe1e08c795e5d, type: 2}
   - {fileID: 11400000, guid: 01824e77eddb6b74aac17245365f3699, type: 2}
+  farmSpellsTier2:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: c71b66f1616a6be4cafcfbbd78e99a9b, type: 2}
+  - {fileID: 0}
+  farmSpellsTier3:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  farmSpellsTier4:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   player: {fileID: 4416926082426931733}
   hitPt: {fileID: 1744771026}
   attackCastOrigin: {fileID: 604838202602733351}
@@ -23060,7 +23102,8 @@ MonoBehaviour:
   avgSpeed: 15
   fastSpeed: 25
   farmSpawnOffset: 1.2
-  inCombatArea: 1
+  timer: 0
+  inCombatArea: 0
 --- !u!136 &9155286178557735939
 CapsuleCollider:
   m_ObjectHideFlags: 0
