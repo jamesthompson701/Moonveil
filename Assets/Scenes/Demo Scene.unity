@@ -15322,26 +15322,26 @@ MonoBehaviour:
   player: {fileID: 4416926082426931733}
   fishingRodPrefab: {fileID: -7491454401108787118, guid: 96ff784c6a9664c44855332f986065e0, type: 3}
   rodParent: {fileID: 1309193534}
-  uiCanvasWater: {fileID: 1839325269}
-  uiCanvasFire: {fileID: 1739277138}
-  uiCanvasIce: {fileID: 1133165583}
-  miniGameUI: {fileID: 947077795}
+  uiCanvasWater: {fileID: 684808137}
+  uiCanvasFire: {fileID: 1782708220}
+  uiCanvasIce: {fileID: 1979336849}
+  miniGameUI: {fileID: 1386901151}
   biomeUIs:
   - biome: 0
-    fishingCamera: {fileID: 1919904816}
-    fishingCanvas: {fileID: 1839325269}
-    miniGameUI: {fileID: 947077795}
-    promptText: {fileID: 1367236921}
+    fishingCamera: {fileID: 1966728316}
+    fishingCanvas: {fileID: 684808137}
+    miniGameUI: {fileID: 1386901151}
+    promptText: {fileID: 1858721467}
   - biome: 1
-    fishingCamera: {fileID: 44631077}
-    fishingCanvas: {fileID: 1739277138}
-    miniGameUI: {fileID: 602804334}
-    promptText: {fileID: 1291936301}
+    fishingCamera: {fileID: 1227559485}
+    fishingCanvas: {fileID: 1782708220}
+    miniGameUI: {fileID: 1167722527}
+    promptText: {fileID: 1800933912}
   - biome: 2
-    fishingCamera: {fileID: 349298524}
-    fishingCanvas: {fileID: 1133165583}
-    miniGameUI: {fileID: 1643685146}
-    promptText: {fileID: 224220990}
+    fishingCamera: {fileID: 1814088294}
+    fishingCanvas: {fileID: 1979336849}
+    miniGameUI: {fileID: 1811550207}
+    promptText: {fileID: 1825459633}
   startFishingPrompt: {fileID: 959722531}
   startFishingInput: Fire2
   castInput: Fire1
@@ -17965,17 +17965,6 @@ Transform:
   - {fileID: 1568097131}
   m_Father: {fileID: 975698676}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &602804334 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8044672911224937250, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
-  m_PrefabInstance: {fileID: 1470990659}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fba04ddae7d6a43c4bce363f3eb5aabe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FishingMiniGameUI
 --- !u!1 &606462923
 GameObject:
   m_ObjectHideFlags: 0
@@ -18790,6 +18779,45 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5436ac65ac2a41643a4d2dcad7ed5f6c, type: 3}
   m_PrefabInstance: {fileID: 1242737893}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &652525856
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI Extensions/UIMultiply
+  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &653147498
 GameObject:
   m_ObjectHideFlags: 0
@@ -19391,6 +19419,11 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!223 &684808137 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 288084592498464725, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
+  m_PrefabInstance: {fileID: 1974277211}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &687129357
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26146,17 +26179,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 946726650}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &947077795 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8044672911224937250, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
-  m_PrefabInstance: {fileID: 1263771057}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fba04ddae7d6a43c4bce363f3eb5aabe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FishingMiniGameUI
 --- !u!1 &949830119
 GameObject:
   m_ObjectHideFlags: 0
@@ -29757,11 +29779,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3953086907556199569, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
   m_PrefabInstance: {fileID: 1088737591}
   m_PrefabAsset: {fileID: 0}
---- !u!223 &1133165583 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 288084592498464725, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
-  m_PrefabInstance: {fileID: 1088737591}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1138545128
 GameObject:
   m_ObjectHideFlags: 0
@@ -30350,45 +30367,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1161617689}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!21 &1163981543
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+--- !u!114 &1167722527 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8044672911224937250, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
+  m_PrefabInstance: {fileID: 953599310}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UI Extensions/UIMultiply
-  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba04ddae7d6a43c4bce363f3eb5aabe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishingMiniGameUI
 --- !u!1 &1173357091
 GameObject:
   m_ObjectHideFlags: 0
@@ -40148,6 +40137,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1383824193}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1386901151 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8044672911224937250, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
+  m_PrefabInstance: {fileID: 1974277211}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba04ddae7d6a43c4bce363f3eb5aabe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishingMiniGameUI
 --- !u!1 &1398268585
 GameObject:
   m_ObjectHideFlags: 0
@@ -59972,17 +59972,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3101702b1764604680e7f5fcbefd94a, type: 3}
---- !u!114 &1643685146 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8044672911224937250, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
-  m_PrefabInstance: {fileID: 1088737591}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fba04ddae7d6a43c4bce363f3eb5aabe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FishingMiniGameUI
 --- !u!1 &1643779593
 GameObject:
   m_ObjectHideFlags: 0
@@ -61840,11 +61829,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3953086907556199569, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
   m_PrefabInstance: {fileID: 1470990659}
   m_PrefabAsset: {fileID: 0}
---- !u!223 &1739277138 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 288084592498464725, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
-  m_PrefabInstance: {fileID: 1470990659}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1739351169
 GameObject:
   m_ObjectHideFlags: 0
@@ -62700,6 +62684,11 @@ Transform:
   - {fileID: 1422553375}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -36.19, z: 0}
+--- !u!223 &1782708220 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 288084592498464725, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
+  m_PrefabInstance: {fileID: 953599310}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1789603831 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -963449834949053364, guid: 81422671c1cf56e4aab47a60ec9f8b7c, type: 3}
@@ -63289,6 +63278,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1809405810}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1811550207 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8044672911224937250, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
+  m_PrefabInstance: {fileID: 400894776}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba04ddae7d6a43c4bce363f3eb5aabe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishingMiniGameUI
 --- !u!1 &1812813934
 GameObject:
   m_ObjectHideFlags: 0
@@ -64047,11 +64047,6 @@ Transform:
 --- !u!224 &1839325266 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3953086907556199569, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
-  m_PrefabInstance: {fileID: 1263771057}
-  m_PrefabAsset: {fileID: 0}
---- !u!223 &1839325269 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 288084592498464725, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
   m_PrefabInstance: {fileID: 1263771057}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1845823974
@@ -72312,6 +72307,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1977719446}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!223 &1979336849 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 288084592498464725, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
+  m_PrefabInstance: {fileID: 400894776}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1982614572
 GameObject:
   m_ObjectHideFlags: 0
