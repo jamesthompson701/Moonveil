@@ -26578,7 +26578,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8745466833978124123, guid: 8e745a4790f994a69bd635f19f702a3a, type: 3}
       propertyPath: m_TagString
-      value: fishingArea
+      value: Dock
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -40907,6 +40907,10 @@ PrefabInstance:
       propertyPath: manager
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6148931871410076281, guid: 849580836f4a14fa4a01b1b97b3ca92f, type: 3}
+      propertyPath: m_TagString
+      value: Dock
+      objectReference: {fileID: 0}
     - target: {fileID: 6515257084941182865, guid: 849580836f4a14fa4a01b1b97b3ca92f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 85.99365
@@ -40968,6 +40972,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6819785266368089412, guid: 849580836f4a14fa4a01b1b97b3ca92f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 6148931871410076281, guid: 849580836f4a14fa4a01b1b97b3ca92f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1969556349}
   m_SourcePrefab: {fileID: 100100000, guid: 849580836f4a14fa4a01b1b97b3ca92f, type: 3}
 --- !u!4 &1445382143 stripped
 Transform:
@@ -61158,6 +61165,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6038290803540530285, guid: 81913881ffe7443efa7b0697b79843a9, type: 3}
+      propertyPath: m_TagString
+      value: Dock
+      objectReference: {fileID: 0}
     - target: {fileID: 6039218446330354155, guid: 81913881ffe7443efa7b0697b79843a9, type: 3}
       propertyPath: m_Name
       value: IceEnvironment
@@ -61181,6 +61192,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1814088291}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6038290803540530285, guid: 81913881ffe7443efa7b0697b79843a9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8543686104411987944}
     - targetCorrespondingSourceObject: {fileID: 6129552922341199949, guid: 81913881ffe7443efa7b0697b79843a9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -71881,6 +71895,25 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3399744421897028414, guid: 6cb63a6c3b4f741e79c7b4861db54e5a, type: 3}
   m_PrefabInstance: {fileID: 1512685286}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1969556343 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6148931871410076281, guid: 849580836f4a14fa4a01b1b97b3ca92f, type: 3}
+  m_PrefabInstance: {fileID: 1444880506}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1969556349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969556343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20dc610626fa5644d87a924f1d64a0f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  trailMix: {fileID: 0}
+  dispenserItem: {fileID: 0}
 --- !u!1001 &1973665088
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -78615,6 +78648,11 @@ Transform:
   - {fileID: 1630836093716557151}
   m_Father: {fileID: 7193948127383480750}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8194567233486113028 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6038290803540530285, guid: 81913881ffe7443efa7b0697b79843a9, type: 3}
+  m_PrefabInstance: {fileID: 1702172783}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8322255484078028359
 Transform:
   m_ObjectHideFlags: 0
@@ -78755,6 +78793,20 @@ Transform:
   - {fileID: 2857373401451296609}
   m_Father: {fileID: 7590676345287443624}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8543686104411987944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8194567233486113028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20dc610626fa5644d87a924f1d64a0f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  trailMix: {fileID: 0}
+  dispenserItem: {fileID: 0}
 --- !u!4 &8626512281767388279
 Transform:
   m_ObjectHideFlags: 0
