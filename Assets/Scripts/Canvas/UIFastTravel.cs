@@ -8,10 +8,10 @@ public class UIFastTravel : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
-    public void OnFastTravelClicked()
+    public void OnFastTravelClicked(int destination)
     {
         Debug.Log("Fast Travel Clicked");
-        EnvironmentManager.Instance.Travel(eFastTravel.home);
+        EnvironmentManager.Instance.Travel((eFastTravel)destination);
         CanvasManager.Instance.OpenFastTravel();
     }
 }
