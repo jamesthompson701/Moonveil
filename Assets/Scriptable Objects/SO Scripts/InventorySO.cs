@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Create New Inventory")]
 public class InventorySO : ScriptableObject
 {
     public List<InventoryItem> InventoryItems = new List<InventoryItem>();
     public int maxItems;
+    public event Action<ItemSO, int> GetInventoryItem;
 
     //TODO| Account for removing items
 
@@ -29,6 +31,9 @@ public class InventorySO : ScriptableObject
         {
             InventoryItems.Add(new InventoryItem(newItem, newAmount));
         }
+
+        GetInventoryItem?.Invoke(newItem, newAmount);
+
     }
 
     public void RemoveItem(ItemSO newItem, int newAmount)

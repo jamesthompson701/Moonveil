@@ -50,6 +50,8 @@ public class InventoryManager: MonoBehaviour
         itemDescription.text = hoveredItem.item.itemDescription;
     }
 
+
+
  
 
 }

@@ -6,15 +6,22 @@ public class HUD : MonoBehaviour
     GameObject playerRef;
     SpellManager attackManagerRef;
 
-    public GameObject[] highlight;
+    public w_ItemPopup itemPopup;
+    public GameObject popupGroup;
 
-    
+    public GameObject[] highlight;
+    public InventoryManager managerRef;
+
+
 
     private void Awake()
     {
         playerRef = GameObject.Find("Player");
         attackManagerRef = playerRef.GetComponent<SpellManager>();
-         
+
+        GameObject managerObj = GameObject.Find("PlayerInventoryUI");
+        managerRef = managerObj.GetComponent<InventoryManager>();
+
 
     }
     private void Update()
@@ -34,6 +41,9 @@ public class HUD : MonoBehaviour
                 SetActive(3);
                 break;
         }
+
+        managerRef.inventory.GetInventoryItem += itemPopup.SetSlot;
+
     }
 
     public void SetActive(int index)
@@ -44,4 +54,10 @@ public class HUD : MonoBehaviour
         }
         highlight[index].SetActive(true);
     }
+
+    public void InstantiatePopup()
+    {
+
+    }
+
 }
