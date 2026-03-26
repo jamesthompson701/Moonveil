@@ -8,6 +8,7 @@ public class InventorySO : ScriptableObject
     public List<InventoryItem> InventoryItems = new List<InventoryItem>();
     public int maxItems;
     public event Action<ItemSO, int> GetInventoryItem;
+    public event Action AddInventoryItem;
 
     //TODO| Account for removing items
 
@@ -21,6 +22,7 @@ public class InventorySO : ScriptableObject
                 if (item.item == newItem)
                 {
                     item.AddAmount(newAmount);
+                    AddInventoryItem?.Invoke();
                     return;
                 }
             }

@@ -12,6 +12,7 @@ public class CanvasManager : MonoBehaviour
     public GameObject selectionCanvas;
     public GameObject HUD;
     public GameObject workbenchCanvas;
+    public GameObject titleScreenCanvas;
     bool isActive = false;
 
     //In awake this was initialize with all the canvases that we want to close with esc
@@ -40,6 +41,8 @@ public class CanvasManager : MonoBehaviour
         player = input.FindActionMap("Player");
         UI = input.FindActionMap("UI");
 
+        Invoke("OpenTitleScreen", 1.0f);
+
         //Making canvas manager a singleton
         if (Instance != null && Instance != this)
         {
@@ -52,6 +55,8 @@ public class CanvasManager : MonoBehaviour
         }
 
     }
+
+
 
     private void Update()
     {
@@ -250,6 +255,22 @@ public class CanvasManager : MonoBehaviour
         openInv = input.FindAction("Inventory");
 
         HUD.SetActive(true);
+    }
+
+    public void OpenTitleScreen()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        ClickSelector.Instance.enabled = false;
+
+        player.Disable();
+        UI.Enable();
+    }
+
+    public void CloseTitleScreen()
+    {
+        titleScreenCanvas.SetActive(false);
+        CloseMenu();
     }
 
 

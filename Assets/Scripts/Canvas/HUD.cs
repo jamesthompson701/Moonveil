@@ -7,11 +7,12 @@ public class HUD : MonoBehaviour
     SpellManager attackManagerRef;
 
     public w_ItemPopup itemPopup;
-    public GameObject popupGroup;
 
     public GameObject[] highlight;
     public InventoryManager managerRef;
 
+    public GameObject slot;
+    public Transform popupGroup;
 
 
     private void Awake()
@@ -22,11 +23,13 @@ public class HUD : MonoBehaviour
         GameObject managerObj = GameObject.Find("PlayerInventoryUI");
         managerRef = managerObj.GetComponent<InventoryManager>();
 
+        managerRef.inventory.GetInventoryItem += InstantiatePopup;
+
 
     }
     private void Update()
     {
-       switch (attackManagerRef.attackChoice)
+        switch (attackManagerRef.attackChoice)
         {
             case 1:
                 SetActive(0);
@@ -42,7 +45,7 @@ public class HUD : MonoBehaviour
                 break;
         }
 
-        managerRef.inventory.GetInventoryItem += itemPopup.SetSlot;
+
 
     }
 
@@ -55,7 +58,21 @@ public class HUD : MonoBehaviour
         highlight[index].SetActive(true);
     }
 
-    public void InstantiatePopup()
+    public void InstantiatePopup(ItemSO _item, int _amount)
+    {
+        GameObject popUp = Instantiate(slot, popupGroup); 
+        w_ItemPopup spawnedPopup = popUp.GetComponent<w_ItemPopup>();
+        spawnedPopup.itemName.text = _item.itemName;
+        spawnedPopup.image.sprite = _item.itemSprite;
+        spawnedPopup.amount.text = "" + _amount;
+
+//managerRef.inventory.AddInventoryItem += AddPopup;
+
+
+        Destroy(popUp, 3);
+    }
+
+    public void AddPopup(w_ItemPopup _popUp, int _amount)
     {
 
     }
