@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using PixelCrushers.DialogueSystem;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
 
@@ -56,6 +57,10 @@ public class Interactable : MonoBehaviour
         else if (gameObject.CompareTag("FastTravel"))
         {
             CanvasManager.Instance.OpenFastTravel();
+        }
+        else if (gameObject.CompareTag("Dialogue"))
+        {
+            DialogueManager.StartConversation("New Conversation 1");
         }
         else
         {
