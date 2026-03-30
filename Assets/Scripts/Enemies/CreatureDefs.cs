@@ -6,7 +6,7 @@ using UnityEngine;
 /// Attach to the Enemy root object (the one with the Rigidbody).
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
-public class CreatureDefs : MonoBehaviour, IDamageable
+public class CreatureDefs : MonoBehaviour
 {
     public enum RoamMode { Waypoints, RandomRoam }
     public enum AttackMode { Melee, ProjectileStraight, ProjectileArc, Charger }
@@ -151,6 +151,8 @@ public class CreatureDefs : MonoBehaviour, IDamageable
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        _rb.interpolation = RigidbodyInterpolation.Interpolate;
         _health = maxHealth;
         _spawnPos = transform.position;
 
@@ -205,6 +207,11 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         ApplySteering(desiredDir, desiredSpeed);
         ApplySeparation();
         ApplyFacing(toTarget: _hasAggro);
+    }
+
+    public void Burn(float damagePerSecond, float duration)
+    {
+        // Implement burn logic as needed
     }
 
     private void UpdateAggroState()
@@ -549,19 +556,27 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
         if (impulseForce > 0f)
         {
-            Vector3 dir = hitDirection.normalized;
-            if (dir.sqrMagnitude < 0.0001f) dir = Vector3.up;
+            Vector3 dir = hitDirection;
+            dir.y = 0f; // Only apply horizontal impulse
+            if (dir.sqrMagnitude < 0.0001f) dir = Vector3.forward;
+            dir = dir.normalized;
             _rb.AddForce(dir * impulseForce, ForceMode.Impulse);
+        }
+
+        for (int i = 0; i < GetComponentsInChildren<Renderer>().Length; i++)
+        {
+            Renderer renderer = GetComponentsInChildren<Renderer>()[i];
+            if (renderer != null)
+            {
+
+                renderer.material.color = Color.red; // Flash red when hit
+                Invoke("ResetColor", 0.1f); // Reset color after a short delay
+
+            }
         }
 
         if (_health <= 0f)
             Die();
-    }
-
-    public void ApplySlip(float durationSeconds, float steerMultiplier)
-    {
-        _slipUntil = Mathf.Max(_slipUntil, Time.time + Mathf.Max(0f, durationSeconds));
-        _slipSteerMultiplier = Mathf.Clamp01(steerMultiplier);
     }
 
     private float GetSteerMultiplier()
@@ -604,6 +619,18 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, separationRadius);
+    }
+
+    private void ResetColor()
+    {
+        for (int i = 0; i < GetComponentsInChildren<Renderer>().Length; i++)
+        {
+            Renderer renderer = GetComponentsInChildren<Renderer>()[i];
+            if (renderer != null)
+            {
+                renderer.material.color = Color.grey; // Reset to original color
+            }
+        }
     }
 }
 

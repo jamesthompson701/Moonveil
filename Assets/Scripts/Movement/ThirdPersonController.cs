@@ -86,7 +86,7 @@ namespace StarterAssets
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
-        private Vector3 motion;
+        public Vector3 motion;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -177,6 +177,7 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
+            Dodge();
         }
 
         private void LateUpdate()
@@ -440,5 +441,37 @@ namespace StarterAssets
         //    Debug.Log("Teleport player to these cords: " + destination);
         //    _controller.Move(destination);
         //}
+
+        [SerializeField] private float dodgeDuration = 0.5f;
+        [SerializeField] private float dodgeSpeed = 10f;
+
+        // Call this method to trigger a dodge in the current movement direction
+        [SerializeField] private float dodgeCooldown = 1f;
+        private float lastDodgeTime = -Mathf.Infinity;
+
+        private void Dodge()
+        {
+            if (_input.dodge && Time.time >= lastDodgeTime + dodgeCooldown)
+            {
+                StartCoroutine(PerformDodge());
+                lastDodgeTime = Time.time;
+                _input.dodge = false; // Consume the dodge input
+            }
+        }
+
+        private System.Collections.IEnumerator PerformDodge()
+        {
+            float startTime = Time.time;
+            Vector3 dodgeDirection = new Vector3(_input.move.x, 0, _input.move.y).normalized;
+            if (dodgeDirection == Vector3.zero)
+            {
+                dodgeDirection = transform.forward; // Default to forward if no input
+            }
+            while (Time.time < startTime + dodgeDuration)
+            {
+                _controller.Move(dodgeDirection * dodgeSpeed * Time.deltaTime);
+                yield return null;
+            }
+        }
     }
 }
