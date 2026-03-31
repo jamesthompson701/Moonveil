@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using StarterAssets;
 
 public class FishingManager : MonoBehaviour
 {
+    ThirdPersonController playerController;
+    StarterAssetsInputs playerInput;
+    SpellManager spellManager;
     public static event Action<FishData> OnFishCaught;
 
     [Header("References")]
@@ -15,9 +17,6 @@ public class FishingManager : MonoBehaviour
     public GameObject player;
     public FishingRod fishingRodPrefab;
     public Transform rodParent; // where to parent the rod when shown
-    public Canvas uiCanvasWater;
-    public Canvas uiCanvasFire;
-    public Canvas uiCanvasIce;
     public FishingMiniGameUI miniGameUI;
 
     [Header("UI Prompt")]
@@ -33,6 +32,9 @@ public class FishingManager : MonoBehaviour
         public Canvas fishingCanvas;
         public FishingMiniGameUI miniGameUI;
         public TMP_Text promptText;
+
+         public GameObject fishingVisuals;
+         public FishingRod rod;
     }
 
     [Header("Gameplay Prompt")]
@@ -48,7 +50,7 @@ public class FishingManager : MonoBehaviour
 
     public FishingArea currentArea;
 
-    private FishingRod currentRod;
+    public FishingRod currentRod;
     private Coroutine biteCoroutine;
     private bool inFishingMode = false;
     private bool lineIsCasted = false;
@@ -66,17 +68,25 @@ public class FishingManager : MonoBehaviour
         {
             Instance = this;
         }
+
+        if (startFishingPrompt == null)
+            Debug.LogError("StartFishingPrompt is NOT assigned!");
+
+        if (biomeUIs.Length == 0)
+            Debug.LogError("No biome UIs configured!");
     }
 
     void Start()
     {
-        if (mainCamera == null) mainCamera = Camera.main;
-        //Water biome UI
-        if (uiCanvasWater) miniGameUI.gameObject.SetActive(false);
-        //Fire biome UI
-        if (uiCanvasFire) miniGameUI.gameObject.SetActive(false);
-        //Ice biome UI
-        if (uiCanvasIce) miniGameUI.gameObject.SetActive(false);
+        if (mainCamera == null)
+            mainCamera = Camera.main;
+
+        if (miniGameUI != null)
+            miniGameUI.gameObject.SetActive(false);
+
+        playerController = FindFirstObjectByType<ThirdPersonController>();
+        playerInput = FindFirstObjectByType<StarterAssetsInputs>();
+        spellManager = FindFirstObjectByType<SpellManager>();
     }
 
     void Update()
@@ -88,28 +98,45 @@ public class FishingManager : MonoBehaviour
         }
 
         // Exit fishing (likely to change input)
-        if (inFishingMode && Input.GetKeyDown(KeyCode.Z))
+        if (inFishingMode && Input.GetKeyDown(KeyCode.Escape))
         {
             ExitFishingMode();
         }
 
-        // player side UI. show prompt to go into fishing mode
-        if (currentArea != null && !inFishingMode)
+        if (Input.GetButtonDown("Fire1"))
         {
-            startFishingPrompt.gameObject.SetActive(true);
-            startFishingPrompt.text = "Press " + startFishingInput + " to start fishing";
+            Debug.Log("Fire1 working");
         }
-        else
-        {
-            startFishingPrompt.gameObject.SetActive(false);
-        }
+        
     }
 
     public void EnterFishingMode(FishingArea area)
     {
-        activeBiomeUI = null;
+        if (area == null)
+        {
+            Debug.LogError("FishingArea is NULL");
+            return;
+        }
 
-        player.GetComponent<ThirdPersonController>().enabled = false;
+        // disable movement input
+        if (playerInput != null)
+            playerInput.enabled = false;
+
+        // disable spell casting
+        if (spellManager != null)
+        {
+            spellManager.attackChoice = 0;
+            spellManager.enabled = false;
+        }
+
+        if (startFishingPrompt != null)
+        startFishingPrompt.gameObject.SetActive(false);
+
+        inFishingMode = true;
+        activeBiomeUI = null;
+        
+
+        playerController.enabled = false;
         player.GetComponent<ClickSelector>().enabled = false;
 
         foreach (var ui in biomeUIs)
@@ -129,28 +156,41 @@ public class FishingManager : MonoBehaviour
             return;
         }
 
+       // enable this biome's systems
+        activeBiomeUI.fishingCamera.gameObject.SetActive(true);
+        activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
+
+        if (activeBiomeUI.fishingVisuals != null)
+        {
+            activeBiomeUI.fishingVisuals.SetActive(true);
+
+            foreach (Transform child in activeBiomeUI.fishingVisuals.transform)
+            {
+                child.gameObject.SetActive(true);
+            }
+        }
+
+        //rod stuff
+        currentRod = activeBiomeUI.rod;
+        if (currentRod != null)
+        {
+            currentRod.Initialize(this, reelInput);
+            currentRod.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("No rod assigned for biome: " + activeBiomeUI.biome);
+        }
+
+        Transform bubble = activeBiomeUI.fishingVisuals.transform.Find("FishBubble");
+        if (bubble != null)
+        bubble.gameObject.SetActive(false);
+
         inFishingMode = true;
         currentArea = area;
 
         // switch cameras
         if (mainCamera) mainCamera.enabled = false;
-        if (area.fishingCamera)
-        {
-            fishingCamera = area.fishingCamera;
-            fishingCamera.enabled = true;
-        }
-
-        // show rod
-        if (currentRod == null)
-        {
-            currentRod = Instantiate(fishingRodPrefab, rodParent);
-            currentRod.Initialize(this, reelInput);
-        }
-        else
-        {
-            currentRod.gameObject.SetActive(true);
-            currentRod.Initialize(this, reelInput);
-        }
 
         fishingCamera = activeBiomeUI.fishingCamera;
         fishingCamera.gameObject.SetActive(true);
@@ -159,17 +199,29 @@ public class FishingManager : MonoBehaviour
         activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
         miniGameUI = activeBiomeUI.miniGameUI;
 
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         ShowPrompt("Press " + castInput + " to cast your rod");
         Debug.Log("Entered fishing mode in area: " + area.areaName + ". Press " + startFishingInput + " to cast (or " + castInput + " depending on config).");
     }
 
     public void ExitFishingMode()
     {
+        if (playerInput != null)
+        playerInput.enabled = true;
+
+        if (spellManager != null)
+        spellManager.enabled = true;
+
         inFishingMode = false;
         currentArea = null;
 
         player.GetComponent<ThirdPersonController>().enabled = true;
         player.GetComponent<ClickSelector>().enabled = true;
+
+        if (activeBiomeUI != null && activeBiomeUI.fishingVisuals != null)
+        activeBiomeUI.fishingVisuals.SetActive(false);
 
         if (mainCamera) mainCamera.enabled = true;
         if (fishingCamera) fishingCamera.enabled = false;
@@ -182,6 +234,10 @@ public class FishingManager : MonoBehaviour
             biteCoroutine = null;
         }
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        lineIsCasted = false;
         HidePrompt();
         if (miniGameUI) miniGameUI.EndGameCleanup();
     }
@@ -268,6 +324,9 @@ public class FishingManager : MonoBehaviour
 
     void StartMiniGame(FishData fish)
     {
+        Transform bubble = activeBiomeUI.fishingVisuals.transform.Find("FishBubble");
+        if (bubble) bubble.gameObject.SetActive(true);
+
         if (miniGameUI == null)
         {
             Debug.Log("MiniGameUI not assigned in FishingManager.");
@@ -284,6 +343,10 @@ public class FishingManager : MonoBehaviour
     void OnMiniGameResult(bool success, FishData caughtFish)
     {
         HidePrompt();
+
+        Transform bubble = activeBiomeUI.fishingVisuals.transform.Find("FishBubble");
+        if (bubble) bubble.gameObject.SetActive(false);
+
         if (success)
         {
             Debug.Log("You caught a " + caughtFish.fishName + "!");
@@ -292,27 +355,7 @@ public class FishingManager : MonoBehaviour
             // notify inventory / UI systems
             OnFishCaught?.Invoke(caughtFish);
 
-            PlayerInventory.instance.AddFish(1);
-            /* rough code to add into UI script
-            void OnEnable()
-            {
-                FishingManager.OnFishCaught += AddFish;
-            }
-
-            void OnDisable()
-            {
-                FishingManager.OnFishCaught -= AddFish;
-            }
-
-            void AddFish(FishData fish)
-            {
-                inventory.Add(fish);
-                // update UI
-            }*/
-
-            // After success, consider pulling the rod / end cast:
-            lineIsCasted = false;
-            if (currentRod) currentRod.OnCaughtFish(); // let rod handle visuals
+            PlayerInventory.instance.AddFish(caughtFish, 1);
         }
         else
         {
@@ -322,11 +365,11 @@ public class FishingManager : MonoBehaviour
 
         if (success)
         {
-            ShowPrompt(caughtFish.fishName + " fish caught!" + "  Press " + castInput + " to recast your rod" + " or press z to exit");
+            ShowPrompt(caughtFish.fishName + " fish caught!" + "  Press " + castInput + " to recast your rod" + " or press Escape to exit");
         }
         else
         {
-            ShowPrompt("The fish escaped..." + " Press " + castInput + " to recast your rod" + " or press z to exit");
+            ShowPrompt("The fish escaped..." + " Press " + castInput + " to recast your rod" + " or press Escape to exit");
         }
     }
 
@@ -348,6 +391,12 @@ public class FishingManager : MonoBehaviour
     public void SetCurrentArea(FishingArea area)
     {
         currentArea = area;
+
+        if (!inFishingMode && startFishingPrompt != null)
+        {
+            startFishingPrompt.text = "Press " + startFishingInput + " to start fishing";
+            startFishingPrompt.gameObject.SetActive(true);
+        }
     }
 
     public void ClearCurrentArea(FishingArea area)
@@ -355,6 +404,9 @@ public class FishingManager : MonoBehaviour
         if (currentArea == area)
         {
             currentArea = null;
+
+            if (startFishingPrompt != null)
+                startFishingPrompt.gameObject.SetActive(false);
         }
     }
 }

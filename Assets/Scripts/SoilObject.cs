@@ -133,6 +133,10 @@ public class SoilObject : MonoBehaviour
                 soilContent = SoilContent.empty;
                 Instantiate(fire, transform);
             }
+            else
+            {
+                waterTimer = 0;
+            }
 
         }
 

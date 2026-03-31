@@ -21,6 +21,13 @@ public class FishingRod : MonoBehaviour
 
     void Update()
     {
+        if (!manager || !manager.currentArea) return;
+
+        if (Input.GetButtonDown(manager.castInput))
+        {
+            Debug.Log("Cast input detected");
+        }
+
         if (manager == null) return;
 
         // Cast with manager's castInput (use GetButtonDown for simplicity)

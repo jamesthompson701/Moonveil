@@ -1,4 +1,7 @@
+using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
 public class CanvasManager : MonoBehaviour
@@ -8,7 +11,11 @@ public class CanvasManager : MonoBehaviour
     public GameObject fastTravelCanvas;
     public GameObject selectionCanvas;
     public GameObject HUD;
+    public GameObject workbenchCanvas;
     bool isActive = false;
+
+    //In awake this was initialize with all the canvases that we want to close with esc
+    [SerializeField] private GameObject[] escCloseableCanvases;
 
     public InputActionAsset input;
     InputAction openInv;
@@ -23,12 +30,12 @@ public class CanvasManager : MonoBehaviour
 
     private void Awake()
     {
+        //When adding a new menu you want to close with esc add it to this array
+        escCloseableCanvases = new GameObject[]{fastTravelCanvas, workbenchCanvas};
 
         openInv = input.FindAction("Inventory");
         openPause = input.FindAction("Pause");
         openSelection = input.FindAction("Selection");
-        
-
 
         player = input.FindActionMap("Player");
         UI = input.FindActionMap("UI");
@@ -58,7 +65,23 @@ public class CanvasManager : MonoBehaviour
         bool pause = openPause.WasPressedThisFrame();
         if (pause == true)
         {
-            OpenPause();
+            Debug.Log("Esc Pressed");
+            bool canvasClosed = false;
+            foreach (GameObject canvas in escCloseableCanvases)
+            {
+                Debug.Log("Canvas " +  canvas.name + " is " + canvas.activeInHierarchy);
+                if(canvas.activeInHierarchy)
+                {
+                    isActive = false;
+                    canvas.SetActive(false);
+                    CloseMenu();
+                    canvasClosed = true;
+                }
+            }
+            if (!canvasClosed)
+            {
+                OpenPause();
+            }
         }
 
         bool selection = openSelection.WasPressedThisFrame();
@@ -67,6 +90,52 @@ public class CanvasManager : MonoBehaviour
             OpenSelectionWheel();
         }
     }
+    /*
+     *         bool esc = escMenu.WasPressedThisFrame();
+        if (esc == true)
+        {
+            if (!menuCanvas.activeInHierarchy)
+            {
+                //count the inactive menus
+                int inactiveMenus = 0;
+                foreach (GameObject _menu in escCloseableMenus)
+                {
+                    if (!_menu.activeInHierarchy)
+                    {
+                        inactiveMenus++;
+                        Debug.Log("inactive menus: " + inactiveMenus);
+                        Debug.Log("number of closeable menus: " + escCloseableMenus.Count);
+                    }
+
+                }
+
+                //if all the menus were inactive, open the pause menu
+                if (inactiveMenus == allMenus.Count)
+                {
+                    OpenPause();
+                }
+                //otherwise, close all the menus closeable by esc
+                else
+                {
+                    foreach (GameObject _menu in escCloseableMenus)
+                    {
+                        if (_menu.activeInHierarchy)
+                        {
+                            isActive = false;
+                            _menu.SetActive(false);
+                            CloseMenu();
+                        }
+                    }
+                }
+            }
+            //or if the pause menu was active, just close it
+            else
+            {
+                OpenPause();
+            }
+            
+        }
+     */
 
     public void OpenInventory()
     {
@@ -76,7 +145,6 @@ public class CanvasManager : MonoBehaviour
             isActive = true;
             inventoryCanvas.SetActive(true);
             OpenMenu();
-
         }
         else
         {
@@ -101,6 +169,22 @@ public class CanvasManager : MonoBehaviour
         {
             isActive = false;
             fastTravelCanvas.SetActive(false);
+            CloseMenu();
+        }
+    }
+
+    public void OpenWorkbench()
+    {
+        if(!isActive)
+        {
+            isActive = true;
+            workbenchCanvas.SetActive(true);
+            OpenMenu();
+        }
+        else
+        {
+            isActive = false;
+            workbenchCanvas.SetActive(false);
             CloseMenu();
         }
     }
@@ -153,7 +237,6 @@ public class CanvasManager : MonoBehaviour
 
         HUD.SetActive(false);
  
-
     }
 
     public void CloseMenu()
@@ -167,5 +250,16 @@ public class CanvasManager : MonoBehaviour
         openInv = input.FindAction("Inventory");
 
         HUD.SetActive(true);
+    }
+
+
+    // handles taking screenshot
+    IEnumerator TakeScreenshot()
+    {
+        yield return new WaitForEndOfFrame();
+
+        ScreenCapture.CaptureScreenshotAsTexture();
+
+
     }
 }

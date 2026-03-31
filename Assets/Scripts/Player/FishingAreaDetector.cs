@@ -7,12 +7,15 @@ public class FishingAreaDetector : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Entered trigger with: " + other.name);
         FishingArea area = other.GetComponent<FishingArea>();
         if (area != null)
         {
             current = area;
             manager.SetCurrentArea(area);
             Debug.Log("Entered fishing area");
+            manager.startFishingPrompt.text = "Press " + manager.startFishingInput + " to start fishing";
+            manager.startFishingPrompt.gameObject.SetActive(true);
         }
     }
 
@@ -24,6 +27,7 @@ public class FishingAreaDetector : MonoBehaviour
             current = null;
             manager.ClearCurrentArea(area);
             Debug.Log("Left fishing area");
+            manager.startFishingPrompt.gameObject.SetActive(false);
         }
     }
 }

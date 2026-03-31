@@ -316,6 +316,19 @@ namespace StarterAssets
             {
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
                 _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+                if (inputMagnitude < 0.1f)
+                {
+                    _animator.SetFloat("MoveX", 0);
+                    _animator.SetFloat("MoveY", 0);
+                }
+                else
+                {
+                    
+                    _animator.SetFloat("MoveX", _input.move.x, 0.1f, Time.deltaTime);
+                    _animator.SetFloat("MoveY", _input.move.y, 0.1f, Time.deltaTime);
+                }
+                
+
             }
         }
 
@@ -471,6 +484,19 @@ namespace StarterAssets
             {
                 _controller.Move(dodgeDirection * dodgeSpeed * Time.deltaTime);
                 yield return null;
+            }
+        }
+
+        public void PlayFootstep(int foot)//Foot is left or right, left is 0, right is 1
+        {
+            //as of now left and right foot are the same but its built so we can change it easily later
+            if (foot == 0)
+            {
+                AudioManager.PlayOneShot(eEffects.footstep, transform, 100);
+            }
+            else
+            {
+                AudioManager.PlayOneShot(eEffects.footstep, transform, 100);
             }
         }
     }

@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using PixelCrushers.DialogueSystem;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
 
@@ -30,7 +31,7 @@ public class Interactable : MonoBehaviour
                 {
                     soil.SetPlantType(PlayerInventory.instance.seedRef);
                     soil.SpawnCrop();
-                    PlayerInventory.instance.invSO.AddItem(PlayerInventory.instance.seedRef, -1);
+                    PlayerInventory.instance.invSO.RemoveItem(PlayerInventory.instance.seedRef, -1);
                     Debug.Log("Seed Planted");
                 }
                 else
@@ -45,17 +46,21 @@ public class Interactable : MonoBehaviour
             }
 
         }
-        else if(gameObject.CompareTag("fishingArea"))
+        else if(gameObject.CompareTag("Dock"))
         {
             FishingManager.Instance.EnterFishingMode(FishingManager.Instance.currentArea);
         }
         else if (gameObject.CompareTag("Crafting"))
         {
-            CraftingManager.instance.CraftFromInventory(trailMix);
+            CanvasManager.Instance.OpenWorkbench();
         }
         else if (gameObject.CompareTag("FastTravel"))
         {
             CanvasManager.Instance.OpenFastTravel();
+        }
+        else if (gameObject.CompareTag("Dialogue"))
+        {
+            DialogueManager.StartConversation("New Conversation 1");
         }
         else
         {

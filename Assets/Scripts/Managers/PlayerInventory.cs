@@ -13,9 +13,6 @@ public class PlayerInventory : MonoBehaviour
 
     public SoilObject soilRef;
 
-    public int newtSeeds;
-    public int woolSeeds;
-    public int lizardSeeds;
     public static int fish;
 
     //player currency counter
@@ -33,37 +30,24 @@ public class PlayerInventory : MonoBehaviour
         ResetInv();
     }
 
-    //EVERYTHING IS SEEDS - no longer; we are now seed agnostic
+    //EVERYTHING IS SEEDS
     public int CheckSeeds()
     {
-        if (seedRef.itemName == "Eye Of Newt Seed")
+        foreach (var item in invSO.InventoryItems)
         {
-            return newtSeeds;
+            if (item.item.itemID == seedRef.itemID)
+            {
+                return item.amount;
+            }
         }
-        else if (seedRef.itemName == "Wool Of Bat Seed")
-        {
-            return woolSeeds;
-        }
-        else
-        {
-            return lizardSeeds;
-        }
+        return 0;
     }
 
     //EVERYTHING IS FISH
 
-    public void AddFish(int _amount)
+    public void AddFish(FishData _fish, int _amount)
     {
-        if (invSO.InventoryItems.Any(item => item.item.itemName == "IceFish"))
-        {
-            fish = invSO.InventoryItems[3].amount + _amount;
-            invSO.InventoryItems[3].amount = fish;
-        }
-        else
-        {
-            invSO.AddItem(fishRef, _amount);
-        }
-        
+        invSO.AddItem(_fish.fishItem, _amount);
 
     }
     public void ResetInv()

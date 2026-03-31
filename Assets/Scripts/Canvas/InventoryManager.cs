@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,27 +18,27 @@ public class InventoryManager: MonoBehaviour
 
     private void OnEnable()
     {
-        //inventory.AddItem(itemRef, 2);
         DisplayInventory();
 
         itemImage.sprite = null;
         itemDescription.text = "";
     }
 
+    // make it so items can be dragged
 
     public void DisplayInventory()
     {
-        
-        //Checks how many slots
+        // Handles inventory slots
         for (int i = 0; i < InventorySlots.Length; i++)
         {
-            //Checks items in inventory
+            //Clears entire inventory
+            InventorySlots[i].ResetSlot();
+
+            // Sets slots to items in inventory
             for (int j = 0; j < inventory.InventoryItems.Count; j++)
             {
-                //Assigns item to slot
                 InventoryItem curItem = inventory.InventoryItems[j];
-                InventorySlots[j].SetItem(curItem);
-
+                InventorySlots[j].SetSlot(curItem);
             }
 
         }

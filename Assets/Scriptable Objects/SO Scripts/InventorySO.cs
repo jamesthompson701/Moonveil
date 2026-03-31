@@ -29,8 +29,22 @@ public class InventorySO : ScriptableObject
         {
             InventoryItems.Add(new InventoryItem(newItem, newAmount));
         }
+    }
 
-
+    public void RemoveItem(ItemSO newItem, int newAmount)
+    {
+        foreach (InventoryItem item in InventoryItems)
+        {
+            if (item.item == newItem)
+            {
+                item.AddAmount(newAmount);
+                if (item.amount == 0)
+                {
+                    InventoryItems.Remove(item);
+                }
+                break;
+            }
+        }
     }
 }
 

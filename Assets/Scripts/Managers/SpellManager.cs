@@ -31,6 +31,9 @@ public class SpellManager : MonoBehaviour
     [SerializeField] private Transform attackCastOrigin; // Origin point for spell casting
     [SerializeField] private Camera aimCamera;
     [SerializeField] private Transform farmCastOrigin;
+    [SerializeField] private Animator _animator;
+
+
 
     [Header("Aiming")]
     [SerializeField] private LayerMask aimMask = ~0; // Layer mask for aiming raycast
@@ -456,6 +459,9 @@ public class SpellManager : MonoBehaviour
             return;
         }
         elementPools[elementIdx].current -= cost;
+
+        //Spellcast animation
+        _animator.SetTrigger("Spellcast");
 
         Vector3 planarForward = Vector3.ProjectOnPlane(aimCamera.transform.forward, Vector3.up).normalized;
         if (planarForward.sqrMagnitude < 0.0001f) planarForward = aimCamera.transform.forward.normalized;

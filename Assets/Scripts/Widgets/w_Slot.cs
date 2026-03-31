@@ -21,12 +21,20 @@ public class w_Slot : MonoBehaviour, IPointerEnterHandler
     }
 
     //Sets image and amount to items data
-    public void SetItem(InventoryItem _item)
+    public void SetSlot(InventoryItem _item)
     {
         button.SetActive(true);
         image.sprite = _item.item.itemSprite;
         amount.text = "" + _item.amount;
         item = _item;
+    }
+
+    public void ResetSlot()
+    {
+        button.SetActive(false);
+        amount.text = string.Empty;
+        image.sprite = null;
+        item = null;
     }
 
 
