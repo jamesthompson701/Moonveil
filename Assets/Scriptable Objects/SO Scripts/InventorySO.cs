@@ -7,13 +7,15 @@ public class InventorySO : ScriptableObject
 {
     public List<InventoryItem> InventoryItems = new List<InventoryItem>();
     public int maxItems;
-    public event Action<ItemSO, int> GetInventoryItem;
-    public event Action AddInventoryItem;
+    public event Action<ItemSO, int, bool> GetInventoryItem;
+    public event Action<int> AddInventoryItem;
 
     //TODO| Account for removing items
 
     public void AddItem(ItemSO newItem, int newAmount)
     {
+        GetInventoryItem?.Invoke(newItem, newAmount, true);
+
         //Check if item is in inventory for stacking
         if (newItem.isStackable)
         {
@@ -22,7 +24,8 @@ public class InventorySO : ScriptableObject
                 if (item.item == newItem)
                 {
                     item.AddAmount(newAmount);
-                    AddInventoryItem?.Invoke();
+                    GetInventoryItem?.Invoke(newItem, newAmount, false);
+                    //AddInventoryItem?.Invoke(newAmount);
                     return;
                 }
             }
@@ -32,9 +35,8 @@ public class InventorySO : ScriptableObject
         if (InventoryItems.Count < maxItems)
         {
             InventoryItems.Add(new InventoryItem(newItem, newAmount));
-        }
 
-        GetInventoryItem?.Invoke(newItem, newAmount);
+        }
 
     }
 

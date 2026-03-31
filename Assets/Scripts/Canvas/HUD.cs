@@ -1,4 +1,6 @@
+using JetBrains.Annotations;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HUD : MonoBehaviour
@@ -6,13 +8,14 @@ public class HUD : MonoBehaviour
     GameObject playerRef;
     SpellManager attackManagerRef;
 
-    public w_ItemPopup itemPopup;
-
+    public List<GameObject> itemPopups;
+    
     public GameObject[] highlight;
     public InventoryManager managerRef;
 
     public GameObject slot;
     public Transform popupGroup;
+
 
 
     private void Awake()
@@ -45,8 +48,6 @@ public class HUD : MonoBehaviour
                 break;
         }
 
-
-
     }
 
     public void SetActive(int index)
@@ -58,23 +59,37 @@ public class HUD : MonoBehaviour
         highlight[index].SetActive(true);
     }
 
-    public void InstantiatePopup(ItemSO _item, int _amount)
+    public void InstantiatePopup(ItemSO _item, int _amount, bool isNew)
     {
-        GameObject popUp = Instantiate(slot, popupGroup); 
-        w_ItemPopup spawnedPopup = popUp.GetComponent<w_ItemPopup>();
-        spawnedPopup.itemName.text = _item.itemName;
-        spawnedPopup.image.sprite = _item.itemSprite;
-        spawnedPopup.amount.text = "" + _amount;
+        foreach (var popUp in itemPopups)
+        {
+            w_ItemPopup spawnedPopup = popUp.GetComponent<w_ItemPopup>();
+            if (spawnedPopup.item == _item)
+            {
+                spawnedPopup.AddAmount(_amount);
+                return;
+            }
 
-//managerRef.inventory.AddInventoryItem += AddPopup;
+        }
 
+        if (isNew)
+        {
+            GameObject popUp = Instantiate(slot, popupGroup);
+            itemPopups.Add(popUp);
+            w_ItemPopup spawnedPopup = popUp.GetComponent<w_ItemPopup>();
+            spawnedPopup.SetPopup(_item, _amount);
 
-        Destroy(popUp, 3);
+            StartCoroutine(DestroyPopup(popUp));
+
+        }
     }
 
-    public void AddPopup(w_ItemPopup _popUp, int _amount)
+    IEnumerator DestroyPopup(GameObject popUp)
     {
-
+        yield return new WaitForSeconds(3);
+        Destroy(popUp);
+        itemPopups.Remove(popUp);
+        Debug.Log("this ran");
     }
 
 }
