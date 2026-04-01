@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.AdaptivePerformance;
 
 
 //This is the Universal Time Manager
@@ -18,6 +19,9 @@ public class TimeManager : MonoBehaviour
     private float time;
 
     public static TimeManager instance;
+
+    //tutorial
+    public bool tutorialDone;
 
     private void Awake()
     {
@@ -61,6 +65,31 @@ public class TimeManager : MonoBehaviour
         foreach (SoilObject soilObject in soilObjects)
         {
             soilObject.CheckSoil(time);
+
+
+
         }
+
+        //if tutorial hasn't been completed, then check if all the soil has been tilled
+        //if they're all tilled, progress the tutorial
+        if (!tutorialDone)
+        {
+            int untilled = 0;
+
+            foreach (SoilObject soilObject in soilObjects)
+            {
+                if (!soilObject.tilled)
+                {
+                    untilled++;
+                }
+            }
+            if (untilled == 0)
+            {
+                TutorialManager.instance.ProgressTutorial();
+                tutorialDone = true;
+            }
+
+        }
+
     }
 }

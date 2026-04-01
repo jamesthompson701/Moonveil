@@ -11,6 +11,13 @@ public class InventorySO : ScriptableObject
 
     public void AddItem(ItemSO newItem, int newAmount)
     {
+        //tutorial
+        if (!TutorialManager.instance.inventoryDone)
+        {
+            TutorialManager.instance.ProgressTutorial();
+            TutorialManager.instance.inventoryDone = true;
+        }
+
         //Check if item is in inventory for stacking
         if (newItem.isStackable)
         {

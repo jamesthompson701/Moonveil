@@ -14,8 +14,10 @@ public class Interactable : MonoBehaviour
     //for testing purposes
     public RecipeSO trailMix;
 
-    //if this is a dispenser, what it dispenses
+    //variables for dispensers
     public SeedItemSO dispenserItem;
+    public int dispenseAmount;
+    public bool destroyOnDispense;
 
     // This method will be called by our ClickSelector
     public virtual void OnInteract()
@@ -80,7 +82,11 @@ public class Interactable : MonoBehaviour
         //add an item to inventory when clicked, must be set in editor
         if (gameObject.CompareTag("Dispenser"))
         {
-            PlayerInventory.instance.invSO.AddItem(dispenserItem, 1);
+            PlayerInventory.instance.invSO.AddItem(dispenserItem, dispenseAmount);
+            if (destroyOnDispense)
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 

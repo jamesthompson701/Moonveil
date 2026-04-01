@@ -39,6 +39,12 @@ public class PlantObject : MonoBehaviour
         currentStage = 0;
         TimeManager.instance.RegisterPlant(this);
 
+        //tutorial
+        if (!TutorialManager.instance.plantingDone)
+        {
+            TutorialManager.instance.ProgressTutorial();
+            TutorialManager.instance.plantingDone = true;
+        }
     }
 
     public void CheckPlant(float deltaTime)

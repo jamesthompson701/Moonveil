@@ -10,6 +10,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject billboard3;
     public GameObject billboard4;
     public GameObject billboard5;
+    public GameObject fishingTrigger;
     public GameObject billboard6;
     public GameObject billboard7;
     public GameObject billboard8;
@@ -17,6 +18,21 @@ public class TutorialManager : MonoBehaviour
 
     //variable to keep track of which stage of the tutorial they're on
     public int currentBillboard = 1;
+
+    //other variables
+    public bool inventoryDone;
+    public bool plantingDone;
+
+    //singleton
+    public static TutorialManager instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
 
     //function that activates one billboard and deactivates another depending on the input
     public void ProgressTutorial()
@@ -27,7 +43,23 @@ public class TutorialManager : MonoBehaviour
                 billboard1.SetActive(false);
                 billboard2.SetActive(true);
                 break;
-
+            case 2:
+                billboard2.SetActive(false);
+                billboard3.SetActive(true);
+                break;
+            case 3:
+                billboard3.SetActive(false);
+                billboard4.SetActive(true);
+                break;
+            case 4:
+                billboard4.SetActive(false);
+                fishingTrigger.SetActive(true);
+                billboard5.SetActive(true);
+                break;
+            case 5:
+                billboard5.SetActive(false);
+                billboard6.SetActive(true);
+                break;
         }
 
         //increment the stage of the tutorial
