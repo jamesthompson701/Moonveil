@@ -60,6 +60,16 @@ public class Interactable : MonoBehaviour
         }
         else if (gameObject.CompareTag("Dialogue"))
         {
+            Debug.Log("Talking");
+            foreach (InventoryItem _item in PlayerInventory.instance.invSO.InventoryItems)
+            {
+                Debug.Log("Item Name: " +  _item.item.name);
+                if (_item.item.name == "PokeBowl")
+                {
+                    Debug.Log("Setting pokebowl to" + _item.amount);
+                    DialogueLua.SetVariable("McGuffinNum", _item.amount);
+                }
+            }
             DialogueManager.StartConversation("New Conversation 1");
         }
         else
