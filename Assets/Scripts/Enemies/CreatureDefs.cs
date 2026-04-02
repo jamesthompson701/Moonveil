@@ -513,12 +513,11 @@ public class CreatureDefs : MonoBehaviour
         Vector3 dir = (target.position - origin.position).normalized;
         proj.linearVelocity = dir * projectileSpeed;
 
-
-        //Tells Animator to play attack anim
         animator.SetTrigger("Attack");
 
         yield break;
 
+        yield break;
     }
 
     private IEnumerator DoArcProjectile()
@@ -542,6 +541,7 @@ public class CreatureDefs : MonoBehaviour
 
         yield break;
 
+        yield break;
     }
 
     // Target faces the enemy, waits for a short windup, then dashes forward in a straight line. Bonks into the player then retreats. Kinda funny.
@@ -626,7 +626,7 @@ public class CreatureDefs : MonoBehaviour
         if (_health <= 0f)
             Die();
 
-        //Tells animator to play damaged animation
+
         animator.SetTrigger("Damaged");
     }
 
@@ -661,6 +661,7 @@ public class CreatureDefs : MonoBehaviour
 
         return null;
 
+        return null;
     }
 
     private void TryFindTargetByTag(string tag)

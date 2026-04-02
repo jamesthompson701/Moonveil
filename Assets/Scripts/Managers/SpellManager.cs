@@ -460,8 +460,10 @@ public class SpellManager : MonoBehaviour
         }
         elementPools[elementIdx].current -= cost;
 
+
         //Spellcast animation
         _animator.SetTrigger("Spellcast");
+
 
         Vector3 planarForward = Vector3.ProjectOnPlane(aimCamera.transform.forward, Vector3.up).normalized;
         if (planarForward.sqrMagnitude < 0.0001f) planarForward = aimCamera.transform.forward.normalized;
