@@ -23,6 +23,8 @@ public class EnemyStatusReceiver : MonoBehaviour
     private float _slowSpeedMultiplier = 1f;
     private bool _slowApplied;
 
+    private CreatureDefs _creatureDefs;
+
     private void Awake()
     {
         if (cachedRigidbody == null)
@@ -121,12 +123,12 @@ public class EnemyStatusReceiver : MonoBehaviour
     {
         _slowApplied = active;
 
-        //if (cachedRigidbody != null)
-        //{
-        //    if (active)
-        //    {
-        //        cachedRigidbody.linearVelocity *= _slowSpeedMultiplier;
-        //    }
-        //}
+        if (_creatureDefs != null)
+        {
+            if (active)
+            {
+                _creatureDefs.maxSpeed *= _slowSpeedMultiplier;
+            }
+        }
     }
 }

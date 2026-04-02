@@ -32,7 +32,7 @@ public class SpellDamageManager2 : MonoBehaviour
         {
             if (spellType == ProjectileSpells2.SpellType.Fire)
             {
-                // Apply direct hit effects to the ground (optional, usually not needed)
+                // Apply direct hit effects to the ground
                 Collider[] hits = Physics.OverlapSphere(transform.position, _radius);
                 foreach (Collider hit in hits)
                 {

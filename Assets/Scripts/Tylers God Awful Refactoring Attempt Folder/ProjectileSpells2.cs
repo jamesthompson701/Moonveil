@@ -42,8 +42,9 @@ public class ProjectileSpells2 : SO_SpellDefs2
 
         if (Speed == 0)
         {
-            // Make the projectile follow the player's movement
+            // Make the projectile follow the player's movement and spawn centered around the player
             clone.transform.SetParent(ctx.caster.transform);
+            originT = ctx.caster.transform;
         }
         else
         {
