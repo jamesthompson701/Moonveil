@@ -14,8 +14,15 @@ public class MiningManager : MonoBehaviour
 
     private MineRock currentRock;
 
+    private bool isMining = false;
+
     public void StartMining(MineRock rock)
     {
+        if (isMining) return;
+
+        Debug.Log("StartMining called");
+
+        isMining = true;
         currentRock = rock;
 
         StartCoroutine(StartMiningRoutine());
@@ -23,7 +30,11 @@ public class MiningManager : MonoBehaviour
 
     IEnumerator StartMiningRoutine()
     {
+        Debug.Log("Mining routine started");
+
         yield return Fade(1f);
+
+        Debug.Log("Fade complete");
 
         mainCamera.gameObject.SetActive(false);
         miningCamera.gameObject.SetActive(true);
@@ -38,7 +49,11 @@ public class MiningManager : MonoBehaviour
 
     public void EndMining(bool success)
     {
-        if (!success)
+        if (success)
+        {
+            GiveReward(currentRock);
+        }
+        else
         {
             currentRock.Fail();
         }
@@ -53,10 +68,27 @@ public class MiningManager : MonoBehaviour
         miningCamera.gameObject.SetActive(false);
         mainCamera.gameObject.SetActive(true);
 
+        isMining = false;
+
         yield return Fade(0f);
     }
 
-    // SIMPLE FADE
+    void GiveReward(MineRock rock)
+    {
+        int amount = 1;
+
+        if (rock.state == RockState.Fresh)
+            amount = Random.Range(3, 6);
+        else if (rock.state == RockState.Cracked)
+            amount = Random.Range(1, 3);
+
+        Debug.Log("Gained " + amount + " " + rock.mineralType + " gems");
+
+        // Later:
+        // INVENTORY ADD (rock.mineralType, amount);
+    }
+
+    // screen fade
     public CanvasGroup fadeCanvas;
     public float fadeSpeed = 2f;
 
