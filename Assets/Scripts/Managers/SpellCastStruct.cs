@@ -13,6 +13,7 @@ public struct SpellCastContext
 
     public float combatSpawnOffset;
     public float farmSpawnOffset;
+    public float spawnOffset;
 
     public Vector3 aimPoint;
     public Vector3 aimNormal;

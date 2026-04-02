@@ -1,12 +1,11 @@
 using UnityEngine;
 
+/// <summary>
+/// Projectile spell with type-based effects (fire, water, air, etc.).
+/// </summary>
 [CreateAssetMenu(fileName = "ProjectileSpell", menuName = "Scriptable Objects/Spells/ProjectileSpell")]
 public class ProjectileSpells : SO_Spells
 {
-    [Header("Farm Overrides")]
-    public float FarmSpeed = 10f;
-    public float FarmLifetime = 1f;
-
     public override void CastSpell(SpellCastContext ctx)
     {
         if (SpellPrefab == null) return;
@@ -46,10 +45,10 @@ public class ProjectileSpells : SO_Spells
             SpellManager sm = ctx.caster.GetComponent<SpellManager>();
             int choice = sm != null ? sm.attackChoice : 0;
 
-            // Use SO damage, and a reasonable force (or add Force to SO later)
-            dmg.Init(choice, damage, 12f);
+            // Pass spell type and effects
+            dmg.InitProjectile(choice, damage, spellType, ctx.caster);
         }
 
         Destroy(clone.gameObject, usedLifetime);
-    }  
+    }
 }
