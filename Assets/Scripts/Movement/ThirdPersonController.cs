@@ -475,14 +475,12 @@ namespace StarterAssets
         private System.Collections.IEnumerator PerformDodge()
         {
             float startTime = Time.time;
-            Vector3 dodgeDirection = new Vector3(_input.move.x, 0, _input.move.y).normalized;
-            if (dodgeDirection == Vector3.zero)
-            {
-                dodgeDirection = transform.forward; // Default to forward if no input
-            }
+
             while (Time.time < startTime + dodgeDuration)
             {
-                _controller.Move(dodgeDirection * dodgeSpeed * Time.deltaTime);
+                //_controller.Move(dodgeDirection * dodgeSpeed * Time.deltaTime);
+                MoveSpeed = dodgeSpeed; // Temporarily increase move speed for dodging
+                 Move();
                 yield return null;
             }
         }

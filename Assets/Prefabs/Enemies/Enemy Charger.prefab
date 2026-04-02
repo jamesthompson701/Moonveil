@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6451503090049076054}
   - component: {fileID: 5958753925178639572}
   - component: {fileID: 5046962848591695511}
+  - component: {fileID: -2291795680921796328}
   m_Layer: 8
   m_Name: Enemy Charger
   m_TagString: Enemy
@@ -175,6 +176,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-2291795680921796328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792440819834715892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a05b69aec3cad64e9e2ba8a7634336d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyStatusReceiver
+  cachedRigidbody: {fileID: 0}
+  disableWhileStunned: []
 --- !u!1 &6742096054972064571
 GameObject:
   m_ObjectHideFlags: 0

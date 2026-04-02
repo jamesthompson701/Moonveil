@@ -79,7 +79,11 @@ public class SpellManager2 : MonoBehaviour
     [Header("Spell Tier References")]
     [Tooltip("Assigns spell tier charge times and resource costs here.")]
     [SerializeField] private float[] tierChargeTimes = new float[3] { 1f, 2f, 3f};
-    [SerializeField] private float[] tierResourceCosts = new float[4] { 0f, 25f, 50f, 100f };
+    [SerializeField] private float[] tierResourceCosts = new float[4] { 25f, 50f, 75f, 100f };
+    [SerializeField] private bool[] fireTierUnlocked = new bool[4] { true, false, false, false };
+    [SerializeField] private bool[] earthTierUnlocked = new bool[4] { true, false, false, false };
+    [SerializeField] private bool[] waterTierUnlocked = new bool[4] { true, false, false, false };
+    [SerializeField] private bool[] airTierUnlocked = new bool[4] { true, false, false, false };
 
 
     //Checks for CombatArea trigger tag to switch between combat and farm spells
@@ -229,6 +233,30 @@ public class SpellManager2 : MonoBehaviour
             else if (timer < tierChargeTimes[1]) tier = 2;
             else if (timer < tierChargeTimes[2]) tier = 3;
             else tier = 4;
+
+            //reference unlocked tiers for the current element type and adjust tier if necessary
+            if (attackChoice > 0 && attackChoice <= 4)
+            {
+                int elementIdx = attackChoice - 1;
+                bool tierUnlocked = false;
+                switch (elementIdx)
+                {
+                    case 0: tierUnlocked = fireTierUnlocked[tier - 1]; break;
+                    case 1: tierUnlocked = earthTierUnlocked[tier - 1]; break;
+                    case 2: tierUnlocked = waterTierUnlocked[tier - 1]; break;
+                    case 3: tierUnlocked = airTierUnlocked[tier - 1]; break;
+                }
+                if (!tierUnlocked)
+                {
+                    Debug.LogWarning($"Tier {tier} for element index {elementIdx} is not unlocked. Defaulting to tier 1.");
+                    tier = 1; // Default to tier 1 if the desired tier isn't unlocked
+                }
+            }
+             else
+            {
+                Debug.LogWarning("No attack choice selected. Defaulting to first element.");
+                attackChoice = 1; // Default to first element if no valid choice
+            }
 
             // Select the appropriate spells array based on combat/farm and tier
             SO_SpellDefs2[] selectedArray = null;
