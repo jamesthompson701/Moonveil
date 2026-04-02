@@ -37,7 +37,7 @@ public class CreatureDefs : MonoBehaviour
     [SerializeField, Min(0f)] private float minSpeed = 2f;
 
     [Tooltip("Maximum desired horizontal move speed.")]
-    [SerializeField, Min(0f)] private float maxSpeed = 4f;
+    [SerializeField, Min(0f)] public float maxSpeed = 4f;
 
     [Tooltip("Max horizontal acceleration (m/s^2) applied while steering.")]
     [SerializeField, Min(0f)] private float maxAcceleration = 25f;
