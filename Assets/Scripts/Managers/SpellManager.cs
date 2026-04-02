@@ -165,5 +165,17 @@ public class SpellManager : MonoBehaviour
 
         spell.CastSpell(ctx);
     }
+
+    public void ToggleCombatArea()
+    {
+        if(inCombatArea)
+        {
+            inCombatArea = false;
+        }
+        else
+        {
+            inCombatArea = true;
+        }
+    }
 }
 

@@ -356,6 +356,13 @@ public class FishingManager : MonoBehaviour
             OnFishCaught?.Invoke(caughtFish);
 
             PlayerInventory.instance.AddFish(caughtFish, 1);
+
+            //tutorial
+            if (!TutorialManager.instance.fishingDone)
+            {
+                TutorialManager.instance.ProgressTutorial(6);
+                TutorialManager.instance.fishingDone = true;
+            }
         }
         else
         {

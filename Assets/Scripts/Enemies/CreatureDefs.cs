@@ -618,6 +618,13 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        //tutorial
+        if (!TutorialManager.instance.combatDone)
+        {
+            TutorialManager.instance.ProgressTutorial(10);
+            TutorialManager.instance.combatDone = true;
+        }
+
         //if (meleeHitbox) meleeHitbox.enabled = false;
         if (physicsCollider) physicsCollider.enabled = false;
 

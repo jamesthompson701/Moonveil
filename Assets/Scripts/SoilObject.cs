@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SoilObject : MonoBehaviour
 {
-    [SerializeField] private SoilSO soil;
+    [SerializeField] public SoilSO soil;
 
     //what's in the soil (weed, crop, tilled, empty)
     public SoilContent soilContent;
@@ -31,7 +31,7 @@ public class SoilObject : MonoBehaviour
     public GameObject fire;
 
     //wetness timer
-    private float waterTimer;
+    public float waterTimer;
 
     //bools for tilled and wet
     public bool tilled;

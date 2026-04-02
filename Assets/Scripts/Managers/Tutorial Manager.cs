@@ -13,15 +13,33 @@ public class TutorialManager : MonoBehaviour
     public GameObject fishingTrigger;
     public GameObject billboard6;
     public GameObject billboard7;
+    public GameObject harvestTrigger;
     public GameObject billboard8;
+    public GameObject combatTrigger;
     public GameObject billboard9;
+    public GameObject billboard10;
+    public GameObject backToFarmingTrigger;
+    public GameObject billboard11;
+    public GameObject billboard12;
+    //public GameObject billboard13;
+    //public GameObject billboard14;
 
     //variable to keep track of which stage of the tutorial they're on
     public int currentBillboard = 1;
 
     //other variables
+    public bool backToFarmingDone;
+    public bool combatTriggerDone;
+    public bool movementTriggerDone;
+    public bool fishingTriggerDone;
+    public bool harvestTriggerDone;
     public bool inventoryDone;
     public bool plantingDone;
+    public bool fishingDone;
+    public bool harvestingDone;
+    public bool fastTravelDone;
+    public bool combatDone;
+    public bool craftingDone;
 
     //singleton
     public static TutorialManager instance;
@@ -35,8 +53,11 @@ public class TutorialManager : MonoBehaviour
     }
 
     //function that activates one billboard and deactivates another depending on the input
-    public void ProgressTutorial()
+    public void ProgressTutorial(int _nextBillboard)
     {
+        //increment the stage of the tutorial
+        currentBillboard = _nextBillboard;
+
         switch (currentBillboard)
         {
             case 1:
@@ -60,9 +81,51 @@ public class TutorialManager : MonoBehaviour
                 billboard5.SetActive(false);
                 billboard6.SetActive(true);
                 break;
+            case 6:
+                billboard6.SetActive(false);
+                harvestTrigger.SetActive(true);
+                billboard7.SetActive(true);
+                break;
+            case 7:
+                billboard7.SetActive(false);
+                billboard8.SetActive(true);
+                break;
+            case 8:
+                billboard8.SetActive(false);
+                combatTrigger.SetActive(true);
+                billboard9.SetActive(true);
+                break;
+            case 9:
+                billboard9.SetActive(false);
+                billboard10.SetActive(true);
+                break;
+            case 10:
+                billboard10.SetActive(false);
+                backToFarmingTrigger.SetActive(true);
+                billboard11.SetActive(true);
+                break;
+            case 11:
+                billboard11.SetActive(false);
+                billboard12.SetActive(true);
+                break;
+            case 12:
+                billboard1.SetActive(false);
+                billboard2.SetActive(false);
+                billboard3.SetActive(false);
+                billboard4.SetActive(false);
+                billboard5.SetActive(false);
+                billboard6.SetActive(false);
+                billboard7.SetActive(false);
+                billboard8.SetActive(false);
+                billboard10.SetActive(false);
+                billboard11.SetActive(false);
+                billboard12.SetActive(false);
+                Debug.Log("Tutorial COMPLETED");
+
+                //its purpose fulfilled, Tutorial Manager immediately commits suicide to prevent the dishonor of burdening its family in old age
+                Destroy(this.gameObject);
+                break;
         }
 
-        //increment the stage of the tutorial
-        currentBillboard++;
     }
 }

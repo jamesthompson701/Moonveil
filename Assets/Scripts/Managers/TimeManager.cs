@@ -85,7 +85,7 @@ public class TimeManager : MonoBehaviour
             }
             if (untilled == 0)
             {
-                TutorialManager.instance.ProgressTutorial();
+                TutorialManager.instance.ProgressTutorial(2);
                 tutorialDone = true;
             }
 

@@ -15,7 +15,7 @@ public class Interactable : MonoBehaviour
     public RecipeSO trailMix;
 
     //variables for dispensers
-    public SeedItemSO dispenserItem;
+    public ItemSO dispenserItem;
     public int dispenseAmount;
     public bool destroyOnDispense;
 
