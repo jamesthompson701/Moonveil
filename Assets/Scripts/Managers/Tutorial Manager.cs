@@ -122,6 +122,9 @@ public class TutorialManager : MonoBehaviour
                 billboard10.SetActive(false);
                 billboard11.SetActive(false);
                 billboard12.SetActive(false);
+
+                SpellManager2.Instance.waterTierUnlocked[1] = true;
+
                 Debug.Log("Tutorial COMPLETED");
 
                 //its purpose fulfilled, Tutorial Manager immediately commits suicide to prevent the dishonor of burdening its family in old age

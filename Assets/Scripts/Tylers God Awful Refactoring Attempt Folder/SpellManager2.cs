@@ -11,6 +11,7 @@ using UnityEngine.InputSystem;
 
 public class SpellManager2 : MonoBehaviour
 {
+
     //TODO
     //Implement resource pool for each spell type
     //Implement each spell type as an enum
@@ -21,6 +22,9 @@ public class SpellManager2 : MonoBehaviour
     //Implement spell swapping and hotkeys for each spell type
     //Implement charge ability to change which spell tier is cast
     //Implement spell tier system where holding the charge ability increases the tier of the spell cast, up to a maximum tier
+
+    //Singleton
+    public static SpellManager2 Instance;
 
     [Header("Spells")]
     [Tooltip("Assign spells in inspector. Make sure to have the same number of tiers for combat and farm, and to keep the same spell types in corresponding tiers.")]
@@ -80,10 +84,10 @@ public class SpellManager2 : MonoBehaviour
     [Tooltip("Assigns spell tier charge times and resource costs here.")]
     [SerializeField] private float[] tierChargeTimes = new float[3] { 1f, 2f, 3f};
     [SerializeField] private float[] tierResourceCosts = new float[4] { 25f, 50f, 75f, 100f };
-    [SerializeField] private bool[] fireTierUnlocked = new bool[4] { true, false, false, false };
-    [SerializeField] private bool[] earthTierUnlocked = new bool[4] { true, false, false, false };
-    [SerializeField] private bool[] waterTierUnlocked = new bool[4] { true, false, false, false };
-    [SerializeField] private bool[] airTierUnlocked = new bool[4] { true, false, false, false };
+    [SerializeField] public bool[] fireTierUnlocked = new bool[4] { true, false, false, false };
+    [SerializeField] public bool[] earthTierUnlocked = new bool[4] { true, false, false, false };
+    [SerializeField] public bool[] waterTierUnlocked = new bool[4] { true, false, false, false };
+    [SerializeField] public bool[] airTierUnlocked = new bool[4] { true, false, false, false };
 
 
     //Checks for CombatArea trigger tag to switch between combat and farm spells
@@ -153,6 +157,17 @@ public class SpellManager2 : MonoBehaviour
         timer = 0;
         if (player == null)
             player = gameObject;
+
+        //Making canvas manager a singleton
+        if (Instance != null && Instance != this)
+        {
+            Debug.Log("Destroy New Spell Manager");
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     private void Update()
