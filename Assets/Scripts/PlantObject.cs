@@ -65,13 +65,7 @@ public class PlantObject : MonoBehaviour
         if(!soilScript.Wet())
         {
 
-            //if it's been dry too long, it withers
-            if(dryTime < plant.droughtResistance / 2)
-            {
-                Wither();
-            }
-
-            //if it's been dry WAY too long, then it dies
+            //if it's been dry too long, it withers and stops growing
             if (dryTime > 0 && !isHarvestable)
             {
                 dryTime = dryTime - deltaTime;
@@ -79,11 +73,7 @@ public class PlantObject : MonoBehaviour
             }
             else
             {
-                isDead = true;
-                isHarvestable = false;
-                Destroy(myCanvas);
-                Destroy(currentPlant);
-                currentPlant = Instantiate(plant.plantDead, transform);
+                Wither();
             }
         }
 
@@ -102,7 +92,7 @@ public class PlantObject : MonoBehaviour
         else
         {
             //check wetness and make sure the plant is alive before growing
-            if (soilScript.Wet() && !isDead)
+            if (soilScript.Wet())
             {
                 Debug.Log("before growth: " + currentStage);
                 growthTime = plant.cropTime;
@@ -154,6 +144,7 @@ public class PlantObject : MonoBehaviour
         //for now just make it yellow
         currentPlant.GetComponentInChildren<MeshRenderer>().material = plant.withered;
         withered = true;
+        isHarvestable = false;
     }
     public void Unwither()
     {

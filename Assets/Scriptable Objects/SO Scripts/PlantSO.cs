@@ -15,7 +15,7 @@ public class PlantSO : ScriptableObject
     //how long the plant takes to increment 1 stage
     public float cropTime;
 
-    //how long the plant can be dry for before dying
+    //how long the plant can be dry for before withering
     public float droughtResistance;
 
     //itemSOs of the seed, fruit
@@ -27,9 +27,6 @@ public class PlantSO : ScriptableObject
 
     //prefab for the plant object
     public GameObject prefab;
-
-    //prefab for when the plant is dead
-    public GameObject plantDead;
 
     //textures for healthy/withered
     public Material withered;
