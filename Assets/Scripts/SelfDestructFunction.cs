@@ -10,7 +10,8 @@ public class SelfDestructFunction : MonoBehaviour
         {
             switch((TutorialManager.instance.currentBillboard))
             {
-                case 1:
+                case 0:
+                    Debug.Log("Just ran progress 1");
                     TutorialManager.instance.ProgressTutorial(1);
                     break;
                 case 4:

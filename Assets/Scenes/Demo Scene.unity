@@ -18645,7 +18645,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3be8a1fa8168974b883357da44b5961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialManager
-  billboard1: {fileID: 540134233}
+  billboard0: {fileID: 540134233}
+  billboard1: {fileID: 721484362}
+  movementTrigger: {fileID: 1626855004}
   billboard2: {fileID: 650564055}
   billboard3: {fileID: 1979652005}
   billboard4: {fileID: 131981734}
@@ -18661,12 +18663,7 @@ MonoBehaviour:
   backToFarmingTrigger: {fileID: 1767406446}
   billboard11: {fileID: 127437386}
   billboard12: {fileID: 1903822605}
-  currentBillboard: 1
-  backToFarmingDone: 0
-  combatTriggerDone: 0
-  movementTriggerDone: 1
-  fishingTriggerDone: 0
-  harvestTriggerDone: 0
+  currentBillboard: 0
   inventoryDone: 0
   plantingDone: 0
   fishingDone: 0
@@ -21681,31 +21678,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05825b7e11557c047ae9554253fb5b65, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 81.07
+      value: 45.79
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05825b7e11557c047ae9554253fb5b65, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.86000025
+      value: 0.09000003
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05825b7e11557c047ae9554253fb5b65, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -82.72
+      value: -84.54
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05825b7e11557c047ae9554253fb5b65, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.75193727
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05825b7e11557c047ae9554253fb5b65, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05825b7e11557c047ae9554253fb5b65, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.6592347
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05825b7e11557c047ae9554253fb5b65, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05825b7e11557c047ae9554253fb5b65, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -21713,7 +21710,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05825b7e11557c047ae9554253fb5b65, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -82.483
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05825b7e11557c047ae9554253fb5b65, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -23359,6 +23356,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7404196739769689669, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
   m_PrefabInstance: {fileID: 1974277211}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &721484362 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4188393393823029980, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+  m_PrefabInstance: {fileID: 942967543}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &727042140
 GameObject:
   m_ObjectHideFlags: 0
@@ -23894,6 +23896,45 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d37af21c5f2a9f4aa413a1b3c430593, type: 3}
+--- !u!21 &743891739
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI Extensions/UIMultiply
+  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1001 &745053911
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30075,6 +30116,79 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1001 &942967543
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 45.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.26251
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -81.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4188393393823029980, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_Name
+      value: Tutorial Billboard (1. Quests)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4188393393823029980, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928974988864360270, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_text
+      value: 'You just accepted your first quest!
+
+
+        To complete it we first
+        need to do some farming. Head through this gate over to your plots.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928974988864360270, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5084999545536168078, guid: e306e534a00ce7a469129b85e9b9f045, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 14e076341535d5b4ab926e4563028626, type: 3}
 --- !u!1001 &945962837
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36944,45 +37058,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ea5350e8f347916498d6e6342b288f38, type: 3}
   m_PrefabInstance: {fileID: 319053173}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &1232661668
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI Extensions/UIMultiply
-  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &1233945138
 GameObject:
   m_ObjectHideFlags: 0
@@ -62176,7 +62251,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1626855005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83593,6 +83668,83 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2062427976}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2064744239
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2064744241}
+  - component: {fileID: 2064744240}
+  m_Layer: 0
+  m_Name: Dialogue System Scene Events
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2064744240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064744239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca55201633b97d3408f439eb84ecb249, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp-firstpass::PixelCrushers.DialogueSystem.Wrappers.DialogueSystemSceneEvents
+  dialogueEntrySceneEvents:
+  - guid: e0a858fb-5336-4fc0-8dc4-b797680597c7
+    onExecute:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 539960152}
+          m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
+          m_MethodName: ProgressTutorial
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - guid: 68cbdf15-8431-4b2e-af67-44a5762af232
+    onExecute:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 539960152}
+          m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
+          m_MethodName: ProgressTutorial
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 12
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!4 &2064744241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064744239}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2071212081
 GameObject:
   m_ObjectHideFlags: 0
@@ -84382,7 +84534,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4188393393823029980, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7160520792659846831, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -84401,8 +84553,8 @@ PrefabInstance:
         menu. Once you''re there, you can select recipes on the left, and craft them
         with the button on the right.
 
-        Craft a Chum Bowl to complete the
-        tutorial.'
+        Craft a Chum Bowl and give it to the
+        NPC to complete the tutorial!'
       objectReference: {fileID: 0}
     - target: {fileID: 7928974988864360270, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_fontSize
@@ -92289,7 +92441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4188393393823029980, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_Name
-      value: Tutorial Billboard (1. Movement)
+      value: Tutorial Billboard (0. Movement)
       objectReference: {fileID: 0}
     - target: {fileID: 7928974988864360270, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_text
@@ -92303,7 +92455,7 @@ PrefabInstance:
         Hold SHIFT to sprint.
 
         - When you''re ready,
-        check out the fenced-in area to the right. -'
+        talk to the NPC near the gate to your right -'
       objectReference: {fileID: 0}
     - target: {fileID: 7928974988864360270, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_fontAsset
@@ -102827,6 +102979,7 @@ SceneRoots:
   - {fileID: 283969013}
   - {fileID: 1475267345408070097}
   - {fileID: 1626855008}
+  - {fileID: 942967543}
   - {fileID: 838772826}
   - {fileID: 887837167}
   - {fileID: 1233945143}
@@ -102866,3 +103019,4 @@ SceneRoots:
   - {fileID: 2007583520}
   - {fileID: 662667866}
   - {fileID: 2033388126}
+  - {fileID: 2064744241}

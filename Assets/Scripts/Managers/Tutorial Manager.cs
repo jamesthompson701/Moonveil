@@ -5,6 +5,7 @@ public class TutorialManager : MonoBehaviour
 {
 
     //billboards to be activated and deactivated
+    public GameObject billboard0;
     public GameObject billboard1;
     public GameObject movementTrigger;
     public GameObject billboard2;
@@ -26,7 +27,7 @@ public class TutorialManager : MonoBehaviour
     //public GameObject billboard14;
 
     //variable to keep track of which stage of the tutorial they're on
-    public int currentBillboard = 1;
+    public int currentBillboard = 0;
 
     //other variables
     public bool inventoryDone;
@@ -56,6 +57,11 @@ public class TutorialManager : MonoBehaviour
 
         switch (currentBillboard)
         {
+            case 0:
+                billboard0.SetActive(false);
+                movementTrigger.SetActive(true);
+                billboard1.SetActive(true);
+                break;
             case 1:
                 billboard1.SetActive(false);
                 billboard2.SetActive(true);

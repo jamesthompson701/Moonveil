@@ -66,9 +66,9 @@ public class Interactable : MonoBehaviour
             foreach (InventoryItem _item in PlayerInventory.instance.invSO.InventoryItems)
             {
                 Debug.Log("Item Name: " +  _item.item.name);
-                if (_item.item.name == "PokeBowl")
+                if (_item.item.name == "ChumBowl")
                 {
-                    Debug.Log("Setting pokebowl to" + _item.amount);
+                    Debug.Log("Setting ChumBowl to" + _item.amount);
                     DialogueLua.SetVariable("McGuffinNum", _item.amount);
                 }
             }

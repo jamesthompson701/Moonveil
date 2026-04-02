@@ -17,6 +17,7 @@ public class InventorySO : ScriptableObject
             TutorialManager.instance.ProgressTutorial(3);
             TutorialManager.instance.inventoryDone = true;
         }
+        /*
         else if (!TutorialManager.instance.craftingDone)
         {
             if (newItem.itemID == 144)
@@ -25,6 +26,7 @@ public class InventorySO : ScriptableObject
                 TutorialManager.instance.craftingDone = true;
             }
         }
+        */
 
         //Check if item is in inventory for stacking
         if (newItem.isStackable)
