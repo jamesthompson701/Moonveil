@@ -6,6 +6,7 @@ public class TutorialManager : MonoBehaviour
 
     //billboards to be activated and deactivated
     public GameObject billboard1;
+    public GameObject movementTrigger;
     public GameObject billboard2;
     public GameObject billboard3;
     public GameObject billboard4;
@@ -28,11 +29,6 @@ public class TutorialManager : MonoBehaviour
     public int currentBillboard = 1;
 
     //other variables
-    public bool backToFarmingDone;
-    public bool combatTriggerDone;
-    public bool movementTriggerDone;
-    public bool fishingTriggerDone;
-    public bool harvestTriggerDone;
     public bool inventoryDone;
     public bool plantingDone;
     public bool fishingDone;

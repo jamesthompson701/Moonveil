@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class SelfDestructFunction : MonoBehaviour
@@ -7,31 +8,26 @@ public class SelfDestructFunction : MonoBehaviour
     {
         if (isPartOfTutorial)
         {
-            if (!TutorialManager.instance.movementTriggerDone)
+            switch((TutorialManager.instance.currentBillboard))
             {
-                TutorialManager.instance.ProgressTutorial(1);
-                TutorialManager.instance.movementTriggerDone = true;
+                case 1:
+                    TutorialManager.instance.ProgressTutorial(1);
+                    break;
+                case 4:
+                    TutorialManager.instance.ProgressTutorial(5);
+                    break;
+                case 6:
+                    TutorialManager.instance.ProgressTutorial(7);
+                    break;
+                case 8:
+                    TutorialManager.instance.ProgressTutorial(9);
+                    break;
+                case 10:
+                    TutorialManager.instance.ProgressTutorial(11);
+                    break;
+
             }
-            else if(!TutorialManager.instance.fishingTriggerDone)
-            {
-                TutorialManager.instance.ProgressTutorial(5);
-                TutorialManager.instance.fishingTriggerDone = true;
-            }
-            else if (!TutorialManager.instance.harvestTriggerDone)
-            {
-                TutorialManager.instance.ProgressTutorial(7);
-                TutorialManager.instance.harvestTriggerDone = true;
-            }
-            else if (!TutorialManager.instance.combatTriggerDone)
-            {
-                TutorialManager.instance.ProgressTutorial(9);
-                TutorialManager.instance.combatTriggerDone = true;
-            }
-            else if (!TutorialManager.instance.backToFarmingDone)
-            {
-                TutorialManager.instance.ProgressTutorial(11);
-                TutorialManager.instance.backToFarmingDone = true;
-            }
+
         }
 
         // I WANNA MAKE MY MURDER LOOK LIKE A SUICIDE
