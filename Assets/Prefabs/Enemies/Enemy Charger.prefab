@@ -90,7 +90,6 @@ MonoBehaviour:
   maxSpeed: 6
   maxAcceleration: 25
   turnSpeedDegPerSec: 720
-  HoldDistance: 6
   controlLockSecondsOnHit: 0.15
   roamMode: 1
   waypoints: []
@@ -114,7 +113,10 @@ MonoBehaviour:
   maxSeparationNeighbors: 16
   useAttackDirector: 1
   directorRequestInterval: 0.15
-  drawGizmos: 1
+  drawGizmos: 0
+  dropItem: {fileID: 11400000, guid: decc5e8d934865e4096a5e2e668a4f53, type: 2}
+  playerInventory: {fileID: 0}
+  invSO: {fileID: 0}
 --- !u!65 &6451503090049076054
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -134,8 +136,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5223541, y: 0.9058327, z: 0.5211754}
-  m_Center: {x: -0.0019226074, y: 0.53983545, z: 0.0000705719}
+  m_Size: {x: 0.5223541, y: 0.90583277, z: 1.1880188}
+  m_Center: {x: -0.0019226074, y: 0.53983545, z: 0.0471344}
 --- !u!114 &5958753925178639572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,7 +154,7 @@ MonoBehaviour:
   IsMelee: 1
   damageCooldownSeconds: 0.35
   targetTag: Player
-  destroyOnHit: 1
+  destroyOnHit: 0
   destroyDelay: 3
 --- !u!95 &5046962848591695511
 Animator:

@@ -32,6 +32,7 @@ public class EarthAttackHitbox : MonoBehaviour
 
     private System.Collections.IEnumerator StunCoroutine(CreatureDefs enemy, float duration)
     {
+        Debug.Log("we are stunning you for " + duration);
         enemy.enabled = false;
         yield return new WaitForSeconds(duration);
         enemy.enabled = true;

@@ -14,7 +14,6 @@ namespace StarterAssets
 		public bool sprint;
 		public bool dodge;
 		public bool basicAttack;
-		private bool specialAttack;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -22,9 +21,6 @@ namespace StarterAssets
 		[Header("Mouse Cursor Settings")]
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
-
-		private bool _dodgeHeld;
-		private bool _basicAttackHeld;
 
 
 #if ENABLE_INPUT_SYSTEM
