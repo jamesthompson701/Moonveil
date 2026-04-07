@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Timeline.Actions;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
@@ -75,6 +76,12 @@ namespace StarterAssets
         [Tooltip("For locking the camera position on all axis")]
         public bool LockCameraPosition = false;
 
+        [Tooltip("Determines if the player is in flight mode or not")]
+        public bool inFlightMode = false;
+
+        InputAction ascend;
+        InputAction descend;
+
         // cinemachine
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
@@ -148,6 +155,9 @@ namespace StarterAssets
             {
                 Instance = this;
             }
+
+            ascend = InputSystem.actions.FindAction("Ascend");
+            descend = InputSystem.actions.FindAction("Descend");
         }
 
         private void Start()
@@ -174,10 +184,41 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
-            JumpAndGravity();
+            if (inFlightMode)
+            {
+                // While in flight mode, disable jump & gravity and allow vertical control via ascend/descend inputs.
+                FlightUpdate();
+            }
+            else
+            {
+                JumpAndGravity();
+            }
+
             GroundedCheck();
             Move();
             Dodge();
+        }
+
+        private void OnEnable()
+        {
+            // Ensure ascend/descend actions are valid and enabled. No event subscription needed for polling.
+            if (ascend == null) ascend = InputSystem.actions.FindAction("Ascend");
+            if (ascend != null && !ascend.enabled) ascend.Enable();
+
+            if (descend == null) descend = InputSystem.actions.FindAction("Descend");
+            if (descend != null && !descend.enabled) descend.Enable();
+        }
+        private void OnDisable()
+        {
+            if (descend != null)
+            {
+                if (descend.enabled) descend.Disable();
+            }
+            if (ascend != null)
+            {
+                if (ascend.enabled) ascend.Disable();
+            }
+
         }
 
         private void LateUpdate()
@@ -323,11 +364,11 @@ namespace StarterAssets
                 }
                 else
                 {
-                    
+
                     _animator.SetFloat("MoveX", _input.move.x, 0.1f, Time.deltaTime);
                     _animator.SetFloat("MoveY", _input.move.y, 0.1f, Time.deltaTime);
                 }
-                
+
 
             }
         }
@@ -408,6 +449,30 @@ namespace StarterAssets
             }
         }
 
+        // Flight mode: poll ascend/descend input and set vertical velocity. Gravity and jump are skipped while inFlightMode.
+        private void FlightUpdate()
+        {
+            // stop accumulated gravity while in flight
+            _verticalVelocity = 0f;
+
+            float verticalSpeed = 0f;
+
+            // ascend input moves up
+            if (ascend != null && ascend.enabled && ascend.IsPressed())
+            {
+                verticalSpeed += MoveSpeed;
+            }
+
+            // descend input moves down
+            if (descend != null && descend.enabled && descend.IsPressed())
+            {
+                verticalSpeed -= MoveSpeed;
+            }
+
+            // set the vertical velocity used by Move()
+            _verticalVelocity = verticalSpeed;
+        }
+
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
         {
             if (lfAngle < -360f) lfAngle += 360f;
@@ -480,7 +545,7 @@ namespace StarterAssets
             {
                 //_controller.Move(dodgeDirection * dodgeSpeed * Time.deltaTime);
                 MoveSpeed = dodgeSpeed; // Temporarily increase move speed for dodging
-                 Move();
+                Move();
                 yield return null;
             }
         }
