@@ -121,7 +121,7 @@ public class CreatureDefs : MonoBehaviour
 
     public ItemSO dropItem;
     public PlayerInventory playerInventory;
-    public InventorySO invSO;
+    public InventorySO  invSO;
 
     private Rigidbody _rb;
     private float _health;
@@ -164,7 +164,10 @@ public class CreatureDefs : MonoBehaviour
         _health = maxHealth;
         _spawnPos = transform.position;
 
-        _orbitSign = (Random.value < 0.5f) ? -1 : 1;
+        playerInventory = PlayerInventory.instance;
+        invSO = playerInventory.invSO;
+
+    _orbitSign = (Random.value < 0.5f) ? -1 : 1;
 
         if (useAttackDirector)
             _director = EnemyAttackDirector.Instance;
@@ -659,7 +662,7 @@ public class CreatureDefs : MonoBehaviour
 
 
         int amount = 1;
-        //invSO.AddItem(dropItem, amount);
+        invSO.AddItem(dropItem, amount);
 
         //Tells Animator to play Death anim
         animator.SetTrigger("Death");
