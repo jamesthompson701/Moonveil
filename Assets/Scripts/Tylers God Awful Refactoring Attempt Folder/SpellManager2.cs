@@ -114,7 +114,7 @@ public class SpellManager2 : MonoBehaviour
         }
 
         if (attackAction == null) attackAction = InputSystem.actions.FindAction("BasicAttack");
-        if (attackAction != null)
+        if (attackAction != null && inCombatArea)
         {
             attackAction.performed += TryBasicAttack;
             if (!attackAction.enabled) attackAction.Enable();
@@ -130,7 +130,7 @@ public class SpellManager2 : MonoBehaviour
             if (specialAttackAction.enabled) specialAttackAction.Disable();
         }
 
-        if (attackAction != null)
+        if (attackAction != null && inCombatArea)
         {
             attackAction.performed -= TryBasicAttack;
             if (attackAction.enabled) attackAction.Disable();
