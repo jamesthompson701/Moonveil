@@ -74,6 +74,10 @@ public class Interactable : MonoBehaviour
             }
             DialogueManager.StartConversation("New Conversation 1");
         }
+        else if (gameObject.CompareTag("Mineable"))
+        {
+            this.gameObject.GetComponent<MineRock>().Interact();
+        }
         else
         {
             Debug.Log("Nothing interactable hit, tag is: " + gameObject.tag);

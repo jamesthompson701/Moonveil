@@ -52,7 +52,11 @@ public class ClickSelector : MonoBehaviour
         {
  
             Interactable interactable = hit.collider.GetComponent<Interactable>();
-            
+            if (interactable == null)
+            {
+                interactable = hit.collider.GetComponentInParent<Interactable>();
+            }
+
             //If its a fishin area tells the manager to change the fishing area
             FishingArea currentArea;
             if (currentArea = hit.collider.GetComponent<FishingArea>())

@@ -36,6 +36,10 @@ public class MiningManager : MonoBehaviour
 
         Debug.Log("Fade complete");
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        ClickSelector.Instance.enabled = false;
+
         mainCamera.gameObject.SetActive(false);
         miningCamera.gameObject.SetActive(true);
 
@@ -64,6 +68,10 @@ public class MiningManager : MonoBehaviour
     IEnumerator EndMiningRoutine()
     {
         yield return Fade(1f);
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        ClickSelector.Instance.enabled = true;
 
         miningCamera.gameObject.SetActive(false);
         mainCamera.gameObject.SetActive(true);
