@@ -30,6 +30,9 @@ public class PlantObject : MonoBehaviour
     public TMP_Text growthTimer;
     public Image growthProgressBar;
 
+    public TMP_Text waterTimer;
+    public Image waterTimerBar;
+
     //bool to toggle if it's been setup
     private bool isSet;
 
@@ -39,6 +42,12 @@ public class PlantObject : MonoBehaviour
         currentStage = 0;
         TimeManager.instance.RegisterPlant(this);
 
+        //tutorial
+        if (!TutorialManager.instance.plantingDone)
+        {
+            TutorialManager.instance.ProgressTutorial(4);
+            TutorialManager.instance.plantingDone = true;
+        }
     }
 
     public void CheckPlant(float deltaTime)
@@ -122,9 +131,12 @@ public class PlantObject : MonoBehaviour
             }
         }
 
-        //update growth timer UI
+        //update growth timer UI and water timer UI
         growthTimer.text = "" + Mathf.Round(growthTime);
         growthProgressBar.fillAmount = growthTime / plant.cropTime;
+
+        waterTimer.text = " " + Mathf.Round(soilScript.waterTimer);
+        waterTimerBar.fillAmount = soilScript.waterTimer / soilScript.soil.wetnessDuration;
 
     }
 
@@ -152,7 +164,16 @@ public class PlantObject : MonoBehaviour
     //add the correct items to the player's inventory and then unregisters and destroys the plant
     public void Harvest()
     {
+
         InventoryManager.instance.invSO.AddItem(plant.seed, 2);
+
+        //tutorial
+        if (!TutorialManager.instance.harvestingDone)
+        {
+            TutorialManager.instance.ProgressTutorial(8);
+            TutorialManager.instance.harvestingDone = true;
+        }
+
         Debug.Log("Harvested");
         Destroy(currentPlant);
         TimeManager.instance.UnregisterPlant(this);

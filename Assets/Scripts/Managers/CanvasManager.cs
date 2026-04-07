@@ -46,7 +46,7 @@ public class CanvasManager : MonoBehaviour
         //Making canvas manager a singleton
         if (Instance != null && Instance != this)
         {
-            Debug.Log("Destroy New AudioManager");
+            Debug.Log("Destroy New Canvas Manager");
             Destroy(this.gameObject);
         }
         else

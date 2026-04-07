@@ -355,7 +355,16 @@ public class FishingManager : MonoBehaviour
             // notify inventory / UI systems
             OnFishCaught?.Invoke(caughtFish);
 
+
             InventoryManager.instance.AddFish(caughtFish, 1);
+
+            //tutorial
+            if (!TutorialManager.instance.fishingDone)
+            {
+                TutorialManager.instance.ProgressTutorial(6);
+                TutorialManager.instance.fishingDone = true;
+            }
+
         }
         else
         {

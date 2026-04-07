@@ -14,7 +14,26 @@ public class InventorySO : ScriptableObject
 
     public void AddItem(ItemSO newItem, int newAmount)
     {
+
         GetInventoryItem?.Invoke(newItem, newAmount, true);
+
+        //tutorial
+        if (!TutorialManager.instance.inventoryDone)
+        {
+            TutorialManager.instance.ProgressTutorial(3);
+            TutorialManager.instance.inventoryDone = true;
+        }
+        /*
+        else if (!TutorialManager.instance.craftingDone)
+        {
+            if (newItem.itemID == 144)
+            {
+                TutorialManager.instance.ProgressTutorial(12);
+                TutorialManager.instance.craftingDone = true;
+            }
+        }
+        */
+
 
         //Check if item is in inventory for stacking
         if (newItem.isStackable)

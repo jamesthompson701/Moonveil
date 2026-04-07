@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 6025492764036943786}
   - component: {fileID: 8354106555923698578}
   - component: {fileID: 416140702509370129}
+  - component: {fileID: -6498612594726477926}
   m_Layer: 8
   m_Name: Enemy Arcing
   m_TagString: Enemy
@@ -246,6 +247,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-6498612594726477926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4506743262962159528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a05b69aec3cad64e9e2ba8a7634336d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyStatusReceiver
+  cachedRigidbody: {fileID: 0}
+  disableWhileStunned: []
 --- !u!1 &6541537341163158958
 GameObject:
   m_ObjectHideFlags: 0

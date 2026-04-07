@@ -1,77 +1,79 @@
+// EarthAttackSpell.cs
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EarthAttackSpell", menuName = "Scriptable Objects/EarthAttackSpell")]
+/// <summary>  
+/// Ground-targeted Earth spell definition.  
+/// Req. 15: This is a ScriptableObject derived from SO_Spells.  
+///  
+/// Earth-specific tuning here is limited to *placement/preview*.  
+/// Damage/force/stun values are configured on the Earth prefab via SpellDamageManager.cs (Req. 14).  
+/// </summary>  
+[CreateAssetMenu(fileName = "SO_EarthAttackSpell", menuName = "Spells/Earth Attack Spell")]
 public class EarthAttackSpell : SO_Spells
 {
-    [Header("Placement Rules")]
-    [SerializeField] private string groundTag = "Ground";
-
-    [Header("Growth")]
-    public float AddY = 2f;
-    public float MaxY = 5f;
-
     public override void CastSpell(SpellCastContext ctx)
     {
-        if (SpellPrefab == null) return;
+        if (!TryGetAimHit(ctx, out RaycastHit hit))
+            return;
 
-        Transform originT = ctx.attackCastOrigin != null ? ctx.attackCastOrigin : ctx.caster.transform;
+        // Earth must target ground (Req. 10).  
+        if (!string.IsNullOrWhiteSpace(groundTag) && !hit.collider.CompareTag(groundTag))
+            return;
 
-        if (ctx.inCombatArea)
+        float yOffset = GroundYOffset;
+        Vector3 spawnPos = hit.point + (Vector3.up * yOffset);
+
+        Quaternion rot = Quaternion.identity;
+        if (AlignToSurfaceNormal)
         {
-            // Must hit something
-            if (!ctx.hasHit || ctx.hitCollider == null)
-            {
-                Debug.Log("Earth attack needs a ground hit to place correctly.");
-                return;
-            }
+            // Align "up" to the surface normal; maintain camera forward projection as forward.  
+            Vector3 forwardProjected = Vector3.ProjectOnPlane(ctx.cameraPlanarForward, hit.normal).normalized;
+            if (forwardProjected.sqrMagnitude < 0.001f)
+                forwardProjected = Vector3.Cross(hit.normal, Vector3.right);
 
-            // ONLY allow Ground tag
-            if (!ctx.hitCollider.CompareTag(groundTag))
-            {
-                Debug.Log("Earth attack can only be placed on Ground.");
-                return;
-            }
-
-            // Align earth "up" to the surface normal
-            Quaternion earthRot = Quaternion.FromToRotation(Vector3.up, ctx.aimNormal);
-
-            // Find half-height of the prefab so we can place it ON TOP of the ground
-            float halfHeight = 0.5f;
-            Collider prefabCol = SpellPrefab.GetComponent<Collider>();
-            if (prefabCol != null)
-                halfHeight = prefabCol.bounds.extents.y;
-
-            // Start position: on the surface, pushed out by half height so it isn't inside the ground
-            Vector3 earthPos = ctx.aimPoint + ctx.aimNormal * halfHeight;
-
-            Rigidbody clone = Spawn(SpellPrefab, Vector3.up, earthRot);
-            SetVelocity(clone, Vector3.zero);
-
-            // Grow upward: increase Y and push up by half the added amount so bottom stays planted
-            Vector3 s = clone.transform.localScale;
-            float oldY = s.y;
-            
-            s.y = Mathf.Min(s.y + AddY, MaxY);
-            clone.transform.localScale = s;
-            
-            float deltaY = s.y - oldY;
-            
-            // move up along the surface normal so growth doesn't sink into the ground
-            if (deltaY > 0f)
-                clone.transform.position += ctx.aimNormal * (deltaY * 0.5f);
-
-            Destroy(clone.gameObject, Lifetime);
+            rot = Quaternion.LookRotation(forwardProjected, hit.normal);
         }
         else
         {
-            // Farm: simple place in front
-            Vector3 dir = originT.forward.normalized;
-            Vector3 pos = originT.position + dir * ctx.farmSpawnOffset;
-            Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
-
-            Rigidbody clone = Spawn(SpellPrefab, pos, rot);
-            SetVelocity(clone, Vector3.zero);
-            Destroy(clone.gameObject, 1f);
+            rot = Quaternion.LookRotation(ctx.cameraPlanarForward, Vector3.up);
         }
+
+        rot *= Quaternion.Euler(RotationOffsetEuler);
+
+        GameObject spawned = Instantiate(SpellPrefab.gameObject, spawnPos, rot);
+
+        if (spawned.TryGetComponent<SpellDamageManager>(out var dmg))
+        {
+            SpellManager sm = ctx.caster.GetComponent<SpellManager>();
+            int choice = sm != null ? sm.attackChoice : 0;
+
+            if (ctx.caster != null)
+                dmg.InitProjectile(choice, damage, spellType, ctx.caster);
+        }
+
+        if (Lifetime > 0f)
+            Destroy(spawned, Lifetime);
+    }
+
+    [Header("Earth Placement")]
+    [Tooltip("Small upward offset applied to the preview and spawned Earth prefab.\n" +
+             "Prevents z-fighting and reduces chance of the prefab intersecting the ground collider.")]
+    [Min(0f)]
+    [SerializeField] private float groundYOffset = 0.02f;
+
+    [Tooltip("If true, the preview/spawn rotates to match the surface normal of the raycast hit.")]
+    [SerializeField] private bool alignToSurfaceNormal = true;
+
+    [Tooltip("Additional rotation (degrees) applied after alignment.\n" +
+             "Useful if your Earth prefab faces a different forward axis.")]
+    [SerializeField] private Vector3 rotationOffsetEuler = Vector3.zero;
+
+    public float GroundYOffset => groundYOffset;
+    public bool AlignToSurfaceNormal => alignToSurfaceNormal;
+    public Vector3 RotationOffsetEuler => rotationOffsetEuler;
+
+    private bool TryGetAimHit(SpellCastContext ctx, out RaycastHit hit)
+    {
+        return Physics.Raycast(ctx.aimCamera.transform.position, ctx.aimCamera.transform.forward, out hit, ctx.aimDistance, ctx.aimMask);
     }
 }

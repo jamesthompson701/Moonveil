@@ -6,7 +6,7 @@ using UnityEngine;
 public class HUD : MonoBehaviour
 {
     GameObject playerRef;
-    SpellManager attackManagerRef;
+    SpellManager2 attackManagerRef;
 
     public List<GameObject> itemPopups;
     
@@ -21,7 +21,7 @@ public class HUD : MonoBehaviour
     private void Awake()
     {
         playerRef = GameObject.Find("Player");
-        attackManagerRef = playerRef.GetComponent<SpellManager>();
+        attackManagerRef = playerRef.GetComponent<SpellManager2>();
 
         managerRef = InventoryManager.instance;
 

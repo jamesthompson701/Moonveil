@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2574896517826969297}
   - component: {fileID: 5633996824882971443}
   - component: {fileID: 3332698053269713966}
+  - component: {fileID: -7604646517011054060}
   m_Layer: 8
   m_Name: Enemy Straight
   m_TagString: Enemy
@@ -134,6 +135,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-7604646517011054060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888579090868862294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a05b69aec3cad64e9e2ba8a7634336d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyStatusReceiver
+  cachedRigidbody: {fileID: 0}
+  disableWhileStunned: []
 --- !u!1 &3215800348630071929
 GameObject:
   m_ObjectHideFlags: 0

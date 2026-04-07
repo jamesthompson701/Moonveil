@@ -43,9 +43,31 @@ public class EnemyAttacks : MonoBehaviour
         _hitThisSwing.Clear();
     }
 
-    private void OnTriggerEnter(Collider other) => TryHit(other);
-    private void OnTriggerStay(Collider other) => TryHit(other);
-    private void OnCollisionEnter(Collision collision) => TryHit(collision.collider);
+    private void OnTriggerEnter(Collider other)
+    {
+        TryHit(other);
+        if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || other.CompareTag(targetTag) || other.CompareTag("Ground")))
+            Destroy(gameObject);
+        else if (destroyOnHit)
+            Destroy(gameObject, destroyDelay);
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        TryHit(other);
+        if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || other.CompareTag(targetTag) || other.CompareTag("Ground")))
+            Destroy(gameObject);
+        else if (destroyOnHit)
+            Destroy(gameObject, destroyDelay);
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        TryHit(collision.collider);
+        // destroys object if it hits the target or the ground tag
+        if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || collision.collider.CompareTag(targetTag) || collision.collider.CompareTag("Ground")))
+            Destroy(gameObject);
+        else if (destroyOnHit)
+            Destroy(gameObject, destroyDelay);
+    }
 
     private void TryHit(Collider other)
     {
@@ -81,12 +103,6 @@ public class EnemyAttacks : MonoBehaviour
         _lastHitTime[targetId] = Time.time;
         if (IsMelee) _hitThisSwing.Add(targetId);
 
-        if (!IsMelee && destroyOnHit)
-        {
-            Destroy(gameObject);
-            Destroy(gameObject, destroyDelay); // Destroy after set time in case it misses.
-        }
-            
     }
 }
 

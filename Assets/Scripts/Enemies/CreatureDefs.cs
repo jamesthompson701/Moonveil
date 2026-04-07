@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 /// Attach to the Enemy root object (the one with the Rigidbody).
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
-public class CreatureDefs : MonoBehaviour, IDamageable
+public class CreatureDefs : MonoBehaviour
 {
     public enum RoamMode { Waypoints, RandomRoam }
     public enum AttackMode { Melee, ProjectileStraight, ProjectileArc, Charger }
@@ -37,7 +37,7 @@ public class CreatureDefs : MonoBehaviour, IDamageable
     [SerializeField, Min(0f)] private float minSpeed = 2f;
 
     [Tooltip("Maximum desired horizontal move speed.")]
-    [SerializeField, Min(0f)] private float maxSpeed = 4f;
+    [SerializeField, Min(0f)] public float maxSpeed = 4f;
 
     [Tooltip("Max horizontal acceleration (m/s^2) applied while steering.")]
     [SerializeField, Min(0f)] private float maxAcceleration = 25f;
@@ -159,6 +159,8 @@ public class CreatureDefs : MonoBehaviour, IDamageable
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        _rb.interpolation = RigidbodyInterpolation.Interpolate;
         _health = maxHealth;
         _spawnPos = transform.position;
 
@@ -216,6 +218,11 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         ApplySteering(desiredDir, desiredSpeed);
         ApplySeparation();
         ApplyFacing(toTarget: _hasAggro);
+    }
+
+    public void Burn(float damagePerSecond, float duration)
+    {
+        // Implement burn logic as needed
     }
 
     private void UpdateAggroState()
@@ -464,11 +471,11 @@ public class CreatureDefs : MonoBehaviour, IDamageable
                 break;
 
             case AttackMode.ProjectileStraight:
-                DoStraightProjectile();
+                yield return DoStraightProjectile();
                 break;
 
             case AttackMode.ProjectileArc:
-                DoArcProjectile();
+                yield return DoArcProjectile();
                 break;
             case AttackMode.Charger:
                 yield return DoChargeAttack();
@@ -496,9 +503,9 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         animator.SetTrigger("Attack");
     }
 
-    private void DoStraightProjectile()
+    private IEnumerator DoStraightProjectile()
     {
-        if (!projectilePrefab) return;
+        if (!projectilePrefab) yield break;
 
         Transform origin = attackPoint ? attackPoint : transform;
         Rigidbody proj = Instantiate(projectilePrefab, origin.position, origin.rotation);
@@ -506,13 +513,16 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         Vector3 dir = (target.position - origin.position).normalized;
         proj.linearVelocity = dir * projectileSpeed;
 
-        //Tells Animator to play attack anim
         animator.SetTrigger("Attack");
+
+        yield break;
+
+        yield break;
     }
 
-    private void DoArcProjectile()
+    private IEnumerator DoArcProjectile()
     {
-        if (!projectilePrefab) return;
+        if (!projectilePrefab) yield break;
 
         Transform origin = attackPoint ? attackPoint : transform;
         Rigidbody proj = Instantiate(projectilePrefab, origin.position, origin.rotation);
@@ -525,8 +535,13 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         else
             proj.linearVelocity = (end - start).normalized * projectileSpeed;
 
+
         //Tells Animator to play attack anim
         animator.SetTrigger("Attack");
+
+        yield break;
+
+        yield break;
     }
 
     // Target faces the enemy, waits for a short windup, then dashes forward in a straight line. Bonks into the player then retreats. Kinda funny.
@@ -589,22 +604,30 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
         if (impulseForce > 0f)
         {
-            Vector3 dir = hitDirection.normalized;
-            if (dir.sqrMagnitude < 0.0001f) dir = Vector3.up;
+            Vector3 dir = hitDirection;
+            dir.y = 0f; // Only apply horizontal impulse
+            if (dir.sqrMagnitude < 0.0001f) dir = Vector3.forward;
+            dir = dir.normalized;
             _rb.AddForce(dir * impulseForce, ForceMode.Impulse);
+        }
+
+        for (int i = 0; i < GetComponentsInChildren<Renderer>().Length; i++)
+        {
+            Renderer renderer = GetComponentsInChildren<Renderer>()[i];
+            if (renderer != null)
+            {
+
+                renderer.material.color = Color.red; // Flash red when hit
+                Invoke("ResetColor", 0.1f); // Reset color after a short delay
+
+            }
         }
 
         if (_health <= 0f)
             Die();
 
-        //Tells animator to play damaged animation
-        animator.SetTrigger("Damaged");
-    }
 
-    public void ApplySlip(float durationSeconds, float steerMultiplier)
-    {
-        _slipUntil = Mathf.Max(_slipUntil, Time.time + Mathf.Max(0f, durationSeconds));
-        _slipSteerMultiplier = Mathf.Clamp01(steerMultiplier);
+        animator.SetTrigger("Damaged");
     }
 
     private float GetSteerMultiplier()
@@ -616,10 +639,18 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         return mult;
     }
 
-    private void Die()
+    private IEnumerator Die()
     {
+        //tutorial
+        if (!TutorialManager.instance.combatDone)
+        {
+            TutorialManager.instance.ProgressTutorial(10);
+            TutorialManager.instance.combatDone = true;
+        }
+
         //if (meleeHitbox) meleeHitbox.enabled = false;
         if (physicsCollider) physicsCollider.enabled = false;
+
 
         //***TODO*** turn this into a coroutine to make the anim finish playing before destroying game object
         //Tells Animator to play Death anim
@@ -627,6 +658,10 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
 
         Destroy(gameObject);
+
+        return null;
+
+        return null;
     }
 
     private void TryFindTargetByTag(string tag)
@@ -653,6 +688,18 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, separationRadius);
+    }
+
+    private void ResetColor()
+    {
+        for (int i = 0; i < GetComponentsInChildren<Renderer>().Length; i++)
+        {
+            Renderer renderer = GetComponentsInChildren<Renderer>()[i];
+            if (renderer != null)
+            {
+                renderer.material.color = Color.grey; // Reset to original color
+            }
+        }
     }
 }
 

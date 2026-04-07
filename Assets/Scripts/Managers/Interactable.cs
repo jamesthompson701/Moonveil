@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using PixelCrushers.DialogueSystem;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
 
@@ -13,8 +14,10 @@ public class Interactable : MonoBehaviour
     //for testing purposes
     public RecipeSO trailMix;
 
-    //if this is a dispenser, what it dispenses
-    public SeedItemSO dispenserItem;
+    //variables for dispensers
+    public ItemSO dispenserItem;
+    public int dispenseAmount;
+    public bool destroyOnDispense;
 
     // This method will be called by our ClickSelector
     public virtual void OnInteract()
@@ -57,6 +60,24 @@ public class Interactable : MonoBehaviour
         {
             CanvasManager.Instance.OpenFastTravel();
         }
+        else if (gameObject.CompareTag("Dialogue"))
+        {
+            Debug.Log("Talking");
+            foreach (InventoryItem _item in InventoryManager.instance.invSO.InventoryItems)
+            {
+                Debug.Log("Item Name: " +  _item.item.name);
+                if (_item.item.name == "ChumBowl")
+                {
+                    Debug.Log("Setting ChumBowl to" + _item.amount);
+                    DialogueLua.SetVariable("McGuffinNum", _item.amount);
+                }
+            }
+            DialogueManager.StartConversation("New Conversation 1");
+        }
+        else if (gameObject.CompareTag("Mineable"))
+        {
+            this.gameObject.GetComponent<MineRock>().Interact();
+        }
         else
         {
             Debug.Log("Nothing interactable hit, tag is: " + gameObject.tag);
@@ -65,7 +86,14 @@ public class Interactable : MonoBehaviour
         //add an item to inventory when clicked, must be set in editor
         if (gameObject.CompareTag("Dispenser"))
         {
+
             InventoryManager.instance.invSO.AddItem(dispenserItem, 1);
+
+            if (destroyOnDispense)
+            {
+                Destroy(this.gameObject);
+            }
+
         }
     }
 
