@@ -16,6 +16,7 @@ public class w_ItemPopup : MonoBehaviour
         item = _item;
         amount = _amount;
         itemName.text = _item.itemName;
+        image.enabled = true;
         image.sprite = _item.itemSprite;
         amountText.text = "" + amount;
 

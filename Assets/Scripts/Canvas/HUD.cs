@@ -23,10 +23,9 @@ public class HUD : MonoBehaviour
         playerRef = GameObject.Find("Player");
         attackManagerRef = playerRef.GetComponent<SpellManager>();
 
-        GameObject managerObj = GameObject.Find("PlayerInventoryUI");
-        managerRef = managerObj.GetComponent<InventoryManager>();
+        managerRef = InventoryManager.instance;
 
-        managerRef.inventory.GetInventoryItem += InstantiatePopup;
+        managerRef.invSO.GetInventoryItem += InstantiatePopup;
 
 
     }
@@ -89,7 +88,6 @@ public class HUD : MonoBehaviour
         yield return new WaitForSeconds(3);
         Destroy(popUp);
         itemPopups.Remove(popUp);
-        Debug.Log("this ran");
     }
 
 }

@@ -28,7 +28,7 @@ public class CraftingManager : MonoBehaviour
         if (curRecipe != null)
         {
             //checks every item in the player's inventory to see which of the ingredients the player has
-            foreach (InventoryItem _item in PlayerInventory.instance.invSO.InventoryItems)
+            foreach (InventoryItem _item in InventoryManager.instance.invSO.InventoryItems)
             {
                 if (_item.item == curRecipe.ingr1)
                 {
@@ -47,10 +47,10 @@ public class CraftingManager : MonoBehaviour
             //if the player has all three ingredients, take one of each and give them the recipe output
             if (hasItem1 && hasItem2 && hasItem3)
             {
-                PlayerInventory.instance.invSO.RemoveItem(curRecipe.ingr1, -1);
-                PlayerInventory.instance.invSO.RemoveItem(curRecipe.ingr2, -1);
-                PlayerInventory.instance.invSO.RemoveItem(curRecipe.ingr3, -1);
-                PlayerInventory.instance.invSO.AddItem(curRecipe.output, 1);
+                InventoryManager.instance.invSO.RemoveItem(curRecipe.ingr1, -1);
+                InventoryManager.instance.invSO.RemoveItem(curRecipe.ingr2, -1);
+                InventoryManager.instance.invSO.RemoveItem(curRecipe.ingr3, -1);
+                InventoryManager.instance.invSO.AddItem(curRecipe.output, 1);
 
                 //reset the bools
                 hasItem1 = false;

@@ -152,7 +152,7 @@ public class PlantObject : MonoBehaviour
     //add the correct items to the player's inventory and then unregisters and destroys the plant
     public void Harvest()
     {
-        PlayerInventory.instance.invSO.AddItem(plant.seed, 2);
+        InventoryManager.instance.invSO.AddItem(plant.seed, 2);
         Debug.Log("Harvested");
         Destroy(currentPlant);
         TimeManager.instance.UnregisterPlant(this);

@@ -3,12 +3,11 @@ using TMPro;
 using UnityEngine.UI;
 using System.Linq;
 
-
-public class PlayerInventory : MonoBehaviour
+public class InventoryManager : MonoBehaviour
 {
     //just tracks seeds
     // ^does not, in fact, just track seeds anymore
-    public static PlayerInventory instance;
+    public static InventoryManager instance;
     public InventorySO invSO;
 
     public SoilObject soilRef;
@@ -50,6 +49,7 @@ public class PlayerInventory : MonoBehaviour
         invSO.AddItem(_fish.fishItem, _amount);
 
     }
+
     public void ResetInv()
     {
         invSO.InventoryItems.Clear();

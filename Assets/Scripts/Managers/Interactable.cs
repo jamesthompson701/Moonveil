@@ -23,14 +23,14 @@ public class Interactable : MonoBehaviour
         {
             //reference to soil being clicked
             soil = gameObject.GetComponent<SoilObject>();
-            if (PlayerInventory.instance.CheckSeeds() > 0)
+            if (InventoryManager.instance.CheckSeeds() > 0)
             {
                 //make sure soil is empty and tilled before removing a seed and spawning the crop
                 if (soil.GetComponent<SoilObject>().soilContent == SoilContent.empty && soil.tilled)
                 {
-                    soil.SetPlantType(PlayerInventory.instance.seedRef);
+                    soil.SetPlantType(InventoryManager.instance.seedRef);
                     soil.SpawnCrop();
-                    PlayerInventory.instance.invSO.RemoveItem(PlayerInventory.instance.seedRef, -1);
+                    InventoryManager.instance.invSO.RemoveItem(InventoryManager.instance.seedRef, -1);
                     Debug.Log("Seed Planted");
                 }
                 else
@@ -65,7 +65,7 @@ public class Interactable : MonoBehaviour
         //add an item to inventory when clicked, must be set in editor
         if (gameObject.CompareTag("Dispenser"))
         {
-            PlayerInventory.instance.invSO.AddItem(dispenserItem, 1);
+            InventoryManager.instance.invSO.AddItem(dispenserItem, 1);
         }
     }
 

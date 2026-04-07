@@ -11,13 +11,13 @@ public class w_Slot : MonoBehaviour, IPointerEnterHandler
     public Image image;
     public TMP_Text amount;
 
-    public InventoryManager managerRef;
+    public PlayerInventory managerRef;
 
     //Finds inventory manager
     private void Awake()
     {
         GameObject managerObj = GameObject.Find("PlayerInventoryUI");
-        managerRef = managerObj.GetComponent<InventoryManager>();
+        managerRef = managerObj.GetComponent<PlayerInventory>();
     }
 
     //Sets image and amount to items data
