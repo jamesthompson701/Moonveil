@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 /// <summary>
 /// Master enemy script. Drives physics-based movement, spacing, targeting, and attack pacing.
@@ -44,9 +43,6 @@ public class CreatureDefs : MonoBehaviour
 
     [Tooltip("How quickly the enemy rotates to face target/movement (degrees/sec).")]
     [SerializeField, Min(0f)] private float turnSpeedDegPerSec = 720f;
-
-    [Tooltip("Preferred combat distance for ranged styles (meters). Melee uses it to back away and wait for their next allowed attack.")]
-    [SerializeField, Min(0f)] private float HoldDistance = 6f;
 
     [Tooltip("Stop steering briefly after being hit/knocked back (seconds) so physics actually 'wins'.")]
     [SerializeField, Min(0f)] private float controlLockSecondsOnHit = 0.15f;
@@ -122,6 +118,10 @@ public class CreatureDefs : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = false;
+
+    public ItemSO dropItem;
+    public PlayerInventory playerInventory;
+    public InventorySO invSO;
 
     private Rigidbody _rb;
     private float _health;
@@ -253,32 +253,39 @@ public class CreatureDefs : MonoBehaviour
 
         float steerMultiplier = GetSteerMultiplier();
 
+        // If we're within attack range, stop moving so we don't orbit.
+        // Applies to most attack modes (Charger is intentionally excluded so chargers can still perform charge behavior).
+        if (dist <= attackRange && attackMode != AttackMode.Charger)
+        {
+            desiredDir = Vector3.zero;
+            desiredSpeed = 0f;
+
+            // Immediately kill residual movement so physics doesn't keep us orbiting.
+            if (_rb != null)
+            {
+                // Use both velocity and angularVelocity to aggressively stop motion.
+                _rb.linearVelocity = Vector3.zero;
+                _rb.angularVelocity = Vector3.zero;
+            }
+
+            // Update animation speed to zero
+            animSmoothSpeed = 0f;
+            if (hasAnimator)
+                animator.SetFloat("Speed", 0f);
+
+            return;
+        }
+
         if (attackMode == AttackMode.Melee)
         {
-            // Has the melee enemy stay at a distance and circle the player until it gets permission to attack
-            if (!_isAttacking)
-            {
-                Vector3 tangent2 = Vector3.Cross(Vector3.up, dirToTarget) * _orbitSign;
-                desiredDir = (dirToTarget + tangent2 * 0.5f).normalized;
-                desiredSpeed = Mathf.Lerp(minSpeed, maxSpeed, steerMultiplier);
-                return;
-            }
+            // If not within attack range, steer toward target normally for melee
             desiredDir = dirToTarget;
             desiredSpeed = Mathf.Lerp(minSpeed, maxSpeed, steerMultiplier);
             return;
         }
 
-        float hold = Mathf.Max(attackRange * 0.85f, HoldDistance);
-        float deadBand = 0.6f;
-
-        Vector3 radial;
-        if (dist > hold + deadBand) radial = dirToTarget;
-        else if (dist < hold - deadBand) radial = -dirToTarget;
-        else radial = Vector3.zero;
-
-        Vector3 tangent = Vector3.Cross(Vector3.up, dirToTarget) * _orbitSign;
-
-        desiredDir = (radial + tangent * 0.65f).normalized;
+        // Non-melee: steer directly toward the player (no tangential/orbit component).
+        desiredDir = dirToTarget;
         desiredSpeed = Mathf.Lerp(minSpeed, maxSpeed, steerMultiplier);
 
         //The speed used in the animation blend tree is set
@@ -289,7 +296,6 @@ public class CreatureDefs : MonoBehaviour
         {
             //Sets the speed paramater in the animator compontent to the speed of the creature  
             animator.SetFloat("Speed", animSmoothSpeed);
-            Debug.Log("Speed set to " + animSmoothSpeed);
         }
     }
 
@@ -372,6 +378,13 @@ public class CreatureDefs : MonoBehaviour
 
     private void ApplySeparation()
     {
+        // If inside attack range, skip separation so nearby neighbors don't push us out of our attack position.
+        if (target != null)
+        {
+            float sqrDist = HorizontalSqrDistance(transform.position, target.position);
+            if (sqrDist <= attackRange * attackRange) return;
+        }
+
         if (separationRadius <= 0.001f || separationStrength <= 0.001f) return;
 
         int count = Physics.OverlapSphereNonAlloc(
@@ -597,19 +610,12 @@ public class CreatureDefs : MonoBehaviour
     {
         if (amount <= 0f) return;
 
+        if (instigator == instigator.CompareTag("Ground")) return;
+
         _health -= amount;
 
         if (controlLockSecondsOnHit > 0f)
             _controlLockUntil = Mathf.Max(_controlLockUntil, Time.time + controlLockSecondsOnHit);
-
-        if (impulseForce > 0f)
-        {
-            Vector3 dir = hitDirection;
-            dir.y = 0f; // Only apply horizontal impulse
-            if (dir.sqrMagnitude < 0.0001f) dir = Vector3.forward;
-            dir = dir.normalized;
-            _rb.AddForce(dir * impulseForce, ForceMode.Impulse);
-        }
 
         for (int i = 0; i < GetComponentsInChildren<Renderer>().Length; i++)
         {
@@ -652,7 +658,9 @@ public class CreatureDefs : MonoBehaviour
         if (physicsCollider) physicsCollider.enabled = false;
 
 
-        //***TODO*** turn this into a coroutine to make the anim finish playing before destroying game object
+        int amount = 1;
+        //invSO.AddItem(dropItem, amount);
+
         //Tells Animator to play Death anim
         animator.SetTrigger("Death");
 

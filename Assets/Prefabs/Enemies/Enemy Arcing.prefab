@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8169272778169163637}
   - component: {fileID: 7492414768267819148}
   - component: {fileID: 944343199522958531}
-  - component: {fileID: 5579355577259155823}
   m_Layer: 8
   m_Name: EnemyBody
   m_TagString: Enemy
@@ -92,27 +91,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5579355577259155823
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3814121410578846878}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.24434662, y: 0.6054586, z: 1.062088}
-  m_Center: {x: -0.012187958, y: 0.3072887, z: -0.031044006}
 --- !u!1 &4506743262962159528
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,6 +104,8 @@ GameObject:
   - component: {fileID: 8354106555923698578}
   - component: {fileID: 416140702509370129}
   - component: {fileID: -6498612594726477926}
+  - component: {fileID: 3737742097753422964}
+  - component: {fileID: 2319069232218927120}
   m_Layer: 8
   m_Name: Enemy Arcing
   m_TagString: Enemy
@@ -190,7 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CreatureDefs
   target: {fileID: 0}
   attackPoint: {fileID: 4666713625587808373}
-  physicsCollider: {fileID: 5579355577259155823}
+  physicsCollider: {fileID: 0}
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -200,7 +180,6 @@ MonoBehaviour:
   maxSpeed: 6
   maxAcceleration: 25
   turnSpeedDegPerSec: 720
-  HoldDistance: 6
   controlLockSecondsOnHit: 0.15
   roamMode: 1
   waypoints: []
@@ -225,6 +204,9 @@ MonoBehaviour:
   useAttackDirector: 1
   directorRequestInterval: 0.15
   drawGizmos: 0
+  dropItem: {fileID: 0}
+  playerInventory: {fileID: 0}
+  invSO: {fileID: 0}
 --- !u!95 &416140702509370129
 Animator:
   serializedVersion: 7
@@ -261,6 +243,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatusReceiver
   cachedRigidbody: {fileID: 0}
   disableWhileStunned: []
+--- !u!65 &3737742097753422964
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4506743262962159528}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.24434662, y: 0.6054586, z: 1.062088}
+  m_Center: {x: -0.012187958, y: 0.3072887, z: -0.031044006}
+--- !u!114 &2319069232218927120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4506743262962159528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f810c10614bfb684a83a146b57ed9050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttacks
+  Damage: 10
+  IsMelee: 1
+  damageCooldownSeconds: 0.35
+  targetTag: Player
+  destroyOnHit: 1
+  destroyDelay: 3
 --- !u!1 &6541537341163158958
 GameObject:
   m_ObjectHideFlags: 0
