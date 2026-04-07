@@ -131,6 +131,24 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Descend",
+                    "type": "Button",
+                    "id": "218c72af-1c00-404f-8a33-caae2a28a849",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Ascend",
+                    "type": "Button",
+                    "id": "e66e794e-6fae-4734-8e47-9b9001158426",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -283,7 +301,7 @@
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";Keyboard&Mouse;KeyboardMouse",
                     "action": "SpecialAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -472,6 +490,28 @@
                     "processors": "",
                     "groups": ";KeyboardMouse",
                     "action": "EarthSpell",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c82f782f-0494-478c-97a8-1480e2e4746d",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "Descend",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "de418379-0e60-426e-a164-3e3ea2391dbd",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "Ascend",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
