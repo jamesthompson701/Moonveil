@@ -5,23 +5,33 @@ public enum RockState
     Fresh, Cracked, Shattered
 }
 
+public enum MineralType
+{
+    Fire,
+    Water,
+    Earth
+}
+
 public class MineRock : MonoBehaviour
 {
     public Transform cameraAnchor;
     public GameObject glowObject;
 
     public RockState state = RockState.Fresh;
+    public MineralType mineralType;
 
     private MiningManager miningManager;
 
     void Start()
     {
-        miningManager = FindObjectOfType<MiningManager>();
+        miningManager = FindFirstObjectByType<MiningManager>();
         UpdateVisuals();
     }
 
     public void Interact()
     {
+        Debug.Log("Interact called on " + name);
+
         if (state == RockState.Shattered) return;
 
         miningManager.StartMining(this);
