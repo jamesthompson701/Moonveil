@@ -664,7 +664,7 @@ public class CreatureDefs : MonoBehaviour
 
 
         int amount = 1;
-        PlayerInventory.instance.invSO.AddItem(dropItem, amount);
+        InventoryManager.instance.invSO.AddItem(dropItem, amount);
 
         //Tells Animator to play Death anim
         animator.SetTrigger("Death");
