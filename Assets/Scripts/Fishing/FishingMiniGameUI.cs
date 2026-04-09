@@ -59,14 +59,14 @@ public class FishingMiniGameUI : MonoBehaviour
             // check fail conditions
             if (innerScale >= currentFish.maxInnerScale)
             {
-                Debug.Log("Bubble pops and fish escapes");
+                //Debug.Log("Bubble pops and fish escapes");
                 EndGame(false);
                 yield break;
             }
 
             if (innerScale <= currentFish.minInnerScale)
             {
-                Debug.Log("The fish slips away");
+                //Debug.Log("The fish slips away");
                 EndGame(false);
                 yield break;
             }
@@ -82,7 +82,6 @@ public class FishingMiniGameUI : MonoBehaviour
                 // optionally show progress bar
                 if (keepTimer >= needed)
                 {
-                    Debug.Log("You caught a fish!");
                     EndGame(true);
                     yield break;
                 }

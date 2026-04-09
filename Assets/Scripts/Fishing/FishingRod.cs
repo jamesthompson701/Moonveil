@@ -60,7 +60,7 @@ public class FishingRod : MonoBehaviour
 
         spawnedBait = Instantiate(baitPrefab);
         spawnedBait.transform.position = targetPosition;
-        Debug.Log("Rod casted. Bait in the water.");
+        //Debug.Log("Rod casted. Bait in the water.");
 
         // notify manager
         manager.OnRodCasted(targetPosition);
