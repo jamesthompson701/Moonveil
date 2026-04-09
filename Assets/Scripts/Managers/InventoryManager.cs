@@ -1,7 +1,5 @@
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
-using System.Linq;
+using System.Collections;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -27,6 +25,7 @@ public class InventoryManager : MonoBehaviour
             instance = this;
         }
         ResetInv();
+
     }
 
     //EVERYTHING IS SEEDS
@@ -54,6 +53,15 @@ public class InventoryManager : MonoBehaviour
     {
         invSO.InventoryItems.Clear();
         fish = 0;
+    }
+
+
+    public IEnumerator DestroyPopup(GameObject popUp)
+    {
+        Debug.Log("COROUTINE RAN");
+        yield return new WaitForSeconds(3);
+        Destroy(popUp);
+        HUD.instance.itemPopups.Remove(popUp);
     }
 
 }

@@ -5,13 +5,14 @@ using UnityEngine;
 
 public class HUD : MonoBehaviour
 {
+    public static HUD instance;
+
     GameObject playerRef;
     SpellManager2 attackManagerRef;
 
     public List<GameObject> itemPopups;
     
     public GameObject[] highlight;
-    public InventoryManager managerRef;
 
     public GameObject slot;
     public Transform popupGroup;
@@ -23,9 +24,12 @@ public class HUD : MonoBehaviour
         playerRef = GameObject.Find("Player");
         attackManagerRef = playerRef.GetComponent<SpellManager2>();
 
-        managerRef = InventoryManager.instance;
+        InventoryManager.instance.invSO.GetInventoryItem += InstantiatePopup;
 
-        managerRef.invSO.GetInventoryItem += InstantiatePopup;
+        if (instance == null)
+        {
+            instance = this;
+        }
 
 
     }
@@ -60,6 +64,7 @@ public class HUD : MonoBehaviour
 
     public void InstantiatePopup(ItemSO _item, int _amount, bool isNew)
     {
+        // Prevents another Pop Up from spawning if not new
         foreach (var popUp in itemPopups)
         {
             w_ItemPopup spawnedPopup = popUp.GetComponent<w_ItemPopup>();
@@ -78,16 +83,9 @@ public class HUD : MonoBehaviour
             w_ItemPopup spawnedPopup = popUp.GetComponent<w_ItemPopup>();
             spawnedPopup.SetPopup(_item, _amount);
 
-            StartCoroutine(DestroyPopup(popUp));
+            StartCoroutine(InventoryManager.instance.DestroyPopup(popUp));
 
         }
-    }
-
-    IEnumerator DestroyPopup(GameObject popUp)
-    {
-        yield return new WaitForSeconds(3);
-        Destroy(popUp);
-        itemPopups.Remove(popUp);
     }
 
 }

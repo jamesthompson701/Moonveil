@@ -41,7 +41,6 @@ public class CanvasManager : MonoBehaviour
         player = input.FindActionMap("Player");
         UI = input.FindActionMap("UI");
 
-        Invoke("OpenTitleScreen", 1.0f);
 
         //Making canvas manager a singleton
         if (Instance != null && Instance != this)
@@ -53,6 +52,7 @@ public class CanvasManager : MonoBehaviour
         {
             Instance = this;
         }
+
 
     }
 
@@ -240,8 +240,10 @@ public class CanvasManager : MonoBehaviour
         player.Disable();
         UI.Enable();
 
-        HUD.SetActive(false);
- 
+        HUD.GetComponent<Canvas>().enabled = false;
+
+        Time.timeScale = 0f;
+
     }
 
     public void CloseMenu()
@@ -254,33 +256,39 @@ public class CanvasManager : MonoBehaviour
         UI.Disable();
         openInv = input.FindAction("Inventory");
 
-        HUD.SetActive(true);
+        HUD.GetComponent<Canvas>().enabled = true;
+
+        Time.timeScale = 1f;
     }
 
-    public void OpenTitleScreen()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        ClickSelector.Instance.enabled = false;
+    //public void OpenTitleScreen()
+    //{
+    //    Cursor.lockState = CursorLockMode.None;
+    //    Cursor.visible = true;
+    //    ClickSelector.Instance.enabled = false;
 
-        player.Disable();
-        UI.Enable();
-    }
+    //    player.Disable();
+    //    UI.Enable();
+    //}
 
-    public void CloseTitleScreen()
-    {
-        titleScreenCanvas.SetActive(false);
-        CloseMenu();
-    }
+    //public void CloseTitleScreen()
+    //{
+    //    CloseMenu();
 
+    //    titleScreenCanvas.SetActive(false);
 
-    // handles taking screenshot
-    IEnumerator TakeScreenshot()
-    {
-        yield return new WaitForEndOfFrame();
-
-        ScreenCapture.CaptureScreenshotAsTexture();
+    //}
 
 
-    }
+    //// handles taking screenshot
+    //IEnumerator TakeScreenshot()
+    //{
+    //    yield return new WaitForEndOfFrame();
+
+    //    ScreenCapture.CaptureScreenshotAsTexture();
+
+
+    //}
 }
+
+
