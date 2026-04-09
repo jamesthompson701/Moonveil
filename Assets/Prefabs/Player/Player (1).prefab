@@ -633,11 +633,11 @@ GameObject:
   - component: {fileID: 1395206459516980863}
   - component: {fileID: 2175262183267303346}
   - component: {fileID: 5436494838844425383}
-  - component: {fileID: 1338953644167169969}
   - component: {fileID: 1305438986976445199}
   - component: {fileID: 2582119493002853691}
   - component: {fileID: 8116715834278006316}
   - component: {fileID: 254552546800667998}
+  - component: {fileID: 3411159266521399035}
   m_Layer: 7
   m_Name: Player (1)
   m_TagString: Player
@@ -756,8 +756,9 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
+  inFlightMode: 0
   motion: {x: 0, y: 0, z: 0}
-  attackManager: {fileID: 1338953644167169969}
+  attackManager: {fileID: 0}
   dodgeDuration: 0.5
   dodgeSpeed: 10
   dodgeCooldown: 1
@@ -910,99 +911,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   raycastDistance: 8
---- !u!114 &1338953644167169969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677809325384229194}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e26bcb0c8df9f5d41b436873a0da2fd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackChoice: 0
-  combatSpellsTier1:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  combatSpellsTier2:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  combatSpellsTier3:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  combatSpellsTier4:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  farmSpellsTier1:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  farmSpellsTier2:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  farmSpellsTier3:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  farmSpellsTier4:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  player: {fileID: 1677809325384229194}
-  hitPt: {fileID: 8189848956483439214}
-  attackCastOrigin: {fileID: 4294834729018722397}
-  aimCamera: {fileID: 8904230921520822278}
-  farmCastOrigin: {fileID: 7289918326914377398}
-  _animator: {fileID: 4304920480997594962}
-  aimMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  aimDistance: 200
-  spawnOffset: 1.2
-  avgSpeed: 15
-  farmSpawnOffset: 1.2
-  timer: 0
-  inCombatArea: 0
-  maxElementResource:
-  - 100
-  - 100
-  - 100
-  - 100
-  rechargeRates:
-  - 10
-  - 10
-  - 10
-  - 10
-  elementPools:
-  - current: 0
-    nextReadyTime: 0
-  - current: 0
-    nextReadyTime: 0
-  - current: 0
-    nextReadyTime: 0
-  - current: 0
-    nextReadyTime: 0
-  dodgeSpeed: 20
-  dodgeDuration: 0.2
-  basicAttackPrefab: {fileID: 0}
-  basicAttackCooldown: 0.25
-  basicAttackLifetime: 1
-  basicAttackSpeed: 0
 --- !u!114 &1305438986976445199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1121,7 +1029,7 @@ MonoBehaviour:
   hitPt: {fileID: 8189848956483439214}
   CastOrigin: {fileID: 4294834729018722397}
   aimCamera: {fileID: 0}
-  inCombatArea: 0
+  inCombatArea: 1
   timer: 0
   attackChoice: 0
   aimMask:
@@ -1142,6 +1050,24 @@ MonoBehaviour:
   earthTierUnlocked: 01010000
   waterTierUnlocked: 01010000
   airTierUnlocked: 01010100
+--- !u!114 &3411159266521399035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677809325384229194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1737268566704787594
 GameObject:
   m_ObjectHideFlags: 0

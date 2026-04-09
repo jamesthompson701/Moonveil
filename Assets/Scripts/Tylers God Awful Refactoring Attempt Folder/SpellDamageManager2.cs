@@ -17,6 +17,7 @@ public class SpellDamageManager2 : MonoBehaviour
     private SO_SpellDefs2.SpellType spellType;
     private GameObject caster;
     [SerializeField] private bool isProjectile = false;
+    [SerializeField] private bool isBasicAttack = false;
 
     public void InitProjectile2(int choice, int dmg, ProjectileSpells2.SpellType type, GameObject casterObj)
     {
@@ -92,6 +93,9 @@ public class SpellDamageManager2 : MonoBehaviour
                 ApplyDamage(other);
                 break;
         }
+        if (isBasicAttack)
+            ApplyDamage(other);
+
         if (isProjectile)
             Destroy(gameObject);
     }

@@ -615,30 +615,30 @@ public class CreatureDefs : MonoBehaviour
     {
         if (amount <= 0f) return;
 
-        if (instigator == instigator.CompareTag("Ground")) return;
+        // Guard against null instigator and only ignore damage if the instigator actually has the "Ground" tag.
+        if (instigator != null && instigator.CompareTag("Ground")) return;
 
         _health -= amount;
 
         if (controlLockSecondsOnHit > 0f)
             _controlLockUntil = Mathf.Max(_controlLockUntil, Time.time + controlLockSecondsOnHit);
 
-        for (int i = 0; i < GetComponentsInChildren<Renderer>().Length; i++)
+        // Flash all child renderers red once, then reset color after a short delay.
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < renderers.Length; i++)
         {
-            Renderer renderer = GetComponentsInChildren<Renderer>()[i];
+            Renderer renderer = renderers[i];
             if (renderer != null)
-            {
-
-                renderer.material.color = Color.red; // Flash red when hit
-                Invoke("ResetColor", 0.1f); // Reset color after a short delay
-
-            }
+                renderer.material.color = Color.red;
         }
+        Invoke(nameof(ResetColor), 0.1f);
 
         if (_health <= 0f)
             Die();
 
 
-        animator.SetTrigger("Damaged");
+        if (hasAnimator)
+            animator.SetTrigger("Damaged");
     }
 
     private float GetSteerMultiplier()

@@ -3,16 +3,6 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class EnemyStatusReceiver : MonoBehaviour
 {
-    [Header("Optional References")]
-    [Tooltip("If present, forces/status effects can tweak physics on this Rigidbody.\n" +
-             "If left null, we will try to auto-find one on this GameObject.")]
-    [SerializeField] private Rigidbody cachedRigidbody;
-
-    [Header("Stun Behavior")]
-    [Tooltip("Optional list of MonoBehaviours to disable while stunned.\n" +
-             "Example: your enemy AI script, NavMesh movement script, attack script, etc.")]
-    [SerializeField] private MonoBehaviour[] disableWhileStunned;
-
     // Burn state
     private float _burnRemaining;
     private float _burnDps;
@@ -24,12 +14,6 @@ public class EnemyStatusReceiver : MonoBehaviour
     private bool _slowApplied;
 
     private CreatureDefs _creatureDefs;
-
-    private void Awake()
-    {
-        if (cachedRigidbody == null)
-            cachedRigidbody = GetComponent<Rigidbody>();
-    }
 
     private void Update()
     {
