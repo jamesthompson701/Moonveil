@@ -10,7 +10,6 @@ public class PlantObject : MonoBehaviour
 
     //current stage of growth
     private int currentStage;
-    public bool isDead;
 
     //timers
     //these get set to their respective maximums based on plantSO, and then count down as appropriate via CheckPlant
@@ -71,20 +70,6 @@ public class PlantObject : MonoBehaviour
                 Wither();
             }
 
-            //if it's been dry WAY too long, then it dies
-            if (dryTime > 0 && !isHarvestable)
-            {
-                dryTime = dryTime - deltaTime;
-
-            }
-            else
-            {
-                isDead = true;
-                isHarvestable = false;
-                Destroy(myCanvas);
-                Destroy(currentPlant);
-                currentPlant = Instantiate(plant.plantDead, transform);
-            }
         }
 
         //update growth time
@@ -101,12 +86,10 @@ public class PlantObject : MonoBehaviour
         }
         else
         {
-            //check wetness and make sure the plant is alive before growing
-            if (soilScript.Wet() && !isDead)
+            //check wetness and make sure the plant is unwithered before growing
+            if (soilScript.Wet() && !withered)
             {
                 Debug.Log("before growth: " + currentStage);
-                growthTime = plant.cropTime;
-                dryTime = plant.droughtResistance;
 
                 //then increment, but not past the max
                 if (currentStage < plant.MaxStage)

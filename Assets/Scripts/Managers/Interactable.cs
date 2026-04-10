@@ -11,9 +11,6 @@ public class Interactable : MonoBehaviour
     //reference to soil script
     private SoilObject soil;
 
-    //for testing purposes
-    public RecipeSO trailMix;
-
     //variables for dispensers
     public ItemSO dispenserItem;
     public int dispenseAmount;
