@@ -31,8 +31,8 @@ public class EnemyAttacks : MonoBehaviour
     [Tooltip("Time before the projectile is automatically destroyed if it doesn't hit anything.")]
     [SerializeField] private float destroyDelay = 3f;
 
-    private readonly Dictionary<int, float> _lastHitTime = new Dictionary<int, float>(8);
-    private readonly HashSet<int> _hitThisSwing = new HashSet<int>();
+    private readonly Dictionary<int, float> _lastHitTime = new(8);
+    private readonly HashSet<int> _hitThisSwing = new();
 
     /// <summary>
     /// Call this right before enabling a melee hitbox for a new attack swing.
@@ -71,7 +71,6 @@ public class EnemyAttacks : MonoBehaviour
 
     private void TryHit(Collider other)
     {
-        Debug.Log("Enemy attack collided with " + other.name);
         if (!other) return;
 
         if (!string.IsNullOrWhiteSpace(targetTag) && !other.CompareTag(targetTag))
@@ -88,17 +87,9 @@ public class EnemyAttacks : MonoBehaviour
                 return;
         }
 
-        IDamageable damageable = other.GetComponentInParent<IDamageable>();
-        Vector3 hitPoint = other.ClosestPoint(transform.position);
-        Vector3 dir = Vector3.ProjectOnPlane(other.transform.position - transform.position, Vector3.up).normalized;
+        PlayerDamageReceiver receiver = other.GetComponentInParent<PlayerDamageReceiver>();
+        if (receiver) receiver.TakeDamage(Damage);
 
-        if (damageable != null)
-            damageable.TakeDamage(Damage, hitPoint, dir, 0f, gameObject);
-        else
-        {
-            PlayerDamageReceiver receiver = other.GetComponentInParent<PlayerDamageReceiver>();
-            if (receiver) receiver.TakeDamage(Damage);
-        }
         Debug.Log("Enemy attack hit " + other.name + " for " + Damage + " damage!");
         _lastHitTime[targetId] = Time.time;
         if (IsMelee) _hitThisSwing.Add(targetId);

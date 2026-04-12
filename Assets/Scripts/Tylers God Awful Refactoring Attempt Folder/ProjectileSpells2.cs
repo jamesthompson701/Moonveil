@@ -101,7 +101,6 @@ public class ProjectileSpells2 : SO_SpellDefs2
         {
             // Make the projectile follow the player's movement and spawn centered around the player
             clone.transform.SetParent(ctx.caster.transform);
-            originT = ctx.caster.transform;
 
             // Force the projectile to keep matching the caster's look direction while active
             if (RotateWithCaster)
@@ -115,14 +114,11 @@ public class ProjectileSpells2 : SO_SpellDefs2
             SetVelocity(clone, dir * usedSpeed);
         }
 
-        SpellDamageManager2 dmg = clone.GetComponent<SpellDamageManager2>();
-        if (dmg != null)
+        if (clone.TryGetComponent<SpellDamageManager2>(out var dmg))
         {
-            SpellManager sm = ctx.caster.GetComponent<SpellManager>();
-            int choice = sm != null ? sm.attackChoice : 0;
 
             // Pass spell type and effects
-            dmg.InitProjectile2(choice, damage, spellType, ctx.caster);
+            dmg.InitProjectile2(damage, spellType);
         }
 
         Destroy(clone.gameObject, usedLifetime);

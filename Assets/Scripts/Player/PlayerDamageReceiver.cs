@@ -13,7 +13,7 @@ public class PlayerDamageReceiver : MonoBehaviour
     [SerializeField, Tooltip("Add invincibility frames after taking damage.")]
     private float invincibilityDuration = 0f;
 
-    private SceneManager sceneManager;
+    private readonly SceneManager sceneManager;
 
     private void Awake()
     {
@@ -33,13 +33,13 @@ public class PlayerDamageReceiver : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float amount)
+    public void CheckInvincibleFrames(float amount)
     {
         if (invincibilityDuration > 0f) return; // Player is currently invincible
-        TakeDamage(amount, transform.position, Vector3.zero, null);
+        TakeDamage(amount);
     }
 
-    public void TakeDamage(float amount, Vector3 hitPoint, Vector3 hitDirection, GameObject instigator)
+    public void TakeDamage(float amount)
     {
         if (amount <= 0f) return;
         currentHealth = Mathf.Max(0f, currentHealth - amount);

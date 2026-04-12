@@ -23,7 +23,7 @@ public class EarthAttackHitbox : MonoBehaviour
             if (enemy != null)
             {
                 // Apply damage and knockup
-                enemy.TakeDamage(damage, other.ClosestPoint(transform.position), Vector3.up, knockupForce, caster);
+                //enemy.TakeDamage(damage, other.ClosestPoint(transform.position), Vector3.up, knockupForce, caster);
                 // Apply stun (prevent movement/attack)
                 enemy.StartCoroutine(StunCoroutine(enemy, stunDuration));
             }

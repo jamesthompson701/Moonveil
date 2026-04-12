@@ -36,7 +36,7 @@ public class CreatureDefs : MonoBehaviour
     [SerializeField, Min(0f)] private float minSpeed = 2f;
 
     [Tooltip("Maximum desired horizontal move speed.")]
-    [SerializeField, Min(0f)] public float maxSpeed = 4f;
+    [Min(0f)] public float maxSpeed = 4f;
 
     [Tooltip("Max horizontal acceleration (m/s^2) applied while steering.")]
     [SerializeField, Min(0f)] private float maxAcceleration = 25f;
@@ -124,7 +124,7 @@ public class CreatureDefs : MonoBehaviour
     public InventorySO  invSO;
 
     private Rigidbody _rb;
-    private float _health;
+    [SerializeField] private float _health;
     private Vector3 _spawnPos;
 
     private bool _hasAggro;
@@ -142,8 +142,8 @@ public class CreatureDefs : MonoBehaviour
 
     // Status effects
     private float _controlLockUntil;
-    private float _slipUntil;
-    private float _slipSteerMultiplier = 1f;
+    private readonly float _slipUntil;
+    private readonly float _slipSteerMultiplier = 1f;
 
     // Attack pacing
     private EnemyAttackDirector _director;
@@ -155,6 +155,7 @@ public class CreatureDefs : MonoBehaviour
     //For Animation
     private float animSmoothSpeed;
     private bool hasAnimator;
+
 
     private void Awake()
     {
@@ -223,11 +224,6 @@ public class CreatureDefs : MonoBehaviour
         ApplySteering(desiredDir, desiredSpeed);
         ApplySeparation();
         ApplyFacing(toTarget: _hasAggro);
-    }
-
-    public void Burn(float damagePerSecond, float duration)
-    {
-        // Implement burn logic as needed
     }
 
     private void UpdateAggroState()
@@ -306,7 +302,6 @@ public class CreatureDefs : MonoBehaviour
 
     private void RoamMove(out Vector3 desiredDir, out float desiredSpeed)
     {
-        desiredSpeed = Mathf.Lerp(minSpeed, maxSpeed, 0.5f);
 
         if (Time.time < _nextRoamPickTime)
         {
@@ -534,8 +529,6 @@ public class CreatureDefs : MonoBehaviour
         animator.SetTrigger("Attack");
 
         yield break;
-
-        yield break;
     }
 
     private IEnumerator DoArcProjectile()
@@ -556,8 +549,6 @@ public class CreatureDefs : MonoBehaviour
 
         //Tells Animator to play attack anim
         animator.SetTrigger("Attack");
-
-        yield break;
 
         yield break;
     }
@@ -611,7 +602,7 @@ public class CreatureDefs : MonoBehaviour
         if (useAttackDirector && _director) _director.EndAttack(this);
     }
 
-    public void TakeDamage(float amount, Vector3 hitPoint, Vector3 hitDirection, float impulseForce, GameObject instigator)
+    public void TakeDamage(float amount, GameObject instigator)
     {
         if (amount <= 0f) return;
 
@@ -634,7 +625,7 @@ public class CreatureDefs : MonoBehaviour
         Invoke(nameof(ResetColor), 0.1f);
 
         if (_health <= 0f)
-            Die();
+            StartCoroutine(Die());
 
 
         if (hasAnimator)
@@ -671,8 +662,6 @@ public class CreatureDefs : MonoBehaviour
 
 
         Destroy(gameObject);
-
-        return null;
 
         return null;
     }

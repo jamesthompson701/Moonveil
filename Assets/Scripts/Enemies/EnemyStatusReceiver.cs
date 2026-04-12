@@ -1,19 +1,27 @@
 using UnityEngine;
 
-[DisallowMultipleComponent]
 public class EnemyStatusReceiver : MonoBehaviour
 {
     // Burn state
     private float _burnRemaining;
-    private float _burnDps;
-    private Transform _burnInstigator;
+    [SerializeField] private float _burnDps;
+    private bool _isBurning;
+    [SerializeField] private bool _canBurn;
 
     // Slow state
     private float _slowRemaining;
-    private float _slowSpeedMultiplier = 1f;
+    [SerializeField]  private float _slowSpeedMultiplier = 1f;
     private bool _slowApplied;
+    [SerializeField] private bool _canSlow;
+
+    [SerializeField]  private bool _canRoot;
 
     private CreatureDefs _creatureDefs;
+
+    private void Awake()
+    {
+        _creatureDefs = GetComponent<CreatureDefs>();
+    }
 
     private void Update()
     {
@@ -23,38 +31,27 @@ public class EnemyStatusReceiver : MonoBehaviour
         UpdateSlow(dt);
     }
 
-    private void DealDamage(float amount, Transform instigator)
+    // Handles Applying the status effects
+    public void ApplyBurn(float durationSeconds)
     {
-        if (amount <= 0f)
-            return;
-
-        if (TryGetComponent<IDamageable>(out var damageable))
+        Debug.Log("Applying burn for " + durationSeconds + " seconds.");
+        if (_isBurning)
         {
-            Vector3 hitDirection = Vector3.zero; // Default or calculated direction
-            Vector3 hitPoint = transform.position; // Default or calculated hit point
-            float force = 0f; // Default or calculated force
-            GameObject source = instigator != null ? instigator.gameObject : null;
-
-            damageable.TakeDamage(amount, hitDirection, hitPoint, force, source);
+            _burnRemaining = Mathf.Max(_burnRemaining, durationSeconds); 
             return;
         }
-    }
 
-    // Handles Applying the status effects
-    public void ApplyBurn(float durationSeconds, float dps, Transform instigator)
-    {
-        if (durationSeconds <= 0f || dps <= 0f)
-            return;
+        if (!_canBurn) return;
 
         // Refresh duration; keep the higher dps if re-applied.
         _burnRemaining = Mathf.Max(_burnRemaining, durationSeconds);
-        _burnDps = Mathf.Max(_burnDps, dps);
-        _burnInstigator = instigator;
+        _isBurning = true;
     }
 
     public void ApplySlow(float durationSeconds, float speedMultiplier)
     {
-        if (durationSeconds <= 0f)
+        Debug.Log("Applying slow for " + durationSeconds + " seconds with speed multiplier " + speedMultiplier);
+        if (durationSeconds <= 0f || !_canSlow)
             return;
 
         _slowRemaining = Mathf.Max(_slowRemaining, durationSeconds);
@@ -66,7 +63,8 @@ public class EnemyStatusReceiver : MonoBehaviour
 
     public void ApplyRoot(float durationSeconds)
     {
-        if (durationSeconds <= 0f)
+        Debug.Log("Applying root for " + durationSeconds + " seconds.");
+        if (durationSeconds <= 0f || !_canRoot)
             return;
         ApplySlow(durationSeconds, 0f); // Full slow (no movement) for root
     }
@@ -80,12 +78,15 @@ public class EnemyStatusReceiver : MonoBehaviour
         _burnRemaining -= dt;
 
         float damageThisFrame = _burnDps * dt;
-        DealDamage(damageThisFrame, _burnInstigator);
+
+        if (_creatureDefs != null)
+        {
+            _creatureDefs.TakeDamage(damageThisFrame, null);
+        }
 
         if (_burnRemaining <= 0f)
         {
             _burnRemaining = 0f;
-            _burnInstigator = null;
         }
     }
 

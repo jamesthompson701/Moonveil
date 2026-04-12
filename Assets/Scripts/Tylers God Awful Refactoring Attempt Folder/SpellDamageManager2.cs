@@ -11,40 +11,41 @@ public class SpellDamageManager2 : MonoBehaviour
 {
     [Header("Spell Settings")]
     [SerializeField] private int damage;
+    [SerializeField] private float iceDamagePerSecond;
+    [SerializeField] private float aoeDamage;
     [SerializeField] private float force;
     [SerializeField] private float _radius;
-    private int attackChoice;
+    [SerializeField] private float duration;
     private SO_SpellDefs2.SpellType spellType;
-    private GameObject caster;
     [SerializeField] private bool isProjectile = false;
     [SerializeField] private bool isBasicAttack = false;
 
-    public void InitProjectile2(int choice, int dmg, ProjectileSpells2.SpellType type, GameObject casterObj)
+    //TODO Change from spellType to unique bools to be set per prefab to determine the type of effect applied
+
+    public void InitProjectile2(int dmg, SO_SpellDefs2.SpellType type)
     {
-        attackChoice = choice;
         damage = dmg;
         spellType = type;
-        caster = casterObj;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Ground"))
         {
-            if (spellType == ProjectileSpells2.SpellType.Fire)
+            if (spellType == SO_SpellDefs2.SpellType.Fire)
             {
                 // Apply direct hit effects to the ground
                 Collider[] hits = Physics.OverlapSphere(transform.position, _radius);
                 foreach (Collider hit in hits)
                 {
-                    ApplyDamage(hit);
+                    ApplyDamage(hit, aoeDamage);
                     ApplyBurn(hit);
                     ApplyKnockback(hit, force);
                 }
             }
-            else if (spellType == ProjectileSpells2.SpellType.Water)
+            else if (spellType == SO_SpellDefs2.SpellType.Water)
             {
-                StartCoroutine(ApplyWaterEffect());
+                StartCoroutine(ApplyWaterEffect(duration));
             }
             if (isProjectile)
                 Destroy(gameObject);
@@ -55,9 +56,9 @@ public class SpellDamageManager2 : MonoBehaviour
 
         switch (spellType)
         {
-            case ProjectileSpells2.SpellType.Fire:
+            case SO_SpellDefs2.SpellType.Fire:
                 // Always apply direct hit effects
-                ApplyDamage(other);
+                ApplyDamage(other, damage);
                 ApplyBurn(other);
                 ApplyKnockback(other, force);
 
@@ -67,43 +68,50 @@ public class SpellDamageManager2 : MonoBehaviour
                 {
                     if (hit != other) // Avoid double-applying to the same enemy
                     {
-                        ApplyDamage(hit);
+                        ApplyDamage(hit, aoeDamage);
                         ApplyBurn(hit);
                         ApplyKnockback(hit, force);
                     }
                 }
                 break;
-            case ProjectileSpells2.SpellType.Water:
+            case SO_SpellDefs2.SpellType.Water:
                 // Always apply direct hit effects
-                ApplyDamage(other);
-                ApplySlow(other);
-
+                ApplyDamage(other, damage);
+                ApplySlow(other, duration, 0.5f);
                 // Then apply area effects via coroutine
-                StartCoroutine(ApplyWaterEffect());
+                StartCoroutine(ApplyWaterEffect(duration)); // Use duration
                 break;
-            case ProjectileSpells2.SpellType.Air:
-                ApplyDamage(other);
+            case SO_SpellDefs2.SpellType.Air:
+                ApplyDamage(other, damage);
                 ApplyKnockback(other, force);
                 break;
-            case ProjectileSpells2.SpellType.Earth:
-                ApplyDamage(other);
+            case SO_SpellDefs2.SpellType.Earth:
+                ApplyDamage(other, damage);
                 ApplyRoot(other);
                 break;
             default:
-                ApplyDamage(other);
+                ApplyDamage(other, damage);
                 break;
         }
         if (isBasicAttack)
-            ApplyDamage(other);
+            ApplyDamage(other, damage);
 
         if (isProjectile)
             Destroy(gameObject);
     }
 
-    private IEnumerator ApplyWaterEffect()
+    private void OnTriggerStay(Collider other)
     {
-        float duration = 5f; // Example duration for the water effect
-        float interval = 1f; // Damage and slow application interval
+        if (!other.CompareTag("Enemy")) return;
+        if (spellType == SO_SpellDefs2.SpellType.Water)
+        {
+            ApplyDamage(other, iceDamagePerSecond);
+        }
+    }
+
+    private IEnumerator ApplyWaterEffect(float duration)
+    {
+        float interval = 1f;
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -113,8 +121,7 @@ public class SpellDamageManager2 : MonoBehaviour
             {
                 if (hit.CompareTag("Enemy"))
                 {
-                    ApplyDamage(hit);
-                    ApplySlow(hit);
+                    ApplySlow(hit, duration, 0.5f); // Use duration
                 }
             }
             elapsed += interval;
@@ -122,22 +129,24 @@ public class SpellDamageManager2 : MonoBehaviour
         }
     }
 
-    private void ApplyDamage(Collider target)
+    private void ApplyDamage(Collider target, float damage)
     {
         CreatureDefs creature = target.GetComponentInParent<CreatureDefs>();
         if (creature != null)
         {
-            creature.TakeDamage(damage, target.ClosestPoint(transform.position), (target.transform.position - transform.position).normalized, force, caster);
+            creature.TakeDamage(damage, null);
         }
     }
 
     private void ApplyKnockback(Collider target, float knockbackForce)
     {
-        Rigidbody rb = target.GetComponent<Rigidbody>();
+        Rigidbody rb;
+        rb = target.GetComponent<Rigidbody>();
+        
         if (rb != null)
         {
             Vector3 dir = (target.transform.position - transform.position);
-            dir.y = 0f; // Prevent vertical knockback
+            dir.y = .5f;
             dir = dir.normalized;
             rb.AddForce(dir * knockbackForce, ForceMode.Impulse);
         }
@@ -148,15 +157,15 @@ public class SpellDamageManager2 : MonoBehaviour
         if (!target.CompareTag("Enemy")) return;
 
         EnemyStatusReceiver status = target.GetComponentInParent<EnemyStatusReceiver>();
-        status.ApplyBurn(3f, 5f, caster != null ? caster.transform : null);
+        status.ApplyBurn(3f);
     }
 
-    private void ApplySlow(Collider target)
+    private void ApplySlow(Collider target, float duration, float speedMultiplier)
     {
         if (!target.CompareTag("Enemy")) return;
 
         EnemyStatusReceiver status = target.GetComponentInParent<EnemyStatusReceiver>();
-        status.ApplySlow(2f, 0.5f); // Example values: 2 seconds, 50% speed reduction
+        status.ApplySlow(duration, speedMultiplier);
     }
 
     private void ApplyRoot(Collider target)

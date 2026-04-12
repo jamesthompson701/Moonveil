@@ -69,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dd7d2529c42529e4986343d6e7c7711e, type: 2}
+  - {fileID: 2100000, guid: 5963674387cdc2c4db9f70693ddcb1cf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -129,8 +129,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpellDamageManager2
   damage: 0
+  iceDamagePerSecond: 0
+  aoeDamage: 0
   force: 0
   _radius: 0
+  duration: 0
+  isProjectile: 0
+  isBasicAttack: 0
 --- !u!54 &5981242223498862277
 Rigidbody:
   m_ObjectHideFlags: 0

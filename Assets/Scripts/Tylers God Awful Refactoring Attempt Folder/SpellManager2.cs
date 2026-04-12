@@ -84,10 +84,10 @@ public class SpellManager2 : MonoBehaviour
     [Tooltip("Assigns spell tier charge times and resource costs here.")]
     [SerializeField] private float[] tierChargeTimes = new float[3] { 1f, 2f, 3f};
     [SerializeField] private float[] tierResourceCosts = new float[4] { 25f, 50f, 75f, 100f };
-    [SerializeField] public bool[] fireTierUnlocked = new bool[4] { true, false, false, false };
-    [SerializeField] public bool[] earthTierUnlocked = new bool[4] { true, false, false, false };
-    [SerializeField] public bool[] waterTierUnlocked = new bool[4] { true, false, false, false };
-    [SerializeField] public bool[] airTierUnlocked = new bool[4] { true, false, false, false };
+    public bool[] fireTierUnlocked = new bool[4] { true, false, false, false };
+    public bool[] earthTierUnlocked = new bool[4] { true, false, false, false };
+    public bool[] waterTierUnlocked = new bool[4] { true, false, false, false };
+    public bool[] airTierUnlocked = new bool[4] { true, false, false, false };
 
 
     //Checks for CombatArea trigger tag to switch between combat and farm spells
@@ -109,7 +109,7 @@ public class SpellManager2 : MonoBehaviour
 
     private void OnEnable()
     {
-        if (specialAttackAction == null) specialAttackAction = InputSystem.actions.FindAction("SpecialAttack");
+        specialAttackAction ??= InputSystem.actions.FindAction("SpecialAttack");
         if (specialAttackAction != null)
         {
             specialAttackAction.started += Attack;
@@ -117,7 +117,7 @@ public class SpellManager2 : MonoBehaviour
             if (!specialAttackAction.enabled) specialAttackAction.Enable();
         }
 
-        if (attackAction == null) attackAction = InputSystem.actions.FindAction("BasicAttack");
+        attackAction ??= InputSystem.actions.FindAction("BasicAttack");
         if (attackAction != null && inCombatArea)
         {
             attackAction.performed += TryBasicAttack;
@@ -344,7 +344,7 @@ public class SpellManager2 : MonoBehaviour
         {
             Transform farmOriginT = CastOrigin != null ? CastOrigin : player.transform;
 
-            SpellCastContext farmCtx = new SpellCastContext
+            SpellCastContext farmCtx = new()
             {
                 caster = player,
 
@@ -373,8 +373,6 @@ public class SpellManager2 : MonoBehaviour
             return;
         }
 
-        Transform originT = CastOrigin != null ? CastOrigin : player.transform;
-
         Ray ray = aimCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
         Vector3 aimPoint = ray.origin + ray.direction * aimDistance;
@@ -390,7 +388,7 @@ public class SpellManager2 : MonoBehaviour
             hitCol = hit.collider;
         }
 
-        SpellCastContext ctx = new SpellCastContext
+        SpellCastContext ctx = new()
         {
             caster = player,
             attackCastOrigin = CastOrigin,
@@ -515,7 +513,7 @@ public class SpellManager2 : MonoBehaviour
         if (aimCamera == null)
             return false;
 
-        Ray ray = new Ray(aimCamera.transform.position, aimCamera.transform.forward);
+        Ray ray = new(aimCamera.transform.position, aimCamera.transform.forward);
         bool didHit = Physics.Raycast(ray, out hit, aimDistance, aimMask, QueryTriggerInteraction.Ignore);
 
         return didHit;

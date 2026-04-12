@@ -30,7 +30,7 @@ public class GroundTargetSpells : SO_SpellDefs2
         float yOffset = GroundYOffset;
         Vector3 spawnPos = hit.point + (Vector3.up * yOffset);
 
-        Quaternion rot = Quaternion.identity;
+        Quaternion rot;
         if (AlignToSurfaceNormal)
         {
             // Align "up" to the surface normal; maintain camera forward projection as forward.  
@@ -51,11 +51,8 @@ public class GroundTargetSpells : SO_SpellDefs2
 
         if (spawned.TryGetComponent<SpellDamageManager2>(out var dmg))
         {
-            SpellManager2 sm = ctx.caster.GetComponent<SpellManager2>();
-            int choice = sm != null ? sm.attackChoice : 0;
-
             if (ctx.caster != null)
-                dmg.InitProjectile2(choice, damage, spellType, ctx.caster);
+                dmg.InitProjectile2(damage, spellType);
         }
 
         if (Lifetime > 0f)
