@@ -123,6 +123,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 288054838325147665}
+  - {fileID: 6398710448951742142}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1814952456998148509
@@ -145,7 +146,9 @@ MonoBehaviour:
   drySoil: {fileID: 2100000, guid: 6e52278511290034ea663ac88bbaf5c1, type: 2}
   untilledSoil: {fileID: 2100000, guid: 9e66f7abbf58c4f48a744d38c6dd5091, type: 2}
   plantPrefab: {fileID: 2162197478235023944, guid: 194aa52e2f01a804695b03753eb2e90e, type: 3}
+  currentPlantSO: {fileID: 0}
   fire: {fileID: 2352989941883686405, guid: c3b9a581304e1464ea7222973147ae2d, type: 3}
+  waterTimer: 0
   tilled: 0
   isWet: 0
 --- !u!65 &5807077677623683494
@@ -181,3 +184,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20dc610626fa5644d87a924f1d64a0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  dispenserItem: {fileID: 0}
+  dispenseAmount: 0
+  destroyOnDispense: 0
+--- !u!1001 &2169438485384741474
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 891126372701072223}
+    m_Modifications:
+    - target: {fileID: 5104739530346466524, guid: a039ecca948c81b41ab4ce79665da1f6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5104739530346466524, guid: a039ecca948c81b41ab4ce79665da1f6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5104739530346466524, guid: a039ecca948c81b41ab4ce79665da1f6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5104739530346466524, guid: a039ecca948c81b41ab4ce79665da1f6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5104739530346466524, guid: a039ecca948c81b41ab4ce79665da1f6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5104739530346466524, guid: a039ecca948c81b41ab4ce79665da1f6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5104739530346466524, guid: a039ecca948c81b41ab4ce79665da1f6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5104739530346466524, guid: a039ecca948c81b41ab4ce79665da1f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5104739530346466524, guid: a039ecca948c81b41ab4ce79665da1f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5104739530346466524, guid: a039ecca948c81b41ab4ce79665da1f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7392842667142480402, guid: a039ecca948c81b41ab4ce79665da1f6, type: 3}
+      propertyPath: objectToHighlight
+      value: 
+      objectReference: {fileID: 9039089786928699830}
+    - target: {fileID: 8001408604953602077, guid: a039ecca948c81b41ab4ce79665da1f6, type: 3}
+      propertyPath: m_Name
+      value: HighlightCollider
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a039ecca948c81b41ab4ce79665da1f6, type: 3}
+--- !u!4 &6398710448951742142 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5104739530346466524, guid: a039ecca948c81b41ab4ce79665da1f6, type: 3}
+  m_PrefabInstance: {fileID: 2169438485384741474}
+  m_PrefabAsset: {fileID: 0}
