@@ -129,9 +129,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpellDamageManager2
   damage: 50
-  force: 15
+  iceDamagePerSecond: 0
+  aoeDamage: 0
+  force: 30
   _radius: 0
+  duration: 0
+  slowAmount: 0
   isProjectile: 0
+  isBasicAttack: 0
+  appliesBurn: 0
+  appliesSlow: 0
+  appliesRoot: 0
+  appliesKnockback: 1
+  appliesAOE: 0
+  appliesDamageOverTime: 0
 --- !u!54 &6494707901825815188
 Rigidbody:
   m_ObjectHideFlags: 0
