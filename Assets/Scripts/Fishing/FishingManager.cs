@@ -6,7 +6,7 @@ using StarterAssets;
 
 public class FishingManager : MonoBehaviour
 {
-    ThirdPersonController playerController;
+  ThirdPersonController playerController;
     StarterAssetsInputs playerInput;
     SpellManager spellManager;
     public static event Action<FishData> OnFishCaught;
@@ -100,14 +100,9 @@ public class FishingManager : MonoBehaviour
         // Exit fishing (likely to change input)
         if (inFishingMode && Input.GetKeyDown(KeyCode.Escape))
         {
+            if (miniGameUI != null && miniGameUI.IsActiveAndPlaying) return;
             ExitFishingMode();
         }
-
-        if (Input.GetButtonDown("Fire1"))
-        {
-            Debug.Log("Fire1 working");
-        }
-        
     }
 
     public void EnterFishingMode(FishingArea area)
@@ -202,8 +197,7 @@ public class FishingManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        ShowPrompt("Press " + castInput + " to cast your rod");
-        Debug.Log("Entered fishing mode in area: " + area.areaName + ". Press " + startFishingInput + " to cast (or " + castInput + " depending on config).");
+        ShowPrompt("Cast your rod!");
     }
 
     public void ExitFishingMode()
@@ -261,7 +255,6 @@ public class FishingManager : MonoBehaviour
             StopCoroutine(biteCoroutine);
             biteCoroutine = null;
         }
-        Debug.Log("Rod pulled - canceled casting");
     }
 
     IEnumerator BiteLoop()
@@ -281,8 +274,7 @@ public class FishingManager : MonoBehaviour
             yield return new WaitForSeconds(wait);
 
             // fish bites now -> prompt player to reel
-            ShowPrompt("Press " + reelInput + " to reel!");
-            Debug.Log("Fish is biting! Press '" + reelInput + "' to reel fish.");
+            ShowPrompt("Reel!");
 
             // window to start reeling
             float reelWindow = 2.5f; // configurable globally or per fish if you want
@@ -293,7 +285,6 @@ public class FishingManager : MonoBehaviour
                 if (Input.GetButtonDown(reelInput))
                 {
                     // begin minigame
-                    Debug.Log("Starting reeling minigame...");
                     startedMinigame = true;
                     StartMiniGame(fish);
                     break;
@@ -304,7 +295,6 @@ public class FishingManager : MonoBehaviour
 
             if (!startedMinigame)
             {
-                Debug.Log("Player didn't reel in time. Fish got away (or next opportunity starts).");
                 // continue loop to wait for next bite (cast remains)
                 yield return new WaitForSeconds(0.5f);
             }
@@ -332,7 +322,7 @@ public class FishingManager : MonoBehaviour
             Debug.Log("MiniGameUI not assigned in FishingManager.");
             return;
         }
-        ShowPrompt("Keep the blue ring inside the dark rings! " + "Press " + reelInput + " to shrink the ring!");
+        ShowPrompt("Keep the White Ring between the Dark Rings");
 
         // configure the mini game from fish parameters
         miniGameUI.gameObject.SetActive(true);
@@ -349,8 +339,6 @@ public class FishingManager : MonoBehaviour
 
         if (success)
         {
-            Debug.Log("You caught a " + caughtFish.fishName + "!");
-
             // add fish to inventory.
             // notify inventory / UI systems
             OnFishCaught?.Invoke(caughtFish);
@@ -368,17 +356,16 @@ public class FishingManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Fish escaped.");
             // keep the line casted? For this version, keep casted so next opportunity continues
         }
 
         if (success)
         {
-            ShowPrompt(caughtFish.fishName + " fish caught!" + "  Press " + castInput + " to recast your rod" + " or press Escape to exit");
+            ShowPrompt(caughtFish.fishName + " caught!" + " Recast your rod or exit");
         }
         else
         {
-            ShowPrompt("The fish escaped..." + " Press " + castInput + " to recast your rod" + " or press Escape to exit");
+            ShowPrompt("The fish escaped..." + " Recast your rod or exit");
         }
     }
 
