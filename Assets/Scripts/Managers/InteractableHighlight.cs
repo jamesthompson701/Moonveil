@@ -25,15 +25,15 @@ public class InteractableHighlight : MonoBehaviour
 
         if (objectToHighlight.CompareTag("Dialogue")) //Change to NPC if NPC tag is made
         {
-            outline.OutlineMode = Outline.Mode.OutlineAll;
+            outline.OutlineMode = Outline.Mode.OutlineVisible;
             outline.OutlineColor = Color.blue;
-            outline.OutlineWidth = 2f;
+            outline.OutlineWidth = 5f;
         }
         else
         {
             outline.OutlineMode = Outline.Mode.OutlineAll;
-            outline.OutlineColor = Color.white;
-            outline.OutlineWidth = 2f;
+            outline.OutlineColor = Color.yellow;
+            outline.OutlineWidth = 5f;
         }
 
 

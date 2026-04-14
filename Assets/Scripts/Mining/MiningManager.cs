@@ -16,6 +16,7 @@ public class MiningManager : MonoBehaviour
 
     private bool isMining = false;
 
+
     public void StartMining(MineRock rock)
     {
         if (isMining) return;
@@ -36,9 +37,10 @@ public class MiningManager : MonoBehaviour
 
         Debug.Log("Fade complete");
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        ClickSelector.Instance.enabled = false;
+        //Cursor.lockState = CursorLockMode.None;
+        //Cursor.visible = true;
+        //ClickSelector.Instance.enabled = false;
+        CanvasManager.Instance.OpenMiniGame();
 
         mainCamera.gameObject.SetActive(false);
         miningCamera.gameObject.SetActive(true);
@@ -69,9 +71,10 @@ public class MiningManager : MonoBehaviour
     {
         yield return Fade(1f);
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        ClickSelector.Instance.enabled = true;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+        //ClickSelector.Instance.enabled = true;
+        CanvasManager.Instance.CloseMiniGame();
 
         miningCamera.gameObject.SetActive(false);
         mainCamera.gameObject.SetActive(true);
@@ -94,6 +97,8 @@ public class MiningManager : MonoBehaviour
 
         // Later:
         // INVENTORY ADD (rock.mineralType, amount);
+
+        //InventoryManager.instance.invSO.AddItem(rock.mineralType., 2);
     }
 
     // screen fade

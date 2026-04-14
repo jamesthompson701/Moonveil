@@ -23,6 +23,7 @@ public class FishingMiniGameUI : MonoBehaviour
 
     private float innerScale = 0.5f;
 
+
     public void StartMiniGame(FishData fish, string reelInput, Action<bool, FishData> callback)
     {
         currentFish = fish;

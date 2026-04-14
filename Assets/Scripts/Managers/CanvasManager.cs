@@ -1,8 +1,6 @@
-using Unity.VisualScripting;
-using System.Collections;
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using System;
 
 public class CanvasManager : MonoBehaviour
 {
@@ -13,6 +11,7 @@ public class CanvasManager : MonoBehaviour
     public GameObject HUD;
     public GameObject workbenchCanvas;
     public GameObject titleScreenCanvas;
+    public GameObject miniGameCanvas;
     bool isActive = false;
 
     //In awake this was initialize with all the canvases that we want to close with esc
@@ -94,6 +93,8 @@ public class CanvasManager : MonoBehaviour
         {
             OpenSelectionWheel();
         }
+
+
     }
     /*
      *         bool esc = escMenu.WasPressedThisFrame();
@@ -229,6 +230,31 @@ public class CanvasManager : MonoBehaviour
 
         }
         openSelection = input.FindAction("Selection");
+    }
+
+    public void OpenMiniGame()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        ClickSelector.Instance.enabled = false;
+
+        player.Disable();
+        UI.Enable();
+
+        HUD.GetComponent<Canvas>().enabled = false;
+    }
+
+    public void CloseMiniGame()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        ClickSelector.Instance.enabled = true;
+
+        player.Enable();
+        UI.Disable();
+        openInv = input.FindAction("Inventory");
+
+        HUD.GetComponent<Canvas>().enabled = true;
     }
 
     public void OpenMenu()

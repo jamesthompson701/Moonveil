@@ -1,8 +1,9 @@
+using StarterAssets;
 using System;
 using System.Collections;
-using UnityEngine;
 using TMPro;
-using StarterAssets;
+using UnityEngine;
+using UnityEngine.Events;
 
 public class FishingManager : MonoBehaviour
 {
@@ -56,6 +57,7 @@ public class FishingManager : MonoBehaviour
     private bool lineIsCasted = false;
 
     public static FishingManager Instance;
+
 
     private void Awake()
     {
@@ -198,6 +200,7 @@ public class FishingManager : MonoBehaviour
 
         activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
         miniGameUI = activeBiomeUI.miniGameUI;
+        CanvasManager.Instance.OpenMiniGame();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -234,8 +237,7 @@ public class FishingManager : MonoBehaviour
             biteCoroutine = null;
         }
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        CanvasManager.Instance.CloseMiniGame();
 
         lineIsCasted = false;
         HidePrompt();
