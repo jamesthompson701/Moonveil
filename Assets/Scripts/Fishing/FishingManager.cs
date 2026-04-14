@@ -103,102 +103,104 @@ public class FishingManager : MonoBehaviour
             if (miniGameUI != null && miniGameUI.IsActiveAndPlaying) return;
             ExitFishingMode();
         }
+
+        // Show "Start Fishing" prompt
+        if (currentArea != null && !inFishingMode)
+        {
+            startFishingPrompt.gameObject.SetActive(true);
+            startFishingPrompt.text = "Press " + startFishingInput + " to start fishing";
+        }
+        else if (startFishingPrompt != null)
+        {
+            startFishingPrompt.gameObject.SetActive(false);
+        }
     }
 
     public void EnterFishingMode(FishingArea area)
+{
+    if (area == null)
     {
-        if (area == null)
-        {
-            Debug.LogError("FishingArea is NULL");
-            return;
-        }
+        Debug.LogError("FishingArea is NULL");
+        return;
+    }
 
-        // disable movement input
-        if (playerInput != null)
-            playerInput.enabled = false;
+    // Disable player systems
+    if (playerInput) playerInput.enabled = false;
 
-        // disable spell casting
-        if (spellManager != null)
-        {
-            spellManager.attackChoice = 0;
-            spellManager.enabled = false;
-        }
+    if (spellManager)
+    {
+        spellManager.attackChoice = 0;
+        spellManager.enabled = false;
+    }
 
-        if (startFishingPrompt != null)
+    if (startFishingPrompt)
         startFishingPrompt.gameObject.SetActive(false);
 
-        inFishingMode = true;
-        activeBiomeUI = null;
-        
+    playerController.enabled = false;
+    player.GetComponent<ClickSelector>().enabled = false;
 
-        playerController.enabled = false;
-        player.GetComponent<ClickSelector>().enabled = false;
+    // Find correct biome UI
+    activeBiomeUI = null;
 
-        foreach (var ui in biomeUIs)
+    foreach (var ui in biomeUIs)
+    {
+        ui.fishingCamera.gameObject.SetActive(false);
+        ui.fishingCanvas.gameObject.SetActive(false);
+
+        if (ui.biome == area.biome)
         {
-            ui.fishingCamera.gameObject.SetActive(false);
-            ui.fishingCanvas.gameObject.SetActive(false);
-
-            if (ui.biome == area.biome)
-            {
-                activeBiomeUI = ui;
-            }
+            activeBiomeUI = ui;
         }
-
-        if (activeBiomeUI == null)
-        {
-            Debug.LogError("No UI configured for biome: " + area.biome);
-            return;
-        }
-
-       // enable this biome's systems
-        activeBiomeUI.fishingCamera.gameObject.SetActive(true);
-        activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
-
-        if (activeBiomeUI.fishingVisuals != null)
-        {
-            activeBiomeUI.fishingVisuals.SetActive(true);
-
-            foreach (Transform child in activeBiomeUI.fishingVisuals.transform)
-            {
-                child.gameObject.SetActive(true);
-            }
-        }
-
-        //rod stuff
-        currentRod = activeBiomeUI.rod;
-        if (currentRod != null)
-        {
-            currentRod.Initialize(this, reelInput);
-            currentRod.gameObject.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("No rod assigned for biome: " + activeBiomeUI.biome);
-        }
-
-        Transform bubble = activeBiomeUI.fishingVisuals.transform.Find("FishBubble");
-        if (bubble != null)
-        bubble.gameObject.SetActive(false);
-
-        inFishingMode = true;
-        currentArea = area;
-
-        // switch cameras
-        if (mainCamera) mainCamera.enabled = false;
-
-        fishingCamera = activeBiomeUI.fishingCamera;
-        fishingCamera.gameObject.SetActive(true);
-        fishingCamera.enabled = true;
-
-        activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
-        miniGameUI = activeBiomeUI.miniGameUI;
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        ShowPrompt("Cast your rod!");
     }
+
+    if (activeBiomeUI == null)
+    {
+        Debug.LogError("No UI configured for biome: " + area.biome);
+        return;
+    }
+
+    // Enable visuals safely
+    if (activeBiomeUI.fishingVisuals != null)
+    {
+        activeBiomeUI.fishingVisuals.SetActive(true);
+
+        foreach (Transform child in activeBiomeUI.fishingVisuals.transform)
+        {
+            child.gameObject.SetActive(true);
+        }
+    }
+
+    // Setup rod (USE MAIN BRANCH STYLE)
+    currentRod = activeBiomeUI.rod;
+
+    if (currentRod != null)
+    {
+        currentRod.Initialize(this, reelInput);
+        currentRod.gameObject.SetActive(true);
+    }
+    else
+    {
+        Debug.LogError("Rod missing for biome: " + activeBiomeUI.biome);
+    }
+
+    // Cameras
+    if (mainCamera) mainCamera.enabled = false;
+
+    fishingCamera = activeBiomeUI.fishingCamera;
+    fishingCamera.gameObject.SetActive(true);
+    fishingCamera.enabled = true;
+
+    activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
+    miniGameUI = activeBiomeUI.miniGameUI;
+
+    currentArea = area;
+    inFishingMode = true;
+
+    Cursor.lockState = CursorLockMode.Locked;
+    Cursor.visible = false;
+
+    ShowPrompt("Cast your rod!");
+}
 
     public void ExitFishingMode()
     {

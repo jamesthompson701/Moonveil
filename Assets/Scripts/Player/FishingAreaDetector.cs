@@ -11,9 +11,6 @@ private FishingArea current;
     {
         current = area;
         manager.SetCurrentArea(area);
-
-        manager.startFishingPrompt.text = "Press <i>Left Click<i> to start fishing";
-        manager.startFishingPrompt.gameObject.SetActive(true);
     }
 }
 
@@ -24,8 +21,6 @@ void OnTriggerExit(Collider other)
     {
         current = null;
         manager.ClearCurrentArea(area);
-
-        manager.startFishingPrompt.gameObject.SetActive(false);
     }
 }
 }
