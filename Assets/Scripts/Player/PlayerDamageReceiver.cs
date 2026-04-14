@@ -67,7 +67,7 @@ public class PlayerDamageReceiver : MonoBehaviour
     private void Die()
     {
         Debug.Log("Player has died.");
-        sceneManager.LoadSceneTest();
+        //sceneManager.LoadSceneTest(); //IM SORRY I ACCIDENTALLY DELETED YOUR SCENE MANAGER - K
         // Implement death logic (e.g., respawn, game over screen)
     }
 

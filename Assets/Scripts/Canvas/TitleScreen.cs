@@ -1,10 +1,10 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TitleScreen : MonoBehaviour
 {
-    public CanvasManager manager;
-  public void CloseMenu()
+    public void PlayGame()
     {
-        manager.CloseTitleScreen();
+        SceneManager.LoadScene(1);
     }
 }

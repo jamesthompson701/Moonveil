@@ -16,7 +16,19 @@ public class TimeManager : MonoBehaviour
     private List<SoilObject> soilObjects = new List<SoilObject>();
 
     //Time
-    private float time;
+    public float time;
+
+    // Time of day
+    //1 = morning, 2 = evening, 3 = night
+    public int timeOfDay;
+    //length of day in seconds
+    private float dayLength = 1200f;
+
+    // seperate time for day/night cycle
+    public float daylightCycleTime;
+
+    // world light
+    public GameObject worldLight;
 
     public static TimeManager instance;
 
@@ -29,6 +41,7 @@ public class TimeManager : MonoBehaviour
         {
             instance = this;
         }
+        timeOfDay = 1;
     }
 
     //add or remove plants
@@ -54,11 +67,33 @@ public class TimeManager : MonoBehaviour
     public void Update()
     {
         time = Time.deltaTime;
+        daylightCycleTime = daylightCycleTime + time;
+
+        //change time of day based on time
+        if (daylightCycleTime >= 700 && daylightCycleTime < 750)
+        {
+            timeOfDay = 2;
+            worldLight.transform.Rotate(0.06f, 0, 0);
+        }
+        else if (daylightCycleTime >= 750 && daylightCycleTime < 1150)
+        {
+            timeOfDay = 3;
+        }
+        else if (daylightCycleTime >= 1150 && daylightCycleTime < 1200)
+        {
+            timeOfDay = 2;
+            worldLight.transform.Rotate(0.06f, 0, 0);
+        }
+        else if (daylightCycleTime >= dayLength)
+        {
+            daylightCycleTime = 0;
+            timeOfDay = 1;
+        }
 
         //check each plant in the list
         foreach (PlantObject plantObject in plantObjects)
         {
-            plantObject.CheckPlant(time);
+            plantObject.CheckPlant(time, timeOfDay);
         }
 
         //check each soil spot in the list
@@ -66,9 +101,10 @@ public class TimeManager : MonoBehaviour
         {
             soilObject.CheckSoil(time);
 
-
-
         }
+
+        // reset the clock
+        
 
         //if tutorial hasn't been completed, then check if all the soil has been tilled
         //if they're all tilled, progress the tutorial

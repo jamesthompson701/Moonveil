@@ -123,9 +123,10 @@ public class SoilObject : MonoBehaviour
         }
 
         //if it's a fire spell, destroy crop unless it's watered
+        //unwater it if it is watered
         if (other.CompareTag("FireSpell") && plantScript != null)
         {
-            if(!isWet || plantScript.isDead)
+            if(!isWet)
             {
                 Debug.Log("FireSpelled");
                 Destroy(other.gameObject);

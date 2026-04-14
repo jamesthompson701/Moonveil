@@ -43,7 +43,7 @@ public class InventorySO : ScriptableObject
                 if (item.item == newItem)
                 {
                     item.AddAmount(newAmount);
-                    GetInventoryItem?.Invoke(newItem, newAmount, false);
+                    //GetInventoryItem?.Invoke(newItem, newAmount, false);
                     //AddInventoryItem?.Invoke(newAmount);
                     return;
                 }

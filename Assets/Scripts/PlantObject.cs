@@ -10,7 +10,6 @@ public class PlantObject : MonoBehaviour
 
     //current stage of growth
     private int currentStage;
-    public bool isDead;
 
     //timers
     //these get set to their respective maximums based on plantSO, and then count down as appropriate via CheckPlant
@@ -50,7 +49,9 @@ public class PlantObject : MonoBehaviour
         }
     }
 
-    public void CheckPlant(float deltaTime)
+    //checkplant
+    // light refers to the time of day; 1 = morning, 2 = evening, 3 = night
+    public void CheckPlant(float deltaTime, int _light)
     {
         if (!isSet)
         {
@@ -71,65 +72,54 @@ public class PlantObject : MonoBehaviour
                 Wither();
             }
 
-            //if it's been dry WAY too long, then it dies
-            if (dryTime > 0 && !isHarvestable)
+        }
+
+        //check the time of day before growing the plant
+        if (plant.lightPreference == _light)
+        {
+            //update growth time as long as the plant isn't withered
+            if (growthTime > 0 && soilScript.Wet() && !withered)
             {
-                dryTime = dryTime - deltaTime;
+                growthTime = growthTime - deltaTime;
+                if (!isHarvestable)
+                {
+                    //if plant is growing that means it's time to unwither it
+                    //but if it's harvestable just keep it green
+                    Unwither();
+                }
 
             }
             else
             {
-                isDead = true;
-                isHarvestable = false;
-                Destroy(myCanvas);
-                Destroy(currentPlant);
-                currentPlant = Instantiate(plant.plantDead, transform);
+                //check wetness and make sure the plant is unwithered again before growing
+                if (soilScript.Wet() && !withered)
+                {
+                    Debug.Log("before growth: " + currentStage);
+
+                    //then increment, but not past the max
+                    if (currentStage < plant.MaxStage)
+                    {
+                        currentStage++;
+                    }
+                    if (currentStage == plant.MaxStage)
+                    {
+                        isHarvestable = true;
+                        Destroy(myCanvas);
+                        Debug.Log("Harvestable!");
+                    }
+
+                    //if a prefab exists for the current stage,
+                    //destroy the current object and make a new one at the new growth stage
+                    if (plant.GetPrefabByStage(currentStage) != null)
+                    {
+                        Destroy(currentPlant);
+                        currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
+                    }
+                    Debug.Log("after growth: " + currentStage);
+                }
             }
         }
-
-        //update growth time
-        if(growthTime > 0 && soilScript.Wet())
-        {
-            growthTime = growthTime - deltaTime;
-            if(!isHarvestable)
-            {
-                //if plant is growing that means it's time to unwither it
-                //but if it's harvestable just keep it green
-                Unwither();
-            }
-
-        }
-        else
-        {
-            //check wetness and make sure the plant is alive before growing
-            if (soilScript.Wet() && !isDead)
-            {
-                Debug.Log("before growth: " + currentStage);
-                growthTime = plant.cropTime;
-                dryTime = plant.droughtResistance;
-
-                //then increment, but not past the max
-                if (currentStage < plant.MaxStage)
-                {
-                    currentStage++;
-                }
-                if (currentStage == plant.MaxStage)
-                {
-                    isHarvestable = true;
-                    Destroy(myCanvas);
-                    Debug.Log("Harvestable!");
-                }
-
-                //if a prefab exists for the current stage,
-                //destroy the current object and make a new one at the new growth stage
-                if (plant.GetPrefabByStage(currentStage) != null)
-                {
-                    Destroy(currentPlant);
-                    currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
-                }
-                Debug.Log("after growth: " + currentStage);
-            }
-        }
+ 
 
         //update growth timer UI and water timer UI
         growthTimer.text = "" + Mathf.Round(growthTime);
