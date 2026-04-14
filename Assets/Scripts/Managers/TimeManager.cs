@@ -22,7 +22,7 @@ public class TimeManager : MonoBehaviour
     //1 = morning, 2 = evening, 3 = night
     public int timeOfDay;
     //length of day in seconds
-    public float dayLength = 1200f;
+    private float dayLength = 1200f;
 
     // seperate time for day/night cycle
     public float daylightCycleTime;
@@ -41,6 +41,7 @@ public class TimeManager : MonoBehaviour
         {
             instance = this;
         }
+        timeOfDay = 1;
     }
 
     //add or remove plants
@@ -92,7 +93,7 @@ public class TimeManager : MonoBehaviour
         //check each plant in the list
         foreach (PlantObject plantObject in plantObjects)
         {
-            plantObject.CheckPlant(time);
+            plantObject.CheckPlant(time, timeOfDay);
         }
 
         //check each soil spot in the list

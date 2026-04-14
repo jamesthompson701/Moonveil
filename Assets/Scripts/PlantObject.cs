@@ -49,7 +49,9 @@ public class PlantObject : MonoBehaviour
         }
     }
 
-    public void CheckPlant(float deltaTime)
+    //checkplant
+    // light refers to the time of day; 1 = morning, 2 = evening, 3 = night
+    public void CheckPlant(float deltaTime, int _light)
     {
         if (!isSet)
         {
@@ -72,47 +74,52 @@ public class PlantObject : MonoBehaviour
 
         }
 
-        //update growth time
-        if(growthTime > 0 && soilScript.Wet())
+        //check the time of day before growing the plant
+        if (plant.lightPreference == _light)
         {
-            growthTime = growthTime - deltaTime;
-            if(!isHarvestable)
+            //update growth time as long as the plant isn't withered
+            if (growthTime > 0 && soilScript.Wet() && !withered)
             {
-                //if plant is growing that means it's time to unwither it
-                //but if it's harvestable just keep it green
-                Unwither();
-            }
+                growthTime = growthTime - deltaTime;
+                if (!isHarvestable)
+                {
+                    //if plant is growing that means it's time to unwither it
+                    //but if it's harvestable just keep it green
+                    Unwither();
+                }
 
-        }
-        else
-        {
-            //check wetness and make sure the plant is unwithered before growing
-            if (soilScript.Wet() && !withered)
+            }
+            else
             {
-                Debug.Log("before growth: " + currentStage);
+                //check wetness and make sure the plant is unwithered again before growing
+                if (soilScript.Wet() && !withered)
+                {
+                    Debug.Log("before growth: " + currentStage);
 
-                //then increment, but not past the max
-                if (currentStage < plant.MaxStage)
-                {
-                    currentStage++;
-                }
-                if (currentStage == plant.MaxStage)
-                {
-                    isHarvestable = true;
-                    Destroy(myCanvas);
-                    Debug.Log("Harvestable!");
-                }
+                    //then increment, but not past the max
+                    if (currentStage < plant.MaxStage)
+                    {
+                        currentStage++;
+                    }
+                    if (currentStage == plant.MaxStage)
+                    {
+                        isHarvestable = true;
+                        Destroy(myCanvas);
+                        Debug.Log("Harvestable!");
+                    }
 
-                //if a prefab exists for the current stage,
-                //destroy the current object and make a new one at the new growth stage
-                if (plant.GetPrefabByStage(currentStage) != null)
-                {
-                    Destroy(currentPlant);
-                    currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
+                    //if a prefab exists for the current stage,
+                    //destroy the current object and make a new one at the new growth stage
+                    if (plant.GetPrefabByStage(currentStage) != null)
+                    {
+                        Destroy(currentPlant);
+                        currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
+                    }
+                    Debug.Log("after growth: " + currentStage);
                 }
-                Debug.Log("after growth: " + currentStage);
             }
         }
+ 
 
         //update growth timer UI and water timer UI
         growthTimer.text = "" + Mathf.Round(growthTime);
