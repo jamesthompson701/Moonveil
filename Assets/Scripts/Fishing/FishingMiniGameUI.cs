@@ -82,7 +82,6 @@ public class FishingMiniGameUI : MonoBehaviour
                 // optionally show progress bar
                 if (keepTimer >= needed)
                 {
-                    Debug.Log("You caught a fish!");
                     EndGame(true);
                     yield break;
                 }

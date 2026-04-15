@@ -2,32 +2,25 @@ using UnityEngine;
 
 public class FishingAreaDetector : MonoBehaviour
 {
-    public FishingManager manager;
-    private FishingArea current;
-
-    void OnTriggerEnter(Collider other)
+public FishingManager manager;
+private FishingArea current;
+  void OnTriggerEnter(Collider other)
+{
+    FishingArea area = other.GetComponent<FishingArea>();
+    if (area != null)
     {
-        Debug.Log("Entered trigger with: " + other.name);
-        FishingArea area = other.GetComponent<FishingArea>();
-        if (area != null)
-        {
-            current = area;
-            manager.SetCurrentArea(area);
-            Debug.Log("Entered fishing area");
-            manager.startFishingPrompt.text = "Press " + manager.startFishingInput + " to start fishing";
-            manager.startFishingPrompt.gameObject.SetActive(true);
-        }
+        current = area;
+        manager.SetCurrentArea(area);
     }
+}
 
-    void OnTriggerExit(Collider other)
+void OnTriggerExit(Collider other)
+{
+    FishingArea area = other.GetComponent<FishingArea>();
+    if (area != null && area == current)
     {
-        FishingArea area = other.GetComponent<FishingArea>();
-        if (area != null && area == current)
-        {
-            current = null;
-            manager.ClearCurrentArea(area);
-            Debug.Log("Left fishing area");
-            manager.startFishingPrompt.gameObject.SetActive(false);
-        }
+        current = null;
+        manager.ClearCurrentArea(area);
     }
+}
 }
