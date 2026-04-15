@@ -21,13 +21,6 @@ public class FishingRod : MonoBehaviour
 
     void Update()
     {
-        if (!manager || !manager.currentArea) return;
-
-        if (Input.GetButtonDown(manager.castInput))
-        {
-            Debug.Log("Cast input detected");
-        }
-
         if (manager == null) return;
 
         // Cast with manager's castInput (use GetButtonDown for simplicity)
@@ -67,7 +60,7 @@ public class FishingRod : MonoBehaviour
 
         spawnedBait = Instantiate(baitPrefab);
         spawnedBait.transform.position = targetPosition;
-        Debug.Log("Rod casted. Bait in the water.");
+        //Debug.Log("Rod casted. Bait in the water.");
 
         // notify manager
         manager.OnRodCasted(targetPosition);
