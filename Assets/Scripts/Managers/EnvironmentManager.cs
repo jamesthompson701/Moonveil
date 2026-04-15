@@ -30,7 +30,7 @@ public class EnvironmentManager : MonoBehaviour
     {
         Debug.Log("Teleport player to " +  destination + " at these cords: " + fastTravelShrines[(int)destination].transform.position);
         characterController.enabled = false;
-        player.transform.position = fastTravelShrines[(int)destination].transform.position;
+        player.transform.position = fastTravelShrines[(int)destination].transform.Find("TP Point").position;
         characterController.enabled = true;
 
         if (destination == eFastTravel.home)
