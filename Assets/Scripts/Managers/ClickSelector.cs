@@ -71,7 +71,6 @@ public class ClickSelector : MonoBehaviour
                 interactable.OnInteract();
             }
         }
-
         
     }
 }

@@ -203,8 +203,25 @@ public class SpellManager2 : MonoBehaviour
         float now = Time.time;
         if (now < _nextBasicAttackTime)
             return;
-
         _nextBasicAttackTime = now + basicAttackCooldown;
+
+
+        //THIS IS TEMP basic way to stop shooting when interacting with something. In future want to just call clickselectors function
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, ClickSelector.Instance.raycastDistance))
+        {
+            Interactable interactable = hit.collider.GetComponent<Interactable>();
+            if (interactable == null)
+            {
+                interactable = hit.collider.GetComponentInParent<Interactable>();
+            }
+            if (interactable != null)
+            {
+                return;
+            }
+        }
+
 
         Transform origin = CastOrigin != null ? CastOrigin : player.transform;
 
