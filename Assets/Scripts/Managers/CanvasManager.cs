@@ -31,6 +31,9 @@ public class CanvasManager : MonoBehaviour
     private void Awake()
     {
         //When adding a new menu you want to close with esc add it to this array
+        //keira note: use this only for canvases you can't open with a keypress
+        //   - add ESC to the UI action in input actions in project settings for keypress menus
+        // another note this doesnt work for selection canvas it is wip
         escCloseableCanvases = new GameObject[]{fastTravelCanvas, workbenchCanvas};
 
         openInv = input.FindAction("Inventory");
@@ -177,6 +180,7 @@ public class CanvasManager : MonoBehaviour
             fastTravelCanvas.SetActive(false);
             CloseMenu();
         }
+        openPause = input.FindAction("Pause");
     }
 
     public void OpenWorkbench()
@@ -193,6 +197,7 @@ public class CanvasManager : MonoBehaviour
             workbenchCanvas.SetActive(false);
             CloseMenu();
         }
+        openPause = input.FindAction("Pause");
     }
 
     public void OpenPause()
