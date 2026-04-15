@@ -32,6 +32,16 @@ public class EnvironmentManager : MonoBehaviour
         characterController.enabled = false;
         player.transform.position = fastTravelShrines[(int)destination].transform.position;
         characterController.enabled = true;
+
+        if (destination == eFastTravel.home)
+        {
+            AudioManager.ChangeTrack(eMusic.fireIslandDay);
+        }
+
+        if(destination == eFastTravel.fireTown)
+        {
+            AudioManager.ChangeTrack(eMusic.mainIslandDay);
+        }
     }
 
 }

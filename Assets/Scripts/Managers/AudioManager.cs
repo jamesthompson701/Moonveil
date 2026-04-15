@@ -7,6 +7,8 @@ using UnityEngine.Audio;
 
 public enum eMixers { music, effects }
 public enum eEffects { farmFire, combatFire, farmEarth, combatEarth, farmWater, combatWater, farmAir, combatAir, harvest, footstep, jump, till, castHook, bubblePop}
+
+public enum eMusic { mainIslandDay, fireIslandDay, fireIslandCombat}
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
@@ -16,6 +18,7 @@ public class AudioManager : MonoBehaviour
     [NamedArray(typeof(eMixers))] private string[] strMixers = { "MusicVol", "EffectsVol" };
 
     [NamedArray(typeof(eEffects))] public AudioClip[] effectsSounds;
+    [NamedArray(typeof(eMusic))] public AudioClip[] bgmTracks;
 
     [SerializeField] private AudioSource BGM;
     [SerializeField] private AudioSource Effects;
@@ -43,5 +46,11 @@ public class AudioManager : MonoBehaviour
     public static void PlayOneShot(eEffects _effect, Transform sourceTransform, float volume)
     {
         Instance.Effects.PlayOneShot(Instance.effectsSounds[(int)_effect]);
+    }
+
+    public static void ChangeTrack(eMusic _music)
+    {
+        Instance.BGM.Stop();
+        Instance.BGM.PlayOneShot(Instance.bgmTracks[(int)_music]);
     }
 }
