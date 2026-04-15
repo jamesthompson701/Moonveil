@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ParticleCollisionInstance : MonoBehaviour
+/*public class ParticleCollisionInstance : MonoBehaviour
 {
     public GameObject[] EffectsOnCollision;
     public float DestroyTimeDelay = 5;
@@ -45,4 +45,4 @@ public class ParticleCollisionInstance : MonoBehaviour
             Destroy(gameObject, DestroyTimeDelay + 0.5f);
         }
     }
-}
+}*/

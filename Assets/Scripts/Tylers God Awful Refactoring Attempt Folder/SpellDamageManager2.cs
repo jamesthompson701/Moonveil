@@ -18,9 +18,7 @@ public class SpellDamageManager2 : MonoBehaviour
     [SerializeField] private float _radius;
     [SerializeField] private float duration;
     [SerializeField, Tooltip("How much slow is applied.")] private float slowAmount;
-    private SO_SpellDefs2.SpellType spellType;
     [SerializeField] private bool isProjectile = false;
-    [SerializeField] private bool isBasicAttack = false;
     private CreatureDefs _creatureDefs;
     
     [Header("Status Effects")]
@@ -37,7 +35,6 @@ public class SpellDamageManager2 : MonoBehaviour
     public void InitProjectile2(int dmg, SO_SpellDefs2.SpellType type)
     {
         damage = dmg;
-        spellType = type;
     }
 
     private void OnTriggerEnter(Collider other)
