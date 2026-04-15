@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2279072159814160218}
   - component: {fileID: 318481796052174926}
   - component: {fileID: 650302769056138953}
-  - component: {fileID: 1545747841925574560}
+  - component: {fileID: 4978032587878418257}
   - component: {fileID: -1202555268099412190}
   m_Layer: 0
   m_Name: BasicAttack
@@ -114,7 +114,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1545747841925574560
+--- !u!114 &4978032587878418257
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,12 +123,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2917232548986563639}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 412a8409f8807d546bd624820fb95d3d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f4dce1634a0594489a7f939552c136a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpellDamageManager
-  damage: 5
+  m_EditorClassIdentifier: Assembly-CSharp::SpellDamageManager2
+  damage: 10
   force: 0
   _radius: 0
+  isProjectile: 1
+  isBasicAttack: 1
 --- !u!54 &-1202555268099412190
 Rigidbody:
   m_ObjectHideFlags: 0

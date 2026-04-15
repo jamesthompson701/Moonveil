@@ -35,11 +35,11 @@ public abstract class SO_SpellDefs2 : ScriptableObject
 
     [Header("Preview")]
     [Tooltip("Prefab for the preview of the spell.")]
-    [SerializeField] public GameObject previewPrefab;
+    public GameObject previewPrefab;
 
     [Header("Placement Rules")]
     [Tooltip("Tag required for valid ground placement.")]
-    [SerializeField] public string groundTag = "Ground";
+    public string groundTag = "Ground";
 
     public float forwardOffset = 1f;
     public float upwardOffset = 0f;

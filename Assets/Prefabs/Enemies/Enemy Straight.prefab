@@ -206,9 +206,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   animator: {fileID: 1773562004875949345}
-  maxHealth: 30
-  minSpeed: 3
-  maxSpeed: 6
+  maxHealth: 100
+  minSpeed: 2
+  maxSpeed: 5
   maxAcceleration: 25
   turnSpeedDegPerSec: 720
   controlLockSecondsOnHit: 0.15
@@ -272,8 +272,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a05b69aec3cad64e9e2ba8a7634336d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatusReceiver
-  cachedRigidbody: {fileID: 0}
-  disableWhileStunned: []
+  _burnDps: 5
+  _canBurn: 0
+  _slowSpeedMultiplier: 0.5
+  _canSlow: 0
+  _canRoot: 0
 --- !u!65 &6950398510372817932
 BoxCollider:
   m_ObjectHideFlags: 0

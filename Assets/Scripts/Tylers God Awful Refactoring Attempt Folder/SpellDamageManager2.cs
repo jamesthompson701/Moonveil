@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -11,39 +12,65 @@ public class SpellDamageManager2 : MonoBehaviour
 {
     [Header("Spell Settings")]
     [SerializeField] private int damage;
+    [SerializeField] private float iceDamagePerSecond;
+    [SerializeField] private float aoeDamage;
     [SerializeField] private float force;
     [SerializeField] private float _radius;
-    private int attackChoice;
-    private SO_SpellDefs2.SpellType spellType;
-    private GameObject caster;
+    [SerializeField] private float duration;
+    [SerializeField, Tooltip("How much slow is applied.")] private float slowAmount;
     [SerializeField] private bool isProjectile = false;
+    private CreatureDefs _creatureDefs;
+    
+    [Header("Status Effects")]
+    [SerializeField] private bool appliesBurn;
+    [SerializeField] private bool appliesSlow;
+    [SerializeField] private bool appliesRoot;
+    [SerializeField] private bool appliesKnockback;
+    [SerializeField, Tooltip("Aplies overlap sphere effect. Not the same as water Tier 2-4")] private bool appliesAOE;
+    [SerializeField, Tooltip("Use on Water Tier 2-4 Combat to do damage to enemies that linger in the attack")] private bool appliesDamageOverTime;
 
-    public void InitProjectile2(int choice, int dmg, ProjectileSpells2.SpellType type, GameObject casterObj)
+    // Track which enemies are already being damaged over time
+    private readonly HashSet<CreatureDefs> _dotActive = new HashSet<CreatureDefs>();
+
+    public void InitProjectile2(int dmg, SO_SpellDefs2.SpellType type)
     {
-        attackChoice = choice;
         damage = dmg;
-        spellType = type;
-        caster = casterObj;
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Enemy"))
+        {
+            _creatureDefs = other.GetComponentInParent<CreatureDefs>();
+        }
+
         if (other.CompareTag("Ground"))
         {
-            if (spellType == ProjectileSpells2.SpellType.Fire)
+            if (appliesAOE)
             {
-                // Apply direct hit effects to the ground
+                var alreadyHit = new HashSet<CreatureDefs>();
                 Collider[] hits = Physics.OverlapSphere(transform.position, _radius);
                 foreach (Collider hit in hits)
                 {
-                    ApplyDamage(hit);
-                    ApplyBurn(hit);
-                    ApplyKnockback(hit, force);
+                    if (hit.CompareTag("Enemy"))
+                    {
+                        var creature = hit.GetComponentInParent<CreatureDefs>();
+                        if (creature != null && !alreadyHit.Contains(creature))
+                        {
+                            alreadyHit.Add(creature);
+
+                            if (appliesBurn)
+                                creature.ApplyBurn(duration);
+                            if (appliesSlow)
+                                creature.ApplySlow(duration);
+                            if (appliesRoot)
+                                creature.ApplyRoot(duration);
+                            ApplyDamage(hit, aoeDamage);
+                            if (appliesKnockback)
+                                ApplyKnockback(hit, force);
+                        }
+                    }
                 }
-            }
-            else if (spellType == ProjectileSpells2.SpellType.Water)
-            {
-                StartCoroutine(ApplyWaterEffect());
             }
             if (isProjectile)
                 Destroy(gameObject);
@@ -52,78 +79,88 @@ public class SpellDamageManager2 : MonoBehaviour
 
         if (!other.CompareTag("Enemy")) return;
 
-        switch (spellType)
+        if (_creatureDefs != null)
         {
-            case ProjectileSpells2.SpellType.Fire:
-                // Always apply direct hit effects
-                ApplyDamage(other);
-                ApplyBurn(other);
-                ApplyKnockback(other, force);
+            ApplyDamage(other, damage);
 
-                // Then apply area effects
-                Collider[] hits = Physics.OverlapSphere(transform.position, _radius);
-                foreach (Collider hit in hits)
+            if (appliesBurn)
+                _creatureDefs.ApplyBurn(duration);
+            if (appliesSlow)
+                _creatureDefs.ApplySlow(duration);
+            if (appliesRoot)
+                _creatureDefs.ApplyRoot(duration);
+            if (appliesKnockback)
+                ApplyKnockback(other, force);
+        }
+
+        if (appliesAOE)
+        {
+            var alreadyHit = new HashSet<CreatureDefs>();
+            alreadyHit.Add(_creatureDefs); // Prevent double-hit on the initial target
+
+            Collider[] hits = Physics.OverlapSphere(transform.position, _radius);
+            foreach (Collider hit in hits)
+            {
+                if (hit != other && hit.CompareTag("Enemy"))
                 {
-                    if (hit != other) // Avoid double-applying to the same enemy
+                    var creature = hit.GetComponentInParent<CreatureDefs>();
+                    if (creature != null && !alreadyHit.Contains(creature))
                     {
-                        ApplyDamage(hit);
-                        ApplyBurn(hit);
-                        ApplyKnockback(hit, force);
+                        alreadyHit.Add(creature);
+
+                        ApplyDamage(hit, aoeDamage);
+                        if (appliesBurn)
+                            creature.ApplyBurn(duration);
+                        if (appliesSlow)
+                            creature.ApplySlow(duration);
+                        if (appliesRoot)
+                            creature.ApplyRoot(duration);
+                        if (appliesKnockback)
+                            ApplyKnockback(hit, force);
                     }
                 }
-                break;
-            case ProjectileSpells2.SpellType.Water:
-                // Always apply direct hit effects
-                ApplyDamage(other);
-                ApplySlow(other);
-
-                // Then apply area effects via coroutine
-                StartCoroutine(ApplyWaterEffect());
-                break;
-            case ProjectileSpells2.SpellType.Air:
-                ApplyDamage(other);
-                ApplyKnockback(other, force);
-                break;
-            case ProjectileSpells2.SpellType.Earth:
-                ApplyDamage(other);
-                ApplyRoot(other);
-                break;
-            default:
-                ApplyDamage(other);
-                break;
+            }
         }
+
         if (isProjectile)
             Destroy(gameObject);
     }
 
-    private IEnumerator ApplyWaterEffect()
+    private void OnTriggerStay(Collider other)
     {
-        float duration = 5f; // Example duration for the water effect
-        float interval = 1f; // Damage and slow application interval
-        float elapsed = 0f;
+        if (!other.CompareTag("Enemy")) return;
 
-        while (elapsed < duration)
+        if (appliesDamageOverTime)
         {
-            Collider[] hits = Physics.OverlapSphere(transform.position, _radius);
-            foreach (Collider hit in hits)
+            var creature = other.GetComponentInParent<CreatureDefs>();
+            if (creature != null && !_dotActive.Contains(creature))
             {
-                if (hit.CompareTag("Enemy"))
-                {
-                    ApplyDamage(hit);
-                    ApplySlow(hit);
-                }
+                _dotActive.Add(creature);
+                StartCoroutine(ApplyDamageInIntervalsCoroutine(creature, damage, 1f));
             }
-            elapsed += interval;
-            yield return new WaitForSeconds(interval);
         }
     }
 
-    private void ApplyDamage(Collider target)
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Enemy")) return;
+
+        if (appliesDamageOverTime)
+        {
+            var creature = other.GetComponentInParent<CreatureDefs>();
+            if (creature != null)
+            {
+                _dotActive.Remove(creature);
+            }
+        }
+    }
+
+    private void ApplyDamage(Collider target, float damage)
     {
         CreatureDefs creature = target.GetComponentInParent<CreatureDefs>();
         if (creature != null)
         {
-            creature.TakeDamage(damage, target.ClosestPoint(transform.position), (target.transform.position - transform.position).normalized, force, caster);
+            creature.TakeDamage(damage, null);
         }
     }
 
@@ -133,33 +170,19 @@ public class SpellDamageManager2 : MonoBehaviour
         if (rb != null)
         {
             Vector3 dir = (target.transform.position - transform.position);
-            dir.y = 0f; // Prevent vertical knockback
+            dir.y = .5f;
             dir = dir.normalized;
             rb.AddForce(dir * knockbackForce, ForceMode.Impulse);
         }
     }
 
-    private void ApplyBurn(Collider target)
+    // Coroutine for DoT: deals damage every interval while the enemy is in the collider
+    private IEnumerator ApplyDamageInIntervalsCoroutine(CreatureDefs creature, float damagePerTick, float interval)
     {
-        if (!target.CompareTag("Enemy")) return;
-
-        EnemyStatusReceiver status = target.GetComponentInParent<EnemyStatusReceiver>();
-        status.ApplyBurn(3f, 5f, caster != null ? caster.transform : null);
-    }
-
-    private void ApplySlow(Collider target)
-    {
-        if (!target.CompareTag("Enemy")) return;
-
-        EnemyStatusReceiver status = target.GetComponentInParent<EnemyStatusReceiver>();
-        status.ApplySlow(2f, 0.5f); // Example values: 2 seconds, 50% speed reduction
-    }
-
-    private void ApplyRoot(Collider target)
-    {
-        if (!target.CompareTag("Enemy")) return;
-
-        EnemyStatusReceiver status = target.GetComponentInParent<EnemyStatusReceiver>();
-        status.ApplyRoot(2f);
+        while (_dotActive.Contains(creature))
+        {
+            creature.TakeDamage(damagePerTick, null);
+            yield return new WaitForSeconds(interval);
+        }
     }
 }

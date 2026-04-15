@@ -34,12 +34,15 @@ public class CreatureDefs : MonoBehaviour
     [Header("Movement")]
     [Tooltip("Minimum desired horizontal move speed.")]
     [SerializeField, Min(0f)] private float minSpeed = 2f;
+    private float minSpeedReference = 2f;
 
     [Tooltip("Maximum desired horizontal move speed.")]
-    [SerializeField, Min(0f)] public float maxSpeed = 4f;
+    [Min(0f)] public float maxSpeed = 4f;
+    private float maxSpeedReference = 4f;
 
     [Tooltip("Max horizontal acceleration (m/s^2) applied while steering.")]
     [SerializeField, Min(0f)] private float maxAcceleration = 25f;
+    private float maxAccelerationReference = 25f;
 
     [Tooltip("How quickly the enemy rotates to face target/movement (degrees/sec).")]
     [SerializeField, Min(0f)] private float turnSpeedDegPerSec = 720f;
@@ -121,10 +124,10 @@ public class CreatureDefs : MonoBehaviour
 
     public ItemSO dropItem;
     public PlayerInventory playerInventory;
-    public InventorySO  invSO;
+    public InventorySO invSO;
 
     private Rigidbody _rb;
-    private float _health;
+    [SerializeField] private float _health;
     private Vector3 _spawnPos;
 
     private bool _hasAggro;
@@ -142,8 +145,8 @@ public class CreatureDefs : MonoBehaviour
 
     // Status effects
     private float _controlLockUntil;
-    private float _slipUntil;
-    private float _slipSteerMultiplier = 1f;
+    private readonly float _slipUntil;
+    private readonly float _slipSteerMultiplier = 1f;
 
     // Attack pacing
     private EnemyAttackDirector _director;
@@ -156,6 +159,21 @@ public class CreatureDefs : MonoBehaviour
     private float animSmoothSpeed;
     private bool hasAnimator;
 
+    // Slow state
+    private float _slowRemaining;
+    private bool _slowApplied;
+
+    // Burn state
+    private float _burnTime = 3f;
+    [SerializeField] private float _burnDps = 10;
+    private bool _isBurning;
+
+    [Header("Immunity Settings")]
+    [SerializeField] private bool _canBurn;
+    [SerializeField] private bool _canSlow;
+    [SerializeField] private bool _canRoot;
+
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -167,7 +185,7 @@ public class CreatureDefs : MonoBehaviour
         /*
         playerInventory = PlayerInventory.instance;
         invSO = playerInventory.invSO;
-        */ 
+        */
 
         _orbitSign = (Random.value < 0.5f) ? -1 : 1;
 
@@ -223,11 +241,6 @@ public class CreatureDefs : MonoBehaviour
         ApplySteering(desiredDir, desiredSpeed);
         ApplySeparation();
         ApplyFacing(toTarget: _hasAggro);
-    }
-
-    public void Burn(float damagePerSecond, float duration)
-    {
-        // Implement burn logic as needed
     }
 
     private void UpdateAggroState()
@@ -306,7 +319,6 @@ public class CreatureDefs : MonoBehaviour
 
     private void RoamMove(out Vector3 desiredDir, out float desiredSpeed)
     {
-        desiredSpeed = Mathf.Lerp(minSpeed, maxSpeed, 0.5f);
 
         if (Time.time < _nextRoamPickTime)
         {
@@ -534,8 +546,6 @@ public class CreatureDefs : MonoBehaviour
         animator.SetTrigger("Attack");
 
         yield break;
-
-        yield break;
     }
 
     private IEnumerator DoArcProjectile()
@@ -556,8 +566,6 @@ public class CreatureDefs : MonoBehaviour
 
         //Tells Animator to play attack anim
         animator.SetTrigger("Attack");
-
-        yield break;
 
         yield break;
     }
@@ -611,34 +619,34 @@ public class CreatureDefs : MonoBehaviour
         if (useAttackDirector && _director) _director.EndAttack(this);
     }
 
-    public void TakeDamage(float amount, Vector3 hitPoint, Vector3 hitDirection, float impulseForce, GameObject instigator)
+    public void TakeDamage(float amount, GameObject instigator)
     {
         if (amount <= 0f) return;
 
-        if (instigator == instigator.CompareTag("Ground")) return;
+        // Guard against null instigator and only ignore damage if the instigator actually has the "Ground" tag.
+        if (instigator != null && instigator.CompareTag("Ground")) return;
 
         _health -= amount;
 
         if (controlLockSecondsOnHit > 0f)
             _controlLockUntil = Mathf.Max(_controlLockUntil, Time.time + controlLockSecondsOnHit);
 
-        for (int i = 0; i < GetComponentsInChildren<Renderer>().Length; i++)
+        // Flash all child renderers red once, then reset color after a short delay.
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < renderers.Length; i++)
         {
-            Renderer renderer = GetComponentsInChildren<Renderer>()[i];
+            Renderer renderer = renderers[i];
             if (renderer != null)
-            {
-
-                renderer.material.color = Color.red; // Flash red when hit
-                Invoke("ResetColor", 0.1f); // Reset color after a short delay
-
-            }
+                renderer.material.color = Color.red;
         }
+        Invoke(nameof(ResetColor), 0.1f);
 
         if (_health <= 0f)
-            Die();
+            StartCoroutine(Die());
 
 
-        animator.SetTrigger("Damaged");
+        if (hasAnimator)
+            animator.SetTrigger("Damaged");
     }
 
     private float GetSteerMultiplier()
@@ -671,8 +679,6 @@ public class CreatureDefs : MonoBehaviour
 
 
         Destroy(gameObject);
-
-        return null;
 
         return null;
     }
@@ -712,6 +718,83 @@ public class CreatureDefs : MonoBehaviour
             {
                 renderer.material.color = Color.grey; // Reset to original color
             }
+        }
+    }
+
+    public void ApplySlow(float duration)
+    {
+        _slowRemaining = Mathf.Max(_slowRemaining, duration);
+        _slowApplied = true;
+        if (_slowApplied)
+            StartCoroutine(SlowStatus(duration));
+    }
+
+    public void ApplyBurn(float duration)
+    {
+        _isBurning = true;
+        if (_isBurning)
+            StartCoroutine(BurnStatus());
+    }
+
+    public void ApplyRoot(float duration)
+    {
+        _slowRemaining = Mathf.Max(_slowRemaining, duration);
+        _slowApplied = true;
+        if (_slowApplied)
+            StartCoroutine(RootStatus());
+    }
+
+    //Apply burn damage every second
+    private IEnumerator BurnStatus()
+    {
+        while (_isBurning)
+        {
+            for (int i = 0; i < _burnTime; i++)
+            {
+                TakeDamage(_burnDps, null);
+                Debug.Log("Applying burn damage: " + _burnDps);
+                yield return new WaitForSeconds(1f);
+            }
+        }
+    }
+
+    private IEnumerator SlowStatus(float duration)
+    {
+        while (_slowApplied)
+        {
+            if (_slowRemaining > 0f)
+            {
+                _slowRemaining -= Time.deltaTime;
+                maxSpeed = 3f;
+            }
+            else
+            {
+                _slowApplied = false;
+                maxSpeed = maxSpeedReference;
+            }
+            yield return null;
+        }
+    }
+
+    private IEnumerator RootStatus()
+    {
+        while (_slowApplied)
+        {
+            if (_slowRemaining > 0f)
+            {
+                _slowRemaining -= Time.deltaTime;
+                maxSpeed = 0f;
+                minSpeed = 0f;
+                maxAcceleration = 0f;
+            }
+            else
+            {
+                _slowApplied = false;
+                maxSpeed = maxSpeedReference;
+                minSpeed = minSpeedReference;
+                maxAcceleration = maxAccelerationReference;
+            }
+            yield return null;
         }
     }
 }

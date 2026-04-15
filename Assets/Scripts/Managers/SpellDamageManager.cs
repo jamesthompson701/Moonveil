@@ -92,7 +92,7 @@ public class SpellDamageManager : MonoBehaviour
         CreatureDefs creature = target.GetComponentInParent<CreatureDefs>();
         if (creature != null)
         {
-            creature.TakeDamage(damage, target.ClosestPoint(transform.position), (target.transform.position - transform.position).normalized, force, caster);
+            //creature.TakeDamage(damage, target.ClosestPoint(transform.position), (target.transform.position - transform.position).normalized, force, caster);
         }
     }
 
@@ -115,7 +115,7 @@ public class SpellDamageManager : MonoBehaviour
         EnemyStatusReceiver status = target.GetComponentInParent<EnemyStatusReceiver>();
 
         // Example values: 3 seconds, 5 DPS, caster's transform
-        status.ApplyBurn(3f, 5f, caster != null ? caster.transform : null);
+        //status.ApplyBurn(3f, 5f, caster != null ? caster.transform : null);
     }
 
     private void ApplySlip(Collider target)

@@ -128,10 +128,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f4dce1634a0594489a7f939552c136a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpellDamageManager2
-  damage: 100
+  damage: 20
+  iceDamagePerSecond: 0
+  aoeDamage: 0
   force: 0
   _radius: 0
+  duration: 2
+  slowAmount: 0.5
   isProjectile: 0
+  isBasicAttack: 0
+  appliesBurn: 0
+  appliesSlow: 1
+  appliesRoot: 0
+  appliesKnockback: 0
+  appliesAOE: 0
+  appliesDamageOverTime: 1
 --- !u!54 &5033209857761476384
 Rigidbody:
   m_ObjectHideFlags: 0

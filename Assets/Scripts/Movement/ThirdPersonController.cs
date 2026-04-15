@@ -94,6 +94,7 @@ namespace StarterAssets
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
         public Vector3 motion;
+        private float defaultMoveSpeed;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -155,6 +156,8 @@ namespace StarterAssets
             {
                 Instance = this;
             }
+
+            defaultMoveSpeed = MoveSpeed;
 
             ascend = InputSystem.actions.FindAction("Ascend");
             descend = InputSystem.actions.FindAction("Descend");
@@ -564,6 +567,7 @@ namespace StarterAssets
                 //_controller.Move(dodgeDirection * dodgeSpeed * Time.deltaTime);
                 MoveSpeed = dodgeSpeed; // Temporarily increase move speed for dodging
                 Move();
+                MoveSpeed = defaultMoveSpeed; // Reset move speed after dodge
 
                 yield return null;
             }

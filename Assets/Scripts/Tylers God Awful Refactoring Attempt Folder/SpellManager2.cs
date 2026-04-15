@@ -70,12 +70,14 @@ public class SpellManager2 : MonoBehaviour
     private bool timerOn = false;
     [SerializeField] private float timer = 0f;
     public int attackChoice = 0;
-    private GameObject _earthPreviewInstance;
+    private GameObject _SpellPreviewInstance;
     private int currentTier;
 
     [Header("Aiming")]
     [SerializeField] private LayerMask aimMask = ~0; // Layer mask for aiming raycast
     [SerializeField] private float aimDistance = 200f; // matches inspector aim distance, Adjust as needed
+    private SO_SpellDefs2 _lastPreviewedSpell;
+    private int _lastPreviewedTier;
 
     [Header("Spawn")]
     [SerializeField] private float spawnOffset = 1.2f; // Offset distance in front of cast origin for spell spawn
@@ -84,11 +86,16 @@ public class SpellManager2 : MonoBehaviour
     [Tooltip("Assigns spell tier charge times and resource costs here.")]
     [SerializeField] private float[] tierChargeTimes = new float[3] { 1f, 2f, 3f};
     [SerializeField] private float[] tierResourceCosts = new float[4] { 25f, 50f, 75f, 100f };
-    [SerializeField] public bool[] fireTierUnlocked = new bool[4] { true, false, false, false };
-    [SerializeField] public bool[] earthTierUnlocked = new bool[4] { true, false, false, false };
-    [SerializeField] public bool[] waterTierUnlocked = new bool[4] { true, false, false, false };
-    [SerializeField] public bool[] airTierUnlocked = new bool[4] { true, false, false, false };
+    public bool[] fireTierUnlocked = new bool[4] { true, false, false, false };
+    public bool[] earthTierUnlocked = new bool[4] { true, false, false, false };
+    public bool[] waterTierUnlocked = new bool[4] { true, false, false, false };
+    public bool[] airTierUnlocked = new bool[4] { true, false, false, false };
+    private int _maxAllowedTier = 1; // Track the highest unlocked tier for the current spell
+    private float _maxAllowedTimer = 0f; // Track the max timer for the current spell
 
+    [Header("Cheats/Debug")]
+    [SerializeField] private bool infiniteManaRegen = false;
+    private float _defaultRechargeRate;
 
     //Checks for CombatArea trigger tag to switch between combat and farm spells
     private void OnTriggerEnter(Collider other)
@@ -109,7 +116,7 @@ public class SpellManager2 : MonoBehaviour
 
     private void OnEnable()
     {
-        if (specialAttackAction == null) specialAttackAction = InputSystem.actions.FindAction("SpecialAttack");
+        specialAttackAction ??= InputSystem.actions.FindAction("SpecialAttack");
         if (specialAttackAction != null)
         {
             specialAttackAction.started += Attack;
@@ -117,7 +124,7 @@ public class SpellManager2 : MonoBehaviour
             if (!specialAttackAction.enabled) specialAttackAction.Enable();
         }
 
-        if (attackAction == null) attackAction = InputSystem.actions.FindAction("BasicAttack");
+        attackAction ??= InputSystem.actions.FindAction("BasicAttack");
         if (attackAction != null && inCombatArea)
         {
             attackAction.performed += TryBasicAttack;
@@ -151,6 +158,8 @@ public class SpellManager2 : MonoBehaviour
         waterMana = maxElementResource;
         airMana = maxElementResource;
 
+        _defaultRechargeRate = rechargeRate; // Store the default recharge rate
+
         if (aimCamera == null) aimCamera = Camera.main;
         // Find the action here but subscribe in OnEnable/OnDisable for lifecycle correctness
        //attackAction = InputSystem.actions.FindAction("Attack");
@@ -172,27 +181,38 @@ public class SpellManager2 : MonoBehaviour
 
     private void Update()
     {
+        DevMana();
         Timer();
         RechargeElementPools(Time.deltaTime);
         ChooseSpell();
-        UpdateEarthPreview();
+        UpdateGroundTargetPreview();
     }
 
     public void ChooseSpell()
     {
-        if (Input.GetKeyUp(KeyCode.Alpha1)) attackChoice = 1;
-        else if (Input.GetKeyUp(KeyCode.Alpha2)) attackChoice = 2;
-        else if (Input.GetKeyUp(KeyCode.Alpha3)) attackChoice = 3;
-        else if (Input.GetKeyUp(KeyCode.Alpha4)) attackChoice = 4;
+        // Only allow spell switching if not holding the attack button
+        if (!timerOn)
+        {
+            if (Input.GetKeyUp(KeyCode.Alpha1)) attackChoice = 1;
+            else if (Input.GetKeyUp(KeyCode.Alpha2)) attackChoice = 2;
+            else if (Input.GetKeyUp(KeyCode.Alpha3)) attackChoice = 3;
+            else if (Input.GetKeyUp(KeyCode.Alpha4)) attackChoice = 4;
+        }
     }
 
     void Timer()
     {
         if (timerOn)
         {
+            // Clamp timer to the max allowed for the current spell
             timer += Time.deltaTime;
+            if (timer > _maxAllowedTimer)
+                timer = _maxAllowedTimer;
         }
-        else timer = 0;
+        else
+        {
+            timer = 0;
+        }
     }
     // calls basic attack on attack action
     public void TryBasicAttack(InputAction.CallbackContext context)
@@ -252,7 +272,7 @@ public class SpellManager2 : MonoBehaviour
         {
             timerOn = true;
             timer = 0f;
-            // Debug.Log("Attack started, timer on.");
+            UpdateMaxAllowedTierAndTimer();
             return;
         }
 
@@ -280,11 +300,30 @@ public class SpellManager2 : MonoBehaviour
                 }
                 if (!tierUnlocked)
                 {
-                    Debug.LogWarning($"Tier {tier} for element index {elementIdx} is not unlocked. Defaulting to tier 1.");
-                    tier = 1; // Default to tier 1 if the desired tier isn't unlocked
+                    // Find the highest unlocked tier less than the desired tier
+                    bool[] unlockedArray = null;
+                    switch (elementIdx)
+                    {
+                        case 0: unlockedArray = fireTierUnlocked; break;
+                        case 1: unlockedArray = earthTierUnlocked; break;
+                        case 2: unlockedArray = waterTierUnlocked; break;
+                        case 3: unlockedArray = airTierUnlocked; break;
+                    }
+                    int highestUnlocked = 1;
+                    for (int i = 0; i < tier; i++)
+                    {
+                        if (unlockedArray != null && unlockedArray[i])
+                            highestUnlocked = i + 1;
+                    }
+                    if (highestUnlocked < tier)
+                    {
+                        Debug.LogWarning($"Tier {tier} for element index {elementIdx} is not unlocked. Using highest unlocked tier {highestUnlocked}.");
+                    }
+                    tier = highestUnlocked;
                 }
+
             }
-             else
+            else
             {
                 Debug.LogWarning("No attack choice selected. Defaulting to first element.");
                 attackChoice = 1; // Default to first element if no valid choice
@@ -361,7 +400,7 @@ public class SpellManager2 : MonoBehaviour
         {
             Transform farmOriginT = CastOrigin != null ? CastOrigin : player.transform;
 
-            SpellCastContext farmCtx = new SpellCastContext
+            SpellCastContext farmCtx = new()
             {
                 caster = player,
 
@@ -390,8 +429,6 @@ public class SpellManager2 : MonoBehaviour
             return;
         }
 
-        Transform originT = CastOrigin != null ? CastOrigin : player.transform;
-
         Ray ray = aimCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
         Vector3 aimPoint = ray.origin + ray.direction * aimDistance;
@@ -407,7 +444,7 @@ public class SpellManager2 : MonoBehaviour
             hitCol = hit.collider;
         }
 
-        SpellCastContext ctx = new SpellCastContext
+        SpellCastContext ctx = new()
         {
             caster = player,
             attackCastOrigin = CastOrigin,
@@ -462,66 +499,101 @@ public class SpellManager2 : MonoBehaviour
         return false;
     }
 
-    private void UpdateEarthPreview()
+    private void UpdateGroundTargetPreview()
     {
         SO_SpellDefs2 selected = null;
+        int tier = 1;
+
+        // Determine current tier based on timer
+        if (timer < tierChargeTimes[0]) tier = 1;
+        else if (timer < tierChargeTimes[1]) tier = 2;
+        else if (timer < tierChargeTimes[2]) tier = 3;
+        else tier = 4;
 
         // Validate attackChoice and retrieve the selected spell
         if (attackChoice > 0 && attackChoice <= 4)
         {
             if (inCombatArea)
             {
-                selected = combatSpellsTier1[attackChoice - 1]; // Assuming Tier 1 for simplicity
+                switch (tier)
+                {
+                    case 1: selected = combatSpellsTier1[attackChoice - 1]; break;
+                    case 2: selected = combatSpellsTier2[attackChoice - 1]; break;
+                    case 3: selected = combatSpellsTier3[attackChoice - 1]; break;
+                    case 4: selected = combatSpellsTier4[attackChoice - 1]; break;
+                }
+            }
+            else
+            {
+                switch (tier)
+                {
+                    case 1: selected = farmSpellsTier1[attackChoice - 1]; break;
+                    case 2: selected = farmSpellsTier2[attackChoice - 1]; break;
+                    case 3: selected = farmSpellsTier3[attackChoice - 1]; break;
+                    case 4: selected = farmSpellsTier4[attackChoice - 1]; break;
+                }
             }
         }
 
         bool wantsPreview = selected is GroundTargetSpells earthSpell && earthSpell.previewPrefab != null;
 
+        // If the spell or tier has changed, destroy the old preview instance
+        if (selected != _lastPreviewedSpell || tier != _lastPreviewedTier)
+        {
+            if (_SpellPreviewInstance != null)
+            {
+                Destroy(_SpellPreviewInstance);
+                _SpellPreviewInstance = null;
+            }
+            _lastPreviewedSpell = selected;
+            _lastPreviewedTier = tier;
+        }
+
         if (!wantsPreview)
         {
-            if (_earthPreviewInstance != null)
+            if (_SpellPreviewInstance != null)
             {
-                Destroy(_earthPreviewInstance);
-                _earthPreviewInstance = null;
+                Destroy(_SpellPreviewInstance);
+                _SpellPreviewInstance = null;
             }
             return;
         }
 
-        GroundTargetSpells earth = (GroundTargetSpells)selected;
+        GroundTargetSpells spell = (GroundTargetSpells)selected;
 
-        if (_earthPreviewInstance == null)
+        if (_SpellPreviewInstance == null)
         {
-            _earthPreviewInstance = Instantiate(earth.previewPrefab);
+            _SpellPreviewInstance = Instantiate(spell.previewPrefab);
         }
 
         if (!TryGetAimHit(out RaycastHit hit))
         {
-            _earthPreviewInstance.SetActive(false);
+            _SpellPreviewInstance.SetActive(false);
             return;
         }
 
-        if (!string.IsNullOrWhiteSpace(earth.groundTag) && !hit.collider.CompareTag(earth.groundTag))
+        if (!string.IsNullOrWhiteSpace(spell.groundTag) && !hit.collider.CompareTag(spell.groundTag))
         {
-            _earthPreviewInstance.SetActive(false);
+            _SpellPreviewInstance.SetActive(false);
             return;
         }
 
-        _earthPreviewInstance.SetActive(true);
+        _SpellPreviewInstance.SetActive(true);
 
-        Vector3 pos = hit.point + (Vector3.up * earth.GroundYOffset);
-        _earthPreviewInstance.transform.position = pos;
+        Vector3 pos = hit.point + (Vector3.up * spell.GroundYOffset);
+        _SpellPreviewInstance.transform.position = pos;
 
-        if (earth.AlignToSurfaceNormal)
+        if (spell.AlignToSurfaceNormal)
         {
             Vector3 forwardProjected = Vector3.ProjectOnPlane(GetAimForward(), hit.normal).normalized;
             if (forwardProjected.sqrMagnitude < 0.001f)
                 forwardProjected = Vector3.Cross(hit.normal, Vector3.right);
 
-            _earthPreviewInstance.transform.rotation = Quaternion.LookRotation(forwardProjected, hit.normal) * Quaternion.Euler(earth.RotationOffsetEuler);
+            _SpellPreviewInstance.transform.rotation = Quaternion.LookRotation(forwardProjected, hit.normal) * Quaternion.Euler(spell.RotationOffsetEuler);
         }
         else
         {
-            _earthPreviewInstance.transform.rotation = Quaternion.LookRotation(GetAimForward(), Vector3.up) * Quaternion.Euler(earth.RotationOffsetEuler);
+            _SpellPreviewInstance.transform.rotation = Quaternion.LookRotation(GetAimForward(), Vector3.up) * Quaternion.Euler(spell.RotationOffsetEuler);
         }
     }
 
@@ -532,7 +604,7 @@ public class SpellManager2 : MonoBehaviour
         if (aimCamera == null)
             return false;
 
-        Ray ray = new Ray(aimCamera.transform.position, aimCamera.transform.forward);
+        Ray ray = new(aimCamera.transform.position, aimCamera.transform.forward);
         bool didHit = Physics.Raycast(ray, out hit, aimDistance, aimMask, QueryTriggerInteraction.Ignore);
 
         return didHit;
@@ -544,5 +616,42 @@ public class SpellManager2 : MonoBehaviour
             return aimCamera.transform.forward;
 
         return player != null ? player.transform.forward : transform.forward;
+    }
+
+    private void DevMana()
+    {
+        if (infiniteManaRegen)
+        {
+            rechargeRate = 900f;
+        }
+        else
+        {
+            rechargeRate = _defaultRechargeRate;
+        }
+    }
+
+    private void UpdateMaxAllowedTierAndTimer()
+    {
+        int elementIdx = attackChoice - 1;
+        bool[] unlockedArray = null;
+
+        switch (elementIdx)
+        {
+            case 0: unlockedArray = fireTierUnlocked; break;
+            case 1: unlockedArray = earthTierUnlocked; break;
+            case 2: unlockedArray = waterTierUnlocked; break;
+            case 3: unlockedArray = airTierUnlocked; break;
+        }
+
+        int highestUnlocked = 1;
+        for (int i = 0; i < unlockedArray.Length; i++)
+        {
+            if (unlockedArray[i])
+                highestUnlocked = i + 1;
+        }
+        _maxAllowedTier = highestUnlocked;
+        // Clamp to available charge times
+        int chargeIdx = Mathf.Clamp(_maxAllowedTier - 1, 0, tierChargeTimes.Length - 1);
+        _maxAllowedTimer = tierChargeTimes[chargeIdx];
     }
 }

@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.05, y: 0.988, z: -28.47165}
-  m_LocalScale: {x: 2.261, y: 1.6805, z: 2.9172}
+  m_LocalScale: {x: 4.0465117, y: 3.744154, z: 2.9172}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -127,9 +127,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpellDamageManager2
   damage: 25
-  force: 10
+  iceDamagePerSecond: 0
+  aoeDamage: 0
+  force: 20
   _radius: 0
+  duration: 0
+  slowAmount: 0
   isProjectile: 0
+  isBasicAttack: 0
+  appliesBurn: 0
+  appliesSlow: 0
+  appliesRoot: 0
+  appliesKnockback: 1
+  appliesAOE: 0
+  appliesDamageOverTime: 0
 --- !u!54 &309418856057511907
 Rigidbody:
   m_ObjectHideFlags: 0
