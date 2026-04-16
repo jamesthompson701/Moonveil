@@ -35,11 +35,13 @@ public class EnvironmentManager : MonoBehaviour
 
         if (destination == eFastTravel.home)
         {
+            player.GetComponent<SpellManager2>().inCombatArea = false;
             AudioManager.ChangeTrack(eMusic.fireIslandDay);
         }
 
         if(destination == eFastTravel.fireTown)
         {
+            player.GetComponent<SpellManager2>().inCombatArea = true;
             AudioManager.ChangeTrack(eMusic.mainIslandDay);
         }
     }
