@@ -79,13 +79,20 @@ public class CanvasManager : MonoBehaviour
                 Debug.Log("Canvas " +  canvas.name + " is " + canvas.activeInHierarchy);
                 if(canvas.activeInHierarchy)
                 {
-                    canvasClosed = true;
+                    
                     if(canvas == miniGameCanvas)
                     {
-                        CloseMiniGame();
+                        if (FishingManager.Instance.inFishingMode)
+                        {
+                            Debug.Log("In fishing mode so we exit");
+                            canvasClosed = true;
+                            CloseMiniGame();
+                        }
+                        
                     }
                     else
                     {
+                        canvasClosed = true;
                         isActive = false;
                         canvas.SetActive(false);
                         CloseMenu();

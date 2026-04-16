@@ -52,7 +52,7 @@ public class FishingManager : MonoBehaviour
 
     public FishingRod currentRod;
     private Coroutine biteCoroutine;
-    private bool inFishingMode = false;
+    public bool inFishingMode = false;
     private bool lineIsCasted = false;
 
     public static FishingManager Instance;
