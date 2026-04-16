@@ -13,6 +13,8 @@ public class VideoManager : MonoBehaviour
 
     public static VideoManager Instance;
 
+    public GameObject screenCanvas;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -30,6 +32,7 @@ public class VideoManager : MonoBehaviour
 
     public void PlayVideo(eVideos _video)
     {
+        screenCanvas.SetActive(true);
         videoPlayer.clip = videoClips[(int)_video];
         videoPlayer.Play();
     }
