@@ -194,10 +194,10 @@ PrefabInstance:
         Use
         it now to collect your fully grown shrubs.
 
-        
 
-        (Press E to
-        open your inventory)'
+
+        (Press E to open your
+        inventory)'
       objectReference: {fileID: 0}
     - target: {fileID: 7928974988864360270, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_margin.z
@@ -13776,6 +13776,45 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0756e554b47bda247a9b9f7f04e1461c, type: 3}
+--- !u!21 &172967047
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI Extensions/UIMultiply
+  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &176248766
 GameObject:
   m_ObjectHideFlags: 0
@@ -14235,8 +14274,8 @@ PrefabInstance:
         as moonlight.
 
 
-        Be careful! Unhappy plants will wither and stop
-        growing until you give them the care they need.'
+        Be careful! Unhappy plants will wither and stop growing
+        until you give them the care they need.'
       objectReference: {fileID: 0}
     - target: {fileID: 7928974988864360270, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_fontSize
@@ -22872,7 +22911,7 @@ MonoBehaviour:
   HUD: {fileID: 591216335}
   workbenchCanvas: {fileID: 384228306}
   titleScreenCanvas: {fileID: 2136801778}
-  miniGameCanvas: {fileID: 0}
+  miniGameCanvas: {fileID: 1974277212}
   escCloseableCanvases: []
   input: {fileID: -944628639613478452, guid: 4419d82f33d36e848b3ed5af4c8da37e, type: 3}
 --- !u!4 &328191351
@@ -80202,45 +80241,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5901074198222556976, guid: 849580836f4a14fa4a01b1b97b3ca92f, type: 3}
   m_PrefabInstance: {fileID: 1444880506}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &1432583606
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI Extensions/UIMultiply
-  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &1433128941
 GameObject:
   m_ObjectHideFlags: 0
@@ -98854,6 +98854,11 @@ PrefabInstance:
       addedObject: {fileID: 992583099}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
+--- !u!1 &1974277212 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7029883026777484072, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
+  m_PrefabInstance: {fileID: 1974277211}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1975080493 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2806209785933080976, guid: 81422671c1cf56e4aab47a60ec9f8b7c, type: 3}
