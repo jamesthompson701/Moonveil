@@ -193,6 +193,7 @@ public class SpellManager2 : MonoBehaviour
         RechargeElementPools(Time.deltaTime);
         ChooseSpell();
         UpdateGroundTargetPreview();
+        UpdateChargedUI();
     }
 
     public void ChooseSpell()
@@ -506,6 +507,22 @@ public class SpellManager2 : MonoBehaviour
         return false;
     }
 
+    private void UpdateChargedUI()
+    {
+
+        int tier;
+
+        // Determine current tier based on timer
+        if (timer == 0) tier = 0;
+        else if (timer < tierChargeTimes[0]) tier = 1;
+        else if (timer < tierChargeTimes[1]) tier = 2;
+        else if (timer < tierChargeTimes[2]) tier = 3;
+        else tier = 4;
+
+        HUD.instance.UpdatedSpellCharge(tier);
+
+
+    }
     private void UpdateGroundTargetPreview()
     {
         SO_SpellDefs2 selected = null;

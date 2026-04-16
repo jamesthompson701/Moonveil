@@ -17,6 +17,8 @@ public class HUD : MonoBehaviour
     public GameObject slot;
     public Transform popupGroup;
 
+    public GameObject[] SpellChargeIcons;
+
 
 
     private void Awake()
@@ -51,6 +53,33 @@ public class HUD : MonoBehaviour
                 break;
         }
 
+        
+
+    }
+
+    public void UpdatedSpellCharge(int tier)
+    {
+        switch(tier)
+        {
+            case 0:
+                foreach (GameObject item in SpellChargeIcons)
+                {
+                    item.SetActive(false);
+                }
+                break;
+            case 1:
+                SpellChargeIcons[0].SetActive(true);
+                break;
+            case 2:
+                SpellChargeIcons[1].SetActive(true);
+                break;
+            case 3:
+                SpellChargeIcons[2].SetActive(true);
+                break;
+            case 4:
+                SpellChargeIcons[3].SetActive(true);
+                break;
+        }
     }
 
     public void SetActive(int index)

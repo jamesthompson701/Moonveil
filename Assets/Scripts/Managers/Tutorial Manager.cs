@@ -158,6 +158,9 @@ public class TutorialManager : MonoBehaviour
                 Destroy(arrow);
 
                 SpellManager2.Instance.waterTierUnlocked[1] = true;
+                SpellManager2.Instance.fireTierUnlocked[1] = true;
+                SpellManager2.Instance.earthTierUnlocked[1] = true;
+                SpellManager2.Instance.airTierUnlocked[1] = true;
 
                 Debug.Log("Tutorial COMPLETED");
 
