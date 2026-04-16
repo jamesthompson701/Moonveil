@@ -57,7 +57,6 @@ public class TutorialManager : MonoBehaviour
         {
             case 0:
                 billboard0.SetActive(false);
-                movementTrigger.SetActive(true);
                 billboard1.SetActive(true);
                 break;
             case 1:
@@ -74,7 +73,6 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 4:
                 billboard4.SetActive(false);
-                fishingTrigger.SetActive(true);
                 billboard5.SetActive(true);
                 break;
             case 5:
@@ -83,7 +81,6 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 6:
                 billboard6.SetActive(false);
-                harvestTrigger.SetActive(true);
                 billboard7.SetActive(true);
                 break;
             case 7:
@@ -92,7 +89,6 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 8:
                 billboard8.SetActive(false);
-                combatTrigger.SetActive(true);
                 billboard9.SetActive(true);
                 break;
             case 9:
@@ -101,7 +97,6 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 10:
                 billboard10.SetActive(false);
-                backToFarmingTrigger.SetActive(true);
                 billboard11.SetActive(true);
                 break;
             case 11:
