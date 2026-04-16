@@ -50,6 +50,7 @@ public class TutorialManager : MonoBehaviour
     //function that activates one billboard and deactivates another depending on the input
     public void ProgressTutorial(int _nextBillboard)
     {
+        /*
         //increment the stage of the tutorial
         currentBillboard = _nextBillboard;
 
@@ -123,7 +124,9 @@ public class TutorialManager : MonoBehaviour
                 //its purpose fulfilled, Tutorial Manager immediately commits suicide to prevent the dishonor of burdening its family in old age
                 Destroy(this.gameObject);
                 break;
+                
         }
+        */
 
     }
 }

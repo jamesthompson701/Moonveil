@@ -155,7 +155,7 @@ public class PlantObject : MonoBehaviour
     public void Harvest()
     {
 
-        InventoryManager.instance.invSO.AddItem(plant.seed, 2);
+        InventoryManager.instance.invSO.AddItem(plant.fruit, 1);
 
         //tutorial
         if (!TutorialManager.instance.harvestingDone)
