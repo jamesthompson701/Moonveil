@@ -23897,7 +23897,7 @@ MonoBehaviour:
   HUD: {fileID: 591216335}
   workbenchCanvas: {fileID: 384228306}
   titleScreenCanvas: {fileID: 2136801778}
-  miniGameCanvas: {fileID: 0}
+  miniGameCanvas: {fileID: 745250754}
   escCloseableCanvases: []
   input: {fileID: -944628639613478452, guid: 4419d82f33d36e848b3ed5af4c8da37e, type: 3}
 --- !u!4 &328191351
@@ -46041,6 +46041,45 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 844841111782064151, guid: 33cd5bd73238c884ba6c8600353b5903, type: 3}
   m_PrefabInstance: {fileID: 1075715201}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &646582361
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI Extensions/UIMultiply
+  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1001 &662667866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47462,6 +47501,11 @@ MonoBehaviour:
     CameraRadius: 0.2
     DampingIntoCollision: 0
     DampingFromCollision: 0.5
+--- !u!1 &745250754 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7029883026777484072, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
+  m_PrefabInstance: {fileID: 1974277211}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &747140059
 GameObject:
   m_ObjectHideFlags: 0
@@ -59371,45 +59415,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6960790029139392010, guid: 8e745a4790f994a69bd635f19f702a3a, type: 3}
   m_PrefabInstance: {fileID: 973772750}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &973866649
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI Extensions/UIMultiply
-  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &983377283
 GameObject:
   m_ObjectHideFlags: 0
@@ -113707,22 +113712,22 @@ PrefabInstance:
       propertyPath: m_text
       value: 'Welcome to Moonveil, Maeve!
 
-        
+
 
         ~ Controls ~
 
-        Use
-        WASD and SPACE to move
+        Use WASD
+        and SPACE to move
 
         Use the mouse to look around
 
-        Left
-        click to interact with objects
+        Left click
+        to interact with objects
 
-        
 
-        Once you''re comfortable,
-        talk to the NPC in front of you to receive your first quest.
+
+        Once you''re comfortable, talk to the
+        NPC in front of you to receive your first quest.
 
 '
       objectReference: {fileID: 0}

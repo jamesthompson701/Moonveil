@@ -99,16 +99,17 @@ public class FishingManager : MonoBehaviour
 
             EnterFishingMode(currentArea);
         }
-
+        /*
         // Exit fishing (likely to change input)
         if (inFishingMode && Input.GetKeyDown(KeyCode.Escape))
         {
             if (miniGameUI != null && miniGameUI.IsActiveAndPlaying) return;
             ExitFishingMode();
-            
-            //same reason as previous comment
+
+            // im just adding this so that the book UI doesnt pop up when u esc
             CanvasManager.Instance.CloseMiniGame();
         }
+        */
 
         // Show "Start Fishing" prompt
         if (currentArea != null && !inFishingMode)
@@ -123,93 +124,95 @@ public class FishingManager : MonoBehaviour
     }
 
     public void EnterFishingMode(FishingArea area)
-{
-    if (area == null)
     {
-        Debug.LogError("FishingArea is NULL");
-        return;
-    }
-
-    // Disable player systems
-    if (playerInput) playerInput.enabled = false;
-
-    if (spellManager)
-    {
-        spellManager.attackChoice = 0;
-        spellManager.enabled = false;
-    }
-
-    if (startFishingPrompt)
-        startFishingPrompt.gameObject.SetActive(false);
-
-    playerController.enabled = false;
-    player.GetComponent<ClickSelector>().enabled = false;
-
-    // Find correct biome UI
-    activeBiomeUI = null;
-
-    foreach (var ui in biomeUIs)
-    {
-        ui.fishingCamera.gameObject.SetActive(false);
-        ui.fishingCanvas.gameObject.SetActive(false);
-
-        if (ui.biome == area.biome)
+        if (area == null)
         {
-            activeBiomeUI = ui;
+            Debug.LogError("FishingArea is NULL");
+            return;
         }
-    }
 
-    if (activeBiomeUI == null)
-    {
-        Debug.LogError("No UI configured for biome: " + area.biome);
-        return;
-    }
+        // Disable player systems
+        if (playerInput) playerInput.enabled = false;
 
-    // Enable visuals safely
-    if (activeBiomeUI.fishingVisuals != null)
-    {
-        activeBiomeUI.fishingVisuals.SetActive(true);
-
-        foreach (Transform child in activeBiomeUI.fishingVisuals.transform)
+        if (spellManager)
         {
-            child.gameObject.SetActive(true);
+            spellManager.attackChoice = 0;
+            spellManager.enabled = false;
         }
+
+        if (startFishingPrompt)
+            startFishingPrompt.gameObject.SetActive(false);
+
+        playerController.enabled = false;
+        player.GetComponent<ClickSelector>().enabled = false;
+
+        // Find correct biome UI
+        activeBiomeUI = null;
+
+        foreach (var ui in biomeUIs)
+        {
+            ui.fishingCamera.gameObject.SetActive(false);
+            ui.fishingCanvas.gameObject.SetActive(false);
+
+            if (ui.biome == area.biome)
+            {
+                activeBiomeUI = ui;
+            }
+        }
+
+        if (activeBiomeUI == null)
+        {
+            Debug.LogError("No UI configured for biome: " + area.biome);
+            return;
+        }
+
+        // Enable visuals safely
+        if (activeBiomeUI.fishingVisuals != null)
+        {
+            activeBiomeUI.fishingVisuals.SetActive(true);
+
+            foreach (Transform child in activeBiomeUI.fishingVisuals.transform)
+            {
+                child.gameObject.SetActive(true);
+            }
+        }
+
+        // Setup rod (USE MAIN BRANCH STYLE)
+        currentRod = activeBiomeUI.rod;
+
+        if (currentRod != null)
+        {
+            currentRod.Initialize(this, reelInput);
+            currentRod.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Rod missing for biome: " + activeBiomeUI.biome);
+        }
+
+        // Cameras
+        if (mainCamera) mainCamera.enabled = false;
+
+        fishingCamera = activeBiomeUI.fishingCamera;
+        fishingCamera.gameObject.SetActive(true);
+        fishingCamera.enabled = true;
+
+        activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
+        miniGameUI = activeBiomeUI.miniGameUI;
+
+        currentArea = area;
+        inFishingMode = true;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        ShowPrompt("Cast your rod!");
     }
-
-    // Setup rod (USE MAIN BRANCH STYLE)
-    currentRod = activeBiomeUI.rod;
-
-    if (currentRod != null)
-    {
-        currentRod.Initialize(this, reelInput);
-        currentRod.gameObject.SetActive(true);
-    }
-    else
-    {
-        Debug.LogError("Rod missing for biome: " + activeBiomeUI.biome);
-    }
-
-    // Cameras
-    if (mainCamera) mainCamera.enabled = false;
-
-    fishingCamera = activeBiomeUI.fishingCamera;
-    fishingCamera.gameObject.SetActive(true);
-    fishingCamera.enabled = true;
-
-    activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
-    miniGameUI = activeBiomeUI.miniGameUI;
-
-    currentArea = area;
-    inFishingMode = true;
-
-    Cursor.lockState = CursorLockMode.Locked;
-    Cursor.visible = false;
-
-    ShowPrompt("Cast your rod!");
-}
 
     public void ExitFishingMode()
     {
+
+        Debug.Log("Fishing Mode Exited");
         if (playerInput != null)
         playerInput.enabled = true;
 
