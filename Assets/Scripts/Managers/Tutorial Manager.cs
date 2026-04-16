@@ -47,6 +47,7 @@ public class TutorialManager : MonoBehaviour
     public bool fastTravel; //located in UIFastTravel
     public bool mining; //located in MiningManager
     public bool crafting; //located in CraftingManager
+    public bool fireIsland; //located in SpellManager2
     public bool combat; //located in CreatureDefs
 
     //singleton

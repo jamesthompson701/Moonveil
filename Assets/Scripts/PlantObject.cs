@@ -76,14 +76,13 @@ public class PlantObject : MonoBehaviour
 
         }
 
-        //update growth time as long as the plant isn't withered and the light is appropriate
-        if (growthTime > 0 && soilScript.Wet() && !withered && plant.lightPreference == _light)
+        //update growth time as long as the plant isn't withered, the light is appropriate, and it isn't harvestable
+        if (growthTime > 0 && soilScript.Wet() && !withered && plant.lightPreference == _light && !isHarvestable)
         {
             growthTime = growthTime - deltaTime;
-            if (!isHarvestable)
+            if (withered)
             {
                 //if plant is growing that means it's time to unwither it
-                //but if it's harvestable just keep it green
                 Unwither();
             }
 
@@ -95,10 +94,14 @@ public class PlantObject : MonoBehaviour
             {
                 Debug.Log("before growth: " + currentStage);
 
+                //reset growth timer
+                growthTime = plant.cropTime;
+
                 //then increment, but not past the max
                 if (currentStage < plant.MaxStage)
                 {
                     currentStage++;
+                    
                 }
                 if (currentStage == plant.MaxStage)
                 {
@@ -107,7 +110,6 @@ public class PlantObject : MonoBehaviour
                     Debug.Log("Harvestable!");
                 }
 
-                //if a prefab exists for the current stage,
                 //destroy the current object and make a new one at the new growth stage
                 if (plant.GetPrefabByStage(currentStage) != null)
                 {
