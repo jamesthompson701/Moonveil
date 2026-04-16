@@ -1,8 +1,6 @@
-using Unity.VisualScripting;
-using System.Collections;
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using System;
 
 public class CanvasManager : MonoBehaviour
 {
@@ -13,6 +11,7 @@ public class CanvasManager : MonoBehaviour
     public GameObject HUD;
     public GameObject workbenchCanvas;
     public GameObject titleScreenCanvas;
+    public GameObject miniGameCanvas;
     bool isActive = false;
 
     //In awake this was initialize with all the canvases that we want to close with esc
@@ -32,6 +31,9 @@ public class CanvasManager : MonoBehaviour
     private void Awake()
     {
         //When adding a new menu you want to close with esc add it to this array
+        //keira note: use this only for canvases you can't open with a keypress
+        //   - add ESC to the UI action in input actions in project settings for keypress menus
+        // another note this doesnt work for selection canvas it is wip
         escCloseableCanvases = new GameObject[]{fastTravelCanvas, workbenchCanvas};
 
         openInv = input.FindAction("Inventory");
@@ -94,6 +96,8 @@ public class CanvasManager : MonoBehaviour
         {
             OpenSelectionWheel();
         }
+
+
     }
     /*
      *         bool esc = escMenu.WasPressedThisFrame();
@@ -176,6 +180,7 @@ public class CanvasManager : MonoBehaviour
             fastTravelCanvas.SetActive(false);
             CloseMenu();
         }
+        openPause = input.FindAction("Pause");
     }
 
     public void OpenWorkbench()
@@ -192,6 +197,7 @@ public class CanvasManager : MonoBehaviour
             workbenchCanvas.SetActive(false);
             CloseMenu();
         }
+        openPause = input.FindAction("Pause");
     }
 
     public void OpenPause()
@@ -229,6 +235,31 @@ public class CanvasManager : MonoBehaviour
 
         }
         openSelection = input.FindAction("Selection");
+    }
+
+    public void OpenMiniGame()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        ClickSelector.Instance.enabled = false;
+
+        player.Disable();
+        UI.Enable();
+
+        HUD.GetComponent<Canvas>().enabled = false;
+    }
+
+    public void CloseMiniGame()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        ClickSelector.Instance.enabled = true;
+
+        player.Enable();
+        UI.Disable();
+        openInv = input.FindAction("Inventory");
+
+        HUD.GetComponent<Canvas>().enabled = true;
     }
 
     public void OpenMenu()

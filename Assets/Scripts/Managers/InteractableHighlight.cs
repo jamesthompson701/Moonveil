@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class InteractableHighlight : MonoBehaviour
@@ -9,21 +10,32 @@ public class InteractableHighlight : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             HighlightObject();
-            Debug.Log("this be working");
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
         Destroy(objectToHighlight.GetComponent<Outline>());
+
     }
 
     private void HighlightObject()
     {
         var outline = objectToHighlight.AddComponent<Outline>();
 
-        outline.OutlineMode = Outline.Mode.OutlineAll;
-        outline.OutlineColor = Color.white;
-        outline.OutlineWidth = 2f;
+        if (objectToHighlight.CompareTag("Dialogue")) //Change to NPC if NPC tag is made
+        {
+            outline.OutlineMode = Outline.Mode.OutlineVisible;
+            outline.OutlineColor = Color.blue;
+            outline.OutlineWidth = 5f;
+        }
+        else
+        {
+            outline.OutlineMode = Outline.Mode.OutlineAll;
+            outline.OutlineColor = Color.yellow;
+            outline.OutlineWidth = 5f;
+        }
+
+
     }
 }
