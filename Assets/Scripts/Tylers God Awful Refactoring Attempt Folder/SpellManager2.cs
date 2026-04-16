@@ -102,6 +102,13 @@ public class SpellManager2 : MonoBehaviour
     {
         if (other.CompareTag("CombatArea"))
         {
+            //tutorial
+            if (TutorialManager.instance != null && !TutorialManager.instance.fireIsland)
+            {
+                //completes billboard 10; go to fire island
+                TutorialManager.instance.ProgressTutorial(10);
+                TutorialManager.instance.fireIsland = true;
+            }
             inCombatArea = true;
         }
     }
