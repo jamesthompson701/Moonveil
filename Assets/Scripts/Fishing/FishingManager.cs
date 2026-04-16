@@ -354,12 +354,6 @@ public class FishingManager : MonoBehaviour
 
             InventoryManager.instance.AddFish(caughtFish, 1);
 
-            //tutorial
-            if (!TutorialManager.instance.fishingDone)
-            {
-                TutorialManager.instance.ProgressTutorial(6);
-                TutorialManager.instance.fishingDone = true;
-            }
 
         }
         else
@@ -369,6 +363,14 @@ public class FishingManager : MonoBehaviour
 
         if (success)
         {
+            //tutorial
+            if (TutorialManager.instance != null && !TutorialManager.instance.fishing)
+            {
+                //completes billboard 6: go fishing
+                TutorialManager.instance.ProgressTutorial(6);
+                TutorialManager.instance.fishing = true;
+            }
+
             ShowPrompt(caughtFish.fishName + " caught!" + " Recast your rod or exit");
         }
         else

@@ -16,6 +16,7 @@ public class MiningManager : MonoBehaviour
 
     private bool isMining = false;
 
+    public ItemSO temporaryOutputGem;
 
     public void StartMining(MineRock rock)
     {
@@ -57,6 +58,14 @@ public class MiningManager : MonoBehaviour
     {
         if (success)
         {
+            //tutorial
+            if (TutorialManager.instance != null && !TutorialManager.instance.mining)
+            {
+                //completes billboard 8; mine a gem
+                TutorialManager.instance.ProgressTutorial(8);
+                TutorialManager.instance.mining = true;
+            }
+
             GiveReward(currentRock);
         }
         else
@@ -95,10 +104,9 @@ public class MiningManager : MonoBehaviour
 
         Debug.Log("Gained " + amount + " " + rock.mineralType + " gems");
 
-        // Later:
-        // INVENTORY ADD (rock.mineralType, amount);
-
-        //InventoryManager.instance.invSO.AddItem(rock.mineralType., 2);
+        // just give the player a generic gem for now
+        InventoryManager.instance.invSO.AddItem(temporaryOutputGem, 1);
+        //InventoryManager.instance.invSO.AddItem(rock.mineralType, 2);
     }
 
     // screen fade

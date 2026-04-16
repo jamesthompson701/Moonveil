@@ -10,6 +10,14 @@ public class UIFastTravel : MonoBehaviour
     }
     public void OnFastTravelClicked(int destination)
     {
+        //tutorial
+        if (TutorialManager.instance != null && !TutorialManager.instance.fastTravel)
+        {
+            //completes billboard 7; teleporting to the mines
+            TutorialManager.instance.ProgressTutorial(7);
+            TutorialManager.instance.fastTravel = true;
+        }
+
         Debug.Log("Fast Travel Clicked");
         EnvironmentManager.Instance.Travel((eFastTravel)destination);
         CanvasManager.Instance.OpenFastTravel();

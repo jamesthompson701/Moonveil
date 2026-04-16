@@ -15,6 +15,9 @@ public class InventoryManager : MonoBehaviour
     //player currency counter
     public int crescants;
 
+    //tutorial
+    public bool tutorialDone;
+
     public SeedItemSO seedRef;
     public ItemSO fishRef;
 

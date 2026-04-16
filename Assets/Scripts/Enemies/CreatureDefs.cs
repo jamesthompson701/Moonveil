@@ -661,10 +661,11 @@ public class CreatureDefs : MonoBehaviour
     private IEnumerator Die()
     {
         //tutorial
-        if (!TutorialManager.instance.combatDone)
+        if (TutorialManager.instance != null && !TutorialManager.instance.combat)
         {
-            TutorialManager.instance.ProgressTutorial(10);
-            TutorialManager.instance.combatDone = true;
+            //completes billboard 11; kill a dog
+            TutorialManager.instance.ProgressTutorial(11);
+            TutorialManager.instance.combat = true;
         }
 
         //if (meleeHitbox) meleeHitbox.enabled = false;

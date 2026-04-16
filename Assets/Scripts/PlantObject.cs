@@ -41,12 +41,6 @@ public class PlantObject : MonoBehaviour
         currentStage = 0;
         TimeManager.instance.RegisterPlant(this);
 
-        //tutorial
-        if (!TutorialManager.instance.plantingDone)
-        {
-            TutorialManager.instance.ProgressTutorial(4);
-            TutorialManager.instance.plantingDone = true;
-        }
     }
 
     //checkplant
@@ -60,6 +54,14 @@ public class PlantObject : MonoBehaviour
             dryTime = plant.droughtResistance;
             currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
             isSet = true;
+
+            //tutorial
+            if (TutorialManager.instance != null && !TutorialManager.instance.planting)
+            {
+                //completes billboard 3: plant seeds
+                TutorialManager.instance.ProgressTutorial(3);
+                TutorialManager.instance.planting = true;
+            }
         }
 
         //increment the dry timer while dry
@@ -74,59 +76,57 @@ public class PlantObject : MonoBehaviour
 
         }
 
-        //check the time of day before growing the plant
-        if (plant.lightPreference == _light)
+        //update growth time as long as the plant isn't withered and the light is appropriate
+        if (growthTime > 0 && soilScript.Wet() && !withered && plant.lightPreference == _light)
         {
-            //update growth time as long as the plant isn't withered
-            if (growthTime > 0 && soilScript.Wet() && !withered)
+            growthTime = growthTime - deltaTime;
+            if (!isHarvestable)
             {
-                growthTime = growthTime - deltaTime;
-                if (!isHarvestable)
-                {
-                    //if plant is growing that means it's time to unwither it
-                    //but if it's harvestable just keep it green
-                    Unwither();
-                }
-
+                //if plant is growing that means it's time to unwither it
+                //but if it's harvestable just keep it green
+                Unwither();
             }
-            else
+
+        }
+        else
+        {
+            //check wetness again before growing
+            if (soilScript.Wet())
             {
-                //check wetness and make sure the plant is unwithered again before growing
-                if (soilScript.Wet() && !withered)
+                Debug.Log("before growth: " + currentStage);
+
+                //then increment, but not past the max
+                if (currentStage < plant.MaxStage)
                 {
-                    Debug.Log("before growth: " + currentStage);
-
-                    //then increment, but not past the max
-                    if (currentStage < plant.MaxStage)
-                    {
-                        currentStage++;
-                    }
-                    if (currentStage == plant.MaxStage)
-                    {
-                        isHarvestable = true;
-                        Destroy(myCanvas);
-                        Debug.Log("Harvestable!");
-                    }
-
-                    //if a prefab exists for the current stage,
-                    //destroy the current object and make a new one at the new growth stage
-                    if (plant.GetPrefabByStage(currentStage) != null)
-                    {
-                        Destroy(currentPlant);
-                        currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
-                    }
-                    Debug.Log("after growth: " + currentStage);
+                    currentStage++;
                 }
+                if (currentStage == plant.MaxStage)
+                {
+                    isHarvestable = true;
+                    Destroy(myCanvas);
+                    Debug.Log("Harvestable!");
+                }
+
+                //if a prefab exists for the current stage,
+                //destroy the current object and make a new one at the new growth stage
+                if (plant.GetPrefabByStage(currentStage) != null)
+                {
+                    Destroy(currentPlant);
+                    currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
+                }
+                Debug.Log("after growth: " + currentStage);
             }
         }
- 
 
-        //update growth timer UI and water timer UI
-        growthTimer.text = "" + Mathf.Round(growthTime);
-        growthProgressBar.fillAmount = growthTime / plant.cropTime;
+        //update growth timer UI and water timer UI (skip if harvestable)
+        if (!isHarvestable)
+        {
+            growthTimer.text = "" + Mathf.Round(growthTime);
+            growthProgressBar.fillAmount = growthTime / plant.cropTime;
 
-        waterTimer.text = " " + Mathf.Round(soilScript.waterTimer);
-        waterTimerBar.fillAmount = soilScript.waterTimer / soilScript.soil.wetnessDuration;
+            waterTimer.text = " " + Mathf.Round(soilScript.waterTimer);
+            waterTimerBar.fillAmount = soilScript.waterTimer / soilScript.soil.wetnessDuration;
+        }
 
     }
 
@@ -154,15 +154,15 @@ public class PlantObject : MonoBehaviour
     //add the correct items to the player's inventory and then unregisters and destroys the plant
     public void Harvest()
     {
+        //tutorial
+        if (TutorialManager.instance != null && !TutorialManager.instance.harvesting)
+        {
+            //completes billboard 3: plant seeds
+            TutorialManager.instance.ProgressTutorial(5);
+            TutorialManager.instance.harvesting = true;
+        }
 
         InventoryManager.instance.invSO.AddItem(plant.fruit, 1);
-
-        //tutorial
-        if (!TutorialManager.instance.harvestingDone)
-        {
-            TutorialManager.instance.ProgressTutorial(8);
-            TutorialManager.instance.harvestingDone = true;
-        }
 
         Debug.Log("Harvested");
         Destroy(currentPlant);
