@@ -483,6 +483,9 @@ public class SpellManager2 : MonoBehaviour
         earthMana = Mathf.Min(maxElementResource, earthMana + rechargeRate * dt);
         waterMana = Mathf.Min(maxElementResource, waterMana + rechargeRate * dt);
         airMana = Mathf.Min(maxElementResource, airMana + rechargeRate * dt);
+
+
+        HUD.instance.UpdateManaDisplay(new float[]{ fireMana / maxElementResource, earthMana / maxElementResource, waterMana / maxElementResource, airMana / maxElementResource });
     }
 
     // Spend mana from the correct pool

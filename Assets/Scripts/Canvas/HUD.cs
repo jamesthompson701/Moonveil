@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
@@ -55,6 +56,48 @@ public class HUD : MonoBehaviour
 
         
 
+    }
+
+    /*
+    //float fireManaPercent, float earthManaPercent, float waterManaPercent, float airManaPercent
+    public void UpdateManaDisplay(float[] fillPercents)
+    {
+        Debug.Log("Updating fire mana UI amount to " + fillPercents[0]);
+
+        for (int i = 0; i < highlight.Length; i++)
+        {
+            Debug.Log
+            highlight[i].GetComponent<Image>().fillAmount = fillPercents[i];
+        }
+    }
+    */
+
+    public void UpdateManaDisplay(float[] fillPercents)
+    {
+        Debug.Log("UpdateManaDisplay CALLED");
+
+        Debug.Log("fillPercents is " + (fillPercents == null ? "NULL" : "NOT NULL"));
+        Debug.Log("highlight is " + (highlight == null ? "NULL" : "NOT NULL"));
+
+        if (fillPercents != null)
+            Debug.Log("fillPercents length = " + fillPercents.Length);
+
+        if (highlight != null)
+            Debug.Log("highlight length = " + highlight.Length);
+
+        for (int i = 0; i < highlight.Length; i++)
+        {
+            Debug.Log("Loop index = " + i);
+
+            Debug.Log("highlight[" + i + "] = " + (highlight[i] != null ? highlight[i].name : "NULL"));
+
+            var img = highlight[i].GetComponent<UnityEngine.UI.Image>();
+            Debug.Log("Image component on highlight[" + i + "] = " + (img != null ? "FOUND" : "MISSING"));
+
+            Debug.Log("Setting fillAmount to " + fillPercents[i]);
+
+            highlight[i].GetComponent<UnityEngine.UI.Image>().fillAmount = fillPercents[i];
+        }
     }
 
     public void UpdatedSpellCharge(int tier)
