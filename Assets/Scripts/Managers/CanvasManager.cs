@@ -34,7 +34,7 @@ public class CanvasManager : MonoBehaviour
         //keira note: use this only for canvases you can't open with a keypress
         //   - add ESC to the UI action in input actions in project settings for keypress menus
         // another note this doesnt work for selection canvas it is wip
-        escCloseableCanvases = new GameObject[]{fastTravelCanvas, workbenchCanvas};
+        escCloseableCanvases = new GameObject[]{fastTravelCanvas, workbenchCanvas, miniGameCanvas};
 
         openInv = input.FindAction("Inventory");
         openPause = input.FindAction("Pause");
@@ -79,10 +79,18 @@ public class CanvasManager : MonoBehaviour
                 Debug.Log("Canvas " +  canvas.name + " is " + canvas.activeInHierarchy);
                 if(canvas.activeInHierarchy)
                 {
-                    isActive = false;
-                    canvas.SetActive(false);
-                    CloseMenu();
                     canvasClosed = true;
+                    if(canvas == miniGameCanvas)
+                    {
+                        CloseMiniGame();
+                    }
+                    else
+                    {
+                        isActive = false;
+                        canvas.SetActive(false);
+                        CloseMenu();
+                    }
+                    
                 }
             }
             if (!canvasClosed)
@@ -243,6 +251,8 @@ public class CanvasManager : MonoBehaviour
         Cursor.visible = true;
         ClickSelector.Instance.enabled = false;
 
+        isActive = true;
+
         player.Disable();
         UI.Enable();
 
@@ -251,9 +261,15 @@ public class CanvasManager : MonoBehaviour
 
     public void CloseMiniGame()
     {
+
+        Debug.Log("Minegame Closed");
+        FishingManager.Instance.ExitFishingMode();
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         ClickSelector.Instance.enabled = true;
+
+        isActive = false;
 
         player.Enable();
         UI.Disable();
