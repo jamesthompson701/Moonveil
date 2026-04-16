@@ -7,24 +7,22 @@ public class TutorialManager : MonoBehaviour
     //billboards to be activated and deactivated
     public GameObject billboard0;
     public GameObject billboard1;
-    public GameObject movementTrigger;
     public GameObject billboard2;
     public GameObject billboard3;
     public GameObject billboard4;
     public GameObject billboard5;
-    public GameObject fishingTrigger;
     public GameObject billboard6;
     public GameObject billboard7;
-    public GameObject harvestTrigger;
     public GameObject billboard8;
-    public GameObject combatTrigger;
     public GameObject billboard9;
     public GameObject billboard10;
-    public GameObject backToFarmingTrigger;
     public GameObject billboard11;
     public GameObject billboard12;
     //public GameObject billboard13;
     //public GameObject billboard14;
+
+    //tutorial arrow
+    public GameObject arrow;
 
     //variable to keep track of which stage of the tutorial they're on
     public int currentBillboard = 0;
