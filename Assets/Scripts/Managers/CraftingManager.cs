@@ -47,6 +47,14 @@ public class CraftingManager : MonoBehaviour
             //if the player has all three ingredients, take one of each and give them the recipe output
             if (hasItem1 && hasItem2 && hasItem3)
             {
+                //tutorial
+                if (TutorialManager.instance != null && !TutorialManager.instance.crafting)
+                {
+                    //completes billboard 9: craft
+                    TutorialManager.instance.ProgressTutorial(9);
+                    TutorialManager.instance.crafting = true;
+                }
+
                 InventoryManager.instance.invSO.RemoveItem(curRecipe.ingr1, -1);
                 InventoryManager.instance.invSO.RemoveItem(curRecipe.ingr2, -1);
                 InventoryManager.instance.invSO.RemoveItem(curRecipe.ingr3, -1);

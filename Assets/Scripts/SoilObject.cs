@@ -92,7 +92,14 @@ public class SoilObject : MonoBehaviour
             isWet = true;
             waterTimer = soil.wetnessDuration;
             mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
-            //Debug.Log("Soil wet");
+
+            //tutorial
+            if (TutorialManager.instance != null && !TutorialManager.instance.watering)
+            {
+                //completes billboard 3: plant seeds
+                TutorialManager.instance.ProgressTutorial(4);
+                TutorialManager.instance.watering = true;
+            }
         }
 
         if (other.CompareTag("WateringSpellSmall") && tilled)

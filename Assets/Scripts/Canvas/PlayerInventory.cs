@@ -16,7 +16,6 @@ public class PlayerInventory: MonoBehaviour
     public TMP_Text itemName;
     public TMP_Text itemDescription;
 
-
     private void OnEnable()
     {
         DisplayInventory();

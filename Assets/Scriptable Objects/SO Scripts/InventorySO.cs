@@ -10,30 +10,17 @@ public class InventorySO : ScriptableObject
     public event Action<ItemSO, int, bool> GetInventoryItem;
     public event Action<int> AddInventoryItem;
 
-    //TODO| Account for removing items
-
     public void AddItem(ItemSO newItem, int newAmount)
     {
+        //tutorial
+        if (!InventoryManager.instance.tutorialDone)
+        {
+            //complete billboard 2; go forage
+            TutorialManager.instance.ProgressTutorial(2);
+            InventoryManager.instance.tutorialDone = true;
+        }
 
         GetInventoryItem?.Invoke(newItem, newAmount, true);
-
-        //tutorial
-        if (!TutorialManager.instance.inventoryDone)
-        {
-            TutorialManager.instance.ProgressTutorial(3);
-            TutorialManager.instance.inventoryDone = true;
-        }
-        /*
-        else if (!TutorialManager.instance.craftingDone)
-        {
-            if (newItem.itemID == 144)
-            {
-                TutorialManager.instance.ProgressTutorial(12);
-                TutorialManager.instance.craftingDone = true;
-            }
-        }
-        */
-
 
         //Check if item is in inventory for stacking
         if (newItem.isStackable)
