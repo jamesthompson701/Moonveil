@@ -108,7 +108,7 @@ namespace StarterAssets
         private int _animIDMotionSpeed;
 
         // Check for combat zone restrictions
-        public SpellManager attackManager;
+        public SpellManager2 attackManager;
 
         //Singleton
         public static ThirdPersonController Instance;
