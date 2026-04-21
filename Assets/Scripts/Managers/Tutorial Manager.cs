@@ -31,6 +31,7 @@ public class TutorialManager : MonoBehaviour
     public Transform point11;
     public GameObject billboard12;
     public Transform point12;
+    public GameObject billboard13;
 
     //tutorial arrow
     public GameObject arrow;
@@ -155,6 +156,7 @@ public class TutorialManager : MonoBehaviour
                 billboard10.SetActive(false);
                 billboard11.SetActive(false);
                 billboard12.SetActive(false);
+                billboard13.SetActive(true);
                 Destroy(arrow);
 
                 SpellManager2.Instance.waterTierUnlocked[1] = true;

@@ -2,8 +2,7 @@ using UnityEngine;
 
 public struct SpellCastContext
 {
-    public Transform attackCastOrigin;
-    public Transform farmCastOrigin;
+    public Transform castOrigin;
     public GameObject caster;
     public Camera aimCamera;
     public LayerMask aimMask;
@@ -11,8 +10,6 @@ public struct SpellCastContext
 
     public bool inCombatArea;
 
-    public float combatSpawnOffset;
-    public float farmSpawnOffset;
     public float spawnOffset;
 
     public Vector3 aimPoint;

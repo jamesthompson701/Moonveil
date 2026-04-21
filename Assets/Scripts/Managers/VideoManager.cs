@@ -1,6 +1,8 @@
 using UnityEngine;
-using UnityEngine.Video;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
+using UnityEngine.Windows;
 
 
 public enum eVideos { cutscene}
@@ -11,9 +13,15 @@ public class VideoManager : MonoBehaviour
 
     [NamedArray(typeof(eVideos))] public VideoClip[] videoClips;
 
+    InputActionMap player;
+
     public static VideoManager Instance;
 
+    public InputActionAsset input;
+
     public GameObject screenCanvas;
+
+    InputAction skip;
 
     private void Awake()
     {
@@ -26,8 +34,21 @@ public class VideoManager : MonoBehaviour
         {
             Instance = this;
         }
+        player = input.FindActionMap("Player");
+
+        player.Enable();
+
+        skip = input.FindAction("Pause");
 
         videoPlayer.loopPointReached += OnVideoEnd;
+    }
+
+    private void Update()
+    {
+        if (skip.WasPressedThisFrame())
+        {
+            videoPlayer.time = videoPlayer.length;
+        }
     }
 
     public void PlayVideo(eVideos _video)

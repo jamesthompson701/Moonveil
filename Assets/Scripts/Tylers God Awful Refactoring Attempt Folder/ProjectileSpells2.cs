@@ -15,95 +15,78 @@ public class ProjectileSpells2 : SO_SpellDefs2
     {
         if (SpellPrefab == null) return;
 
-        Transform originT = ctx.attackCastOrigin != null ? ctx.attackCastOrigin : ctx.caster.transform;
-
-        // Choose a forward vector for origin and default spawn direction that respects RotateWithCaster.
-        Vector3 forwardForOffset = originT.forward;
-        if (!RotateWithCaster)
+        // REQUIRE spawn anchor: per request, prefab must spawn at the castOrigin.
+        if (ctx.castOrigin == null)
         {
-            // Ignore vertical look when RotateWithCaster is disabled: use horizontal forward
-            forwardForOffset = Vector3.ProjectOnPlane(originT.forward, Vector3.up);
-            if (forwardForOffset.sqrMagnitude < 0.0001f)
-            {
-                // Fallback to transform's local forward projected horizontally
-                forwardForOffset = Vector3.ProjectOnPlane(originT.TransformDirection(Vector3.forward), Vector3.up);
-            }
-            forwardForOffset.Normalize();
+            Debug.LogWarning("ProjectileSpells2.CastSpell2: castOrigin is null — spawn aborted.");
+            return;
         }
 
-        Vector3 origin = originT.position + (forwardForOffset * forwardOffset) + (Vector3.up * upwardOffset) + (originT.right * horizontalOffset);
+        Transform originT = ctx.castOrigin;
 
-        Vector3 dir;
-        float usedSpeed;
-        float usedLifetime;
-        float usedOffset;
+        // Choose the transform to derive yaw (horizontal) axes from.
+        // When RotateWithCaster is enabled we want offsets (especially horizontalOffset) to be relative to the caster's yaw,
+        // not the camera/castOrigin, which prevents camera facing left/right from shifting the spawn laterally.
+        Transform basisForYaw = (RotateWithCaster && ctx.caster != null) ? ctx.caster.transform : originT;
 
-        if (ctx.inCombatArea)
+        // Compute yaw-only forward and right vectors from the chosen basis.
+        Vector3 yawForward = Vector3.ProjectOnPlane(basisForYaw.forward, Vector3.up);
+        if (yawForward.sqrMagnitude < 0.0001f)
         {
-            //dir = (ctx.aimPoint - origin).normalized;
-            if (RotateWithCaster)
+            yawForward = Vector3.ProjectOnPlane(basisForYaw.TransformDirection(Vector3.forward), Vector3.up);
+            if (yawForward.sqrMagnitude < 0.0001f)
             {
-                dir = originT.forward.normalized;
+                yawForward = Vector3.forward;
             }
-            else
-            {
-                Vector3 horizontalForward = Vector3.ProjectOnPlane(originT.forward, Vector3.up);
-                if (horizontalForward.sqrMagnitude < 0.0001f)
-                {
-                    horizontalForward = Vector3.ProjectOnPlane(originT.TransformDirection(Vector3.forward), Vector3.up);
-                }
-                dir = horizontalForward.normalized;
-            }
-            usedSpeed = Speed;
-            usedLifetime = Lifetime;
-            usedOffset = ctx.spawnOffset;
+        }
+        yawForward.Normalize();
+        Quaternion yawRotation = Quaternion.LookRotation(yawForward, Vector3.up);
+        Vector3 yawRight = yawRotation * Vector3.right;
+
+        // Use yaw-only forward for offset computation to avoid pitch/roll affecting spawn position.
+        Vector3 forwardForOffset = yawForward;
+
+        // Base origin is exactly the cast origin position, then apply configured offsets from SO_SpellDefs2
+        Vector3 origin = originT.position + (forwardForOffset * forwardOffset) + (Vector3.up * upwardOffset) + (yawRight * horizontalOffset);
+
+        // Decide firing direction.
+        // If RotateWithCaster is true, use caster yaw-only forward (so spawn & initial facing ignore camera pitch).
+        // If false, use cast origin horizontal forward (so aim/placement follows castOrigin's planar forward).
+        Vector3 dir;
+        if (RotateWithCaster)
+        {
+            dir = yawForward;
         }
         else
         {
-            if (RotateWithCaster)
+            Vector3 horizontalForward = Vector3.ProjectOnPlane(originT.forward, Vector3.up);
+            if (horizontalForward.sqrMagnitude < 0.0001f)
             {
-                dir = originT.forward.normalized;
+                horizontalForward = Vector3.ProjectOnPlane(originT.TransformDirection(Vector3.forward), Vector3.up);
             }
-            else
-            {
-                Vector3 horizontalForward = Vector3.ProjectOnPlane(originT.forward, Vector3.up);
-                if (horizontalForward.sqrMagnitude < 0.0001f)
-                {
-                    horizontalForward = Vector3.ProjectOnPlane(originT.TransformDirection(Vector3.forward), Vector3.up);
-                }
-                dir = horizontalForward.normalized;
-            }
-
-            usedSpeed = Speed;
-            usedLifetime = Lifetime;
-            usedOffset = ctx.spawnOffset;
+            dir = horizontalForward.normalized;
         }
+
+        float usedSpeed = Speed;
+        float usedLifetime = Lifetime;
+        float usedOffset = ctx.spawnOffset;
 
         Vector3 spawnPos = origin + dir * usedOffset;
 
-        // Block X rotation (pitch): compute yaw only and create a yaw-only rotation.
-        Vector3 horizontalDirForRotation = Vector3.ProjectOnPlane(dir, Vector3.up);
-        if (horizontalDirForRotation.sqrMagnitude < 0.0001f)
-        {
-            // fallback to caster horizontal forward if direction has tiny horizontal component
-            horizontalDirForRotation = Vector3.ProjectOnPlane(originT.forward, Vector3.up);
-            if (horizontalDirForRotation.sqrMagnitude < 0.0001f)
-            {
-                horizontalDirForRotation = Vector3.forward;
-            }
-        }
-        float yaw = Mathf.Atan2(horizontalDirForRotation.x, horizontalDirForRotation.z) * Mathf.Rad2Deg;
+        // Create a yaw-only rotation for the projectile so it isn't pitched by the camera.
+        float yaw = Mathf.Atan2(yawForward.x, yawForward.z) * Mathf.Rad2Deg;
         Quaternion rot = Quaternion.Euler(0f, yaw, 0f);
 
         Rigidbody clone = SpawnProjectile(SpellPrefab, spawnPos, rot);
 
-        if (Speed == 0)
+        if (usedSpeed == 0)
         {
             // Make the projectile follow the player's movement and spawn centered around the player
-            clone.transform.SetParent(ctx.caster.transform);
+            if (ctx.caster != null)
+                clone.transform.SetParent(ctx.caster.transform);
 
             // Force the projectile to keep matching the caster's look direction while active
-            if (RotateWithCaster)
+            if (RotateWithCaster && ctx.caster != null)
             {
                 var follower = clone.gameObject.AddComponent<FollowCasterRotation>();
                 follower.Caster = ctx.caster.transform;
@@ -116,7 +99,6 @@ public class ProjectileSpells2 : SO_SpellDefs2
 
         if (clone.TryGetComponent<SpellDamageManager2>(out var dmg))
         {
-
             // Pass spell type and effects
             dmg.InitProjectile2(damage, spellType);
         }
@@ -129,6 +111,7 @@ public class ProjectileSpells2 : SO_SpellDefs2
 /// Small helper component added to spawned projectiles when RotateWithCaster is enabled.
 /// Keeps the projectile's forward direction aligned with the caster's horizontal (yaw) direction each frame,
 /// while blocking pitch (X rotation).
+/// Prevents the projectile from spawning at a different pitch based on the caster's look direction at cast time, and keeps it aligned with the caster if they look around while the projectile is active.
 /// </summary>
 public class FollowCasterRotation : MonoBehaviour
 {

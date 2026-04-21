@@ -1,5 +1,4 @@
-﻿using UnityEditor.Timeline.Actions;
-using UnityEngine;
+﻿using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
@@ -108,7 +107,7 @@ namespace StarterAssets
         private int _animIDMotionSpeed;
 
         // Check for combat zone restrictions
-        public SpellManager attackManager;
+        public SpellManager2 attackManager;
 
         //Singleton
         public static ThirdPersonController Instance;
