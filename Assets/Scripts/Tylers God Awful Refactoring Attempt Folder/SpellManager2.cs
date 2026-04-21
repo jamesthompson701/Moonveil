@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -246,6 +245,7 @@ public class SpellManager2 : MonoBehaviour
             }
             if (interactable != null)
             {
+                Debug.Log("Can not basic attack while interacting");
                 return;
             }
         }
