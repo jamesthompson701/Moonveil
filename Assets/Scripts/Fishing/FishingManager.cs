@@ -8,7 +8,7 @@ public class FishingManager : MonoBehaviour
 {
   ThirdPersonController playerController;
     StarterAssetsInputs playerInput;
-    SpellManager spellManager;
+    SpellManager2 spellManager;
     public static event Action<FishData> OnFishCaught;
 
     [Header("References")]
@@ -86,7 +86,7 @@ public class FishingManager : MonoBehaviour
 
         playerController = FindFirstObjectByType<ThirdPersonController>();
         playerInput = FindFirstObjectByType<StarterAssetsInputs>();
-        spellManager = FindFirstObjectByType<SpellManager>();
+        spellManager = FindFirstObjectByType<SpellManager2>();
     }
 
     void Update()
