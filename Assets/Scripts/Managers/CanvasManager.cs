@@ -1,29 +1,33 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using Unity.VisualScripting;
 
 public class CanvasManager : MonoBehaviour
 {
-    public GameObject inventoryCanvas;
-    public GameObject menuCanvas;
-    public GameObject fastTravelCanvas;
-    public GameObject selectionCanvas;
-    public GameObject HUD;
-    public GameObject workbenchCanvas;
-    public GameObject titleScreenCanvas;
+
     public GameObject miniGameCanvas;
-    bool isActive = false;
+
+    // TRACKS CURRENT ACTIVE CANVAS; 0 = HUD/NONE ACTIVE
+    int currentCanvas = 0;
+
+
+    [Header("DO NOT MOVE THINGS you can add though")]
+    [SerializeField] private GameObject[] menus;
 
     //In awake this was initialize with all the canvases that we want to close with esc
     [SerializeField] private GameObject[] escCloseableCanvases;
 
-    public InputActionAsset input;
-    InputAction openInv;
-    InputAction openPause;
-    InputAction openSelection;
 
-    InputActionMap player;
-    InputActionMap UI;
+    // GETS THE KEYBINDS
+    public InputActionAsset input;
+    InputAction inventoryAction;
+    InputAction pauseAction;
+    InputAction selectionAction;
+
+    // CONTROLS WHAT KEYBINDS DO
+    InputActionMap playerMap;
+    InputActionMap UIMap;
 
     public static CanvasManager Instance;
 
@@ -31,17 +35,14 @@ public class CanvasManager : MonoBehaviour
     private void Awake()
     {
         //When adding a new menu you want to close with esc add it to this array
-        //keira note: use this only for canvases you can't open with a keypress
-        //   - add ESC to the UI action in input actions in project settings for keypress menus
-        // another note this doesnt work for selection canvas it is wip
-        escCloseableCanvases = new GameObject[]{fastTravelCanvas, workbenchCanvas, miniGameCanvas};
+        escCloseableCanvases = new GameObject[] { menus[5], menus[3], miniGameCanvas};
 
-        openInv = input.FindAction("Inventory");
-        openPause = input.FindAction("Pause");
-        openSelection = input.FindAction("Selection");
+        inventoryAction = input.FindAction("Inventory");
+        pauseAction = input.FindAction("Pause");
+        selectionAction = input.FindAction("Selection");
 
-        player = input.FindActionMap("Player");
-        UI = input.FindActionMap("UI");
+        playerMap = input.FindActionMap("Player");
+        UIMap = input.FindActionMap("UI");
 
 
         //Making canvas manager a singleton
@@ -59,197 +60,124 @@ public class CanvasManager : MonoBehaviour
     }
 
 
+    private void OnApplicationFocus(bool focus)
+    {
+        if (focus)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            ClickSelector.Instance.enabled = true;
+        }
+    }
+
+
 
     private void Update()
     {
-        bool inv = openInv.WasPressedThisFrame();
-        if (inv == true)
+        // THIS IS JUST FOR DEBUG
+        if (Input.GetKey(KeyCode.BackQuote))
         {
-            Debug.Log("ITS PRESSED");
-            OpenInventory();
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            ClickSelector.Instance.enabled = false;
+        }
+        if (Input.GetKeyUp(KeyCode.BackQuote))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            ClickSelector.Instance.enabled = true;
         }
 
-        bool pause = openPause.WasPressedThisFrame();
-        if (pause == true)
+            bool inv = inventoryAction.WasPressedThisFrame();
+        if (inv)
         {
-            Debug.Log("Esc Pressed");
-            bool canvasClosed = false;
-            foreach (GameObject canvas in escCloseableCanvases)
-            {
-                Debug.Log("Canvas " +  canvas.name + " is " + canvas.activeInHierarchy);
-                if(canvas.activeInHierarchy)
-                {
-                    
-                    if(canvas == miniGameCanvas)
-                    {
-                        if (FishingManager.Instance.inFishingMode)
-                        {
-                            Debug.Log("In fishing mode so we exit");
-                            canvasClosed = true;
-                            CloseMiniGame();
-                        }
-                        
-                    }
-                    else
-                    {
-                        canvasClosed = true;
-                        isActive = false;
-                        canvas.SetActive(false);
-                        CloseMenu();
-                    }
-                    
-                }
-            }
-            if (!canvasClosed)
-            {
-                OpenPause();
-            }
+            testOpenMenu(4);
+           
         }
 
-        bool selection = openSelection.WasPressedThisFrame();
-        if (selection == true)
+        bool pause = this.pauseAction.WasPressedThisFrame();
+        if (pause)
         {
-            OpenSelectionWheel();
-        }
-
-
-    }
-    /*
-     *         bool esc = escMenu.WasPressedThisFrame();
-        if (esc == true)
-        {
-            if (!menuCanvas.activeInHierarchy)
+            if (currentCanvas != 0)
             {
-                //count the inactive menus
-                int inactiveMenus = 0;
-                foreach (GameObject _menu in escCloseableMenus)
-                {
-                    if (!_menu.activeInHierarchy)
-                    {
-                        inactiveMenus++;
-                        Debug.Log("inactive menus: " + inactiveMenus);
-                        Debug.Log("number of closeable menus: " + escCloseableMenus.Count);
-                    }
-
-                }
-
-                //if all the menus were inactive, open the pause menu
-                if (inactiveMenus == allMenus.Count)
-                {
-                    OpenPause();
-                }
-                //otherwise, close all the menus closeable by esc
-                else
-                {
-                    foreach (GameObject _menu in escCloseableMenus)
-                    {
-                        if (_menu.activeInHierarchy)
-                        {
-                            isActive = false;
-                            _menu.SetActive(false);
-                            CloseMenu();
-                        }
-                    }
-                }
+                //Closes current canvas
+                testOpenMenu(currentCanvas);
             }
-            //or if the pause menu was active, just close it
             else
             {
-                OpenPause();
+                //Opens pause menu
+                testOpenMenu(1);
             }
-            
-        }
-     */
 
-    public void OpenInventory()
-    {
+            //Debug.Log("Esc Pressed");
+            //foreach (GameObject canvas in escCloseableCanvases)
+            //{
+            //    Debug.Log("Canvas " + canvas.name + " is " + canvas.activeInHierarchy);
+            //    if (canvas.activeInHierarchy)
+            //    {
+            //        if (canvas == miniGameCanvas)
+            //        {
+            //            if (FishingManager.Instance.inFishingMode)
+            //            {
+            //                Debug.Log("In fishing mode so we exit");         
+            //                CloseMiniGame();
+            //            }
 
-        if (!isActive)
-        {
-            isActive = true;
-            inventoryCanvas.SetActive(true);
-            OpenMenu();
+            //        }
+            //    }
+            //}
+
         }
-        else
+
+        bool selection = selectionAction.WasPressedThisFrame();
+        if (selection)
         {
-            isActive = false;
-            inventoryCanvas.SetActive(false);
-            CloseMenu();
+            testOpenMenu(2);
         }
-        openInv = input.FindAction("Inventory");
     }
 
-    public void OpenFastTravel()
+
+
+    public void testOpenMenu(int menu)
     {
-
-        if (!isActive)
+        if (!menus[menu].activeInHierarchy)
         {
-            isActive = true;
-            fastTravelCanvas.SetActive(true);
-            OpenMenu();
+            menus[menu].SetActive(true);
+            currentCanvas = menu;
 
-        }
-        else
-        {
-            isActive = false;
-            fastTravelCanvas.SetActive(false);
-            CloseMenu();
-        }
-        openPause = input.FindAction("Pause");
-    }
+            playerMap.Disable();
+            UIMap.Enable();
 
-    public void OpenWorkbench()
-    {
-        if(!isActive)
-        {
-            isActive = true;
-            workbenchCanvas.SetActive(true);
-            OpenMenu();
-        }
-        else
-        {
-            isActive = false;
-            workbenchCanvas.SetActive(false);
-            CloseMenu();
-        }
-        openPause = input.FindAction("Pause");
-    }
+            menus[0].GetComponent<Canvas>().enabled = false;
 
-    public void OpenPause()
-    {
-        if (!isActive)
-        {
-            isActive = true;
-            menuCanvas.SetActive(true);
-            OpenMenu();
+            Time.timeScale = 0f;
 
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            ClickSelector.Instance.enabled = false;
         }
-        else
+        else if (menus[menu].activeInHierarchy)
         {
-            isActive = false;
-            menuCanvas.SetActive(false);
-            CloseMenu();
-        }
-        openPause = input.FindAction("Pause");
-    }
+            menus[menu].SetActive(false);
+            currentCanvas = 1;
 
-    public void OpenSelectionWheel()
-    {
-        if (!isActive)
-        {
-            isActive = true;
-            selectionCanvas.SetActive(true);
-            OpenMenu();
+            playerMap.Enable();
+            UIMap.Disable();
 
-        }
-        else
-        {
-            isActive = false;
-            selectionCanvas.SetActive(false);
-            CloseMenu();
+            menus[0].GetComponent<Canvas>().enabled = true;
 
+            Time.timeScale = 1f;
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            ClickSelector.Instance.enabled = true;
         }
-        openSelection = input.FindAction("Selection");
+
+        //Resets all actions
+        inventoryAction = input.FindAction("Inventory");
+        pauseAction = input.FindAction("Pause");
+        selectionAction = input.FindAction("Selection");
+
     }
 
     public void OpenMiniGame()
@@ -258,12 +186,9 @@ public class CanvasManager : MonoBehaviour
         Cursor.visible = true;
         ClickSelector.Instance.enabled = false;
 
-        isActive = true;
+        playerMap.Disable();
+        UIMap.Enable();
 
-        player.Disable();
-        UI.Enable();
-
-        HUD.GetComponent<Canvas>().enabled = false;
     }
 
     public void CloseMiniGame()
@@ -276,44 +201,15 @@ public class CanvasManager : MonoBehaviour
         Cursor.visible = false;
         ClickSelector.Instance.enabled = true;
 
-        isActive = false;
 
-        player.Enable();
-        UI.Disable();
-        openInv = input.FindAction("Inventory");
+        playerMap.Enable();
+        UIMap.Disable();
+        inventoryAction = input.FindAction("Inventory");
 
-        HUD.GetComponent<Canvas>().enabled = true;
+ 
     }
 
-    public void OpenMenu()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        ClickSelector.Instance.enabled = false;
 
-        player.Disable();
-        UI.Enable();
-
-        HUD.GetComponent<Canvas>().enabled = false;
-
-        Time.timeScale = 0f;
-
-    }
-
-    public void CloseMenu()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        ClickSelector.Instance.enabled = true;
-
-        player.Enable();
-        UI.Disable();
-        openInv = input.FindAction("Inventory");
-
-        HUD.GetComponent<Canvas>().enabled = true;
-
-        Time.timeScale = 1f;
-    }
 
     //public void OpenTitleScreen()
     //{

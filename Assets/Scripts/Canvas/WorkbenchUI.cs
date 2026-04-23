@@ -68,7 +68,7 @@ public class WorkbenchUI : MonoBehaviour
 
     public void ExitCrafting()
     {
-        CanvasManager.Instance.OpenWorkbench();
+        CanvasManager.Instance.testOpenMenu(3);
     }
 
     //chud invokeable functions
