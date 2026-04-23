@@ -61,9 +61,12 @@ public class SpellManager2 : MonoBehaviour
     [Tooltip("This will be targeted by the enemies so keep it somewhere above her waist")]
     public Transform hitPt;
     [Tooltip("This is the point where spells will be cast from.")]
-    [SerializeField] private Transform CastOrigin;
+    public Transform projectilCastOrigin;
+    public Transform stationaryCastOrigin;
     [Tooltip("Camera used for aiming. Should be the main camera or a dedicated aiming camera.")]
     [SerializeField] private Camera aimCamera;
+    [Tooltip("Reference to the player's animator")]
+    [SerializeField] private Animator _animator;
     [Tooltip("Determines what type of spells are cast")]
     public bool inCombatArea = false;
     private bool timerOn = false;
@@ -109,6 +112,7 @@ public class SpellManager2 : MonoBehaviour
                 TutorialManager.instance.fireIsland = true;
             }
             inCombatArea = true;
+            if (attackAction != null) attackAction.Enable();
         }
     }
 
@@ -117,12 +121,13 @@ public class SpellManager2 : MonoBehaviour
         if (other.CompareTag("CombatArea"))
         {
             inCombatArea = false;
+            if (attackAction != null) attackAction.Disable();
         }
     }
 
     private void OnEnable()
     {
-        specialAttackAction ??= InputSystem.actions.FindAction("SpecialAttack");
+        specialAttackAction = InputSystem.actions.FindAction("SpecialAttack");
         if (specialAttackAction != null)
         {
             specialAttackAction.started += Attack;
@@ -130,8 +135,8 @@ public class SpellManager2 : MonoBehaviour
             if (!specialAttackAction.enabled) specialAttackAction.Enable();
         }
 
-        attackAction ??= InputSystem.actions.FindAction("BasicAttack");
-        if (attackAction != null && inCombatArea)
+        attackAction = InputSystem.actions.FindAction("BasicAttack");
+        if (attackAction != null)
         {
             attackAction.performed += TryBasicAttack;
             if (!attackAction.enabled) attackAction.Enable();
@@ -147,7 +152,7 @@ public class SpellManager2 : MonoBehaviour
             if (specialAttackAction.enabled) specialAttackAction.Disable();
         }
 
-        if (attackAction != null && inCombatArea)
+        if (attackAction != null)
         {
             attackAction.performed -= TryBasicAttack;
             if (attackAction.enabled) attackAction.Disable();
@@ -173,7 +178,7 @@ public class SpellManager2 : MonoBehaviour
         if (player == null)
             player = gameObject;
 
-        //Making canvas manager a singleton
+        //Making Spell manager a singleton
         if (Instance != null && Instance != this)
         {
             Debug.Log("Destroy New Spell Manager");
@@ -224,20 +229,40 @@ public class SpellManager2 : MonoBehaviour
     // calls basic attack on attack action
     public void TryBasicAttack(InputAction.CallbackContext context)
     {
+        Debug.Log("Trying Basic Attack");
         if (basicAttackPrefab == null)
             return;
+
+        if (FishingManager.Instance.inFishingMode)
+        {
+            Debug.Log("Cannot basic attack while fishing");
+            return;
+        }
+
+        if (MiningManager.Instance.isMining)
+        {
+            Debug.Log("Cannot basic attack while mining");
+            return;
+        }
+
+        if (!inCombatArea)
+        {
+            Debug.Log("Cannot basic attack outside of combat area");
+            return;
+        }
 
         float now = Time.time;
         if (now < _nextBasicAttackTime)
             return;
         _nextBasicAttackTime = now + basicAttackCooldown;
-
+        AlignPlayerToCamera();
 
         //THIS IS TEMP basic way to stop shooting when interacting with something. In future want to just call clickselectors function
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, ClickSelector.Instance.raycastDistance))
         {
+            Debug.Log("Raycast hit: " + hit.collider.name);
             Interactable interactable = hit.collider.GetComponent<Interactable>();
             if (interactable == null)
             {
@@ -250,8 +275,12 @@ public class SpellManager2 : MonoBehaviour
             }
         }
 
+        Debug.Log("Basic Attack Cast");
 
-        Transform origin = CastOrigin != null ? CastOrigin : player.transform;
+        //Triggers the spellcast animation
+        _animator.SetTrigger("Spellcast");
+
+        Transform origin = projectilCastOrigin != null ? projectilCastOrigin : player.transform;
 
         Vector3 spawnPos = origin.position + origin.forward * spawnOffset;
         Quaternion spawnRot = Quaternion.LookRotation(GetAimForward(), Vector3.up);
@@ -275,6 +304,21 @@ public class SpellManager2 : MonoBehaviour
 
     public void Attack(InputAction.CallbackContext context)
     {
+        if (FishingManager.Instance.inFishingMode)
+        {
+            Debug.Log("Cannot cast spells while fishing");
+            return;
+        }
+
+        if (MiningManager.Instance.isMining)
+        {
+            Debug.Log("Cannot cast spells while mining");
+            return;
+        }
+
+        //Triggers the spellcast animation
+        _animator.SetTrigger("Spellcast");
+
         // Start the hold timer on press
         if (context.started)
         {
@@ -384,6 +428,7 @@ public class SpellManager2 : MonoBehaviour
                 }
                 else
                 {
+                    AlignPlayerToCamera();
                     Cast(chosen);
                 }
             }
@@ -406,13 +451,13 @@ public class SpellManager2 : MonoBehaviour
 
         if (!inCombatArea)
         {
-            Transform farmOriginT = CastOrigin != null ? CastOrigin : player.transform;
+            Transform farmOriginT = projectilCastOrigin != null ? projectilCastOrigin : player.transform;
 
             SpellCastContext farmCtx = new()
             {
                 caster = player,
 
-                castOrigin = CastOrigin,
+                castOrigin = projectilCastOrigin,
 
                 aimCamera = aimCamera,
                 aimMask = aimMask,
@@ -453,7 +498,7 @@ public class SpellManager2 : MonoBehaviour
         SpellCastContext ctx = new()
         {
             caster = player,
-            castOrigin = CastOrigin,
+            castOrigin = projectilCastOrigin,
             aimCamera = aimCamera,
             aimMask = aimMask,
             aimDistance = aimDistance,
@@ -676,5 +721,16 @@ public class SpellManager2 : MonoBehaviour
         // Clamp to available charge times
         int chargeIdx = Mathf.Clamp(_maxAllowedTier - 1, 0, tierChargeTimes.Length - 1);
         _maxAllowedTimer = tierChargeTimes[chargeIdx];
+    }
+
+    private void AlignPlayerToCamera()
+    {
+        if (player == null || aimCamera == null)
+            return;
+
+        // Project camera forward onto XZ plane to avoid tilting the player up/down
+        Vector3 cameraForward = Vector3.ProjectOnPlane(aimCamera.transform.forward, Vector3.up).normalized;
+        if (cameraForward.sqrMagnitude > 0.001f)
+            player.transform.forward = cameraForward;
     }
 }

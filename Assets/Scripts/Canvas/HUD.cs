@@ -74,27 +74,19 @@ public class HUD : MonoBehaviour
 
     public void UpdateManaDisplay(float[] fillPercents)
     {
-        Debug.Log("UpdateManaDisplay CALLED");
 
-        Debug.Log("fillPercents is " + (fillPercents == null ? "NULL" : "NOT NULL"));
-        Debug.Log("highlight is " + (highlight == null ? "NULL" : "NOT NULL"));
 
         if (fillPercents != null)
-            Debug.Log("fillPercents length = " + fillPercents.Length);
+
 
         if (highlight != null)
-            Debug.Log("highlight length = " + highlight.Length);
+
 
         for (int i = 0; i < highlight.Length; i++)
         {
-            Debug.Log("Loop index = " + i);
 
-            Debug.Log("highlight[" + i + "] = " + (highlight[i] != null ? highlight[i].name : "NULL"));
 
             var img = highlight[i].GetComponent<UnityEngine.UI.Image>();
-            Debug.Log("Image component on highlight[" + i + "] = " + (img != null ? "FOUND" : "MISSING"));
-
-            Debug.Log("Setting fillAmount to " + fillPercents[i]);
 
             highlight[i].GetComponent<UnityEngine.UI.Image>().fillAmount = fillPercents[i];
         }

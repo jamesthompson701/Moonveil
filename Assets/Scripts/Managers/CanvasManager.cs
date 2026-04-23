@@ -147,7 +147,6 @@ public class CanvasManager : MonoBehaviour
 
             playerMap.Disable();
             UIMap.Enable();
-
             menus[0].GetComponent<Canvas>().enabled = false;
 
             Time.timeScale = 0f;

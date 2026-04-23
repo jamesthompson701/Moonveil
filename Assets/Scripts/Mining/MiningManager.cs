@@ -14,9 +14,25 @@ public class MiningManager : MonoBehaviour
 
     private MineRock currentRock;
 
-    private bool isMining = false;
+    public bool isMining = false;
 
     public ItemSO temporaryOutputGem;
+
+    public static MiningManager Instance;
+
+    public void Awake()
+    {
+        //Making Mining manager a singleton
+        if (Instance != null && Instance != this)
+        {
+            Debug.Log("Destroy New Spell Manager");
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     public void StartMining(MineRock rock)
     {
