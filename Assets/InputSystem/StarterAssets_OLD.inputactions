@@ -149,6 +149,15 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleFlight",
+                    "type": "Button",
+                    "id": "93612e8d-33b0-4f8b-92af-730ada480b4d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -523,6 +532,17 @@
                     "processors": "",
                     "groups": ";KeyboardMouse",
                     "action": "Ascend",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ab516e00-50ec-47b2-82fc-f7da6db336af",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "ToggleFlight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

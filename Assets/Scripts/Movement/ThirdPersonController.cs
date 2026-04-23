@@ -78,6 +78,17 @@ namespace StarterAssets
         [Tooltip("Determines if the player is in flight mode or not")]
         public bool inFlightMode = false;
 
+        [Header("Flight Mode")]
+        [Tooltip("Move speed while in flight mode (horizontal movement)")]
+        public float FlightMoveSpeed = 4.0f;
+        [Tooltip("Sprint speed while in flight mode (horizontal movement)")]
+        public float FlightSprintSpeed = 8.0f;
+        [Tooltip("Input action name for toggling flight mode")]
+        public string FlightToggleActionName = "ToggleFlight";
+
+        // Internal reference to the toggle action
+        private InputAction flightToggleAction;
+
         InputAction ascend;
         InputAction descend;
 
@@ -160,6 +171,8 @@ namespace StarterAssets
 
             ascend = InputSystem.actions.FindAction("Ascend");
             descend = InputSystem.actions.FindAction("Descend");
+
+            flightToggleAction = InputSystem.actions.FindAction(FlightToggleActionName);
         }
 
         private void Start()
@@ -209,6 +222,13 @@ namespace StarterAssets
 
             if (descend == null) descend = InputSystem.actions.FindAction("Descend");
             if (descend != null && !descend.enabled) descend.Enable();
+
+            if (flightToggleAction == null)
+                flightToggleAction = InputSystem.actions.FindAction(FlightToggleActionName);
+            if (flightToggleAction != null && !flightToggleAction.enabled)
+                flightToggleAction.Enable();
+            if (flightToggleAction != null)
+                flightToggleAction.performed += OnFlightToggle;
         }
         private void OnDisable()
         {
@@ -221,12 +241,23 @@ namespace StarterAssets
                 if (ascend.enabled) ascend.Disable();
             }
 
+            if (flightToggleAction != null)
+                flightToggleAction.performed -= OnFlightToggle;
+            if (flightToggleAction != null && flightToggleAction.enabled)
+                flightToggleAction.Disable();
         }
 
         private void LateUpdate()
         {
             CameraRotation();
         }
+
+        // Handler for toggling flight mode
+        private void OnFlightToggle(InputAction.CallbackContext ctx)
+        {
+            inFlightMode = !inFlightMode;
+        }
+
 
         private void AssignAnimationIDs()
         {
@@ -276,7 +307,15 @@ namespace StarterAssets
         private void Move()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
-            float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            float targetSpeed;
+            if (inFlightMode)
+            {
+                targetSpeed = _input.sprint ? FlightSprintSpeed : FlightMoveSpeed;
+            }
+            else
+            {
+                targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            }
 
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -544,7 +583,7 @@ namespace StarterAssets
 
         private void Dodge()
         {
-            if (_input.dodge && Time.time >= lastDodgeTime + dodgeCooldown)
+            if (_input.dodge && Time.time >= lastDodgeTime + dodgeCooldown && !inFlightMode)
             {
                 StartCoroutine(PerformDodge());
                 lastDodgeTime = Time.time;
