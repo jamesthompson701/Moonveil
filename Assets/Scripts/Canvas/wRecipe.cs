@@ -16,4 +16,8 @@ public class wRecipe : MonoBehaviour
     {
         WorkbenchUI.instance.RecipeClicked(myRecipe);
     }
+    public void Refresh()
+    {
+        myImage.sprite = myRecipe.output.itemSprite;
+    }
 }
