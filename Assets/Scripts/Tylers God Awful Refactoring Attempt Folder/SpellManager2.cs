@@ -65,6 +65,8 @@ public class SpellManager2 : MonoBehaviour
     public Transform stationaryCastOrigin;
     [Tooltip("Camera used for aiming. Should be the main camera or a dedicated aiming camera.")]
     [SerializeField] private Camera aimCamera;
+    [Tooltip("Reference to the player's animator")]
+    [SerializeField] private Animator _animator;
     [Tooltip("Determines what type of spells are cast")]
     public bool inCombatArea = false;
     private bool timerOn = false;
@@ -274,6 +276,10 @@ public class SpellManager2 : MonoBehaviour
         }
 
         Debug.Log("Basic Attack Cast");
+
+        //Triggers the spellcast animation
+        _animator.SetTrigger("Spellcast");
+
         Transform origin = projectilCastOrigin != null ? projectilCastOrigin : player.transform;
 
         Vector3 spawnPos = origin.position + origin.forward * spawnOffset;
@@ -309,6 +315,9 @@ public class SpellManager2 : MonoBehaviour
             Debug.Log("Cannot cast spells while mining");
             return;
         }
+
+        //Triggers the spellcast animation
+        _animator.SetTrigger("Spellcast");
 
         // Start the hold timer on press
         if (context.started)
