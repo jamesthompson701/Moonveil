@@ -20,6 +20,6 @@ public class UIFastTravel : MonoBehaviour
 
         Debug.Log("Fast Travel Clicked");
         EnvironmentManager.Instance.Travel((eFastTravel)destination);
-        CanvasManager.Instance.OpenFastTravel();
+        CanvasManager.Instance.testOpenMenu(5);
     }
 }

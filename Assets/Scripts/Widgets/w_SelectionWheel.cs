@@ -20,7 +20,7 @@ public class w_SelectionWheel : MonoBehaviour
     public void SelectSeed()
     {
         InventoryManager.instance.seedRef = seed;
-        managerRef.OpenSelectionWheel();
+        managerRef.testOpenMenu(2);
     }
 
 
