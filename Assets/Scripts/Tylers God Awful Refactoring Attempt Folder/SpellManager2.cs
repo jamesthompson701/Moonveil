@@ -65,6 +65,8 @@ public class SpellManager2 : MonoBehaviour
     public Transform stationaryCastOrigin;
     [Tooltip("Camera used for aiming. Should be the main camera or a dedicated aiming camera.")]
     [SerializeField] private Camera aimCamera;
+    [Tooltip("Reference to the player's animator")]
+    [SerializeField] private Animator _animator;
     [Tooltip("Determines what type of spells are cast")]
     public bool inCombatArea = false;
     private bool timerOn = false;
@@ -253,7 +255,7 @@ public class SpellManager2 : MonoBehaviour
         if (now < _nextBasicAttackTime)
             return;
         _nextBasicAttackTime = now + basicAttackCooldown;
-
+        AlignPlayerToCamera();
 
         //THIS IS TEMP basic way to stop shooting when interacting with something. In future want to just call clickselectors function
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -274,6 +276,10 @@ public class SpellManager2 : MonoBehaviour
         }
 
         Debug.Log("Basic Attack Cast");
+
+        //Triggers the spellcast animation
+        _animator.SetTrigger("Spellcast");
+
         Transform origin = projectilCastOrigin != null ? projectilCastOrigin : player.transform;
 
         Vector3 spawnPos = origin.position + origin.forward * spawnOffset;
@@ -309,6 +315,9 @@ public class SpellManager2 : MonoBehaviour
             Debug.Log("Cannot cast spells while mining");
             return;
         }
+
+        //Triggers the spellcast animation
+        _animator.SetTrigger("Spellcast");
 
         // Start the hold timer on press
         if (context.started)
@@ -419,6 +428,7 @@ public class SpellManager2 : MonoBehaviour
                 }
                 else
                 {
+                    AlignPlayerToCamera();
                     Cast(chosen);
                 }
             }
@@ -711,5 +721,16 @@ public class SpellManager2 : MonoBehaviour
         // Clamp to available charge times
         int chargeIdx = Mathf.Clamp(_maxAllowedTier - 1, 0, tierChargeTimes.Length - 1);
         _maxAllowedTimer = tierChargeTimes[chargeIdx];
+    }
+
+    private void AlignPlayerToCamera()
+    {
+        if (player == null || aimCamera == null)
+            return;
+
+        // Project camera forward onto XZ plane to avoid tilting the player up/down
+        Vector3 cameraForward = Vector3.ProjectOnPlane(aimCamera.transform.forward, Vector3.up).normalized;
+        if (cameraForward.sqrMagnitude > 0.001f)
+            player.transform.forward = cameraForward;
     }
 }
