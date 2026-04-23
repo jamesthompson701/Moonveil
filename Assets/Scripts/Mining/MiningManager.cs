@@ -14,7 +14,7 @@ public class MiningManager : MonoBehaviour
 
     private MineRock currentRock;
 
-    private bool isMining = false;
+    public bool isMining = false;
 
     public ItemSO temporaryOutputGem;
 

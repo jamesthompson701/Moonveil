@@ -21,7 +21,10 @@ public class ProjectileSpells2 : SO_SpellDefs2
             Debug.LogWarning("ProjectileSpells2.CastSpell2: castOrigin is null — spawn aborted.");
             return;
         }
-
+        if (Speed == 0)
+        {
+            ctx.castOrigin = SpellManager2.Instance.stationaryCastOrigin;
+        }
         Transform originT = ctx.castOrigin;
 
         // Choose the transform to derive yaw (horizontal) axes from.
