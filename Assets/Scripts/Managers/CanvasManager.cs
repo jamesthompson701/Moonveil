@@ -205,6 +205,9 @@ public class CanvasManager : MonoBehaviour
             isActive = true;
             workbenchCanvas.SetActive(true);
             OpenMenu();
+
+            //Time does not pause during crafting
+            Time.timeScale = 1f;
         }
         else
         {
