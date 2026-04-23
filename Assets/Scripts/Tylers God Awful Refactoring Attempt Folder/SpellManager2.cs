@@ -72,7 +72,6 @@ public class SpellManager2 : MonoBehaviour
     public int attackChoice = 0;
     private GameObject _SpellPreviewInstance;
     private int currentTier;
-    private MiningManager miningManager;
 
     [Header("Aiming")]
     [SerializeField] private LayerMask aimMask = ~0; // Layer mask for aiming raycast
@@ -177,7 +176,7 @@ public class SpellManager2 : MonoBehaviour
         if (player == null)
             player = gameObject;
 
-        //Making canvas manager a singleton
+        //Making Spell manager a singleton
         if (Instance != null && Instance != this)
         {
             Debug.Log("Destroy New Spell Manager");
@@ -238,7 +237,7 @@ public class SpellManager2 : MonoBehaviour
             return;
         }
 
-        if (miningManager.isMining)
+        if (MiningManager.Instance.isMining)
         {
             Debug.Log("Cannot basic attack while mining");
             return;
@@ -305,7 +304,7 @@ public class SpellManager2 : MonoBehaviour
             return;
         }
 
-        if (miningManager.isMining)
+        if (MiningManager.Instance.isMining)
         {
             Debug.Log("Cannot cast spells while mining");
             return;
