@@ -67,8 +67,8 @@ public class MiningManager : MonoBehaviour
 
         miniGameUI.StartMiniGame(currentRock.state);
 
-        yield return Fade(0f);
         HUD.instance.gameObject.SetActive(false);
+        yield return Fade(0f);
     }
 
     public void EndMining(bool success)
@@ -109,6 +109,7 @@ public class MiningManager : MonoBehaviour
 
         isMining = false;
 
+        HUD.instance.gameObject.SetActive(true);
         yield return Fade(0f);
     }
 
