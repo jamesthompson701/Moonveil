@@ -6305,45 +6305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!21 &62269079
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI Extensions/UIMultiply
-  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &64787824
 GameObject:
   m_ObjectHideFlags: 0
@@ -23012,14 +22973,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3ddeaea022e9d4493d0afc37307900, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CanvasManager
-  inventoryCanvas: {fileID: 804158936}
-  menuCanvas: {fileID: 1012350702}
-  fastTravelCanvas: {fileID: 1807784963}
-  selectionCanvas: {fileID: 1970381541}
-  HUD: {fileID: 591216335}
-  workbenchCanvas: {fileID: 384228306}
-  titleScreenCanvas: {fileID: 2136801778}
   miniGameCanvas: {fileID: 1974277212}
+  menus: []
   escCloseableCanvases: []
   input: {fileID: -944628639613478452, guid: 4419d82f33d36e848b3ed5af4c8da37e, type: 3}
 --- !u!4 &328191351
@@ -29229,11 +29184,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!1 &384228306 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 166311502613455428, guid: 98ada120bfb8b9d45bf1d4c3ae86ba33, type: 3}
-  m_PrefabInstance: {fileID: 860400986}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &387485171
 GameObject:
   m_ObjectHideFlags: 0
@@ -44207,11 +44157,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!1 &591216335 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 47516957051988306, guid: 4f837409a489f774e9c8bc69c76daef3, type: 3}
-  m_PrefabInstance: {fileID: 903762703}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &591613188
 GameObject:
   m_ObjectHideFlags: 0
@@ -46861,6 +46806,45 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c612b938e9638b43a39578918b78b1e, type: 3}
+--- !u!21 &711856873
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI Extensions/UIMultiply
+  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!224 &717239968 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5103446180765350203, guid: 033f06f9a574bef4fa978bd165517d82, type: 3}
@@ -53078,11 +53062,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d37af21c5f2a9f4aa413a1b3c430593, type: 3}
---- !u!1 &804158936 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 166311502613455428, guid: 391cf7e9e4dbde844834136b52bc4885, type: 3}
-  m_PrefabInstance: {fileID: 1593927836}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &808566926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -61035,11 +61014,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1009933298}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1012350702 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2605912824881319724, guid: 71de2f0593209ee4f8e31d2a5a8a970c, type: 3}
-  m_PrefabInstance: {fileID: 1506406213}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1013358662
 GameObject:
   m_ObjectHideFlags: 0
@@ -64283,45 +64257,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 891126372701072223, guid: 9c612b938e9638b43a39578918b78b1e, type: 3}
   m_PrefabInstance: {fileID: 514611355}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &1146768428
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI Extensions/UIMultiply
-  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &1146890252
 GameObject:
   m_ObjectHideFlags: 0
@@ -94685,11 +94620,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1440647360057940573, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
   m_PrefabInstance: {fileID: 1807072597}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1807784963 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 166311502613455428, guid: 443ddcff537f836499a0214cf66faa86, type: 3}
-  m_PrefabInstance: {fileID: 320921060}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1811550207 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8044672911224937250, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
@@ -99438,11 +99368,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1969662197}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1970381541 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 166311502613455428, guid: f3101702b1764604680e7f5fcbefd94a, type: 3}
-  m_PrefabInstance: {fileID: 1307135264}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1973654356
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -108421,11 +108346,6 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4529219833782444227, guid: 14e076341535d5b4ab926e4563028626, type: 3}
   m_PrefabInstance: {fileID: 2136027280}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2136801778 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7772980699506553245, guid: 454b0e506da22404584c2e11e7bca52f, type: 3}
-  m_PrefabInstance: {fileID: 919203454}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2137406895
 GameObject:
