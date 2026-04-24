@@ -68,10 +68,13 @@ public class MiningManager : MonoBehaviour
         miniGameUI.StartMiniGame(currentRock.state);
 
         yield return Fade(0f);
+        HUD.instance.gameObject.SetActive(false);
     }
 
     public void EndMining(bool success)
     {
+        if (!isMining) return;
+
         if (success)
         {
             //tutorial

@@ -52,7 +52,16 @@ public class MiningMiniGameUI : MonoBehaviour
             sequence.Add(Random.Range(0, buttons.Count));
         }
 
-        StartCoroutine(ShowSequence(showSpeed));
+        StartCoroutine(StartWithDelay(showSpeed));
+    }
+
+    IEnumerator StartWithDelay(float speed)
+    {
+        canInput = false;
+
+        yield return new WaitForSeconds(1.5f); // buffer before showing
+
+        yield return ShowSequence(speed);
     }
 
     IEnumerator ShowSequence(float speed)

@@ -4,6 +4,8 @@ public class MiningPlayer : MonoBehaviour
 {
     void Update()
     {
+        if (MiningManager.Instance != null && MiningManager.Instance.isMining) return;
+        
         if (Input.GetMouseButtonDown(1)) // Fire2
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
