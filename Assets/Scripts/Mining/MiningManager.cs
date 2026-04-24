@@ -57,7 +57,20 @@ public class MiningManager : MonoBehaviour
         //Cursor.lockState = CursorLockMode.None;
         //Cursor.visible = true;
         //ClickSelector.Instance.enabled = false;
-        CanvasManager.Instance.OpenMiniGame();
+        Debug.Log("miniGameUI: " + miniGameUI);
+        Debug.Log("currentRock: " + currentRock);
+        Debug.Log("cameraAnchor: " + currentRock.cameraAnchor);
+        Debug.Log("miningCamera: " + miningCamera);
+
+        Debug.Log("CanvasManager Instance: " + CanvasManager.Instance);
+        if (CanvasManager.Instance != null)
+        {
+            CanvasManager.Instance.OpenMiniGame();
+        }
+        else
+        {
+            Debug.LogError("CanvasManager Instance is NULL");
+        }
 
         mainCamera.gameObject.SetActive(false);
         miningCamera.gameObject.SetActive(true);
@@ -67,7 +80,9 @@ public class MiningManager : MonoBehaviour
 
         miniGameUI.StartMiniGame(currentRock.state);
 
+        if (HUD.instance != null)
         HUD.instance.gameObject.SetActive(false);
+
         yield return Fade(0f);
     }
 
@@ -99,17 +114,20 @@ public class MiningManager : MonoBehaviour
     {
         yield return Fade(1f);
 
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
-        //ClickSelector.Instance.enabled = true;
-        CanvasManager.Instance.CloseMiniGame();
-
+        // Switch cameras FIRST
         miningCamera.gameObject.SetActive(false);
         mainCamera.gameObject.SetActive(true);
 
+        // Restore HUD
+        if (HUD.instance != null)
+            HUD.instance.gameObject.SetActive(true);
+
+        // Close UI system LAST
+        if (CanvasManager.Instance != null)
+            CanvasManager.Instance.CloseMiniGame();
+
         isMining = false;
 
-        HUD.instance.gameObject.SetActive(true);
         yield return Fade(0f);
     }
 

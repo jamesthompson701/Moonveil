@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using System;
 using Unity.VisualScripting;
 
+[DefaultExecutionOrder(-100)] //change for mining fade canvas staying on enter/exit bug
 public class CanvasManager : MonoBehaviour
 {
 
