@@ -23,11 +23,14 @@ public Transform centrePoint; //centre of the area the agent wants to move aroun
 void Start()
 {
 agent = GetComponent<NavMeshAgent>();
+if (!agent.isOnNavMesh) return;
 }
 
 
 void Update()
 {
+if (agent == null || !agent.enabled || !agent.isOnNavMesh)
+return;
 
 if(agent.remainingDistance <= agent.stoppingDistance) //done with path
 {

@@ -47,7 +47,9 @@ public class Interactable : MonoBehaviour
         }
         else if(gameObject.CompareTag("Dock"))
         {
-            FishingManager.Instance.EnterFishingMode(FishingManager.Instance.currentArea);
+            // Do nothing — detector handles area, input starts fishing
+            Debug.Log("Dock clicked");
+            Debug.LogError("Dock is missing FishingArea component!");
         }
         else if (gameObject.CompareTag("Crafting"))
         {

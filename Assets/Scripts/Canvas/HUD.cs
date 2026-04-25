@@ -38,22 +38,25 @@ public class HUD : MonoBehaviour
     }
     private void Update()
     {
-        switch (attackManagerRef.attackChoice)
+        if (FishingManager.Instance != null && FishingManager.Instance.inFishingMode)
         {
-            case 1:
-                SetActive(0);
-                break;
-            case 2:
-                SetActive(1);
-                break;
-            case 3:
-                SetActive(2);
-                break;
-            case 4:
-                SetActive(3);
-                break;
+            switch (attackManagerRef.attackChoice)
+            {
+                case 1:
+                    SetActive(0);
+                    break;
+                case 2:
+                    SetActive(1);
+                    break;
+                case 3:
+                    SetActive(2);
+                    break;
+                case 4:
+                    SetActive(3);
+                    break;
+            }
+        return;
         }
-
         
 
     }
