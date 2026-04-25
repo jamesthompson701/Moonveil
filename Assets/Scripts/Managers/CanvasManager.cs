@@ -9,9 +9,9 @@ public class CanvasManager : MonoBehaviour
 
     public GameObject miniGameCanvas;
 
-    // TRACKS CURRENT ACTIVE CANVAS; 0 = HUD/NONE ACTIVE
+    // TRACKS CURRENT ACTIVE CANVAS; 0 = HUD/NONE ACTIVE ; 999 = MINIGAMES
     int currentCanvas = 0;
-
+    bool miniGame = false;
 
     [Header("DO NOT MOVE THINGS you can add though")]
     [SerializeField] private GameObject[] menus;
@@ -74,8 +74,6 @@ public class CanvasManager : MonoBehaviour
         }
     }
 
-
-
     private void Update()
     {
         // THIS IS JUST FOR DEBUG MENU
@@ -99,7 +97,9 @@ public class CanvasManager : MonoBehaviour
            
         }
 
+        // Opens pause menu and closes whatever is open
         bool pause = this.pauseAction.WasPressedThisFrame();
+        
         if (pause)
         {
             if (currentCanvas != 0)
@@ -111,26 +111,10 @@ public class CanvasManager : MonoBehaviour
             {
                 //Opens pause menu
                 OpenMenu(1);
+
+                Debug.Log("PAUSE IS RUNNING");
             }
-
-            //Debug.Log("Esc Pressed");
-            //foreach (GameObject canvas in escCloseableCanvases)
-            //{
-            //    Debug.Log("Canvas " + canvas.name + " is " + canvas.activeInHierarchy);
-            //    if (canvas.activeInHierarchy)
-            //    {
-            //        if (canvas == miniGameCanvas)
-            //        {
-            //            if (FishingManager.Instance.inFishingMode)
-            //            {
-            //                Debug.Log("In fishing mode so we exit");         
-            //                CloseMiniGame();
-            //            }
-
-            //        }
-            //    }
-            //}
-
+                 
         }
 
         bool selection = selectionAction.WasPressedThisFrame();
@@ -183,33 +167,24 @@ public class CanvasManager : MonoBehaviour
 
     }
 
-    public void OpenMiniGame()
+    public void OpenMiniGame(GameObject canvas)
     {
+        canvas.SetActive(true);
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         ClickSelector.Instance.enabled = false;
 
-        playerMap.Disable();
-        UIMap.Enable();
-
     }
 
-    public void CloseMiniGame()
+    public void CloseMiniGame(GameObject canvas)
     {
-
-        Debug.Log("Minegame Closed");
-        FishingManager.Instance.ExitFishingMode();
+        canvas.SetActive(false);
+        miniGame = true;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         ClickSelector.Instance.enabled = true;
-
-
-        playerMap.Enable();
-        UIMap.Disable();
-        inventoryAction = input.FindAction("Inventory");
-
- 
     }
 
 
