@@ -14,6 +14,9 @@ public class CanvasManager : MonoBehaviour
 
     [Header("DO NOT MOVE THINGS you can add though")]
     [SerializeField] private GameObject[] menus;
+    // 0 - HUD; 1 - Book; 2 - SelectionWheel; 3 - Workbench ; 4 - Inventory; 5 - FastTravel
+
+
 
     //In awake this was initialize with all the canvases that we want to close with esc
     [SerializeField] private GameObject[] escCloseableCanvases;
@@ -59,7 +62,7 @@ public class CanvasManager : MonoBehaviour
 
     }
 
-
+    // Needed for cursor to lock into game
     private void OnApplicationFocus(bool focus)
     {
         if (focus)
@@ -74,24 +77,24 @@ public class CanvasManager : MonoBehaviour
 
     private void Update()
     {
-        // THIS IS JUST FOR DEBUG
-        if (Input.GetKey(KeyCode.BackQuote))
+        // THIS IS JUST FOR DEBUG MENU
+        if (Input.GetKey(KeyCode.Tab))
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             ClickSelector.Instance.enabled = false;
         }
-        if (Input.GetKeyUp(KeyCode.BackQuote))
+        if (Input.GetKeyUp(KeyCode.Tab))
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             ClickSelector.Instance.enabled = true;
         }
 
-            bool inv = inventoryAction.WasPressedThisFrame();
+        bool inv = inventoryAction.WasPressedThisFrame();
         if (inv)
         {
-            testOpenMenu(4);
+            OpenMenu(4);
            
         }
 
@@ -101,12 +104,12 @@ public class CanvasManager : MonoBehaviour
             if (currentCanvas != 0)
             {
                 //Closes current canvas
-                testOpenMenu(currentCanvas);
+                OpenMenu(currentCanvas);
             }
             else
             {
                 //Opens pause menu
-                testOpenMenu(1);
+                OpenMenu(1);
             }
 
             //Debug.Log("Esc Pressed");
@@ -132,13 +135,13 @@ public class CanvasManager : MonoBehaviour
         bool selection = selectionAction.WasPressedThisFrame();
         if (selection)
         {
-            testOpenMenu(2);
+            OpenMenu(2);
         }
     }
 
 
 
-    public void testOpenMenu(int menu)
+    public void OpenMenu(int menu)
     {
         if (!menus[menu].activeInHierarchy)
         {

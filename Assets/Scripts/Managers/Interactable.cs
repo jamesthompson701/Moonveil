@@ -51,11 +51,11 @@ public class Interactable : MonoBehaviour
         }
         else if (gameObject.CompareTag("Crafting"))
         {
-            CanvasManager.Instance.testOpenMenu(3);
+            CanvasManager.Instance.OpenMenu(3);
         }
         else if (gameObject.CompareTag("FastTravel"))
         {
-            CanvasManager.Instance.testOpenMenu(5);
+            CanvasManager.Instance.OpenMenu(5);
         }
         else if (gameObject.CompareTag("Dialogue"))
         {
