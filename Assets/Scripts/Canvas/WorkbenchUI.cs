@@ -78,7 +78,7 @@ public class WorkbenchUI : MonoBehaviour
 
     public void ExitCrafting()
     {
-        CanvasManager.Instance.testOpenMenu(3);
+        CanvasManager.Instance.OpenMenu(3);
     }
 
     //function that instantiates a new recipe widget
