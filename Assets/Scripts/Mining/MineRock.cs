@@ -30,6 +30,8 @@ public class MineRock : MonoBehaviour
 
     public void Interact()
     {
+        if (MiningManager.Instance != null && MiningManager.Instance.isMining) return;
+
         Debug.Log("Interact called on " + name);
 
         if (state == RockState.Shattered) return;
