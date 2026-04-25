@@ -95,21 +95,24 @@ public class FishingManager : MonoBehaviour
         if (currentArea != null && !inFishingMode && Input.GetButtonDown(startFishingInput))
         {
             // im just adding this so that the book UI doesnt pop up when u esc
-            CanvasManager.Instance.OpenMiniGame();
 
             EnterFishingMode(currentArea);
+            CanvasManager.Instance.OpenMiniGame(activeBiomeUI.fishingCanvas.gameObject);
         }
-        /*
+
         // Exit fishing (likely to change input)
         if (inFishingMode && Input.GetKeyDown(KeyCode.Escape))
         {
             if (miniGameUI != null && miniGameUI.IsActiveAndPlaying) return;
+
             ExitFishingMode();
 
             // im just adding this so that the book UI doesnt pop up when u esc
-            CanvasManager.Instance.CloseMiniGame();
+            CanvasManager.Instance.CloseMiniGame(activeBiomeUI.fishingCanvas.gameObject);
+
+
         }
-        */
+
 
         // Show "Start Fishing" prompt
         if (currentArea != null && !inFishingMode)

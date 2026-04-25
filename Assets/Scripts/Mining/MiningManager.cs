@@ -65,7 +65,7 @@ public class MiningManager : MonoBehaviour
         Debug.Log("CanvasManager Instance: " + CanvasManager.Instance);
         if (CanvasManager.Instance != null)
         {
-            CanvasManager.Instance.OpenMiniGame();
+            CanvasManager.Instance.OpenMiniGame(miniGameUI.gameObject);
         }
         else
         {
@@ -124,7 +124,7 @@ public class MiningManager : MonoBehaviour
 
         // Close UI system LAST
         if (CanvasManager.Instance != null)
-            CanvasManager.Instance.CloseMiniGame();
+            CanvasManager.Instance.CloseMiniGame(miniGameUI.gameObject);
 
         isMining = false;
 
