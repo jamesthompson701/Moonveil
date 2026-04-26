@@ -96,9 +96,13 @@ public class SoilObject : MonoBehaviour
             //tutorial
             if (TutorialManager.instance != null && !TutorialManager.instance.watering)
             {
-                //completes billboard 3: plant seeds
-                TutorialManager.instance.ProgressTutorial(4);
-                TutorialManager.instance.watering = true;
+                //completes billboard 4: water soil
+                if (TutorialManager.instance.currentBillboard == 3)
+                {
+                    TutorialManager.instance.ProgressTutorial(4);
+                    TutorialManager.instance.watering = true;
+                }
+
             }
         }
 

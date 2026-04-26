@@ -50,7 +50,14 @@ public class PlantObject : MonoBehaviour
         if (!isSet)
         {
             //set the plant SO correctly based on the seed used
-            growthTime = plant.cropTime;
+            if(!TutorialManager.instance.harvesting)
+            {
+                growthTime = 5;
+            }
+            else
+            {
+                growthTime = plant.cropTime;
+            }
             dryTime = plant.droughtResistance;
             currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
             isSet = true;
@@ -59,8 +66,12 @@ public class PlantObject : MonoBehaviour
             if (TutorialManager.instance != null && !TutorialManager.instance.planting)
             {
                 //completes billboard 3: plant seeds
-                TutorialManager.instance.ProgressTutorial(3);
-                TutorialManager.instance.planting = true;
+                if (TutorialManager.instance.currentBillboard == 2)
+                {
+                    TutorialManager.instance.ProgressTutorial(3);
+                    TutorialManager.instance.planting = true;
+                }
+
             }
         }
 
@@ -159,9 +170,13 @@ public class PlantObject : MonoBehaviour
         //tutorial
         if (TutorialManager.instance != null && !TutorialManager.instance.harvesting)
         {
-            //completes billboard 3: plant seeds
-            TutorialManager.instance.ProgressTutorial(5);
-            TutorialManager.instance.harvesting = true;
+            //completes billboard 5: harvest crops
+            if(TutorialManager.instance.currentBillboard == 4)
+            {
+                TutorialManager.instance.ProgressTutorial(5);
+                TutorialManager.instance.harvesting = true;
+            }
+
         }
 
         InventoryManager.instance.invSO.AddItem(plant.fruit, 1);

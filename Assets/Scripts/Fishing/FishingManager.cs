@@ -373,8 +373,12 @@ public class FishingManager : MonoBehaviour
             if (TutorialManager.instance != null && !TutorialManager.instance.fishing)
             {
                 //completes billboard 6: go fishing
-                TutorialManager.instance.ProgressTutorial(6);
-                TutorialManager.instance.fishing = true;
+                if (TutorialManager.instance.currentBillboard == 5)
+                {
+                    TutorialManager.instance.ProgressTutorial(6);
+                    TutorialManager.instance.fishing = true;
+                }
+
             }
 
             ShowPrompt(caughtFish.fishName + " caught!" + " Recast your rod or exit");
