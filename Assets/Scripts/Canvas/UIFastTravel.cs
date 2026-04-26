@@ -14,8 +14,11 @@ public class UIFastTravel : MonoBehaviour
         if (TutorialManager.instance != null && !TutorialManager.instance.fastTravel)
         {
             //completes billboard 7; teleporting to the mines
-            TutorialManager.instance.ProgressTutorial(7);
-            TutorialManager.instance.fastTravel = true;
+            if (TutorialManager.instance.currentBillboard == 6)
+            {
+                TutorialManager.instance.ProgressTutorial(7);
+                TutorialManager.instance.fastTravel = true;
+            }
         }
 
         Debug.Log("Fast Travel Clicked");

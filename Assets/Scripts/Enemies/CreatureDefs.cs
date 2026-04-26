@@ -664,8 +664,11 @@ public class CreatureDefs : MonoBehaviour
         if (TutorialManager.instance != null && !TutorialManager.instance.combat)
         {
             //completes billboard 11; kill a dog
-            TutorialManager.instance.ProgressTutorial(11);
-            TutorialManager.instance.combat = true;
+            if (TutorialManager.instance.currentBillboard == 10)
+            {
+                TutorialManager.instance.ProgressTutorial(11);
+                TutorialManager.instance.combat = true;
+            }
         }
 
         //if (meleeHitbox) meleeHitbox.enabled = false;

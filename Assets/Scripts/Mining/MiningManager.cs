@@ -78,8 +78,11 @@ public class MiningManager : MonoBehaviour
             if (TutorialManager.instance != null && !TutorialManager.instance.mining)
             {
                 //completes billboard 8; mine a gem
-                TutorialManager.instance.ProgressTutorial(8);
-                TutorialManager.instance.mining = true;
+                if (TutorialManager.instance.currentBillboard == 7)
+                {
+                    TutorialManager.instance.ProgressTutorial(8);
+                    TutorialManager.instance.mining = true;
+                }
             }
 
             GiveReward(currentRock);

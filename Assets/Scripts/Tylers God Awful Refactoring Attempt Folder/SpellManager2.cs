@@ -108,9 +108,13 @@ public class SpellManager2 : MonoBehaviour
             if (TutorialManager.instance != null && !TutorialManager.instance.fireIsland)
             {
                 //completes billboard 10; go to fire island
-                TutorialManager.instance.ProgressTutorial(10);
-                TutorialManager.instance.fireIsland = true;
+                if (TutorialManager.instance.currentBillboard == 9)
+                {
+                    TutorialManager.instance.ProgressTutorial(10);
+                    TutorialManager.instance.fireIsland = true;
+                }
             }
+
             inCombatArea = true;
             if (attackAction != null) attackAction.Enable();
         }
