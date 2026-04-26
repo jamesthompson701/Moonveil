@@ -38,7 +38,7 @@ public class TutorialManager : MonoBehaviour
     private PointToTarget pointer;
 
     //variable to keep track of which stage of the tutorial they're on
-    public int currentBillboard = 0;
+    public int currentBillboard = -1;
 
     //bools
     public bool planting; //located in PlantObject
@@ -67,8 +67,11 @@ public class TutorialManager : MonoBehaviour
     public void ProgressTutorial(int _completedBillboard)
     {
         //increment the stage of the tutorial (the number inputted should be the billboard whose instructions were just completed)
-        if (_completedBillboard == currentBillboard + 1 || _completedBillboard == 0)
+        if (_completedBillboard == currentBillboard + 1)
         {
+            currentBillboard = _completedBillboard;
+        }
+
             switch (currentBillboard)
             {
                 case 0:
@@ -171,8 +174,7 @@ public class TutorialManager : MonoBehaviour
                     break;
 
             }
-        }
-        currentBillboard = _completedBillboard;
+
 
 
 

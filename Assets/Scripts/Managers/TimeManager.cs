@@ -102,8 +102,6 @@ public class TimeManager : MonoBehaviour
             soilObject.CheckSoil(time);
 
         }
-
-        // reset the clock
         
 
         //if tutorial hasn't been completed, then check if all the soil has been tilled
@@ -121,8 +119,12 @@ public class TimeManager : MonoBehaviour
             }
             if (untilled == 0)
             {
-                TutorialManager.instance.ProgressTutorial(1);
-                tutorialDone = true;
+                if (TutorialManager.instance.currentBillboard == 0)
+                {
+                    TutorialManager.instance.ProgressTutorial(1);
+                    tutorialDone = true;
+                }
+
             }
 
         }

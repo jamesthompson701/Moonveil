@@ -50,14 +50,7 @@ public class PlantObject : MonoBehaviour
         if (!isSet)
         {
             //set the plant SO correctly based on the seed used
-            if(!TutorialManager.instance.harvesting)
-            {
-                growthTime = 5;
-            }
-            else
-            {
-                growthTime = plant.cropTime;
-            }
+            growthTime = plant.cropTime;
             dryTime = plant.droughtResistance;
             currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
             isSet = true;
@@ -78,9 +71,8 @@ public class PlantObject : MonoBehaviour
         //increment the dry timer while dry
         if(!soilScript.Wet())
         {
-
             //if it's been dry too long, it withers
-            if(dryTime < plant.droughtResistance / 2)
+            if(dryTime < plant.droughtResistance)
             {
                 Wither();
             }
@@ -91,6 +83,13 @@ public class PlantObject : MonoBehaviour
         if (growthTime > 0 && soilScript.Wet() && !withered && plant.lightPreference == _light && !isHarvestable)
         {
             growthTime = growthTime - deltaTime;
+
+            //grow twice as fast before the tutorial is complete
+            if (!TutorialManager.instance.harvesting)
+            {
+                growthTime = growthTime - (deltaTime * 100);
+            }
+
             if (withered)
             {
                 //if plant is growing that means it's time to unwither it
