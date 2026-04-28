@@ -606,7 +606,7 @@ namespace StarterAssets
             // update animator if using character
             if (_hasAnimator)
             {
-                _animator.SetBool("Sprinting", isSpriting || inFlightMode);
+                _animator.SetBool("Flying", isSpriting || inFlightMode);
             }
 
 
