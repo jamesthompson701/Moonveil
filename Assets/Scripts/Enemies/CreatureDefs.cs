@@ -173,6 +173,11 @@ public class CreatureDefs : MonoBehaviour
     [SerializeField] private bool _canSlow;
     [SerializeField] private bool _canRoot;
 
+    public Renderer enemyBody;
+    public Material enemyDamaged;
+    public Material enemyDefault;
+    public Material _bodyOriginalMaterial;
+
 
     private void Awake()
     {
@@ -631,15 +636,8 @@ public class CreatureDefs : MonoBehaviour
         if (controlLockSecondsOnHit > 0f)
             _controlLockUntil = Mathf.Max(_controlLockUntil, Time.time + controlLockSecondsOnHit);
 
-        // Flash all child renderers red once, then reset color after a short delay.
-        Renderer[] renderers = GetComponentsInChildren<Renderer>();
-        for (int i = 0; i < renderers.Length; i++)
-        {
-            Renderer renderer = renderers[i];
-            if (renderer != null)
-                renderer.material.color = Color.red;
-        }
-        Invoke(nameof(ResetColor), 0.1f);
+
+        StartCoroutine(ShowDamageTaken());
 
         if (_health <= 0f)
             StartCoroutine(Die());
@@ -711,18 +709,6 @@ public class CreatureDefs : MonoBehaviour
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, separationRadius);
-    }
-
-    private void ResetColor()
-    {
-        for (int i = 0; i < GetComponentsInChildren<Renderer>().Length; i++)
-        {
-            Renderer renderer = GetComponentsInChildren<Renderer>()[i];
-            if (renderer != null)
-            {
-                renderer.material.color = Color.grey; // Reset to original color
-            }
-        }
     }
 
     public void ApplySlow(float duration)
@@ -799,6 +785,35 @@ public class CreatureDefs : MonoBehaviour
                 maxAcceleration = maxAccelerationReference;
             }
             yield return null;
+        }
+    }
+
+    private IEnumerator ShowDamageTaken()
+    {
+        if (enemyBody != null && enemyDamaged != null)
+        {
+            enemyBody.material = enemyDamaged;
+        }
+        else if (enemyBody != null && enemyDamaged == null)
+        {
+            Debug.LogWarning("playerDamaged is not assigned; skipping hat material swap.");
+        }
+
+        // Wait for the configured invincibility duration (visual feedback time)
+        yield return new WaitForSeconds(1);
+
+        // Restore original materials
+        RestoreOriginalMaterials();
+    }
+
+    private void RestoreOriginalMaterials()
+    {
+        if (enemyBody != null)
+        {
+            if (_bodyOriginalMaterial != null)
+                enemyBody.material = _bodyOriginalMaterial;
+            else if (enemyDefault != null)
+                enemyBody.material = enemyDefault;
         }
     }
 }

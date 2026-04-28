@@ -1,4 +1,5 @@
-using UnityEditor;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,21 +11,46 @@ public class PlayerDamageReceiver : MonoBehaviour
     [SerializeField, Tooltip("Shown for debugging; update your UI as needed.")]
     private float currentHealth = 100f;
 
-    [SerializeField, Tooltip("Add invincibility frames after taking damage.")]
-    private float invincibilityDuration = 0f;
+    [SerializeField, Tooltip("Invincibility duration in seconds after taking damage.")]
+    private float invincibilityDuration = 2;
 
-    private readonly SceneManager sceneManager;
+    // Renderers and materials set in the inspector (kept original names to preserve serialized references)
+    public Renderer playerBodyDefault;
+    public Renderer playerHatDefault;
+    public Material playerDamaged;
+    public Material PlayerDefault;
+
+    // Internal caches
+    private Material _bodyOriginalMaterial;
+    private Material _hatOriginalMaterial;
+    private float _invincibilityTimer = 0f;
 
     private void Awake()
     {
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+
+        // Cache the original materials from the renderers if possible.
+        // Prefer the renderer's shared material (asset) so we restore exactly what was assigned in the scene.
+        if (playerBodyDefault != null)
+        {
+            _bodyOriginalMaterial = playerBodyDefault.sharedMaterial;
+            if (_bodyOriginalMaterial == null && PlayerDefault != null)
+                _bodyOriginalMaterial = PlayerDefault;
+        }
+
+        if (playerHatDefault != null)
+        {
+            _hatOriginalMaterial = playerHatDefault.sharedMaterial;
+            if (_hatOriginalMaterial == null && PlayerDefault != null)
+                _hatOriginalMaterial = PlayerDefault;
+        }
     }
 
     private void Update()
     {
-        if (invincibilityDuration > 0f)
+        if (_invincibilityTimer > 0f)
         {
-            invincibilityDuration -= Time.deltaTime;
+            _invincibilityTimer -= Time.deltaTime;
         }
 
         if (currentHealth <= 0f)
@@ -35,51 +61,75 @@ public class PlayerDamageReceiver : MonoBehaviour
 
     public void CheckInvincibleFrames(float amount)
     {
-        if (invincibilityDuration > 0f) return; // Player is currently invincible
+        if (_invincibilityTimer > 0f) return; // Player is currently invincible
         TakeDamage(amount);
     }
 
     public void TakeDamage(float amount)
     {
         if (amount <= 0f) return;
+
+        // If already invincible, ignore additional damage
+        if (_invincibilityTimer > 0f) return;
+
         currentHealth = Mathf.Max(0f, currentHealth - amount);
         Debug.Log("You took " + amount + " damage! Current health: " + currentHealth);
 
-        // handles hit visual effect by applying a red flash to the player model for a brief moment then flashing white while invincible
-        for (int i = 0; i < GetComponentsInChildren<Renderer>().Length; i++)
-        {
-            Renderer renderer = GetComponentsInChildren<Renderer>()[i];
-            if (renderer != null)
-            {
-                if (invincibilityDuration > 0f)
-                {
-                    renderer.material.color = Color.white; // Flash white while invincible
-                }
-                else
-                {
-                    renderer.material.color = Color.red; // Flash red when hit
-                    Invoke("ResetColor", 0.1f); // Reset color after a short delay
-                }
-            }
-        }
+        // Start invincibility and visual feedback
+        _invincibilityTimer = invincibilityDuration;
+
+        StartCoroutine(ShowDamageTaken());
     }
 
     private void Die()
     {
         Debug.Log("Player has died.");
-        //sceneManager.LoadSceneTest(); //IM SORRY I ACCIDENTALLY DELETED YOUR SCENE MANAGER - K
         // Implement death logic (e.g., respawn, game over screen)
     }
 
-    private void ResetColor()
+    private IEnumerator ShowDamageTaken()
     {
-        for (int i = 0; i < GetComponentsInChildren<Renderer>().Length; i++)
+        if (playerBodyDefault != null && playerDamaged != null)
         {
-            Renderer renderer = GetComponentsInChildren<Renderer>()[i];
-            if (renderer != null)
-            {
-                renderer.material.color = Color.grey; // Reset to original color
-            }
+            playerBodyDefault.material = playerDamaged;
+        }
+        else if (playerBodyDefault != null && playerDamaged == null)
+        {
+            Debug.LogWarning("playerDamaged is not assigned; skipping body material swap.");
+        }
+
+        if (playerHatDefault != null && playerDamaged != null)
+        {
+            playerHatDefault.material = playerDamaged;
+        }
+        else if (playerHatDefault != null && playerDamaged == null)
+        {
+            Debug.LogWarning("playerDamaged is not assigned; skipping hat material swap.");
+        }
+
+        // Wait for the configured invincibility duration (visual feedback time)
+        yield return new WaitForSeconds(invincibilityDuration);
+
+        // Restore original materials
+        RestoreOriginalMaterials();
+    }
+
+    private void RestoreOriginalMaterials()
+    {
+        if (playerBodyDefault != null)
+        {
+            if (_bodyOriginalMaterial != null)
+                playerBodyDefault.material = _bodyOriginalMaterial;
+            else if (PlayerDefault != null)
+                playerBodyDefault.material = PlayerDefault;
+        }
+
+        if (playerHatDefault != null)
+        {
+            if (_hatOriginalMaterial != null)
+                playerHatDefault.material = _hatOriginalMaterial;
+            else if (PlayerDefault != null)
+                playerHatDefault.material = PlayerDefault;
         }
     }
 }

@@ -209,6 +209,15 @@ MonoBehaviour:
   dropItem: {fileID: 11400000, guid: decc5e8d934865e4096a5e2e668a4f53, type: 2}
   playerInventory: {fileID: 0}
   invSO: {fileID: 0}
+  _health: 0
+  _burnDps: 10
+  _canBurn: 0
+  _canSlow: 0
+  _canRoot: 0
+  enemyBody: {fileID: 2047385004453544886}
+  enemyDamaged: {fileID: 2100000, guid: 7c93df608510e1645afd917a3cb778ec, type: 2}
+  enemyDefault: {fileID: 2100000, guid: 89ad272d65677324fb41e1ebb1cd9b62, type: 2}
+  _bodyOriginalMaterial: {fileID: 0}
 --- !u!65 &8179868634205398757
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -305,11 +314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a05b69aec3cad64e9e2ba8a7634336d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatusReceiver
-  _burnDps: 5
-  _canBurn: 0
-  _slowSpeedMultiplier: 0.5
-  _canSlow: 0
-  _canRoot: 0
 --- !u!1 &7916332781498759066
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,6 +418,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0135629703ef4234ba388a493a1d0a1f, type: 3}
+--- !u!137 &2047385004453544886 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1206874426333947015, guid: 0135629703ef4234ba388a493a1d0a1f, type: 3}
+  m_PrefabInstance: {fileID: 8298330686091614415}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8404612695726997284 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0135629703ef4234ba388a493a1d0a1f, type: 3}
