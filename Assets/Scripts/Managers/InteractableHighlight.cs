@@ -4,6 +4,7 @@ using UnityEngine;
 public class InteractableHighlight : MonoBehaviour
 {
     public GameObject objectToHighlight;
+    public GameObject leftClickIcon;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -16,11 +17,13 @@ public class InteractableHighlight : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         Destroy(objectToHighlight.GetComponent<Outline>());
+        leftClickIcon.SetActive(false);
 
     }
 
     private void HighlightObject()
     {
+        leftClickIcon.SetActive(true);
         var outline = objectToHighlight.AddComponent<Outline>();
 
         if (objectToHighlight.CompareTag("Dialogue")) //Change to NPC if NPC tag is made
