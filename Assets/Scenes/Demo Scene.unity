@@ -20149,6 +20149,99 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 626545629}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &640746937
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 640746938}
+  - component: {fileID: 640746940}
+  - component: {fileID: 640746939}
+  m_Layer: 0
+  m_Name: Cave_Inside
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &640746938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640746937}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1805.2, y: 0, z: 1763.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1062643276}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!154 &640746939
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640746937}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_TerrainData: {fileID: 15600000, guid: 11ed5d402bf594e4e9d413247775f17e, type: 2}
+  m_EnableTreeColliders: 1
+--- !u!218 &640746940
+Terrain:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640746937}
+  m_Enabled: 1
+  serializedVersion: 6
+  m_TerrainData: {fileID: 15600000, guid: 11ed5d402bf594e4e9d413247775f17e, type: 2}
+  m_TreeDistance: 5000
+  m_TreeBillboardDistance: 50
+  m_TreeCrossFadeLength: 5
+  m_TreeMaximumFullLODCount: 50
+  m_DetailObjectDistance: 80
+  m_DetailObjectDensity: 1
+  m_HeightmapPixelError: 5
+  m_SplatMapDistance: 1000
+  m_HeightmapMinimumLODSimplification: 0
+  m_HeightmapMaximumLOD: 0
+  m_ShadowCastingMode: 2
+  m_DrawHeightmap: 1
+  m_DrawInstanced: 0
+  m_DrawTreesAndFoliage: 1
+  m_StaticShadowCaster: 0
+  m_IgnoreQualitySettings: 0
+  m_ReflectionProbeUsage: 1
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
+  m_BakeLightProbesForTrees: 1
+  m_PreserveTreePrototypeLayers: 0
+  m_DeringLightProbesForTrees: 1
+  m_ReceiveGI: 1
+  m_ScaleInLightmap: 0.0256
+  m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
+  m_GroupingID: 0
+  m_RenderingLayerMask: 1
+  m_AllowAutoConnect: 1
+  m_EnableHeightmapRayTracing: 1
+  m_EnableTreesAndDetailsRayTracing: 0
+  m_TreeMotionVectorModeOverride: 3
 --- !u!1001 &647587718
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21187,7 +21280,7 @@ GameObject:
   - component: {fileID: 695824434}
   - component: {fileID: 695824433}
   m_Layer: 0
-  m_Name: Terrain_0_0_26bb17a0-70d4-4f08-b2a4-466c04ac8b37
+  m_Name: Fire_Island
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22717,7 +22810,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 837.0001
+      value: 836.99994
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -22729,7 +22822,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.9971826
+      value: -0.52366966
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.x
@@ -22737,7 +22830,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.07501205
+      value: -0.85192144
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.z
@@ -22749,7 +22842,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -351.396
+      value: -243.157
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -31969,6 +32062,7 @@ Transform:
   - {fileID: 1276875980}
   - {fileID: 1800604864}
   - {fileID: 1527359806}
+  - {fileID: 640746938}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1075674527 stripped
@@ -42716,7 +42810,7 @@ GameObject:
   - component: {fileID: 1276875982}
   - component: {fileID: 1276875981}
   m_Layer: 0
-  m_Name: Terrain_0_1_8fcec7ee-4815-4cb0-93a6-0d005dc948f9
+  m_Name: Water_Island
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52958,7 +53052,7 @@ GameObject:
   - component: {fileID: 1527359808}
   - component: {fileID: 1527359807}
   m_Layer: 0
-  m_Name: Terrain_1_1_988e4434-fd59-4682-b7f5-7bb459c2011e
+  m_Name: Main_Island
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67552,7 +67646,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d63f5f3a09645bd4392eb5cc990fd824, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 868
+      value: 869.19995
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d63f5f3a09645bd4392eb5cc990fd824, type: 3}
       propertyPath: m_LocalPosition.y
@@ -67560,7 +67654,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d63f5f3a09645bd4392eb5cc990fd824, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 681.9
+      value: 678.7001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d63f5f3a09645bd4392eb5cc990fd824, type: 3}
       propertyPath: m_LocalRotation.w
@@ -67593,6 +67687,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d63f5f3a09645bd4392eb5cc990fd824, type: 3}
       propertyPath: m_Name
       value: RDayton_Cave-Blockout
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d63f5f3a09645bd4392eb5cc990fd824, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -69436,7 +69534,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1782651968
 Transform:
   m_ObjectHideFlags: 0
@@ -69562,7 +69660,7 @@ GameObject:
   - component: {fileID: 1800604866}
   - component: {fileID: 1800604865}
   m_Layer: 0
-  m_Name: Terrain_1_0_3c05ff62-e246-4fc4-b1b9-5eb8c52ae278
+  m_Name: Earth_Island
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71878,7 +71976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 837.0001
+      value: 836.99994
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -71886,11 +71984,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 554
+      value: 553.9999
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9362655
+      value: 0.26411322
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalRotation.x
@@ -71898,7 +71996,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.35129315
+      value: 0.9644917
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalRotation.z
@@ -71910,7 +72008,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -318.867
+      value: -210.629
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -93599,8 +93697,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4416926082426931733}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.35129315, z: -0, w: 0.9362655}
-  m_LocalPosition: {x: 838.6999, y: 13.99, z: 557.16235}
+  m_LocalRotation: {x: -0, y: 0.9644917, z: -0, w: 0.26411325}
+  m_LocalPosition: {x: 839.4715, y: 13.99, z: 551.3958}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -93610,7 +93708,7 @@ Transform:
   - {fileID: 42764938950022327}
   - {fileID: 1744771026}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -678.867, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -570.629, z: 0}
 --- !u!33 &3901173975152138063
 MeshFilter:
   m_ObjectHideFlags: 0
