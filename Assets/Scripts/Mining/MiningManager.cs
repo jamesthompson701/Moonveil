@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MiningManager : MonoBehaviour
 {
+    //Reference to the input system, used to stop ui from popping up when mining
+    public InputActionAsset input;
+
     public Camera miningCamera;
     public Camera mainCamera;
+
+    public GameObject player;
 
     public Transform miningSpawnPoint;
     public Transform returnPoint;
@@ -34,11 +40,22 @@ public class MiningManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (isMining && Input.GetKeyDown(KeyCode.Escape))
+        {
+
+            EndMining(false);
+        }
+    }
+
     public void StartMining(MineRock rock)
     {
         if (isMining) return;
 
         Debug.Log("StartMining called");
+
+        input.Disable();
 
         isMining = true;
         currentRock = rock;
@@ -65,7 +82,7 @@ public class MiningManager : MonoBehaviour
         Debug.Log("CanvasManager Instance: " + CanvasManager.Instance);
         if (CanvasManager.Instance != null)
         {
-            CanvasManager.Instance.OpenMiniGame();
+            CanvasManager.Instance.OpenMiniGame(miniGameUI.gameObject);
         }
         else
         {
@@ -90,14 +107,19 @@ public class MiningManager : MonoBehaviour
     {
         if (!isMining) return;
 
+        isMining = false;
+
         if (success)
         {
             //tutorial
             if (TutorialManager.instance != null && !TutorialManager.instance.mining)
             {
                 //completes billboard 8; mine a gem
-                TutorialManager.instance.ProgressTutorial(8);
-                TutorialManager.instance.mining = true;
+                if (TutorialManager.instance.currentBillboard == 7)
+                {
+                    TutorialManager.instance.ProgressTutorial(8);
+                    TutorialManager.instance.mining = true;
+                }
             }
 
             GiveReward(currentRock);
@@ -124,9 +146,10 @@ public class MiningManager : MonoBehaviour
 
         // Close UI system LAST
         if (CanvasManager.Instance != null)
-            CanvasManager.Instance.CloseMiniGame();
+            CanvasManager.Instance.CloseMiniGame(miniGameUI.gameObject);
 
         isMining = false;
+        input.Enable();
 
         yield return Fade(0f);
     }

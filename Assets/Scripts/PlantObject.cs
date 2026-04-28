@@ -59,17 +59,20 @@ public class PlantObject : MonoBehaviour
             if (TutorialManager.instance != null && !TutorialManager.instance.planting)
             {
                 //completes billboard 3: plant seeds
-                TutorialManager.instance.ProgressTutorial(3);
-                TutorialManager.instance.planting = true;
+                if (TutorialManager.instance.currentBillboard == 2)
+                {
+                    TutorialManager.instance.ProgressTutorial(3);
+                    TutorialManager.instance.planting = true;
+                }
+
             }
         }
 
         //increment the dry timer while dry
         if(!soilScript.Wet())
         {
-
             //if it's been dry too long, it withers
-            if(dryTime < plant.droughtResistance / 2)
+            if(dryTime < plant.droughtResistance)
             {
                 Wither();
             }
@@ -80,6 +83,13 @@ public class PlantObject : MonoBehaviour
         if (growthTime > 0 && soilScript.Wet() && !withered && plant.lightPreference == _light && !isHarvestable)
         {
             growthTime = growthTime - deltaTime;
+
+            //grow twice as fast before the tutorial is complete
+            if (!TutorialManager.instance.harvesting)
+            {
+                growthTime = growthTime - (deltaTime * 100);
+            }
+
             if (withered)
             {
                 //if plant is growing that means it's time to unwither it
@@ -159,9 +169,13 @@ public class PlantObject : MonoBehaviour
         //tutorial
         if (TutorialManager.instance != null && !TutorialManager.instance.harvesting)
         {
-            //completes billboard 3: plant seeds
-            TutorialManager.instance.ProgressTutorial(5);
-            TutorialManager.instance.harvesting = true;
+            //completes billboard 5: harvest crops
+            if(TutorialManager.instance.currentBillboard == 4)
+            {
+                TutorialManager.instance.ProgressTutorial(5);
+                TutorialManager.instance.harvesting = true;
+            }
+
         }
 
         InventoryManager.instance.invSO.AddItem(plant.fruit, 1);

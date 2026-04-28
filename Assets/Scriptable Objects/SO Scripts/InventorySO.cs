@@ -16,8 +16,12 @@ public class InventorySO : ScriptableObject
         if (!InventoryManager.instance.tutorialDone)
         {
             //complete billboard 2; go forage
-            TutorialManager.instance.ProgressTutorial(2);
-            InventoryManager.instance.tutorialDone = true;
+            if(TutorialManager.instance.currentBillboard == 1)
+            {
+                TutorialManager.instance.ProgressTutorial(2);
+                InventoryManager.instance.tutorialDone = true;
+            }
+
         }
 
         GetInventoryItem?.Invoke(newItem, newAmount, true);

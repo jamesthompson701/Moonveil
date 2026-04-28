@@ -51,8 +51,11 @@ public class CraftingManager : MonoBehaviour
                 if (TutorialManager.instance != null && !TutorialManager.instance.crafting)
                 {
                     //completes billboard 9: craft
-                    TutorialManager.instance.ProgressTutorial(9);
-                    TutorialManager.instance.crafting = true;
+                    if (TutorialManager.instance.currentBillboard == 8)
+                    {
+                        TutorialManager.instance.ProgressTutorial(9);
+                        TutorialManager.instance.crafting = true;
+                    }
                 }
 
                 InventoryManager.instance.invSO.RemoveItem(curRecipe.ingr1, -1);

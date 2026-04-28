@@ -96,17 +96,23 @@ public class FishingManager : MonoBehaviour
         {
             if (CanvasManager.Instance != null)
             {
-                CanvasManager.Instance.OpenMiniGame();
-            }
 
-            EnterFishingMode(currentArea);
+                EnterFishingMode(currentArea);
+                CanvasManager.Instance.OpenMiniGame(activeBiomeUI.fishingCanvas.gameObject);
+            }
         }
 
+        // Exit fishing (likely to change input)
         if (inFishingMode && Input.GetKeyDown(KeyCode.Escape))
         {
             if (miniGameUI != null && miniGameUI.IsActiveAndPlaying) return;
 
-            CanvasManager.Instance.CloseMiniGame();
+            ExitFishingMode();
+
+            // im just adding this so that the book UI doesnt pop up when u esc
+            CanvasManager.Instance.CloseMiniGame(activeBiomeUI.fishingCanvas.gameObject);
+
+
         }
 
         // Show "Start Fishing" prompt
@@ -379,8 +385,12 @@ public class FishingManager : MonoBehaviour
             if (TutorialManager.instance != null && !TutorialManager.instance.fishing)
             {
                 //completes billboard 6: go fishing
-                TutorialManager.instance.ProgressTutorial(6);
-                TutorialManager.instance.fishing = true;
+                if (TutorialManager.instance.currentBillboard == 5)
+                {
+                    TutorialManager.instance.ProgressTutorial(6);
+                    TutorialManager.instance.fishing = true;
+                }
+
             }
 
             ShowPrompt(caughtFish.fishName + " caught!" + " Recast your rod or exit");

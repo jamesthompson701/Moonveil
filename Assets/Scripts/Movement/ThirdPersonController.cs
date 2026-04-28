@@ -59,6 +59,11 @@ namespace StarterAssets
         [Tooltip("What layers the character uses as ground")]
         public LayerMask GroundLayers;
 
+        [Header("Flying Anim Data")]
+        [Tooltip("Used for animation trigger")]
+        public bool isSpriting = false;
+        public GameObject broomModel;
+
         [Header("Cinemachine")]
         [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
         public GameObject CinemachineCameraTarget;
@@ -209,6 +214,7 @@ namespace StarterAssets
                 JumpAndGravity();
             }
 
+            SprintCheck();
             GroundedCheck();
             Move();
             Dodge();
@@ -589,6 +595,21 @@ namespace StarterAssets
                 lastDodgeTime = Time.time;
                 _input.dodge = false; // Consume the dodge input
             }
+        }
+
+        private void SprintCheck()
+        {
+            isSpriting = _input.sprint;
+
+            broomModel.SetActive(isSpriting);
+
+            // update animator if using character
+            if (_hasAnimator)
+            {
+                _animator.SetBool("Sprinting", isSpriting);
+            }
+
+
         }
 
         private System.Collections.IEnumerator PerformDodge()
