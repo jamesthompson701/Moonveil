@@ -117,6 +117,15 @@ MonoBehaviour:
   dropItem: {fileID: 11400000, guid: decc5e8d934865e4096a5e2e668a4f53, type: 2}
   playerInventory: {fileID: 0}
   invSO: {fileID: 0}
+  _health: 0
+  _burnDps: 10
+  _canBurn: 0
+  _canSlow: 0
+  _canRoot: 0
+  enemyBody: {fileID: 4148211918992236918}
+  enemyDamaged: {fileID: 2100000, guid: 7c93df608510e1645afd917a3cb778ec, type: 2}
+  enemyDefault: {fileID: 2100000, guid: 89ad272d65677324fb41e1ebb1cd9b62, type: 2}
+  _bodyOriginalMaterial: {fileID: 0}
 --- !u!65 &6451503090049076054
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -136,8 +145,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5223541, y: 0.90583277, z: 1.1880188}
-  m_Center: {x: -0.0019226074, y: 0.53983545, z: 0.0471344}
+  m_Size: {x: 0.49124146, y: 0.90583277, z: 1.7261009}
+  m_Center: {x: 0.013633728, y: 0.53983545, z: -0.036138535}
 --- !u!114 &5958753925178639572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,11 +199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a05b69aec3cad64e9e2ba8a7634336d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatusReceiver
-  _burnDps: 5
-  _canBurn: 0
-  _slowSpeedMultiplier: 0.5
-  _canSlow: 0
-  _canRoot: 0
 --- !u!1 &6742096054972064571
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,6 +394,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0135629703ef4234ba388a493a1d0a1f, type: 3}
+--- !u!137 &4148211918992236918 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1206874426333947015, guid: 0135629703ef4234ba388a493a1d0a1f, type: 3}
+  m_PrefabInstance: {fileID: 6255846063715809807}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5862424084175068644 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0135629703ef4234ba388a493a1d0a1f, type: 3}

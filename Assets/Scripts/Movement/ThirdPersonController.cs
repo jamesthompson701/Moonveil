@@ -214,7 +214,7 @@ namespace StarterAssets
                 JumpAndGravity();
             }
 
-            SprintCheck();
+            flightAnimation();
             GroundedCheck();
             Move();
             Dodge();
@@ -597,16 +597,16 @@ namespace StarterAssets
             }
         }
 
-        private void SprintCheck()
+        private void flightAnimation()
         {
             isSpriting = _input.sprint;
 
-            broomModel.SetActive(isSpriting);
+            broomModel.SetActive(isSpriting || inFlightMode);
 
             // update animator if using character
             if (_hasAnimator)
             {
-                _animator.SetBool("Sprinting", isSpriting);
+                _animator.SetBool("Flying", isSpriting || inFlightMode);
             }
 
 

@@ -40,6 +40,8 @@ public class ClickSelector : MonoBehaviour
 
     private void OnInteractReleased(InputAction.CallbackContext ctx)
     {
+        if (!enabled || !gameObject.activeInHierarchy) return; // fishing null ref fix
+
         // Only trigger on RELEASE
         if (ctx.phase != InputActionPhase.Performed) return;
 

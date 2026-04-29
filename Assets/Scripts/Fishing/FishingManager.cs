@@ -94,10 +94,12 @@ public class FishingManager : MonoBehaviour
         // Start fishing when in a fishing area and player presses startFishingInput
         if (currentArea != null && !inFishingMode && Input.GetButtonDown(startFishingInput))
         {
-            // im just adding this so that the book UI doesnt pop up when u esc
+            if (CanvasManager.Instance != null)
+            {
 
-            EnterFishingMode(currentArea);
-            CanvasManager.Instance.OpenMiniGame(activeBiomeUI.fishingCanvas.gameObject);
+                EnterFishingMode(currentArea);
+                CanvasManager.Instance.OpenMiniGame(activeBiomeUI.fishingCanvas.gameObject);
+            }
         }
 
         // Exit fishing (likely to change input)
@@ -113,7 +115,6 @@ public class FishingManager : MonoBehaviour
 
         }
 
-
         // Show "Start Fishing" prompt
         if (currentArea != null && !inFishingMode)
         {
@@ -128,6 +129,11 @@ public class FishingManager : MonoBehaviour
 
     public void EnterFishingMode(FishingArea area)
     {
+        if (HUD.instance != null)
+        {
+            HUD.instance.UpdatedSpellCharge(0);
+        }
+
         if (area == null)
         {
             Debug.LogError("FishingArea is NULL");
@@ -201,6 +207,11 @@ public class FishingManager : MonoBehaviour
         fishingCamera.enabled = true;
 
         activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
+        /*var agents = activeBiomeUI.fishingVisuals.GetComponentsInChildren<UnityEngine.AI.NavMeshAgent>();
+        foreach (var agent in agents)
+        {
+            agent.enabled = false;
+        }*/
         miniGameUI = activeBiomeUI.miniGameUI;
 
         currentArea = area;
@@ -214,6 +225,7 @@ public class FishingManager : MonoBehaviour
 
     public void ExitFishingMode()
     {
+        StartCoroutine(ClearBufferedInput());
 
         Debug.Log("Fishing Mode Exited");
         if (playerInput != null)
@@ -392,6 +404,12 @@ public class FishingManager : MonoBehaviour
     public void ShowPrompt(string message)
     {
         if (activeBiomeUI == null || activeBiomeUI.promptText == null) return;
+        
+        if (activeBiomeUI == null)
+        {
+            Debug.LogError("activeBiomeUI is NULL when trying to show prompt");
+            return;
+        }
 
         activeBiomeUI.promptText.text = message;
         activeBiomeUI.promptText.gameObject.SetActive(true);
@@ -424,5 +442,10 @@ public class FishingManager : MonoBehaviour
             if (startFishingPrompt != null)
                 startFishingPrompt.gameObject.SetActive(false);
         }
+    }
+
+    IEnumerator ClearBufferedInput()
+    {
+        yield return null; // wait 1 frame so input clears
     }
 }
