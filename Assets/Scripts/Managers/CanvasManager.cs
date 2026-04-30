@@ -109,10 +109,13 @@ public class CanvasManager : MonoBehaviour
             }
             else
             {
-                //Opens pause menu
-                OpenMenu(1);
+                // Checks if mini game canvases are open
+                if (currentCanvas != 999)
+                {
+                    //Opens pause menu
+                    OpenMenu(1);
+                }
 
-                Debug.Log("PAUSE IS RUNNING");
             }
                  
         }
@@ -130,6 +133,8 @@ public class CanvasManager : MonoBehaviour
     {
         if (!menus[menu].activeInHierarchy)
         {
+            CloseAllMenus();
+
             menus[menu].SetActive(true);
             currentCanvas = menu;
 
@@ -145,8 +150,22 @@ public class CanvasManager : MonoBehaviour
         }
         else if (menus[menu].activeInHierarchy)
         {
-            menus[menu].SetActive(false);
-            currentCanvas = 1;
+            CloseAllMenus();
+        }
+
+        //Resets all actions
+        inventoryAction = input.FindAction("Inventory");
+        pauseAction = input.FindAction("Pause");
+        selectionAction = input.FindAction("Selection");
+
+    }
+
+    public void CloseAllMenus()
+    {
+        for (int i = 1; i < menus.Length; i++)
+        {
+            menus[i].SetActive(false);
+            currentCanvas = 0;
 
             playerMap.Enable();
             UIMap.Disable();
@@ -159,17 +178,12 @@ public class CanvasManager : MonoBehaviour
             Cursor.visible = false;
             ClickSelector.Instance.enabled = true;
         }
-
-        //Resets all actions
-        inventoryAction = input.FindAction("Inventory");
-        pauseAction = input.FindAction("Pause");
-        selectionAction = input.FindAction("Selection");
-
     }
 
     public void OpenMiniGame(GameObject canvas)
     {
         canvas.SetActive(true);
+        currentCanvas = 999;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -181,6 +195,7 @@ public class CanvasManager : MonoBehaviour
     {
         canvas.SetActive(false);
         miniGame = true;
+        currentCanvas = 0;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
