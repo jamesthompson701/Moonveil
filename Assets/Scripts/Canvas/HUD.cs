@@ -20,6 +20,8 @@ public class HUD : MonoBehaviour
 
     public GameObject[] SpellChargeIcons;
 
+    public ItemSO unlockItem;
+
 
 
     private void Awake()
@@ -95,10 +97,6 @@ public class HUD : MonoBehaviour
             }
         }
 
-
-
-
-
     }
 
     public void UpdatedSpellCharge(int tier)
@@ -159,6 +157,18 @@ public class HUD : MonoBehaviour
             StartCoroutine(InventoryManager.instance.DestroyPopup(popUp));
 
         }
+    }
+
+    public void UnlockPopup(string unlockText)
+    {
+        GameObject popUp = Instantiate(slot, popupGroup);
+        itemPopups.Add(popUp);
+        w_ItemPopup spawnedPopup = popUp.GetComponent<w_ItemPopup>();
+
+        unlockItem.itemName = unlockText;
+        spawnedPopup.SetUnlock();
+
+        StartCoroutine(InventoryManager.instance.DestroyPopup(popUp));
     }
 
 }

@@ -109,6 +109,7 @@ public class TutorialManager : MonoBehaviour
                     billboard5.SetActive(false);
                     pointer.ChangeTarget(point6);
                     billboard6.SetActive(true);
+                    HUD.instance.UnlockPopup("you can craft a shrub now");
                     break;
                 case 6:
                     //fih done

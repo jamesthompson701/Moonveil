@@ -185,6 +185,8 @@ public class CanvasManager : MonoBehaviour
         canvas.SetActive(true);
         currentCanvas = 999;
 
+        menus[0].GetComponent<Canvas>().enabled = false;
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         ClickSelector.Instance.enabled = false;
@@ -196,6 +198,8 @@ public class CanvasManager : MonoBehaviour
         canvas.SetActive(false);
         miniGame = true;
         currentCanvas = 0;
+
+        menus[0].GetComponent<Canvas>().enabled = true;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
