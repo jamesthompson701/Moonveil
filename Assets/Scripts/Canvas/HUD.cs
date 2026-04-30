@@ -38,7 +38,7 @@ public class HUD : MonoBehaviour
     }
     private void Update()
     {
-        if (FishingManager.Instance != null && FishingManager.Instance.inFishingMode)
+        if (FishingManager.Instance != null && FishingManager.Instance.inFishingMode == false)
         {
             switch (attackManagerRef.attackChoice)
             {
@@ -80,19 +80,25 @@ public class HUD : MonoBehaviour
 
 
         if (fillPercents != null)
-
-
-        if (highlight != null)
-
-
-        for (int i = 0; i < highlight.Length; i++)
         {
+            if (highlight != null)
+            {
+
+                for (int i = 0; i < highlight.Length; i++)
+                {
 
 
-            var img = highlight[i].GetComponent<UnityEngine.UI.Image>();
+                    var img = highlight[i].GetComponent<UnityEngine.UI.Image>();
 
-            highlight[i].GetComponent<UnityEngine.UI.Image>().fillAmount = fillPercents[i];
+                    highlight[i].GetComponent<UnityEngine.UI.Image>().fillAmount = fillPercents[i];
+                }
+            }
         }
+
+
+
+
+
     }
 
     public void UpdatedSpellCharge(int tier)
