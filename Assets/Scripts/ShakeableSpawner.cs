@@ -18,4 +18,9 @@ public class ShakeableSpawner : MonoBehaviour
         }
     }
 
+    private void SpawnFromTable()
+    {
+
+    }
+
 }

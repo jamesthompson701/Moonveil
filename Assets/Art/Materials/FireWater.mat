@@ -25,19 +25,23 @@ Material:
   m_Parent: {fileID: 2100000, guid: c8cb1af8669934648909be8c4aed7fcd, type: 2}
   m_ModifiedSerializedProperties: 18
   m_ValidKeywords:
+  - _ALPHAPREMULTIPLY_ON
   - _EMISSION
   - _METALLICSPECGLOSSMAP
   - _NORMALMAP
   - _PARALLAXMAP
+  - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap:
-    RenderType: Opaque
+    RenderType: Transparent
   disabledShaderPasses:
   - MOTIONVECTORS
+  - DepthOnly
+  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -52,15 +56,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DstBlend: 0
-    - _DstBlendAlpha: 0
+    - _DstBlend: 10
+    - _DstBlendAlpha: 10
     - _Parallax: 0.0553
     - _Smoothness: 0.841
-    - _Surface: 0
-    - _ZWrite: 1
+    - _Surface: 1
+    - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 1, g: 0.81178063, b: 0.72156864, a: 1}
-    - _Color: {r: 1, g: 0.81178063, b: 0.72156864, a: 1}
+    - _BaseColor: {r: 1, g: 0.81178063, b: 0.72156864, a: 0.69411767}
+    - _Color: {r: 1, g: 0.81178063, b: 0.72156864, a: 0.69411767}
     - _EmissionColor: {r: 4.532898, g: 0.23442139, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
