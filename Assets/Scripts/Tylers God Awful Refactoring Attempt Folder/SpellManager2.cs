@@ -516,6 +516,7 @@ public class SpellManager2 : MonoBehaviour
 
         float cost = tierResourceCosts[currentTier - 1];
         if (!SpendMana(cost, elementIdx))
+            HUD.instance.manaText.SetActive(true);
             return; // Not enough mana
 
         spell.CastSpell2(ctx);

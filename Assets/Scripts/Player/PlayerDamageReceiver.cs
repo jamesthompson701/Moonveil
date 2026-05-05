@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 public class PlayerDamageReceiver : MonoBehaviour
 {
     [Header("Health")]
-    [SerializeField, Min(1f)] private float maxHealth = 100f;
+    [SerializeField, Min(1f)] public float maxHealth = 100f;
 
     [SerializeField, Tooltip("Shown for debugging; update your UI as needed.")]
-    private float currentHealth = 100f;
+    public float currentHealth = 100f;
 
     [SerializeField, Tooltip("Invincibility duration in seconds after taking damage.")]
     private float invincibilityDuration = 2;
