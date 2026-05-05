@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class wRecipe : MonoBehaviour
 {
-    //recipe has to be set manually
+    //recipe has to be set manually if you dont instantiate it
     public RecipeSO myRecipe;
     public Image myImage;
 

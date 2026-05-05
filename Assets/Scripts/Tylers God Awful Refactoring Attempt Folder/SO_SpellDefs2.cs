@@ -40,6 +40,7 @@ public abstract class SO_SpellDefs2 : ScriptableObject
     [Header("Placement Rules")]
     [Tooltip("Tag required for valid ground placement.")]
     public string groundTag = "Ground";
+    public string soilTag = "Soil";
 
     public float forwardOffset = 1f;
     public float upwardOffset = 0f;
