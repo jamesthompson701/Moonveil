@@ -23,8 +23,11 @@ public class GroundTargetSpells : SO_SpellDefs2
         if (!TryGetAimHit(ctx, out RaycastHit hit))
             return;
 
-        // targets the ground 
-        if (!string.IsNullOrWhiteSpace(groundTag) && !hit.collider.CompareTag(groundTag))
+        // Allow casting if the hit collider matches either groundTag or soilTag (if set)
+        bool validGround = string.IsNullOrWhiteSpace(groundTag) || hit.collider.CompareTag(groundTag);
+        bool validSoil = string.IsNullOrWhiteSpace(soilTag) || hit.collider.CompareTag(soilTag);
+
+        if (!validGround && !validSoil)
             return;
 
         float yOffset = GroundYOffset;
