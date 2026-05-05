@@ -4429,45 +4429,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 456368814}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!21 &458157439
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI Extensions/UIMultiply
-  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!4 &458276425 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1440647360057940573, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
@@ -5908,6 +5869,45 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 624336871}
   m_Mesh: {fileID: 3036672301982283439, guid: 81422671c1cf56e4aab47a60ec9f8b7c, type: 3}
+--- !u!21 &625587962
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI Extensions/UIMultiply
+  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &630515116 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5c83a182d9eb2544b86bdf2995842f60, type: 3}
@@ -11211,7 +11211,7 @@ GameObject:
   - component: {fileID: 979471923}
   m_Layer: 0
   m_Name: Main_Island
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -22294,6 +22294,42 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 974392661}
+    - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: 'airTierUnlocked.Array.data[1]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: 'airTierUnlocked.Array.data[2]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: 'airTierUnlocked.Array.data[3]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: 'fireTierUnlocked.Array.data[1]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: 'fireTierUnlocked.Array.data[2]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: 'fireTierUnlocked.Array.data[3]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: 'waterTierUnlocked.Array.data[1]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: 'waterTierUnlocked.Array.data[2]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: 'waterTierUnlocked.Array.data[3]'
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3971096045093331761, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
       propertyPath: m_Mesh
       value: 
