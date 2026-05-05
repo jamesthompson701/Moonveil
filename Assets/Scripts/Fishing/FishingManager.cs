@@ -230,9 +230,11 @@ public class FishingManager : MonoBehaviour
         Debug.Log("Fishing Mode Exited");
         if (playerInput != null)
         playerInput.enabled = true;
+        playerInput.jump = false;
 
         if (spellManager != null)
         spellManager.enabled = true;
+        HUD.instance.UpdatedSpellCharge(0);
 
         inFishingMode = false;
         currentArea = null;
