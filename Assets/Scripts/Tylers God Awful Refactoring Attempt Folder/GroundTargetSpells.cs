@@ -20,7 +20,14 @@ public class GroundTargetSpells : SO_SpellDefs2
 
     public override void CastSpell2(SpellCastContext ctx)
     {
+        Debug.Log($"Casting {SpellName} at {ctx.aimCamera.transform.position + ctx.cameraPlanarForward * forwardOffset}");
         if (!TryGetAimHit(ctx, out RaycastHit hit))
+            return;
+
+        Debug.Log($"Hit point: {hit.point}, Hit normal: {hit.normal}, Hit collider: {hit.collider.name}");
+
+        // Ignore HighlightCollider tag
+        if (hit.collider.CompareTag("HighlightCollider"))
             return;
 
         // Allow casting if the hit collider matches either groundTag or soilTag (if set)
@@ -29,6 +36,8 @@ public class GroundTargetSpells : SO_SpellDefs2
 
         if (!validGround && !validSoil)
             return;
+
+        Debug.Log("Valid ground hit. Spawning spell effect.");
 
         float yOffset = GroundYOffset;
         Vector3 spawnPos = hit.point + (Vector3.up * yOffset);
