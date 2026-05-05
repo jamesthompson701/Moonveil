@@ -10,13 +10,8 @@ public class WorldTree : MonoBehaviour
     //current quest
     private TreeQuestSO curQuest;
 
-    //quest progress on each item
-    private int item1Count;
-    private int item2Count;
-    private int item3Count;
-    private int item4Count;
-    private int item5Count;
-    private int item6Count;
+    //progress on each item
+    public int[] progressTracker;
 
     //list of quests
     public TreeQuestSO[] quests;
@@ -33,6 +28,11 @@ public class WorldTree : MonoBehaviour
     public void Awake()
     {
         curQuest = quests[0];
+
+        for (int i = 0; i < curQuest.numOfItems; i++)
+        {
+            GenerateQuestItemWidget(curQuest.questItems[i]);
+        }
     }
 
     public virtual void OnInteract()
@@ -51,12 +51,15 @@ public class WorldTree : MonoBehaviour
         //when the deposit button is clicked, check each of the quest items to see which one matches the deposited item
         //increase the count for that item and, if the count matches how many are needed, delete that from the menu
         //Finally, check the item counts again. If every item on the menu is at max, move on to the next quest
-        if (curQuest.item1 == currentlySelected)
+        for (int i = 0; i < curQuest.numOfItems; i++)
         {
-            item1Count++;
-            if (item1Count == curQuest.item1Needed)
+            if (curQuest.questItems[i] == currentlySelected)
             {
-
+                progressTracker[i]++;
+            }
+            if (progressTracker[i] == curQuest.numberRequired[i])
+            {
+                Debug.Log("quest complete?");
             }
         }
     }
