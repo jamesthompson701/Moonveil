@@ -31,6 +31,7 @@ public class WorldTree : MonoBehaviour
 
         for (int i = 0; i < curQuest.questItems.Length; i++)
         {
+            Debug.Log("widget gen");
             GenerateQuestItemWidget(curQuest.questItems[i]);
         }
     }
@@ -59,7 +60,7 @@ public class WorldTree : MonoBehaviour
             }
             if (progressTracker[i] == curQuest.numberRequired[i])
             {
-                Debug.Log("quest complete?");
+                curQuest.QuestComplete();
             }
         }
     }
@@ -68,6 +69,7 @@ public class WorldTree : MonoBehaviour
     {
         GameObject questWidget = Instantiate(questItemWidget);
         wQuestItem questItem = questWidget.GetComponent<wQuestItem>();
+
         questWidget.transform.SetParent(itemsMenu.transform);
         questItem.myItem = _item;
         questItem.myImage.sprite = _item.itemSprite;
