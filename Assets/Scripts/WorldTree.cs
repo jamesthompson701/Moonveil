@@ -29,7 +29,7 @@ public class WorldTree : MonoBehaviour
     {
         curQuest = quests[0];
 
-        for (int i = 0; i < curQuest.numOfItems; i++)
+        for (int i = 0; i < curQuest.questItems.Length; i++)
         {
             GenerateQuestItemWidget(curQuest.questItems[i]);
         }
@@ -51,7 +51,7 @@ public class WorldTree : MonoBehaviour
         //when the deposit button is clicked, check each of the quest items to see which one matches the deposited item
         //increase the count for that item and, if the count matches how many are needed, delete that from the menu
         //Finally, check the item counts again. If every item on the menu is at max, move on to the next quest
-        for (int i = 0; i < curQuest.numOfItems; i++)
+        for (int i = 0; i < curQuest.questItems.Length; i++)
         {
             if (curQuest.questItems[i] == currentlySelected)
             {
