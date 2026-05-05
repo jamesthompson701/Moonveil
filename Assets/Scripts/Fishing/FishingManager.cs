@@ -230,6 +230,7 @@ public class FishingManager : MonoBehaviour
         Debug.Log("Fishing Mode Exited");
         if (playerInput != null)
         playerInput.enabled = true;
+        playerInput.jump = false;
 
         if (spellManager != null)
         spellManager.enabled = true;
