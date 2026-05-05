@@ -26,10 +26,6 @@ public class GroundTargetSpells : SO_SpellDefs2
 
         Debug.Log($"Hit point: {hit.point}, Hit normal: {hit.normal}, Hit collider: {hit.collider.name}");
 
-        // Ignore HighlightCollider tag
-        if (hit.collider.CompareTag("HighlightCollider"))
-            return;
-
         // Allow casting if the hit collider matches either groundTag or soilTag (if set)
         bool validGround = string.IsNullOrWhiteSpace(groundTag) || hit.collider.CompareTag(groundTag);
         bool validSoil = string.IsNullOrWhiteSpace(soilTag) || hit.collider.CompareTag(soilTag);
