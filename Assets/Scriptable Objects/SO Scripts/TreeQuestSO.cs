@@ -1,4 +1,9 @@
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+using Unity.VisualScripting;
+using System.Collections.Generic;
+using UnityEngine.AdaptivePerformance;
 
 [CreateAssetMenu(fileName = "TreeQuestSO", menuName = "Scriptable Objects/Tree Quest")]
 public class TreeQuestSO : ScriptableObject
@@ -10,8 +15,8 @@ public class TreeQuestSO : ScriptableObject
     public RecipeSO questReward;
 
     // the items needed and how many of each of them (should be made 1 to 1)
-    public ItemSO[] questItems;
-    public int[] numberRequired;
+    public List<ItemSO> questItems = new List<ItemSO>();
+    public List<int> numberRequired = new List<int>();
 
 
     public void QuestComplete()

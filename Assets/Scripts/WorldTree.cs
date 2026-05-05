@@ -1,6 +1,9 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
+using System.Collections.Generic;
+using UnityEngine.AdaptivePerformance;
 
 public class WorldTree : MonoBehaviour
 {
@@ -11,10 +14,10 @@ public class WorldTree : MonoBehaviour
     private TreeQuestSO curQuest;
 
     //progress on each item
-    public int[] progressTracker;
+    public List<int> progressTracker = new List<int>();
 
     //list of quests
-    public TreeQuestSO[] quests;
+    public List<TreeQuestSO> quests = new List<TreeQuestSO>();
 
     // currently chosen item
     public Image currentlySelectedImage;
@@ -24,12 +27,13 @@ public class WorldTree : MonoBehaviour
     //everything to do with the quest item widgets
     public GameObject questItemWidget;
     public GameObject itemsMenu;
+    public List<GameObject> listOfWidgets = new List<GameObject>();
 
     public void Awake()
     {
         curQuest = quests[0];
 
-        for (int i = 0; i < curQuest.questItems.Length; i++)
+        for (int i = 0; i < curQuest.questItems.Count; i++)
         {
             Debug.Log("widget gen");
             GenerateQuestItemWidget(curQuest.questItems[i]);
@@ -52,15 +56,23 @@ public class WorldTree : MonoBehaviour
         //when the deposit button is clicked, check each of the quest items to see which one matches the deposited item
         //increase the count for that item and, if the count matches how many are needed, delete that from the menu
         //Finally, check the item counts again. If every item on the menu is at max, move on to the next quest
-        for (int i = 0; i < curQuest.questItems.Length; i++)
+        for (int i = 0; i < curQuest.questItems.Count; i++)
         {
             if (curQuest.questItems[i] == currentlySelected)
             {
-                progressTracker[i]++;
+                if (progressTracker[i] < 1)
+                {
+                    progressTracker.Add(1);
+                }
+                else
+                {
+                    progressTracker[i]++;
+                }
             }
             if (progressTracker[i] == curQuest.numberRequired[i])
             {
                 curQuest.QuestComplete();
+
             }
         }
     }
@@ -74,5 +86,6 @@ public class WorldTree : MonoBehaviour
         questItem.myItem = _item;
         questItem.myImage.sprite = _item.itemSprite;
         questItem.Refresh();
+        listOfWidgets.Add(questWidget);
     }
 }
