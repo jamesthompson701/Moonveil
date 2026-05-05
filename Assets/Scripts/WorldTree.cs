@@ -38,7 +38,7 @@ public class WorldTree : MonoBehaviour
 
     public virtual void OnInteract()
     {
-        myMenu.SetActive(true);
+        CanvasManager.Instance.SetTreeMenu(myMenu);
     }
 
     public void ItemClicked(ItemSO _item)

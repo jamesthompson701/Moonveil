@@ -247,7 +247,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4610745533195464922}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999977
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -660,6 +660,7 @@ GameObject:
   - component: {fileID: 5269334841889890974}
   - component: {fileID: 1047709945540911888}
   - component: {fileID: 3564068028359189279}
+  - component: {fileID: 2126215670054649942}
   m_Layer: 0
   m_Name: World Tree
   m_TagString: Untagged
@@ -763,6 +764,27 @@ MonoBehaviour:
   currentlySelected: {fileID: 0}
   questItemWidget: {fileID: 900162802153602369, guid: 01678b81f8a62524484b5e9a1b0088b5, type: 3}
   itemsMenu: {fileID: 4288359760357488564}
+--- !u!65 &2126215670054649942
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3830952263843455140}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 46.155186, y: 60.25884, z: 46.036304}
+  m_Center: {x: 0, y: 30.12942, z: 0}
 --- !u!1 &3892284357844586199
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,7 +955,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00048828125, y: 0.0010059257}
+  m_AnchoredPosition: {x: 0.00048828125, y: 0.00024280415}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6189730176440749406
