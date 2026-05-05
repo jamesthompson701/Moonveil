@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 6846283738854538728}
   - component: {fileID: 5701501814133196051}
   - component: {fileID: 1209927140139797566}
-  - component: {fileID: 6401679934529309465}
   - component: {fileID: 3626198374481276864}
+  - component: {fileID: 5297591380033909936}
   m_Layer: 0
   m_Name: Seed
   m_TagString: Dispenser
@@ -35,8 +35,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4188143743487675465}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8482882339169919392
@@ -1090,21 +1089,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6401679934529309465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2403151763405765206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20dc610626fa5644d87a924f1d64a0f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Interactable
-  dispenserItem: {fileID: 11400000, guid: 268a8bcca895735409e00f1d8fa5143c, type: 2}
-  dispenseAmount: 1
-  destroyOnDispense: 1
 --- !u!136 &3626198374481276864
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1128,70 +1112,16 @@ CapsuleCollider:
   m_Height: 1.097705
   m_Direction: 1
   m_Center: {x: 0.006147325, y: -0.45130926, z: -0.037960976}
---- !u!1 &8607309584156324239
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4188143743487675465}
-  - component: {fileID: 3701962918449582833}
-  - component: {fileID: 3262323389114868290}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4188143743487675465
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8607309584156324239}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3483918963021334921}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3701962918449582833
+--- !u!114 &5297591380033909936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8607309584156324239}
+  m_GameObject: {fileID: 2403151763405765206}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d619c2e50a29454cbe7eac1bd60d659, type: 3}
+  m_Script: {fileID: 11500000, guid: 9084b270e9c3dc642b1afa453b63429f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
-  objectToHighlight: {fileID: 2403151763405765206}
---- !u!135 &3262323389114868290
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8607309584156324239}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::ContactPickup
+  item: {fileID: 11400000, guid: 268a8bcca895735409e00f1d8fa5143c, type: 2}
