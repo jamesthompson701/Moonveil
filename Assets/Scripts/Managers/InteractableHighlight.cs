@@ -17,12 +17,19 @@ public class InteractableHighlight : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         Destroy(objectToHighlight.GetComponent<Outline>());
-        leftClickIcon.SetActive(false);
+        if (leftClickIcon != null)
+        {
+            leftClickIcon.SetActive(false);
+        }
 
     }
 
     private void HighlightObject()
     {
+        if (leftClickIcon != null)
+        {
+            leftClickIcon.SetActive(true);
+        }
         leftClickIcon.SetActive(true);
         var outline = objectToHighlight.AddComponent<Outline>();
 

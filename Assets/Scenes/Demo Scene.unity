@@ -2218,7 +2218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4030895897004295490, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: m_Name
-      value: Forageable Tree (4)
+      value: Forageable Tree Lizard Legs
       objectReference: {fileID: 0}
     - target: {fileID: 7250343647794074670, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: drops.Array.size
@@ -2239,7 +2239,7 @@ PrefabInstance:
     - target: {fileID: 7250343647794074670, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: 'drops.Array.data[3]'
       value: 
-      objectReference: {fileID: 2403151763405765206, guid: cc48f669518c1ab4d9b2dde99b4c2247, type: 3}
+      objectReference: {fileID: 2403151763405765206, guid: f6da5204302a806468684f1e277699b8, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2595,6 +2595,14 @@ PrefabInstance:
       propertyPath: m_Size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3564068028359189279, guid: 2bd27eac91d1e194d988c73aeb368127, type: 3}
+      propertyPath: quests.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3564068028359189279, guid: 2bd27eac91d1e194d988c73aeb368127, type: 3}
+      propertyPath: 'quests.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 0ae7a0ddea36b6848a1708e2bd9599a9, type: 2}
     - target: {fileID: 3830952263843455140, guid: 2bd27eac91d1e194d988c73aeb368127, type: 3}
       propertyPath: m_Name
       value: World Tree
@@ -6931,7 +6939,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectPooler
   poolsArray:
   - {fileID: 11400000, guid: c113dbfaac468764abdf5d60ade83ccc, type: 2}
-  - {fileID: 11400000, guid: 7382a3f972b81744cb9e3a1a7b0444a3, type: 2}
+  - {fileID: 11400000, guid: 283b3c82175795345afc9f8251a01a5f, type: 2}
+  - {fileID: 11400000, guid: 561c4ff338219f04d92424a3885f8cf0, type: 2}
+  - {fileID: 11400000, guid: 51d32097c9eb4fe4a9d317331274d9ca, type: 2}
 --- !u!4 &718441453
 Transform:
   m_ObjectHideFlags: 0
@@ -7310,6 +7320,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Forageable Tree (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 6226243864771132972, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2c02c00e632939846a87d3a7d61993ed, type: 2}
     - target: {fileID: 7250343647794074670, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: drops.Array.size
       value: 4
@@ -7668,12 +7682,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 458276425}
   - {fileID: 1404905280}
-  - {fileID: 1160712370}
-  - {fileID: 1807072598}
-  - {fileID: 252555634}
   - {fileID: 1465400209}
+  - {fileID: 458276425}
+  - {fileID: 1160712370}
+  - {fileID: 252555634}
+  - {fileID: 1807072598}
   - {fileID: 797975687}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9472,6 +9486,45 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 871651215}
   m_SourcePrefab: {fileID: 100100000, guid: da9d71d0400796d4ead08f67874b2a15, type: 3}
+--- !u!21 &906909973
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI Extensions/UIMultiply
+  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1001 &919203454
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12801,7 +12854,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4030895897004295490, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: m_Name
-      value: Forageable Tree (2)
+      value: Forageable Tree Lizard Legs
       objectReference: {fileID: 0}
     - target: {fileID: 7250343647794074670, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: drops.Array.size
@@ -12822,7 +12875,7 @@ PrefabInstance:
     - target: {fileID: 7250343647794074670, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: 'drops.Array.data[3]'
       value: 
-      objectReference: {fileID: 2403151763405765206, guid: cc48f669518c1ab4d9b2dde99b4c2247, type: 3}
+      objectReference: {fileID: 2403151763405765206, guid: f6da5204302a806468684f1e277699b8, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13144,7 +13197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6872333140645737548, guid: 884f789dc9a564f819b17e90d302d86b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14635,45 +14688,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1d37af21c5f2a9f4aa413a1b3c430593, type: 3}
   m_PrefabInstance: {fileID: 1153089813}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &1348003126
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI Extensions/UIMultiply
-  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1001 &1359415661
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15275,8 +15289,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4030895897004295490, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: m_Name
-      value: Forageable Tree (1)
+      value: Forageable Tree Eye of Newt
       objectReference: {fileID: 0}
+    - target: {fileID: 6226243864771132972, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5963674387cdc2c4db9f70693ddcb1cf, type: 2}
     - target: {fileID: 7250343647794074670, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: drops.Array.size
       value: 4
@@ -15296,7 +15314,7 @@ PrefabInstance:
     - target: {fileID: 7250343647794074670, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: 'drops.Array.data[3]'
       value: 
-      objectReference: {fileID: 2403151763405765206, guid: cc48f669518c1ab4d9b2dde99b4c2247, type: 3}
+      objectReference: {fileID: 2403151763405765206, guid: 49a839d8a8ca5b045ba31753d6ca78fc, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15491,8 +15509,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4030895897004295490, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: m_Name
-      value: Forageable Tree (5)
+      value: Forageable Tree Eye of Newt
       objectReference: {fileID: 0}
+    - target: {fileID: 6226243864771132972, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5963674387cdc2c4db9f70693ddcb1cf, type: 2}
     - target: {fileID: 7250343647794074670, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: drops.Array.size
       value: 4
@@ -15512,7 +15534,7 @@ PrefabInstance:
     - target: {fileID: 7250343647794074670, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: 'drops.Array.data[3]'
       value: 
-      objectReference: {fileID: 2403151763405765206, guid: cc48f669518c1ab4d9b2dde99b4c2247, type: 3}
+      objectReference: {fileID: 2403151763405765206, guid: 49a839d8a8ca5b045ba31753d6ca78fc, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18745,6 +18767,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Forageable Tree (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6226243864771132972, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2c02c00e632939846a87d3a7d61993ed, type: 2}
     - target: {fileID: 7250343647794074670, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: drops.Array.size
       value: 4
@@ -22687,7 +22713,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4030895897004295490, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: m_Name
-      value: Forageable Tree
+      value: Forageable Tree Lizard Legs
       objectReference: {fileID: 0}
     - target: {fileID: 7250343647794074670, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: drops.Array.size
@@ -22708,7 +22734,7 @@ PrefabInstance:
     - target: {fileID: 7250343647794074670, guid: 0b844aa1f6012e84db1b7a91a5b22473, type: 3}
       propertyPath: 'drops.Array.data[3]'
       value: 
-      objectReference: {fileID: 2403151763405765206, guid: cc48f669518c1ab4d9b2dde99b4c2247, type: 3}
+      objectReference: {fileID: 2403151763405765206, guid: f6da5204302a806468684f1e277699b8, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
