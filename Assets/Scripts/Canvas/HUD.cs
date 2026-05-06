@@ -29,7 +29,7 @@ public class HUD : MonoBehaviour
     public Image healthBar;
 
     public GameObject manaText;
-
+    bool textActive = false;
 
 
 
@@ -104,9 +104,10 @@ public class HUD : MonoBehaviour
                     var img = highlight[i].GetComponent<UnityEngine.UI.Image>();
 
                     highlight[i].GetComponent<UnityEngine.UI.Image>().fillAmount = fillPercents[i];
-                    if (manaText.activeInHierarchy)
+                    if (manaText.activeInHierarchy && !textActive)
                     {
-                        Invoke("SetManaText", 3.0f);
+                        textActive = true;
+                        Invoke("SetManaText", 1.0f);
                     }
 
                 }
@@ -122,6 +123,7 @@ public class HUD : MonoBehaviour
     public void SetManaText()
     {
         manaText.SetActive(false);
+        textActive = false;
     }
 
     public void UpdatedSpellCharge(int tier)

@@ -513,13 +513,19 @@ public class SpellManager2 : MonoBehaviour
             hasHit = hasHit,
             hitCollider = hitCol
         };
+        
 
         float cost = tierResourceCosts[currentTier - 1];
         if (!SpendMana(cost, elementIdx))
-            HUD.instance.manaText.SetActive(true);
             return; // Not enough mana
 
         spell.CastSpell2(ctx);
+
+        // clears mana text popup for clarity
+        if (HUD.instance.manaText.activeInHierarchy)
+        {
+            HUD.instance.SetManaText();
+        }
     }
 
     // Recharge all element pools
@@ -552,6 +558,7 @@ public class SpellManager2 : MonoBehaviour
                 if (airMana >= cost) { airMana -= cost; return true; }
                 break;
         }
+        HUD.instance.manaText.SetActive(true);
         Debug.LogWarning("Not enough mana to cast the spell.");
         return false;
     }
