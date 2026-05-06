@@ -14,12 +14,6 @@ public class wQuestItem : MonoBehaviour
     // world tree that commands this widget
     public WorldTree myWorldTree;
 
-    private void Awake()
-    {
-        myImage.sprite = myItem.itemSprite;
-        myName.text = myItem.itemName;
-    }
-
     public void Clicked()
     {
         myWorldTree.ItemClicked(myItem);
@@ -28,5 +22,6 @@ public class wQuestItem : MonoBehaviour
     public void Refresh()
     {
         myImage.sprite = myItem.itemSprite;
+        myName.text = myItem.itemName;
     }
 }
