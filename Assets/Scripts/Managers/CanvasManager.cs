@@ -214,6 +214,18 @@ public class CanvasManager : MonoBehaviour
     }
 
 
+    // ALWAYS use these together
+    // for when you need to open a menu to instantiate something on it
+    public void FlashOpenMenu(int _menuToFlash)
+    {
+        menus[_menuToFlash].SetActive(true);
+    }
+    public void FlashCloseMenu(int _menuToFlash)
+    {
+        menus[_menuToFlash].SetActive(false);
+    }
+
+
 
     //public void OpenTitleScreen()
     //{

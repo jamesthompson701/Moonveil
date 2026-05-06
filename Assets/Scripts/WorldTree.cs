@@ -10,11 +10,14 @@ public class WorldTree : MonoBehaviour
     //menu
     public GameObject myMenu;
 
+    //is set bool
+    private bool isSet;
+
     //current quest
     private TreeQuestSO curQuest;
     private int curQuestInt;
 
-    //progress on each item
+    //progress on each item and total completion
     public List<int> progressTracker = new List<int>();
 
     //list of quests
@@ -32,18 +35,18 @@ public class WorldTree : MonoBehaviour
     public GameObject itemsMenu;
     public List<GameObject> listOfWidgets = new List<GameObject>();
 
-    public void Awake()
-    {
-        curQuestInt = 0;
-        levelText.text = "" + treeLevel;
-        SetupQuest();
-    }
-
     public void OnInteract()
     {
-        Debug.Log("ineracted with tree working question?");
-        //test
         CanvasManager.Instance.OpenTreeMenu(myMenu);
+
+        if (!isSet)
+        {
+            curQuestInt = 0;
+            levelText.text = "" + treeLevel;
+            SetupQuest();
+            //levelText.transform.position = new Vector3(-738, 6, -533);
+            isSet = true;
+        }
     }
 
     public void ItemClicked(ItemSO _item)
@@ -54,7 +57,6 @@ public class WorldTree : MonoBehaviour
 
     public void ItemDeposited()
     {
-        int completionTally = 0;
         //check each item in the quest list to see if it matches the currently selected item
         for (int i = 0; i < curQuest.questItems.Count; i++)
         {
@@ -63,30 +65,43 @@ public class WorldTree : MonoBehaviour
                 //if it's a match, check if this item is already completed
                 if (progressTracker[i] == curQuest.numberRequired[i])
                 {
-                    completionTally++;
+                    Debug.Log("Item number fulfilled!!!!!!!!!!!!");
+                    progressTracker[i] = 144;
+                    int completeCount = 0;
 
                     //if the item's complete, check if all of them are
-                    if (completionTally == curQuest.questItems.Count)
+                    foreach(int _num in progressTracker)
                     {
-                        // stuff to complete the quest and prepare for the next
-                        curQuest.QuestComplete();
-                        foreach(GameObject _widget in listOfWidgets)
+                        if(_num == 144)
                         {
-                            Destroy(_widget);
+                            completeCount++;
+                            if(completeCount == progressTracker.Count)
+                            {
+                                Debug.Log("WHOLE QUEST complete");
+
+                                // stuff to complete the quest and prepare for the next
+                                curQuest.QuestComplete();
+                                foreach (GameObject _widget in listOfWidgets)
+                                {
+                                    Destroy(_widget.gameObject);
+                                }
+
+                                listOfWidgets.Clear();
+                                progressTracker.Clear();
+
+                                if (curQuestInt < quests.Count)
+                                {
+                                    curQuestInt++;
+                                }
+
+                                treeLevel++;
+                                levelText.text = "" + treeLevel;
+
+                                SetupQuest();
+                            }
                         }
-
-                        progressTracker.Clear();
-
-                        if (curQuestInt < quests.Count)
-                        {
-                            curQuestInt++;
-                        }
-
-                        treeLevel++;
-                        levelText.text = "" + treeLevel;
-
-                        SetupQuest();
                     }
+                    
                 }
                 else
                 {
@@ -95,8 +110,13 @@ public class WorldTree : MonoBehaviour
                     {
                         if (_item.item == currentlySelected)
                         {
-                            InventoryManager.instance.invSO.RemoveItem(currentlySelected, -1);
-                            progressTracker[i]++;
+                            if(progressTracker[i] != 144)
+                            {
+                                Debug.Log(_item.item.itemName + " added");
+                                InventoryManager.instance.invSO.RemoveItem(currentlySelected, -1);
+                                progressTracker[i]++;
+                            }
+                            else { Debug.Log("item's full bud"); }
                         }
                     }
 
@@ -117,9 +137,12 @@ public class WorldTree : MonoBehaviour
             Debug.Log("widget gen");
             GenerateQuestItemWidget(curQuest.questItems[i]);
             progressTracker.Add(0);
+            levelUpReward.sprite = curQuest.questReward.output.itemSprite;
+            
         }
 
         //refresh the tree level
+        levelText.text = "" + treeLevel;
     }
 
     public void GenerateQuestItemWidget(ItemSO _item)

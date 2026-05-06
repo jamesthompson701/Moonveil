@@ -21,6 +21,8 @@ public class TreeQuestSO : ScriptableObject
 
     public void QuestComplete()
     {
+        CanvasManager.Instance.FlashOpenMenu(3);
         WorkbenchUI.instance.UnlockRecipe(questReward);
+        CanvasManager.Instance.FlashCloseMenu(3);
     }
 }
