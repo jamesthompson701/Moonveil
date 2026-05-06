@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerDamageReceiver : MonoBehaviour
 {
@@ -15,14 +13,12 @@ public class PlayerDamageReceiver : MonoBehaviour
     private float invincibilityDuration = 2;
 
     // Renderers and materials set in the inspector (kept original names to preserve serialized references)
-    public Renderer playerBodyDefault;
-    public Renderer playerHatDefault;
+    public GameObject playerBodyDefault;
     public Material playerDamaged;
     public Material PlayerDefault;
 
     // Internal caches
     private Material _bodyOriginalMaterial;
-    private Material _hatOriginalMaterial;
     private float _invincibilityTimer = 0f;
 
     private void Awake()
@@ -33,16 +29,8 @@ public class PlayerDamageReceiver : MonoBehaviour
         // Prefer the renderer's shared material (asset) so we restore exactly what was assigned in the scene.
         if (playerBodyDefault != null)
         {
-            _bodyOriginalMaterial = playerBodyDefault.sharedMaterial;
             if (_bodyOriginalMaterial == null && PlayerDefault != null)
                 _bodyOriginalMaterial = PlayerDefault;
-        }
-
-        if (playerHatDefault != null)
-        {
-            _hatOriginalMaterial = playerHatDefault.sharedMaterial;
-            if (_hatOriginalMaterial == null && PlayerDefault != null)
-                _hatOriginalMaterial = PlayerDefault;
         }
     }
 
@@ -91,20 +79,19 @@ public class PlayerDamageReceiver : MonoBehaviour
     {
         if (playerBodyDefault != null && playerDamaged != null)
         {
-            playerBodyDefault.material = playerDamaged;
+            for (int i = 0; i < playerBodyDefault.transform.childCount; i++)
+            {
+                var child = playerBodyDefault.transform.GetChild(i);
+                var renderer = child.GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    renderer.material = playerDamaged;
+                }
+            }
         }
         else if (playerBodyDefault != null && playerDamaged == null)
         {
             Debug.LogWarning("playerDamaged is not assigned; skipping body material swap.");
-        }
-
-        if (playerHatDefault != null && playerDamaged != null)
-        {
-            playerHatDefault.material = playerDamaged;
-        }
-        else if (playerHatDefault != null && playerDamaged == null)
-        {
-            Debug.LogWarning("playerDamaged is not assigned; skipping hat material swap.");
         }
 
         // Wait for the configured invincibility duration (visual feedback time)
@@ -118,18 +105,15 @@ public class PlayerDamageReceiver : MonoBehaviour
     {
         if (playerBodyDefault != null)
         {
-            if (_bodyOriginalMaterial != null)
-                playerBodyDefault.material = _bodyOriginalMaterial;
-            else if (PlayerDefault != null)
-                playerBodyDefault.material = PlayerDefault;
-        }
-
-        if (playerHatDefault != null)
-        {
-            if (_hatOriginalMaterial != null)
-                playerHatDefault.material = _hatOriginalMaterial;
-            else if (PlayerDefault != null)
-                playerHatDefault.material = PlayerDefault;
+            for (int i = 0; i < playerBodyDefault.transform.childCount; i++)
+            {
+                var child = playerBodyDefault.transform.GetChild(i);
+                var renderer = child.GetComponent<Renderer>();
+                if (renderer != null && _bodyOriginalMaterial != null)
+                {
+                    renderer.material = _bodyOriginalMaterial;
+                }
+            }
         }
     }
 }

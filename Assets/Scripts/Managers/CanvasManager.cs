@@ -15,7 +15,7 @@ public class CanvasManager : MonoBehaviour
 
     [Header("DO NOT MOVE THINGS you can add though")]
     [SerializeField] private GameObject[] menus;
-    // 0 - HUD; 1 - Book; 2 - SelectionWheel; 3 - Workbench ; 4 - Inventory; 5 - FastTravel
+    // 0 - HUD; 1 - Book; 2 - SelectionWheel; 3 - Workbench ; 4 - Inventory; 5 - FastTravel; 6 - WorldTrees
 
 
 
@@ -204,6 +204,13 @@ public class CanvasManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         ClickSelector.Instance.enabled = true;
+    }
+
+    public void OpenTreeMenu(GameObject treeMenu)
+    {
+        menus[6] = treeMenu;
+        OpenMenu(6);
+        
     }
 
 

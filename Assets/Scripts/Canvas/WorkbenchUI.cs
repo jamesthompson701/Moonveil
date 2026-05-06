@@ -82,7 +82,6 @@ public class WorkbenchUI : MonoBehaviour
     }
 
     //function that instantiates a new recipe widget
-    //called by other things
     public void UnlockRecipe(RecipeSO _recipe)
     {
         GameObject unlockedRecipe = Instantiate(blankRecipeWidget);
