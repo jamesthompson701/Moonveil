@@ -20,4 +20,6 @@ public class ItemSO : ScriptableObject
     //mesh renderer for when its dropped? temporary
     public MeshRenderer itemModel;
 
+    public ItemEffectSO effect;
+
 }

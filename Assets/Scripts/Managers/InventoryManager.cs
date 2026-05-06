@@ -21,6 +21,10 @@ public class InventoryManager : MonoBehaviour
     public SeedItemSO seedRef;
     public ItemSO fishRef;
 
+    public bool isMultiplierBuffActive;
+    //Amount of time left in the item multiplier buff
+    public float multiplierBuffTime;
+
     private void Awake()
     {
         if (instance == null)
@@ -29,6 +33,21 @@ public class InventoryManager : MonoBehaviour
         }
         ResetInv();
 
+    }
+
+    private void Update()
+    {
+        if (isMultiplierBuffActive)
+        {
+            multiplierBuffTime -= Time.deltaTime;
+
+            if (multiplierBuffTime <= 0f)
+            {
+                isMultiplierBuffActive = false;
+                multiplierBuffTime = 0f;
+                invSO.dropMultiplier = 1;
+            }
+        }
     }
 
     //EVERYTHING IS SEEDS
@@ -56,6 +75,8 @@ public class InventoryManager : MonoBehaviour
     {
         invSO.InventoryItems.Clear();
         fish = 0;
+        invSO.dropMultiplier = 1;
+        isMultiplierBuffActive = false;
     }
 
 
