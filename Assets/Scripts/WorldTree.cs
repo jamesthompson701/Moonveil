@@ -43,8 +43,7 @@ public class WorldTree : MonoBehaviour
     {
         Debug.Log("ineracted with tree working question?");
         //test
-        CanvasManager.Instance.SetTreeMenu(myMenu);
-        CanvasManager.Instance.OpenMenu(6);
+        CanvasManager.Instance.OpenTreeMenu(myMenu);
     }
 
     public void ItemClicked(ItemSO _item)
