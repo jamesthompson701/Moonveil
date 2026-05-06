@@ -12,6 +12,7 @@ public class WorldTree : MonoBehaviour
 
     //current quest
     private TreeQuestSO curQuest;
+    private int curQuestInt;
 
     //progress on each item
     public List<int> progressTracker = new List<int>();
@@ -19,10 +20,12 @@ public class WorldTree : MonoBehaviour
     //list of quests
     public List<TreeQuestSO> quests = new List<TreeQuestSO>();
 
-    // currently chosen item
+    // currently chosen item + level reward + current tree level
     public Image currentlySelectedImage;
     public ItemSO currentlySelected;
-
+    public Image levelUpReward;
+    public int treeLevel;
+    public TMP_Text levelText;
 
     //everything to do with the quest item widgets
     public GameObject questItemWidget;
@@ -31,18 +34,17 @@ public class WorldTree : MonoBehaviour
 
     public void Awake()
     {
-        curQuest = quests[0];
-
-        for (int i = 0; i < curQuest.questItems.Count; i++)
-        {
-            Debug.Log("widget gen");
-            GenerateQuestItemWidget(curQuest.questItems[i]);
-        }
+        curQuestInt = 0;
+        levelText.text = "" + treeLevel;
+        SetupQuest();
     }
 
-    public virtual void OnInteract()
+    public void OnInteract()
     {
+        Debug.Log("ineracted with tree working question?");
+        //test
         CanvasManager.Instance.SetTreeMenu(myMenu);
+        CanvasManager.Instance.OpenMenu(6);
     }
 
     public void ItemClicked(ItemSO _item)
@@ -53,34 +55,79 @@ public class WorldTree : MonoBehaviour
 
     public void ItemDeposited()
     {
-        //when the deposit button is clicked, check each of the quest items to see which one matches the deposited item
-        //increase the count for that item and, if the count matches how many are needed, delete that from the menu
-        //Finally, check the item counts again. If every item on the menu is at max, move on to the next quest
+        int completionTally = 0;
+        //check each item in the quest list to see if it matches the currently selected item
         for (int i = 0; i < curQuest.questItems.Count; i++)
         {
             if (curQuest.questItems[i] == currentlySelected)
             {
-                if (progressTracker[i] < 1)
+                //if it's a match, check if this item is already completed
+                if (progressTracker[i] == curQuest.numberRequired[i])
                 {
-                    progressTracker.Add(1);
+                    completionTally++;
+
+                    //if the item's complete, check if all of them are
+                    if (completionTally == curQuest.questItems.Count)
+                    {
+                        // stuff to complete the quest and prepare for the next
+                        curQuest.QuestComplete();
+                        foreach(GameObject _widget in listOfWidgets)
+                        {
+                            Destroy(_widget);
+                        }
+
+                        progressTracker.Clear();
+
+                        if (curQuestInt < quests.Count)
+                        {
+                            curQuestInt++;
+                        }
+
+                        treeLevel++;
+                        levelText.text = "" + treeLevel;
+
+                        SetupQuest();
+                    }
                 }
                 else
                 {
-                    progressTracker[i]++;
+                    //scroll through the inventory and if they have the relevant item, remove 1 and add to the progress tracker
+                    foreach (InventoryItem _item in InventoryManager.instance.invSO.InventoryItems)
+                    {
+                        if (_item.item == currentlySelected)
+                        {
+                            InventoryManager.instance.invSO.RemoveItem(currentlySelected, -1);
+                            progressTracker[i]++;
+                        }
+                    }
+
                 }
-            }
-            if (progressTracker[i] == curQuest.numberRequired[i])
-            {
-                curQuest.QuestComplete();
 
             }
+
         }
+    }
+
+    public void SetupQuest()
+    {
+        curQuest = quests[curQuestInt];
+
+        for (int i = 0; i < curQuest.questItems.Count; i++)
+        {
+            //set up the widgets and progress tracker
+            Debug.Log("widget gen");
+            GenerateQuestItemWidget(curQuest.questItems[i]);
+            progressTracker.Add(0);
+        }
+
+        //refresh the tree level
     }
 
     public void GenerateQuestItemWidget(ItemSO _item)
     {
         GameObject questWidget = Instantiate(questItemWidget);
         wQuestItem questItem = questWidget.GetComponent<wQuestItem>();
+        questItem.myWorldTree = this;
 
         questWidget.transform.SetParent(itemsMenu.transform);
         questItem.myItem = _item;

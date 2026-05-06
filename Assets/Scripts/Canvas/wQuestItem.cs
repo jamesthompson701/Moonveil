@@ -6,6 +6,8 @@ public class wQuestItem : MonoBehaviour
 {
     // is set by world tree
     public ItemSO myItem;
+    
+    // visual elements
     public Image myImage;
     public TMP_Text myName;
 
