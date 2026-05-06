@@ -10,7 +10,8 @@ public class ContactPickup : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             InventoryManager.instance.invSO.AddItem(item, 1);
-            this.gameObject.SetActive(false);
+            Destroy(this.gameObject);
+            //this.gameObject.SetActive(false);
         }
     }
 }

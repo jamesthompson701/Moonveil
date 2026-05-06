@@ -11,9 +11,9 @@ public class ShakeableSpawner : MonoBehaviour
     {
         if (other.CompareTag("HarvestSpell") || other.CompareTag("AirAttack"))
         {
-            //Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
-            //Instantiate(drops[Random.Range(0, drops.Count)], spawnPos, transform.rotation);
-            SpawnFromTable();
+            Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+            Instantiate(drops[Random.Range(0, drops.Count)], spawnPos, transform.rotation);
+            //SpawnFromTable();
             Debug.Log("spawned?");
         }
     }
