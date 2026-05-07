@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using Unity.VisualScripting;
 using System.Collections.Generic;
 using UnityEngine.AdaptivePerformance;
+using JetBrains.Annotations;
 
 public class WorldTree : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class WorldTree : MonoBehaviour
 
     //progress on each item and total completion
     public List<int> progressTracker = new List<int>();
+    private int completeCount = 0;
 
     //list of quests
     public List<TreeQuestSO> quests = new List<TreeQuestSO>();
@@ -29,6 +31,10 @@ public class WorldTree : MonoBehaviour
     public Image levelUpReward;
     public int treeLevel;
     public TMP_Text levelText;
+
+    public GameObject treeBase;
+    public GameObject treeMid;
+    public GameObject treeTop;
 
     //everything to do with the quest item widgets
     public GameObject questItemWidget;
@@ -49,6 +55,11 @@ public class WorldTree : MonoBehaviour
         }
     }
 
+    public void ExitMenu()
+    {
+        CanvasManager.Instance.OpenMenu(6);
+    }
+
     public void ItemClicked(ItemSO _item)
     {
         currentlySelectedImage.sprite = _item.itemSprite;
@@ -62,22 +73,40 @@ public class WorldTree : MonoBehaviour
         {
             if (curQuest.questItems[i] == currentlySelected)
             {
-                //if it's a match, check if this item is already completed
+                //scroll through the inventory and if they have the relevant item, remove 1 and add to the progress tracker
+                foreach (InventoryItem _item in InventoryManager.instance.invSO.InventoryItems)
+                {
+                    if (_item.item == currentlySelected)
+                    {
+                        if (progressTracker[i] != 144)
+                        {
+                            Debug.Log(_item.item.itemName + " added");
+                            InventoryManager.instance.invSO.RemoveItem(currentlySelected, -1);
+                            progressTracker[i]++;
+                            listOfWidgets[i].GetComponent<wQuestItem>().Progress(progressTracker[i], curQuest.numberRequired[i]);
+                        }
+
+                    }
+                }
+
+                //check if this item is completed
                 if (progressTracker[i] == curQuest.numberRequired[i])
                 {
-                    Debug.Log("Item number fulfilled!!!!!!!!!!!!");
+                    Debug.Log("Item number fulfilled");
                     progressTracker[i] = 144;
-                    int completeCount = 0;
 
                     //if the item's complete, check if all of them are
                     foreach(int _num in progressTracker)
                     {
                         if(_num == 144)
                         {
+                            Debug.Log("before: " + completeCount + "/" + progressTracker.Count);
                             completeCount++;
-                            if(completeCount == progressTracker.Count)
+                            Debug.Log("after: " + completeCount + "/" + progressTracker.Count);
+
+                            if (completeCount == progressTracker.Count)
                             {
-                                Debug.Log("WHOLE QUEST complete");
+                                Debug.Log("COMPLETE: " + completeCount + "/" + progressTracker.Count);
 
                                 // stuff to complete the quest and prepare for the next
                                 curQuest.QuestComplete();
@@ -93,7 +122,7 @@ public class WorldTree : MonoBehaviour
                                 {
                                     curQuestInt++;
                                 }
-
+                                
                                 treeLevel++;
                                 levelText.text = "" + treeLevel;
 
@@ -102,24 +131,6 @@ public class WorldTree : MonoBehaviour
                         }
                     }
                     
-                }
-                else
-                {
-                    //scroll through the inventory and if they have the relevant item, remove 1 and add to the progress tracker
-                    foreach (InventoryItem _item in InventoryManager.instance.invSO.InventoryItems)
-                    {
-                        if (_item.item == currentlySelected)
-                        {
-                            if(progressTracker[i] != 144)
-                            {
-                                Debug.Log(_item.item.itemName + " added");
-                                InventoryManager.instance.invSO.RemoveItem(currentlySelected, -1);
-                                progressTracker[i]++;
-                            }
-                            else { Debug.Log("item's full bud"); }
-                        }
-                    }
-
                 }
 
             }
@@ -137,12 +148,26 @@ public class WorldTree : MonoBehaviour
             Debug.Log("widget gen");
             GenerateQuestItemWidget(curQuest.questItems[i]);
             progressTracker.Add(0);
+            listOfWidgets[i].GetComponent<wQuestItem>().Progress(progressTracker[i], curQuest.numberRequired[i]);
             levelUpReward.sprite = curQuest.questReward.output.itemSprite;
-            
+
+            completeCount = 0;
         }
 
         //refresh the tree level
         levelText.text = "" + treeLevel;
+        if (treeLevel == 1)
+        {
+            treeBase.SetActive(true);
+        }
+        if (treeLevel == 2)
+        {
+            treeMid.SetActive(true);
+        }
+        if (treeLevel == 3)
+        {
+            treeTop.SetActive(true);
+        }
     }
 
     public void GenerateQuestItemWidget(ItemSO _item)
