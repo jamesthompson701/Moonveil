@@ -15,7 +15,7 @@ public class ProjectileSpells2 : SO_SpellDefs2
     {
         if (SpellPrefab == null) return;
 
-        // REQUIRE spawn anchor: per request, prefab must spawn at the castOrigin.
+        // REQUIRE spawn anchor: prefab must spawn at the castOrigin.
         if (ctx.castOrigin == null)
         {
             Debug.LogWarning("ProjectileSpells2.CastSpell2: castOrigin is null — spawn aborted.");
