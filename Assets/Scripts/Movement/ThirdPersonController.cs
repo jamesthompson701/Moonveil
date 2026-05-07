@@ -64,6 +64,9 @@ namespace StarterAssets
         public bool isSpriting = false;
         public GameObject broomModel;
 
+        [Tooltip("True while the player is casting a spell. Prevents toggling flight during cast.")]
+        public bool isCasting = false;
+
         [Header("Cinemachine")]
         [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
         public GameObject CinemachineCameraTarget;
@@ -261,6 +264,13 @@ namespace StarterAssets
         // Handler for toggling flight mode
         private void OnFlightToggle(InputAction.CallbackContext ctx)
         {
+            // Prevent entering/exiting flight while casting
+            if (isCasting)
+            {
+                Debug.Log("Cannot toggle flight while casting.");
+                return;
+            }
+
             inFlightMode = !inFlightMode;
         }
 
@@ -529,7 +539,7 @@ namespace StarterAssets
 
         private void OnDrawGizmosSelected()
         {
-            Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
+            Color transparentGreen = new Color(0.0f, 1.0f, 0.35f, 0.35f);
             Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
 
             if (Grounded) Gizmos.color = transparentGreen;
