@@ -15,7 +15,7 @@ public class CanvasManager : MonoBehaviour
 
     [Header("DO NOT MOVE THINGS you can add though")]
     [SerializeField] private GameObject[] menus;
-    // 0 - HUD; 1 - Book; 2 - SelectionWheel; 3 - Workbench ; 4 - Inventory; 5 - FastTravel
+    // 0 - HUD; 1 - Book; 2 - SelectionWheel; 3 - Workbench ; 4 - Inventory; 5 - FastTravel; 6 - WorldTrees
 
 
 
@@ -185,6 +185,8 @@ public class CanvasManager : MonoBehaviour
         canvas.SetActive(true);
         currentCanvas = 999;
 
+        menus[0].GetComponent<Canvas>().enabled = false;
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         ClickSelector.Instance.enabled = false;
@@ -197,9 +199,30 @@ public class CanvasManager : MonoBehaviour
         miniGame = true;
         currentCanvas = 0;
 
+        menus[0].GetComponent<Canvas>().enabled = true;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         ClickSelector.Instance.enabled = true;
+    }
+
+    public void OpenTreeMenu(GameObject treeMenu)
+    {
+        menus[6] = treeMenu;
+        OpenMenu(6);
+        
+    }
+
+
+    // ALWAYS use these together
+    // for when you need to open a menu to instantiate something on it
+    public void FlashOpenMenu(int _menuToFlash)
+    {
+        menus[_menuToFlash].SetActive(true);
+    }
+    public void FlashCloseMenu(int _menuToFlash)
+    {
+        menus[_menuToFlash].SetActive(false);
     }
 
 

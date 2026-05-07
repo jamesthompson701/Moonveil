@@ -109,6 +109,7 @@ public class TutorialManager : MonoBehaviour
                     billboard5.SetActive(false);
                     pointer.ChangeTarget(point6);
                     billboard6.SetActive(true);
+                    HUD.instance.UnlockPopup("you can craft a shrub now");
                     break;
                 case 6:
                     //fih done
@@ -127,7 +128,8 @@ public class TutorialManager : MonoBehaviour
                     billboard8.SetActive(false);
                     pointer.ChangeTarget(point9);
                     billboard9.SetActive(true);
-                    break;
+                    HUD.instance.UnlockPopup("you can craft a fishbowl now");
+                break;
                 case 9:
                     //craft anything
                     billboard9.SetActive(false);
@@ -145,7 +147,8 @@ public class TutorialManager : MonoBehaviour
                     billboard11.SetActive(false);
                     pointer.ChangeTarget(point12);
                     billboard12.SetActive(true);
-                    break;
+                    HUD.instance.UnlockPopup("you can craft jawrs now");
+                break;
                 case 12:
                     //give the NPC his shark idol
                     billboard1.SetActive(false);

@@ -82,15 +82,16 @@ public class WorkbenchUI : MonoBehaviour
     }
 
     //function that instantiates a new recipe widget
-    //called by other things
     public void UnlockRecipe(RecipeSO _recipe)
     {
+        //make sure to flash open and close it if you're using this while the workbench is inactive
         GameObject unlockedRecipe = Instantiate(blankRecipeWidget);
         wRecipe w_Recipe = unlockedRecipe.GetComponent<wRecipe>();
         unlockedRecipe.transform.SetParent(recipeBox.transform);
         w_Recipe.myRecipe = _recipe;
         w_Recipe.myImage.sprite = _recipe.output.itemSprite;
         w_Recipe.Refresh();
+
     }
 
     //chud invokeable functions

@@ -28,5 +28,15 @@ public class w_ItemPopup : MonoBehaviour
         amountText.text = "" + amount;
     }
 
+    public void SetUnlock()
+    {
+        item = HUD.instance.unlockItem;
+        itemName.text = item.itemName;
+        image.enabled = true;
+        image.sprite = item.itemSprite;
+        amountText.text = "";
+
+    }
+
 
 }

@@ -7,6 +7,7 @@ public class InventorySO : ScriptableObject
 {
     public List<InventoryItem> InventoryItems = new List<InventoryItem>();
     public int maxItems;
+    public int dropMultiplier;
     public event Action<ItemSO, int, bool> GetInventoryItem;
     public event Action<int> AddInventoryItem;
 
@@ -33,7 +34,7 @@ public class InventorySO : ScriptableObject
             {
                 if (item.item == newItem)
                 {
-                    item.AddAmount(newAmount);
+                    item.AddAmount(newAmount * dropMultiplier);
                     //GetInventoryItem?.Invoke(newItem, newAmount, false);
                     //AddInventoryItem?.Invoke(newAmount);
                     return;
@@ -44,7 +45,7 @@ public class InventorySO : ScriptableObject
         //Adds item to inventory item list if not stackable
         if (InventoryItems.Count < maxItems)
         {
-            InventoryItems.Add(new InventoryItem(newItem, newAmount));
+            InventoryItems.Add(new InventoryItem(newItem, newAmount * dropMultiplier));
 
         }
 

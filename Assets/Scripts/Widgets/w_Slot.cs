@@ -48,4 +48,13 @@ public class w_Slot : MonoBehaviour, IPointerEnterHandler
 
     }
 
+    public void OnItemClicked()
+    {
+        if(item.item.effect != null)
+        {
+            item.item.effect.UseItem();
+            managerRef.inventory.RemoveItem(item.item, -1);
+        }
+    }
+
 }

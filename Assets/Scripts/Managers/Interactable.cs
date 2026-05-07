@@ -77,6 +77,10 @@ public class Interactable : MonoBehaviour
         {
             this.gameObject.GetComponent<MineRock>().Interact();
         }
+        else if (gameObject.CompareTag("World Tree"))
+        {
+            this.gameObject.GetComponent<WorldTree>().OnInteract();
+        }
         else
         {
             Debug.Log("Nothing interactable hit, tag is: " + gameObject.tag);

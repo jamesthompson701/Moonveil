@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ public class HUD : MonoBehaviour
 
     GameObject playerRef;
     SpellManager2 attackManagerRef;
+    PlayerDamageReceiver playerHealthRef;
 
     public List<GameObject> itemPopups;
     
@@ -20,12 +22,22 @@ public class HUD : MonoBehaviour
 
     public GameObject[] SpellChargeIcons;
 
+    public ItemSO unlockItem;
+
+    //fill bars
+    float maxFill = 1;
+    public Image healthBar;
+
+    public GameObject manaText;
+    bool textActive = false;
+
 
 
     private void Awake()
     {
         playerRef = GameObject.Find("Player");
         attackManagerRef = playerRef.GetComponent<SpellManager2>();
+        playerHealthRef = playerRef.GetComponent<PlayerDamageReceiver>();
 
         InventoryManager.instance.invSO.GetInventoryItem += InstantiatePopup;
 
@@ -38,6 +50,8 @@ public class HUD : MonoBehaviour
     }
     private void Update()
     {
+        UpdateHealthDisplay();
+
         if (FishingManager.Instance != null && FishingManager.Instance.inFishingMode == false)
         {
             switch (attackManagerRef.attackChoice)
@@ -57,6 +71,8 @@ public class HUD : MonoBehaviour
             }
         return;
         }
+
+        
         
 
     }
@@ -78,27 +94,36 @@ public class HUD : MonoBehaviour
     public void UpdateManaDisplay(float[] fillPercents)
     {
 
-
         if (fillPercents != null)
         {
             if (highlight != null)
             {
-
                 for (int i = 0; i < highlight.Length; i++)
                 {
-
 
                     var img = highlight[i].GetComponent<UnityEngine.UI.Image>();
 
                     highlight[i].GetComponent<UnityEngine.UI.Image>().fillAmount = fillPercents[i];
+                    if (manaText.activeInHierarchy && !textActive)
+                    {
+                        textActive = true;
+                        Invoke("SetManaText", 1.0f);
+                    }
+
                 }
             }
         }
 
+    }
 
-
-
-
+    public void UpdateHealthDisplay()
+    {
+        healthBar.fillAmount = playerHealthRef.currentHealth / playerHealthRef.maxHealth;
+    }
+    public void SetManaText()
+    {
+        manaText.SetActive(false);
+        textActive = false;
     }
 
     public void UpdatedSpellCharge(int tier)
@@ -159,6 +184,18 @@ public class HUD : MonoBehaviour
             StartCoroutine(InventoryManager.instance.DestroyPopup(popUp));
 
         }
+    }
+
+    public void UnlockPopup(string unlockText)
+    {
+        GameObject popUp = Instantiate(slot, popupGroup);
+        itemPopups.Add(popUp);
+        w_ItemPopup spawnedPopup = popUp.GetComponent<w_ItemPopup>();
+
+        unlockItem.itemName = unlockText;
+        spawnedPopup.SetUnlock();
+
+        StartCoroutine(InventoryManager.instance.DestroyPopup(popUp));
     }
 
 }
