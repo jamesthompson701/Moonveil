@@ -19,8 +19,12 @@ public class InventorySO : ScriptableObject
             //complete billboard 2; go forage
             if(TutorialManager.instance.currentBillboard == 1)
             {
-                TutorialManager.instance.ProgressTutorial(2);
-                InventoryManager.instance.tutorialDone = true;
+                if(newItem.itemID == 1)
+                {
+                    TutorialManager.instance.ProgressTutorial(2);
+                    InventoryManager.instance.tutorialDone = true;
+                }
+                
             }
 
         }
