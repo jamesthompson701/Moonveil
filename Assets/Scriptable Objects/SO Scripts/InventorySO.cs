@@ -19,6 +19,7 @@ public class InventorySO : ScriptableObject
             //complete billboard 2; go forage
             if(TutorialManager.instance.currentBillboard == 1)
             {
+                //Item id 1 is the wool of bat seed
                 if(newItem.itemID == 1)
                 {
                     TutorialManager.instance.ProgressTutorial(2);
