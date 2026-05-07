@@ -15,7 +15,7 @@ public class CanvasManager : MonoBehaviour
 
     [Header("DO NOT MOVE THINGS you can add though")]
     [SerializeField] private GameObject[] menus;
-    // 0 - HUD; 1 - Book; 2 - SelectionWheel; 3 - Workbench ; 4 - Inventory; 5 - FastTravel; 6 - WorldTrees
+    // 0 - HUD; 1 - Book; 2 - SelectionWheel; 3 - Workbench ; 4 - Inventory; 5 - FastTravel; 6 - WorldTrees ; 7 - Options
 
 
 
@@ -104,8 +104,17 @@ public class CanvasManager : MonoBehaviour
         {
             if (currentCanvas != 0)
             {
-                //Closes current canvas
-                OpenMenu(currentCanvas);
+                // checks if options is open 
+                if (currentCanvas == 7)
+                {
+                    OpenMenu(1);
+                }
+                else
+                {
+                    //Closes current canvas
+                    OpenMenu(currentCanvas);
+                }
+
             }
             else
             {

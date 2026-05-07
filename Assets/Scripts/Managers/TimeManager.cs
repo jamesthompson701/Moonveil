@@ -74,20 +74,28 @@ public class TimeManager : MonoBehaviour
         {
             timeOfDay = 2;
             worldLight.transform.Rotate(0.06f, 0, 0);
+
+            HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 180f);
         }
         else if (daylightCycleTime >= 750 && daylightCycleTime < 1150)
         {
             timeOfDay = 3;
+
+            HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 67f);
         }
         else if (daylightCycleTime >= 1150 && daylightCycleTime < 1200)
         {
             timeOfDay = 2;
             worldLight.transform.Rotate(0.06f, 0, 0);
+
+            HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 180f);
         }
         else if (daylightCycleTime >= dayLength)
         {
             daylightCycleTime = 0;
             timeOfDay = 1;
+
+            HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 300f);
         }
 
         //check each plant in the list

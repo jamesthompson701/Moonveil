@@ -33,6 +33,12 @@ public class BookMenu : MonoBehaviour
 
     }
 
+    // SETTINGS MENU
+    public void DisplaySettings()
+    {
+        CanvasManager.Instance.OpenMenu(7);
+    }
+
     // cleaner disabling
     public void DisplayContent(GameObject _screen)
     {
