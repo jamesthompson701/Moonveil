@@ -10,6 +10,7 @@ public class wQuestItem : MonoBehaviour
     // visual elements
     public Image myImage;
     public TMP_Text myName;
+    public TMP_Text myProgress;
 
     // world tree that commands this widget
     public WorldTree myWorldTree;
@@ -23,5 +24,10 @@ public class wQuestItem : MonoBehaviour
     {
         myImage.sprite = myItem.itemSprite;
         myName.text = myItem.itemName;
+    }
+
+    public void Progress(int _current, int _total)
+    {
+        myProgress.text = _current + "/" + _total;
     }
 }

@@ -1,6 +1,6 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using StarterAssets;
 
 /// <summary>
 /// Manager for handling spell casting and effects.
@@ -12,15 +12,6 @@ public class SpellManager2 : MonoBehaviour
 {
 
     //TODO
-    //Implement resource pool for each spell type
-    //Implement each spell type as an enum
-    //Implement individual cooldowns for each spell type resource
-    //Implement a basic attack with no resource cost and a short cooldown
-    //Implement input handling for casting spells based on player input and spell definitions
-    //Implement combat area and farm area seperation
-    //Implement spell swapping and hotkeys for each spell type
-    //Implement charge ability to change which spell tier is cast
-    //Implement spell tier system where holding the charge ability increases the tier of the spell cast, up to a maximum tier
 
     //Singleton
     public static SpellManager2 Instance;
@@ -98,6 +89,14 @@ public class SpellManager2 : MonoBehaviour
     [Header("Cheats/Debug")]
     [SerializeField] private bool infiniteManaRegen = false;
     private float _defaultRechargeRate;
+
+    // menu state - prevents attacks/casts while true
+    [Header("State")]
+    [Tooltip("When true, prevents attempts to basic attack or cast spells (e.g. UI/menu open).")]
+    public bool inMenu = false;
+
+    // Coroutine handle for clearing casting state
+    private Coroutine _clearCastingCoroutine;
 
     //Checks for CombatArea trigger tag to switch between combat and farm spells
     private void OnTriggerEnter(Collider other)
@@ -237,6 +236,19 @@ public class SpellManager2 : MonoBehaviour
         if (basicAttackPrefab == null)
             return;
 
+        // Block basic attacks while in flight
+        if (ThirdPersonController.Instance != null && ThirdPersonController.Instance.inFlightMode)
+        {
+            Debug.Log("Cannot basic attack while in flight");
+            return;
+        }
+
+        if (inMenu)
+        {
+            Debug.Log("Cannot basic attack while in menu");
+            return;
+        }
+
         if (FishingManager.Instance.inFishingMode)
         {
             Debug.Log("Cannot basic attack while fishing");
@@ -281,6 +293,15 @@ public class SpellManager2 : MonoBehaviour
 
         Debug.Log("Basic Attack Cast");
 
+        // Mark controller as casting so flight can't be toggled during this action
+        if (ThirdPersonController.Instance != null)
+        {
+            // Stop any existing clear coroutine and set casting
+            if (_clearCastingCoroutine != null) StopCoroutine(_clearCastingCoroutine);
+            ThirdPersonController.Instance.isCasting = true;
+            _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, basicAttackLifetime)));
+        }
+
         //Triggers the spellcast animation
         _animator.SetTrigger("Spellcast");
 
@@ -308,9 +329,15 @@ public class SpellManager2 : MonoBehaviour
 
     public void Attack(InputAction.CallbackContext context)
     {
+        if (inMenu)
+        {
+            Debug.Log("Cannot cast spells while in menu");
+            return;
+        }
+
         if (FishingManager.Instance.inFishingMode)
         {
-            Debug.Log("Cannot cast spells while fishing");
+            Debug.Log("Cannot cast spells while in fishing");
             return;
         }
 
@@ -320,15 +347,30 @@ public class SpellManager2 : MonoBehaviour
             return;
         }
 
+        // Block casting if player is currently in flight
+        if (ThirdPersonController.Instance != null && ThirdPersonController.Instance.inFlightMode)
+        {
+            Debug.Log("Cannot cast spells while in flight");
+            return;
+        }
+
         //Triggers the spellcast animation
         _animator.SetTrigger("Spellcast");
 
         // Start the hold timer on press
         if (context.started)
         {
+            // Mark controller as casting so flight can't be toggled during charge
+            if (ThirdPersonController.Instance != null)
+                ThirdPersonController.Instance.isCasting = true;
+
+            // Ensure max allowed tier/timer are updated for the current attackChoice
+            UpdateMaxAllowedTierAndTimer();
+
+            // Start timer (Timer() will clamp to _maxAllowedTimer)
             timerOn = true;
             timer = 0f;
-            UpdateMaxAllowedTierAndTimer();
+
             return;
         }
 
@@ -341,6 +383,9 @@ public class SpellManager2 : MonoBehaviour
             else if (timer < tierChargeTimes[1]) tier = 2;
             else if (timer < tierChargeTimes[2]) tier = 3;
             else tier = 4;
+
+            // Clamp desired tier to the max allowed for this element to prevent selecting tiers beyond what's unlocked
+            tier = Mathf.Min(tier, _maxAllowedTier);
 
             //reference unlocked tiers for the current element type and adjust tier if necessary
             if (attackChoice > 0 && attackChoice <= 4)
@@ -440,12 +485,17 @@ public class SpellManager2 : MonoBehaviour
             // Reset timer state
             timerOn = false;
             timer = 0f;
+
+            // note: do not clear isCasting here — Cast() (or TryBasicAttack) will clear based on prefab lifetime
+
             return;
         }
     }
 
     private void Cast(SO_SpellDefs2 spell)
     {
+        float cost;
+
         if (spell == null) return;
 
         int elementIdx = (int)spell.spellType;
@@ -478,6 +528,18 @@ public class SpellManager2 : MonoBehaviour
 
                 cameraPlanarForward = planarForward
             };
+
+            cost = tierResourceCosts[currentTier - 1];
+            if (!SpendMana(cost, elementIdx))
+                return; // Not enough mana
+
+            // mark casting and schedule clear based on spell lifetime
+            if (ThirdPersonController.Instance != null)
+            {
+                if (_clearCastingCoroutine != null) StopCoroutine(_clearCastingCoroutine);
+                ThirdPersonController.Instance.isCasting = true;
+                _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, spell.Lifetime)));
+            }
 
             spell.CastSpell2(farmCtx);
 
@@ -515,9 +577,17 @@ public class SpellManager2 : MonoBehaviour
         };
         
 
-        float cost = tierResourceCosts[currentTier - 1];
+        cost = tierResourceCosts[currentTier - 1];
         if (!SpendMana(cost, elementIdx))
             return; // Not enough mana
+
+        // mark casting and schedule clear based on spell lifetime
+        if (ThirdPersonController.Instance != null)
+        {
+            if (_clearCastingCoroutine != null) StopCoroutine(_clearCastingCoroutine);
+            ThirdPersonController.Instance.isCasting = true;
+            _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, spell.Lifetime)));
+        }
 
         spell.CastSpell2(ctx);
 
@@ -712,6 +782,14 @@ public class SpellManager2 : MonoBehaviour
 
     private void UpdateMaxAllowedTierAndTimer()
     {
+        // Guard against invalid attackChoice
+        if (attackChoice <= 0 || attackChoice > 4)
+        {
+            _maxAllowedTier = 1;
+            _maxAllowedTimer = (tierChargeTimes != null && tierChargeTimes.Length > 0) ? Mathf.Max(0f, tierChargeTimes[0] - 0.0001f) : 0f;
+            return;
+        }
+
         int elementIdx = attackChoice - 1;
         bool[] unlockedArray = null;
 
@@ -723,16 +801,34 @@ public class SpellManager2 : MonoBehaviour
             case 3: unlockedArray = airTierUnlocked; break;
         }
 
+        if (unlockedArray == null || unlockedArray.Length == 0)
+        {
+            _maxAllowedTier = 1;
+            _maxAllowedTimer = (tierChargeTimes != null && tierChargeTimes.Length > 0) ? Mathf.Max(0f, tierChargeTimes[0] - 0.0001f) : 0f;
+            return;
+        }
+
         int highestUnlocked = 1;
         for (int i = 0; i < unlockedArray.Length; i++)
         {
             if (unlockedArray[i])
                 highestUnlocked = i + 1;
         }
+
         _maxAllowedTier = highestUnlocked;
-        // Clamp to available charge times
-        int chargeIdx = Mathf.Clamp(_maxAllowedTier - 1, 0, tierChargeTimes.Length - 1);
-        _maxAllowedTimer = tierChargeTimes[chargeIdx];
+
+        // If the highest unlocked tier is the top tier (4) allow uncapped charging.
+        if (_maxAllowedTier >= 4)
+        {
+            _maxAllowedTimer = float.MaxValue;
+            return;
+        }
+
+        // Otherwise clamp the timer to just before the next tier threshold so the timer cannot select a higher tier.
+        int thresholdIndex = Mathf.Clamp(_maxAllowedTier - 1, 0, Mathf.Max(0, tierChargeTimes.Length - 1));
+        float threshold = tierChargeTimes.Length > 0 ? tierChargeTimes[thresholdIndex] : 0f;
+        const float clampEpsilon = 0.0001f;
+        _maxAllowedTimer = Mathf.Max(0f, threshold - clampEpsilon);
     }
 
     private void AlignPlayerToCamera()
@@ -744,5 +840,14 @@ public class SpellManager2 : MonoBehaviour
         Vector3 cameraForward = Vector3.ProjectOnPlane(aimCamera.transform.forward, Vector3.up).normalized;
         if (cameraForward.sqrMagnitude > 0.001f)
             player.transform.forward = cameraForward;
+    }
+
+    // Clears the casting lock after the provided duration.
+    private System.Collections.IEnumerator ClearCastingAfter(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        if (ThirdPersonController.Instance != null)
+            ThirdPersonController.Instance.isCasting = false;
+        _clearCastingCoroutine = null;
     }
 }

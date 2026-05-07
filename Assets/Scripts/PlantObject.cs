@@ -172,8 +172,12 @@ public class PlantObject : MonoBehaviour
             //completes billboard 5: harvest crops
             if(TutorialManager.instance.currentBillboard == 4)
             {
-                TutorialManager.instance.ProgressTutorial(5);
-                TutorialManager.instance.harvesting = true;
+                Debug.Log("Harvasted :" + plant.plantName);
+                if (plant.plantName == "Wool Of Bat")
+                {
+                    TutorialManager.instance.ProgressTutorial(5);
+                    TutorialManager.instance.harvesting = true;
+                }
             }
 
         }
