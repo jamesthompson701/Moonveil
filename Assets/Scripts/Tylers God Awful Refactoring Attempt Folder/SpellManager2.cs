@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,15 +11,6 @@ public class SpellManager2 : MonoBehaviour
 {
 
     //TODO
-    //Implement resource pool for each spell type
-    //Implement each spell type as an enum
-    //Implement individual cooldowns for each spell type resource
-    //Implement a basic attack with no resource cost and a short cooldown
-    //Implement input handling for casting spells based on player input and spell definitions
-    //Implement combat area and farm area seperation
-    //Implement spell swapping and hotkeys for each spell type
-    //Implement charge ability to change which spell tier is cast
-    //Implement spell tier system where holding the charge ability increases the tier of the spell cast, up to a maximum tier
 
     //Singleton
     public static SpellManager2 Instance;
@@ -98,6 +88,11 @@ public class SpellManager2 : MonoBehaviour
     [Header("Cheats/Debug")]
     [SerializeField] private bool infiniteManaRegen = false;
     private float _defaultRechargeRate;
+
+    // menu state - prevents attacks/casts while true
+    [Header("State")]
+    [Tooltip("When true, prevents attempts to basic attack or cast spells (e.g. UI/menu open).")]
+    public bool inMenu = false;
 
     //Checks for CombatArea trigger tag to switch between combat and farm spells
     private void OnTriggerEnter(Collider other)
@@ -237,6 +232,12 @@ public class SpellManager2 : MonoBehaviour
         if (basicAttackPrefab == null)
             return;
 
+        if (inMenu)
+        {
+            Debug.Log("Cannot basic attack while in menu");
+            return;
+        }
+
         if (FishingManager.Instance.inFishingMode)
         {
             Debug.Log("Cannot basic attack while fishing");
@@ -308,6 +309,12 @@ public class SpellManager2 : MonoBehaviour
 
     public void Attack(InputAction.CallbackContext context)
     {
+        if (inMenu)
+        {
+            Debug.Log("Cannot cast spells while in menu");
+            return;
+        }
+
         if (FishingManager.Instance.inFishingMode)
         {
             Debug.Log("Cannot cast spells while fishing");
@@ -326,9 +333,13 @@ public class SpellManager2 : MonoBehaviour
         // Start the hold timer on press
         if (context.started)
         {
+            // Ensure max allowed tier/timer are updated for the current attackChoice
+            UpdateMaxAllowedTierAndTimer();
+
+            // Start timer (Timer() will clamp to _maxAllowedTimer)
             timerOn = true;
             timer = 0f;
-            UpdateMaxAllowedTierAndTimer();
+
             return;
         }
 
@@ -341,6 +352,9 @@ public class SpellManager2 : MonoBehaviour
             else if (timer < tierChargeTimes[1]) tier = 2;
             else if (timer < tierChargeTimes[2]) tier = 3;
             else tier = 4;
+
+            // Clamp desired tier to the max allowed for this element to prevent selecting tiers beyond what's unlocked
+            tier = Mathf.Min(tier, _maxAllowedTier);
 
             //reference unlocked tiers for the current element type and adjust tier if necessary
             if (attackChoice > 0 && attackChoice <= 4)
@@ -712,6 +726,14 @@ public class SpellManager2 : MonoBehaviour
 
     private void UpdateMaxAllowedTierAndTimer()
     {
+        // Guard against invalid attackChoice
+        if (attackChoice <= 0 || attackChoice > 4)
+        {
+            _maxAllowedTier = 1;
+            _maxAllowedTimer = (tierChargeTimes != null && tierChargeTimes.Length > 0) ? Mathf.Max(0f, tierChargeTimes[0] - 0.0001f) : 0f;
+            return;
+        }
+
         int elementIdx = attackChoice - 1;
         bool[] unlockedArray = null;
 
@@ -723,16 +745,34 @@ public class SpellManager2 : MonoBehaviour
             case 3: unlockedArray = airTierUnlocked; break;
         }
 
+        if (unlockedArray == null || unlockedArray.Length == 0)
+        {
+            _maxAllowedTier = 1;
+            _maxAllowedTimer = (tierChargeTimes != null && tierChargeTimes.Length > 0) ? Mathf.Max(0f, tierChargeTimes[0] - 0.0001f) : 0f;
+            return;
+        }
+
         int highestUnlocked = 1;
         for (int i = 0; i < unlockedArray.Length; i++)
         {
             if (unlockedArray[i])
                 highestUnlocked = i + 1;
         }
+
         _maxAllowedTier = highestUnlocked;
-        // Clamp to available charge times
-        int chargeIdx = Mathf.Clamp(_maxAllowedTier - 1, 0, tierChargeTimes.Length - 1);
-        _maxAllowedTimer = tierChargeTimes[chargeIdx];
+
+        // If the highest unlocked tier is the top tier (4) allow uncapped charging.
+        if (_maxAllowedTier >= 4)
+        {
+            _maxAllowedTimer = float.MaxValue;
+            return;
+        }
+
+        // Otherwise clamp the timer to just before the next tier threshold so the timer cannot select a higher tier.
+        int thresholdIndex = Mathf.Clamp(_maxAllowedTier - 1, 0, Mathf.Max(0, tierChargeTimes.Length - 1));
+        float threshold = tierChargeTimes.Length > 0 ? tierChargeTimes[thresholdIndex] : 0f;
+        const float clampEpsilon = 0.0001f;
+        _maxAllowedTimer = Mathf.Max(0f, threshold - clampEpsilon);
     }
 
     private void AlignPlayerToCamera()

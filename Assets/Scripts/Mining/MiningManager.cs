@@ -97,8 +97,6 @@ public class MiningManager : MonoBehaviour
 
         miniGameUI.StartMiniGame(currentRock.state);
 
-        if (HUD.instance != null)
-        HUD.instance.gameObject.SetActive(false);
 
         yield return Fade(0f);
     }
@@ -140,9 +138,6 @@ public class MiningManager : MonoBehaviour
         miningCamera.gameObject.SetActive(false);
         mainCamera.gameObject.SetActive(true);
 
-        // Restore HUD
-        if (HUD.instance != null)
-            HUD.instance.gameObject.SetActive(true);
 
         // Close UI system LAST
         if (CanvasManager.Instance != null)
