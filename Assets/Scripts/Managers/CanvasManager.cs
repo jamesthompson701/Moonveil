@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using Unity.VisualScripting;
+using StarterAssets;
 
 [DefaultExecutionOrder(-100)] //change for mining fade canvas staying on enter/exit bug
 public class CanvasManager : MonoBehaviour
@@ -24,6 +25,7 @@ public class CanvasManager : MonoBehaviour
 
 
     // GETS THE KEYBINDS
+    StarterAssetsInputs starterAssets;
     public InputActionAsset input;
     InputAction inventoryAction;
     InputAction pauseAction;
@@ -47,6 +49,8 @@ public class CanvasManager : MonoBehaviour
 
         playerMap = input.FindActionMap("Player");
         UIMap = input.FindActionMap("UI");
+
+        starterAssets = FindFirstObjectByType<StarterAssetsInputs>();
 
 
         //Making canvas manager a singleton
@@ -153,9 +157,12 @@ public class CanvasManager : MonoBehaviour
 
             Time.timeScale = 0f;
 
+            starterAssets.cursorLocked = false;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             ClickSelector.Instance.enabled = false;
+
+            
         }
         else if (menus[menu].activeInHierarchy)
         {
@@ -183,6 +190,7 @@ public class CanvasManager : MonoBehaviour
 
             Time.timeScale = 1f;
 
+            starterAssets.cursorLocked = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             ClickSelector.Instance.enabled = true;
