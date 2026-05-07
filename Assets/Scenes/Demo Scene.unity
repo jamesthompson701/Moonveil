@@ -25449,6 +25449,45 @@ Transform:
   - {fileID: 7233709592143869929}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &2010442947
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI Extensions/UIMultiply
+  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1001 &2016185668
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27487,7 +27526,7 @@ PrefabInstance:
       objectReference: {fileID: 9000000, guid: 2feffe2d21429174e9b92c4e0e1012c6, type: 3}
     - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
       propertyPath: 'airTierUnlocked.Array.data[1]'
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
       propertyPath: 'airTierUnlocked.Array.data[2]'
@@ -27507,6 +27546,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
       propertyPath: 'fireTierUnlocked.Array.data[3]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: 'earthTierUnlocked.Array.data[1]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: 'earthTierUnlocked.Array.data[2]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: 'earthTierUnlocked.Array.data[3]'
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2280460673590856493, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
@@ -27539,7 +27590,7 @@ PrefabInstance:
       objectReference: {fileID: 209873037}
     - target: {fileID: 4588714457413223260, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
       propertyPath: m_VersionIndex
-      value: 1647
+      value: 1650
       objectReference: {fileID: 0}
     - target: {fileID: 4758765720818906293, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
       propertyPath: m_IsActive
