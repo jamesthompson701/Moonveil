@@ -6,6 +6,7 @@ public class FishingRod : MonoBehaviour
     public GameObject baitPrefab;
     public Transform castOrigin; // where bait should appear from (rod tip)
     public float castDelay = 1f;
+    public float baitRotateSpeed = 100f;
 
     FishingManager manager;
     string reelInputName;
@@ -23,7 +24,7 @@ public class FishingRod : MonoBehaviour
     {
         if (manager == null) return;
 
-        // Cast with manager's castInput (use GetButtonDown for simplicity)
+        // Cast rod
         if (!isCasted && Input.GetButtonDown(manager.castInput))
         {
             isCasted = true; // lock immediately to prevent double cast
@@ -31,11 +32,17 @@ public class FishingRod : MonoBehaviour
             StartCoroutine(CastRodCoroutine(targetPos));
         }
 
-        // Pull rod (cancel) - right mouse or manager.reelInput used earlier to begin reeling; use right click to pull
+        // Pull rod 
         if (isCasted && Input.GetMouseButtonDown(1))
         {
             PullRod();
         }
+
+        //rotate bait
+        if (spawnedBait != null)
+        {
+            spawnedBait.transform.Rotate(0f, 0f, baitRotateSpeed * Time.deltaTime);
+        }  
     }
 
     Vector3 GetWaterHitPoint()

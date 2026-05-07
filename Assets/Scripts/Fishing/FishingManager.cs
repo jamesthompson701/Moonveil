@@ -6,10 +6,11 @@ using StarterAssets;
 
 public class FishingManager : MonoBehaviour
 {
-  ThirdPersonController playerController;
+    ThirdPersonController playerController;
     StarterAssetsInputs playerInput;
     SpellManager2 spellManager;
     public static event Action<FishData> OnFishCaught;
+    private SkinnedMeshRenderer[] playerMeshes;
 
     [Header("References")]
     public Camera mainCamera;
@@ -87,6 +88,8 @@ public class FishingManager : MonoBehaviour
         playerController = FindFirstObjectByType<ThirdPersonController>();
         playerInput = FindFirstObjectByType<StarterAssetsInputs>();
         spellManager = FindFirstObjectByType<SpellManager2>();
+
+        playerMeshes = player.GetComponentsInChildren<SkinnedMeshRenderer>(true);
     }
 
     void Update()
@@ -154,6 +157,12 @@ public class FishingManager : MonoBehaviour
 
         playerController.enabled = false;
         player.GetComponent<ClickSelector>().enabled = false;
+
+        //hide maeve
+        foreach (var mesh in playerMeshes)
+        {
+            mesh.enabled = false;
+        }
 
         // Find correct biome UI
         activeBiomeUI = null;
@@ -241,6 +250,10 @@ public class FishingManager : MonoBehaviour
 
         player.GetComponent<ThirdPersonController>().enabled = true;
         player.GetComponent<ClickSelector>().enabled = true;
+        foreach (var mesh in playerMeshes)
+        {
+            mesh.enabled = true;
+        }
 
         if (activeBiomeUI != null && activeBiomeUI.fishingVisuals != null)
         activeBiomeUI.fishingVisuals.SetActive(false);
@@ -374,7 +387,10 @@ public class FishingManager : MonoBehaviour
 
             InventoryManager.instance.AddFish(caughtFish, 1);
 
-
+            if (currentRod != null)
+            {
+                currentRod.OnCaughtFish();
+            }
         }
         else
         {
