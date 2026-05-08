@@ -31,6 +31,8 @@ public class HUD : MonoBehaviour
     public GameObject manaText;
     bool textActive = false;
 
+    public Image clockWheel;
+
 
 
     private void Awake()

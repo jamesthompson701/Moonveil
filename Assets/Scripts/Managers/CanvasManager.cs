@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using Unity.VisualScripting;
+using StarterAssets;
 
 [DefaultExecutionOrder(-100)] //change for mining fade canvas staying on enter/exit bug
 public class CanvasManager : MonoBehaviour
@@ -15,7 +16,7 @@ public class CanvasManager : MonoBehaviour
 
     [Header("DO NOT MOVE THINGS you can add though")]
     [SerializeField] private GameObject[] menus;
-    // 0 - HUD; 1 - Book; 2 - SelectionWheel; 3 - Workbench ; 4 - Inventory; 5 - FastTravel; 6 - WorldTrees
+    // 0 - HUD; 1 - Book; 2 - SelectionWheel; 3 - Workbench ; 4 - Inventory; 5 - FastTravel; 6 - WorldTrees ; 7 - Options
 
 
 
@@ -24,6 +25,7 @@ public class CanvasManager : MonoBehaviour
 
 
     // GETS THE KEYBINDS
+    StarterAssetsInputs starterAssets;
     public InputActionAsset input;
     InputAction inventoryAction;
     InputAction pauseAction;
@@ -47,6 +49,8 @@ public class CanvasManager : MonoBehaviour
 
         playerMap = input.FindActionMap("Player");
         UIMap = input.FindActionMap("UI");
+
+        starterAssets = FindFirstObjectByType<StarterAssetsInputs>();
 
 
         //Making canvas manager a singleton
@@ -104,8 +108,17 @@ public class CanvasManager : MonoBehaviour
         {
             if (currentCanvas != 0)
             {
-                //Closes current canvas
-                OpenMenu(currentCanvas);
+                // checks if options is open 
+                if (currentCanvas == 7)
+                {
+                    OpenMenu(1);
+                }
+                else
+                {
+                    //Closes current canvas
+                    OpenMenu(currentCanvas);
+                }
+
             }
             else
             {
@@ -144,9 +157,12 @@ public class CanvasManager : MonoBehaviour
 
             Time.timeScale = 0f;
 
+            starterAssets.cursorLocked = false;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             ClickSelector.Instance.enabled = false;
+
+            
         }
         else if (menus[menu].activeInHierarchy)
         {
@@ -174,6 +190,7 @@ public class CanvasManager : MonoBehaviour
 
             Time.timeScale = 1f;
 
+            starterAssets.cursorLocked = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             ClickSelector.Instance.enabled = true;
