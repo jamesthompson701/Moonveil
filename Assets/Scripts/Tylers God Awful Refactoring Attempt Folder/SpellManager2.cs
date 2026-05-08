@@ -60,7 +60,7 @@ public class SpellManager2 : MonoBehaviour
     [SerializeField] private Animator _animator;
     [Tooltip("Determines what type of spells are cast")]
     public bool inCombatArea = false;
-    private bool timerOn = false;
+    public bool timerOn = false;
     [SerializeField] private float timer = 0f;
     public int attackChoice = 0;
     private GameObject _SpellPreviewInstance;
@@ -228,6 +228,7 @@ public class SpellManager2 : MonoBehaviour
         {
             timer = 0;
         }
+        Debug.Log("timer is: " + timer);
     }
     // calls basic attack on attack action
     public void TryBasicAttack(InputAction.CallbackContext context)

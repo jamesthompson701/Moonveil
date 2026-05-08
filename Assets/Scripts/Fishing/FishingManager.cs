@@ -132,9 +132,9 @@ public class FishingManager : MonoBehaviour
 
     public void EnterFishingMode(FishingArea area)
     {
-        if (HUD.instance != null)
+        if (SpellManager2.Instance != null)
         {
-            HUD.instance.UpdatedSpellCharge(0);
+            SpellManager2.Instance.timerOn = false;
         }
 
         if (area == null)
