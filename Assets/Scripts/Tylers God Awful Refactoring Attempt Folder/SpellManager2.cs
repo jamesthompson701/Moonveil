@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using StarterAssets;
 
 /// <summary>
 /// Manager for handling spell casting and effects.
@@ -59,7 +60,7 @@ public class SpellManager2 : MonoBehaviour
     [SerializeField] private Animator _animator;
     [Tooltip("Determines what type of spells are cast")]
     public bool inCombatArea = false;
-    private bool timerOn = false;
+    public bool timerOn = false;
     [SerializeField] private float timer = 0f;
     public int attackChoice = 0;
     private GameObject _SpellPreviewInstance;
@@ -93,6 +94,9 @@ public class SpellManager2 : MonoBehaviour
     [Header("State")]
     [Tooltip("When true, prevents attempts to basic attack or cast spells (e.g. UI/menu open).")]
     public bool inMenu = false;
+
+    // Coroutine handle for clearing casting state
+    private Coroutine _clearCastingCoroutine;
 
     //Checks for CombatArea trigger tag to switch between combat and farm spells
     private void OnTriggerEnter(Collider other)
@@ -224,6 +228,7 @@ public class SpellManager2 : MonoBehaviour
         {
             timer = 0;
         }
+        Debug.Log("timer is: " + timer);
     }
     // calls basic attack on attack action
     public void TryBasicAttack(InputAction.CallbackContext context)
@@ -231,6 +236,13 @@ public class SpellManager2 : MonoBehaviour
         Debug.Log("Trying Basic Attack");
         if (basicAttackPrefab == null)
             return;
+
+        // Block basic attacks while in flight
+        if (ThirdPersonController.Instance != null && ThirdPersonController.Instance.inFlightMode)
+        {
+            Debug.Log("Cannot basic attack while in flight");
+            return;
+        }
 
         if (inMenu)
         {
@@ -282,6 +294,15 @@ public class SpellManager2 : MonoBehaviour
 
         Debug.Log("Basic Attack Cast");
 
+        // Mark controller as casting so flight can't be toggled during this action
+        if (ThirdPersonController.Instance != null)
+        {
+            // Stop any existing clear coroutine and set casting
+            if (_clearCastingCoroutine != null) StopCoroutine(_clearCastingCoroutine);
+            ThirdPersonController.Instance.isCasting = true;
+            _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, basicAttackLifetime)));
+        }
+
         //Triggers the spellcast animation
         _animator.SetTrigger("Spellcast");
 
@@ -317,7 +338,7 @@ public class SpellManager2 : MonoBehaviour
 
         if (FishingManager.Instance.inFishingMode)
         {
-            Debug.Log("Cannot cast spells while fishing");
+            Debug.Log("Cannot cast spells while in fishing");
             return;
         }
 
@@ -327,12 +348,23 @@ public class SpellManager2 : MonoBehaviour
             return;
         }
 
+        // Block casting if player is currently in flight
+        if (ThirdPersonController.Instance != null && ThirdPersonController.Instance.inFlightMode)
+        {
+            Debug.Log("Cannot cast spells while in flight");
+            return;
+        }
+
         //Triggers the spellcast animation
         _animator.SetTrigger("Spellcast");
 
         // Start the hold timer on press
         if (context.started)
         {
+            // Mark controller as casting so flight can't be toggled during charge
+            if (ThirdPersonController.Instance != null)
+                ThirdPersonController.Instance.isCasting = true;
+
             // Ensure max allowed tier/timer are updated for the current attackChoice
             UpdateMaxAllowedTierAndTimer();
 
@@ -454,12 +486,17 @@ public class SpellManager2 : MonoBehaviour
             // Reset timer state
             timerOn = false;
             timer = 0f;
+
+            // note: do not clear isCasting here — Cast() (or TryBasicAttack) will clear based on prefab lifetime
+
             return;
         }
     }
 
     private void Cast(SO_SpellDefs2 spell)
     {
+        float cost;
+
         if (spell == null) return;
 
         int elementIdx = (int)spell.spellType;
@@ -492,6 +529,18 @@ public class SpellManager2 : MonoBehaviour
 
                 cameraPlanarForward = planarForward
             };
+
+            cost = tierResourceCosts[currentTier - 1];
+            if (!SpendMana(cost, elementIdx))
+                return; // Not enough mana
+
+            // mark casting and schedule clear based on spell lifetime
+            if (ThirdPersonController.Instance != null)
+            {
+                if (_clearCastingCoroutine != null) StopCoroutine(_clearCastingCoroutine);
+                ThirdPersonController.Instance.isCasting = true;
+                _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, spell.Lifetime)));
+            }
 
             spell.CastSpell2(farmCtx);
 
@@ -529,9 +578,17 @@ public class SpellManager2 : MonoBehaviour
         };
         
 
-        float cost = tierResourceCosts[currentTier - 1];
+        cost = tierResourceCosts[currentTier - 1];
         if (!SpendMana(cost, elementIdx))
             return; // Not enough mana
+
+        // mark casting and schedule clear based on spell lifetime
+        if (ThirdPersonController.Instance != null)
+        {
+            if (_clearCastingCoroutine != null) StopCoroutine(_clearCastingCoroutine);
+            ThirdPersonController.Instance.isCasting = true;
+            _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, spell.Lifetime)));
+        }
 
         spell.CastSpell2(ctx);
 
@@ -784,5 +841,14 @@ public class SpellManager2 : MonoBehaviour
         Vector3 cameraForward = Vector3.ProjectOnPlane(aimCamera.transform.forward, Vector3.up).normalized;
         if (cameraForward.sqrMagnitude > 0.001f)
             player.transform.forward = cameraForward;
+    }
+
+    // Clears the casting lock after the provided duration.
+    private System.Collections.IEnumerator ClearCastingAfter(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        if (ThirdPersonController.Instance != null)
+            ThirdPersonController.Instance.isCasting = false;
+        _clearCastingCoroutine = null;
     }
 }

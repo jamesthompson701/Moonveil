@@ -24,13 +24,15 @@ public class InteractableHighlight : MonoBehaviour
 
     }
 
+
     private void HighlightObject()
     {
         if (leftClickIcon != null)
         {
             leftClickIcon.SetActive(true);
         }
-        leftClickIcon.SetActive(true);
+
+        //leftClickIcon.SetActive(true);
         var outline = objectToHighlight.AddComponent<Outline>();
 
         if (objectToHighlight.CompareTag("Dialogue")) //Change to NPC if NPC tag is made
