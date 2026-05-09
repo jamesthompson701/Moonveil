@@ -98,6 +98,8 @@ public class SpellManager2 : MonoBehaviour
     // Coroutine handle for clearing casting state
     private Coroutine _clearCastingCoroutine;
 
+    public bool midCast = false;
+
     //Checks for CombatArea trigger tag to switch between combat and farm spells
     private void OnTriggerEnter(Collider other)
     {
@@ -201,6 +203,9 @@ public class SpellManager2 : MonoBehaviour
         ChooseSpell();
         UpdateGroundTargetPreview();
         UpdateChargedUI();
+
+        if (!inCombatArea) infiniteManaRegen = true;
+        else infiniteManaRegen = false;
     }
 
     public void ChooseSpell()
@@ -237,6 +242,13 @@ public class SpellManager2 : MonoBehaviour
         if (basicAttackPrefab == null)
             return;
 
+        // Prevent basic attack if midCast is true
+        if (midCast)
+        {
+            Debug.Log("Cannot basic attack while midCast is true");
+            return;
+        }
+
         // Block basic attacks while in flight
         if (ThirdPersonController.Instance != null && ThirdPersonController.Instance.inFlightMode)
         {
@@ -244,29 +256,35 @@ public class SpellManager2 : MonoBehaviour
             return;
         }
 
+        // block while in menus
         if (inMenu)
         {
             Debug.Log("Cannot basic attack while in menu");
             return;
         }
 
+        // block during fishing
         if (FishingManager.Instance.inFishingMode)
         {
             Debug.Log("Cannot basic attack while fishing");
             return;
         }
 
+        // block during mining
         if (MiningManager.Instance.isMining)
         {
             Debug.Log("Cannot basic attack while mining");
             return;
         }
 
+        // Block while not in combat area
         if (!inCombatArea)
         {
             Debug.Log("Cannot basic attack outside of combat area");
             return;
         }
+
+        
 
         float now = Time.time;
         if (now < _nextBasicAttackTime)
@@ -297,11 +315,14 @@ public class SpellManager2 : MonoBehaviour
         // Mark controller as casting so flight can't be toggled during this action
         if (ThirdPersonController.Instance != null)
         {
-            // Stop any existing clear coroutine and set casting
             if (_clearCastingCoroutine != null) StopCoroutine(_clearCastingCoroutine);
             ThirdPersonController.Instance.isCasting = true;
-            _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, basicAttackLifetime)));
         }
+
+        // Set midCast to true and start coroutine to clear it after attack duration
+        midCast = true;
+        if (_clearCastingCoroutine != null) StopCoroutine(_clearCastingCoroutine);
+        _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, basicAttackLifetime)));
 
         //Triggers the spellcast animation
         _animator.SetTrigger("Spellcast");
@@ -330,18 +351,30 @@ public class SpellManager2 : MonoBehaviour
 
     public void Attack(InputAction.CallbackContext context)
     {
+
+        // Only block NEW spell starts while midCast is true.
+        // Do NOT block context.canceled, because release is what finishes the charged spell.
+        if (midCast && context.started)
+        {
+            Debug.Log("Cannot start a new spell while midCast is true");
+            return;
+        }
+
+        // block while in menus
         if (inMenu)
         {
             Debug.Log("Cannot cast spells while in menu");
             return;
         }
 
+        // block while fishing
         if (FishingManager.Instance.inFishingMode)
         {
             Debug.Log("Cannot cast spells while in fishing");
             return;
         }
 
+        // block while mining
         if (MiningManager.Instance.isMining)
         {
             Debug.Log("Cannot cast spells while mining");
@@ -353,10 +386,7 @@ public class SpellManager2 : MonoBehaviour
         {
             Debug.Log("Cannot cast spells while in flight");
             return;
-        }
-
-        //Triggers the spellcast animation
-        _animator.SetTrigger("Spellcast");
+        }     
 
         // Start the hold timer on press
         if (context.started)
@@ -365,12 +395,18 @@ public class SpellManager2 : MonoBehaviour
             if (ThirdPersonController.Instance != null)
                 ThirdPersonController.Instance.isCasting = true;
 
+            // Set midCast to true (will be cleared after spell cast duration)
+            midCast = true;
+
             // Ensure max allowed tier/timer are updated for the current attackChoice
             UpdateMaxAllowedTierAndTimer();
 
             // Start timer (Timer() will clamp to _maxAllowedTimer)
             timerOn = true;
             timer = 0f;
+
+            // Triggers the spellcast animation
+            _animator.SetTrigger("Spellcast");
 
             return;
         }
@@ -487,7 +523,7 @@ public class SpellManager2 : MonoBehaviour
             timerOn = false;
             timer = 0f;
 
-            // note: do not clear isCasting here — Cast() (or TryBasicAttack) will clear based on prefab lifetime
+            // note: do not clear isCasting or midCast here — Cast() (or TryBasicAttack) will clear based on prefab lifetime
 
             return;
         }
@@ -497,7 +533,11 @@ public class SpellManager2 : MonoBehaviour
     {
         float cost;
 
-        if (spell == null) return;
+        if (spell == null)
+        {
+            ClearCastingStateNow();
+            return;
+        }
 
         int elementIdx = (int)spell.spellType;
 
@@ -532,15 +572,22 @@ public class SpellManager2 : MonoBehaviour
 
             cost = tierResourceCosts[currentTier - 1];
             if (!SpendMana(cost, elementIdx))
+            {
+                ClearCastingStateNow();
                 return; // Not enough mana
+            }
 
             // mark casting and schedule clear based on spell lifetime
             if (ThirdPersonController.Instance != null)
             {
                 if (_clearCastingCoroutine != null) StopCoroutine(_clearCastingCoroutine);
                 ThirdPersonController.Instance.isCasting = true;
-                _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, spell.Lifetime)));
             }
+
+            // Set midCast to true and start coroutine to clear it after spell lifetime
+            midCast = true;
+            if (_clearCastingCoroutine != null) StopCoroutine(_clearCastingCoroutine);
+            _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, spell.Lifetime)));
 
             spell.CastSpell2(farmCtx);
 
@@ -580,15 +627,22 @@ public class SpellManager2 : MonoBehaviour
 
         cost = tierResourceCosts[currentTier - 1];
         if (!SpendMana(cost, elementIdx))
+        {
+            ClearCastingStateNow();
             return; // Not enough mana
+        }
 
         // mark casting and schedule clear based on spell lifetime
         if (ThirdPersonController.Instance != null)
         {
             if (_clearCastingCoroutine != null) StopCoroutine(_clearCastingCoroutine);
             ThirdPersonController.Instance.isCasting = true;
-            _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, spell.Lifetime)));
         }
+
+        // Set midCast to true and start coroutine to clear it after spell lifetime
+        midCast = true;
+        if (_clearCastingCoroutine != null) StopCoroutine(_clearCastingCoroutine);
+        _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, spell.Lifetime)));
 
         spell.CastSpell2(ctx);
 
@@ -849,6 +903,24 @@ public class SpellManager2 : MonoBehaviour
         yield return new WaitForSeconds(duration);
         if (ThirdPersonController.Instance != null)
             ThirdPersonController.Instance.isCasting = false;
+        midCast = false;
         _clearCastingCoroutine = null;
+    }
+
+    // Immediately clears casting lock when casting fails.
+    private void ClearCastingStateNow()
+    {
+        timerOn = false;
+        timer = 0f;
+        midCast = false;
+
+        if (ThirdPersonController.Instance != null)
+            ThirdPersonController.Instance.isCasting = false;
+
+        if (_clearCastingCoroutine != null)
+        {
+            StopCoroutine(_clearCastingCoroutine);
+            _clearCastingCoroutine = null;
+        }
     }
 }
