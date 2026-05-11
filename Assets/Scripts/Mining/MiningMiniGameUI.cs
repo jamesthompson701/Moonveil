@@ -77,6 +77,7 @@ public class MiningMiniGameUI : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
 
+        yield return new WaitForSeconds(1f);
         canInput = true;
     }
 
