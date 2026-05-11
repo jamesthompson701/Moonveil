@@ -39,6 +39,8 @@ public class MiningMiniGameUI : MonoBehaviour
         StopAllCoroutines();
 
         gameObject.SetActive(true);
+        canInput = false;
+
 
         sequence.Clear();
         currentIndex = 0;
@@ -71,7 +73,7 @@ public class MiningMiniGameUI : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f); // buffer before showing
 
-        yield return ShowSequence(speed);
+        yield return StartCoroutine(ShowSequence(speed));
     }
 
     IEnumerator ShowSequence(float speed)
@@ -101,15 +103,10 @@ public class MiningMiniGameUI : MonoBehaviour
 
     void OnButtonPressed(int index)
     {
-        Debug.Log("BUTTON PRESSED: " + index);
-
-        if (!canInput)
-        {
-            Debug.Log("Input blocked");
+        if (!canInput || !gameObject.activeInHierarchy || sequence == null || sequence.Count == 0)
             return;
-        }
 
-        //canInput = false;
+        Debug.Log("BUTTON PRESSED: " + index);
 
         Debug.Log("Current Index Before: " + currentIndex);
         Debug.Log("Expected: " + sequence[currentIndex]);
@@ -120,33 +117,32 @@ public class MiningMiniGameUI : MonoBehaviour
 
             Debug.Log("Correct");
             Debug.Log("Current Index After: " + currentIndex);
-            Debug.Log("Sequence Count: " + sequence.Count);
 
             if (currentIndex >= sequence.Count)
             {
+                if (!canInput) return;
+
+                canInput = false;
+                SetButtonsInteractable(false);
+                StopAllCoroutines();
+
                 Debug.Log("MINING WON");
 
                 gameObject.SetActive(false);
                 manager.EndMining(true);
+
                 return;
             }
-
-            /*StartCoroutine(ReEnableInput());
         }
         else
         {
             Debug.Log("WRONG BUTTON");
 
+            canInput = false;
+            SetButtonsInteractable(false);
+
             gameObject.SetActive(false);
             manager.EndMining(false);
-        }*/
+        }
     }
-
-    /*IEnumerator ReEnableInput()
-    {
-        yield return new WaitForSeconds(0.15f);
-
-        canInput = true;
-    }*/
-}
 }
