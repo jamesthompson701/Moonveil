@@ -13,6 +13,14 @@ public class MiningMiniGameUI : MonoBehaviour
 
     private MiningManager manager;
 
+    void SetButtonsInteractable(bool active)
+    {
+        foreach (Button button in buttons)
+        {
+            button.interactable = active;
+        }
+    }
+
     void Start()
     {
         manager = FindFirstObjectByType<MiningManager>();
@@ -28,6 +36,8 @@ public class MiningMiniGameUI : MonoBehaviour
 
     public void StartMiniGame(RockState state)
     {
+        StopAllCoroutines();
+
         gameObject.SetActive(true);
 
         sequence.Clear();
@@ -67,6 +77,7 @@ public class MiningMiniGameUI : MonoBehaviour
     IEnumerator ShowSequence(float speed)
     {
         canInput = false;
+        SetButtonsInteractable(false);
 
         foreach (int index in sequence)
         {
@@ -77,28 +88,65 @@ public class MiningMiniGameUI : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
+
+        currentIndex = 0;
+
+        SetButtonsInteractable(true);
         canInput = true;
+
+        Debug.Log("PLAYER INPUT ENABLED");
     }
+
 
     void OnButtonPressed(int index)
     {
-        if (!canInput) return;
+        Debug.Log("BUTTON PRESSED: " + index);
+
+        if (!canInput)
+        {
+            Debug.Log("Input blocked");
+            return;
+        }
+
+        //canInput = false;
+
+        Debug.Log("Current Index Before: " + currentIndex);
+        Debug.Log("Expected: " + sequence[currentIndex]);
 
         if (sequence[currentIndex] == index)
         {
             currentIndex++;
 
+            Debug.Log("Correct");
+            Debug.Log("Current Index After: " + currentIndex);
+            Debug.Log("Sequence Count: " + sequence.Count);
+
             if (currentIndex >= sequence.Count)
             {
+                Debug.Log("MINING WON");
+
                 gameObject.SetActive(false);
                 manager.EndMining(true);
+                return;
             }
+
+            /*StartCoroutine(ReEnableInput());
         }
         else
         {
+            Debug.Log("WRONG BUTTON");
+
             gameObject.SetActive(false);
             manager.EndMining(false);
-        }
+        }*/
     }
+
+    /*IEnumerator ReEnableInput()
+    {
+        yield return new WaitForSeconds(0.15f);
+
+        canInput = true;
+    }*/
+}
 }
