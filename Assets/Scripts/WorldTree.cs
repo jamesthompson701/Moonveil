@@ -44,6 +44,7 @@ public class WorldTree : MonoBehaviour
     public void OnInteract()
     {
         CanvasManager.Instance.OpenTreeMenu(myMenu);
+        currentlySelected = null;
 
         if (!isSet)
         {
