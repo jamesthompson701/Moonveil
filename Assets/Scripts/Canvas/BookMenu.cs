@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Net.Mail;
+using TMPro;
 using UnityEngine;
 
 public class BookMenu : MonoBehaviour
@@ -7,12 +8,13 @@ public class BookMenu : MonoBehaviour
     [Header("Content Screens")]
     public GameObject[] contentScreens;
     public GameObject mainScreen;
+    public TMP_Text menuTitle;
 
     [Header("Recipes Tab")]
     public GameObject recipeSlot;
     public GameObject recipesTab;
     public Transform recipeGroup;
-    List<GameObject> unlockedRecipes;
+    List<GameObject> recipeList;
 
 
     //DELETE THIS LATER
@@ -26,6 +28,7 @@ public class BookMenu : MonoBehaviour
             item.gameObject.SetActive(false);
         }
         mainScreen.SetActive(true);
+        menuTitle.text = "";
 
         DisplayRecipes();
     }
@@ -64,16 +67,26 @@ public class BookMenu : MonoBehaviour
         //    recipeSlots[i].SetRecipe(tempRecipe);
         //}
 
-        foreach (GameObject _recipe in WorkbenchUI.instance.unlockedRecipes)
+        if (WorkbenchUI.instance != null)
         {
-            GameObject curRecipe = Instantiate(recipeSlot, recipeGroup);
-            unlockedRecipes.Add(curRecipe);
-            w_PotionRecipe spawnedSlot = curRecipe.GetComponent<w_PotionRecipe>();
+            foreach (GameObject _recipe in WorkbenchUI.instance.unlockedRecipes)
+            {
+                // tracks spawned recipes
+                GameObject curRecipe = Instantiate(recipeSlot, recipeGroup);
+                recipeList.Add(curRecipe);
 
-            wRecipe recipe = _recipe.GetComponent<wRecipe>();
-            spawnedSlot.SetRecipe(recipe.myRecipe);
+                w_PotionRecipe spawnedSlot = curRecipe.GetComponent<w_PotionRecipe>();
+                wRecipe recipe = _recipe.GetComponent<wRecipe>();
+
+                spawnedSlot.SetRecipe(recipe.myRecipe);
+
+            }
+        }
+        else
+        {
 
         }
+
     }
 
     public void OnFastTravelClicked()

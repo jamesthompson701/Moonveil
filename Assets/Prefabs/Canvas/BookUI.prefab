@@ -728,8 +728,9 @@ MonoBehaviour:
   - {fileID: 6601295112718316974}
   - {fileID: 7779502079087772248}
   mainScreen: {fileID: 6939969751711125133}
+  menuTitle: {fileID: 6480727093607478925}
   recipeSlot: {fileID: 1558994105125866424, guid: 6ac274b84f80a48459ca7845d30800ae, type: 3}
-  recipesTab: {fileID: 0}
+  recipesTab: {fileID: 6473250533970633133}
   recipeGroup: {fileID: 7062400230897858989}
   tempRecipe: {fileID: 11400000, guid: 6bcbbbad1f784d646b1a2a56a2ce8327, type: 2}
 --- !u!1 &2860665075836694796
@@ -902,7 +903,7 @@ RectTransform:
   m_Father: {fileID: 1164560948994487150}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.9999166}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2236,11 +2237,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7528233313223671601}
         m_TargetAssemblyTypeName: BookMenu, Assembly-CSharp
-        m_MethodName: DisplayRecipes
-        m_Mode: 1
+        m_MethodName: DisplayContent
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 325059757009559563}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3254,7 +3255,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 6907623595415275353}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999166
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
