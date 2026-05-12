@@ -54,6 +54,7 @@ public class w_Slot : MonoBehaviour, IPointerEnterHandler
         {
             item.item.effect.UseItem();
             managerRef.inventory.RemoveItem(item.item, -1);
+            managerRef.DisplayInventory();
         }
     }
 
