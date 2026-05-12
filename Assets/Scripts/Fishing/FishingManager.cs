@@ -236,6 +236,11 @@ public class FishingManager : MonoBehaviour
     {
         StartCoroutine(ClearBufferedInput());
 
+        if (currentRod != null)
+        {
+            currentRod.OnCaughtFish();
+        }
+
         Debug.Log("Fishing Mode Exited");
         if (playerInput != null)
         playerInput.enabled = true;

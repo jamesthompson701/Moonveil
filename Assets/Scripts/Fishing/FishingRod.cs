@@ -6,7 +6,7 @@ public class FishingRod : MonoBehaviour
     public GameObject baitPrefab;
     public Transform castOrigin; // where bait should appear from (rod tip)
     public float castDelay = 1f;
-    public float baitRotateSpeed = 100f;
+    public float baitRotateSpeed = 1f;
 
     FishingManager manager;
     string reelInputName;
@@ -41,7 +41,7 @@ public class FishingRod : MonoBehaviour
         //rotate bait
         if (spawnedBait != null)
         {
-            spawnedBait.transform.Rotate(0f, 0f, baitRotateSpeed * Time.deltaTime);
+            spawnedBait.transform.Rotate(0f, baitRotateSpeed * Time.deltaTime, 0f);
         }  
     }
 

@@ -51,6 +51,8 @@ public class TutorialManager : MonoBehaviour
     public bool fireIsland; //located in SpellManager2
     public bool combat; //located in CreatureDefs
 
+    public bool skipTutorial; 
+
     //singleton
     public static TutorialManager instance;
 
@@ -61,6 +63,27 @@ public class TutorialManager : MonoBehaviour
             instance = this;
         }
         pointer = arrow.GetComponent<PointToTarget>();
+ 
+    }
+
+    private void Start()
+    {
+        if (skipTutorial)
+        {
+            ProgressTutorial(0);
+            ProgressTutorial(1);
+            ProgressTutorial(2);
+            ProgressTutorial(3);
+            ProgressTutorial(4);
+            ProgressTutorial(5);
+            ProgressTutorial(6);
+            ProgressTutorial(7);
+            ProgressTutorial(8);
+            ProgressTutorial(9);
+            ProgressTutorial(10);
+            ProgressTutorial(11);
+            ProgressTutorial(12);
+        }
     }
 
     //function that activates one billboard and deactivates another depending on the input
@@ -164,6 +187,16 @@ public class TutorialManager : MonoBehaviour
                     billboard12.SetActive(false);
                     billboard13.SetActive(true);
                     Destroy(arrow);
+
+                    planting = true;
+                    watering = true;
+                    harvesting = true;
+                    fishing = true;
+                    fastTravel = true;
+                    mining = true;
+                    crafting = true;
+                    fireIsland = true;
+                    combat = true;
 
                     SpellManager2.Instance.waterTierUnlocked[1] = true;
                     SpellManager2.Instance.fireTierUnlocked[1] = true;

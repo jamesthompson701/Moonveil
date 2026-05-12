@@ -81,6 +81,10 @@ public class Interactable : MonoBehaviour
         {
             this.gameObject.GetComponent<WorldTree>().OnInteract();
         }
+        else if (gameObject.CompareTag("Bed"))
+        {
+            TimeManager.instance.Sleep();
+        }
         else
         {
             Debug.Log("Nothing interactable hit, tag is: " + gameObject.tag);
@@ -98,6 +102,7 @@ public class Interactable : MonoBehaviour
             }
 
         }
+        
     }
 
     // Optional: A method to reset the color

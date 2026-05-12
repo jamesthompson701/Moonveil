@@ -64,6 +64,18 @@ public class TimeManager : MonoBehaviour
         soilObjects.Remove(soilObject);
     }
 
+    public void Sleep()
+    {
+        if (timeOfDay == 1)
+        {
+            daylightCycleTime = 699;
+        }
+        else if (timeOfDay == 3)
+        {
+            daylightCycleTime = 1149;
+        }
+    }
+
     public void Update()
     {
         time = Time.deltaTime;
@@ -94,6 +106,7 @@ public class TimeManager : MonoBehaviour
         {
             daylightCycleTime = 0;
             timeOfDay = 1;
+            worldLight.transform.rotation = new Quaternion(0, 0, 0, 0);
 
             HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 300f);
         }

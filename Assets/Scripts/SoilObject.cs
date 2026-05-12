@@ -32,6 +32,7 @@ public class SoilObject : MonoBehaviour
 
     //wetness timer
     public float waterTimer;
+    public float wetnessDuration;
 
     //bools for tilled and wet
     public bool tilled;
@@ -51,10 +52,17 @@ public class SoilObject : MonoBehaviour
             {
                 weed = Instantiate(weedObj, gameObject.transform.position, gameObject.transform.rotation);
             }
+        wetnessDuration = 120;
     }
 
     public void CheckSoil(float deltaTime)
     {
+        if (currentPlantSO != null)
+        {
+            wetnessDuration = currentPlantSO.droughtResistance;
+        }
+        else { wetnessDuration = 120; }
+
         //if the soil is tilled or untilled, update it accordingly
         if (!tilled)
         {
@@ -67,16 +75,18 @@ public class SoilObject : MonoBehaviour
             //if the soil is wet, make it the wet material and check how long ago it was watered
             if (isWet)
             {
+                if (waterTimer > wetnessDuration)
+                {
+                    waterTimer = wetnessDuration;
+                }
+
                 waterTimer = waterTimer - deltaTime;
                 mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
 
                 //if its wetness time is up, make it dry
-                if (waterTimer < 0)
+                if (waterTimer <= 0)
                 {
-                    waterTimer = soil.wetnessDuration;
                     isWet = false;
-                    mySoilObj.GetComponent<MeshRenderer>().material = drySoil;
-                    //Debug.Log("Soil dry");
                 }
             }
         }
@@ -90,7 +100,7 @@ public class SoilObject : MonoBehaviour
         if (other.CompareTag("WateringSpell") && tilled)
         {
             isWet = true;
-            waterTimer = soil.wetnessDuration;
+            waterTimer = wetnessDuration;
             mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
 
             //tutorial
@@ -109,7 +119,7 @@ public class SoilObject : MonoBehaviour
         if (other.CompareTag("WateringSpellSmall") && tilled)
         {
             isWet = true;
-            waterTimer = soil.wetnessDuration;
+            waterTimer = wetnessDuration;
             mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
             Destroy(other.gameObject);
         }
