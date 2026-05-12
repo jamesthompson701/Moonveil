@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Net.Mail;
 using UnityEngine;
 
 public class BookMenu : MonoBehaviour
@@ -6,10 +8,11 @@ public class BookMenu : MonoBehaviour
     public GameObject[] contentScreens;
     public GameObject mainScreen;
 
-    [Header("Potion Recipes Tab")]
-    public w_PotionRecipe[] recipeSlots;
-    public GameObject potionRecipesTab;
-
+    [Header("Recipes Tab")]
+    public GameObject recipeSlot;
+    public GameObject recipesTab;
+    public Transform recipeGroup;
+    List<GameObject> unlockedRecipes;
 
 
     //DELETE THIS LATER
@@ -56,9 +59,20 @@ public class BookMenu : MonoBehaviour
     // for each recipe in recipe list instantiate a new page prefab
     public void DisplayRecipes()
     {
-        for (int i = 0; i < recipeSlots.Length; i++)
+        //for (int i = 0; i < recipeSlots.Length; i++)
+        //{
+        //    recipeSlots[i].SetRecipe(tempRecipe);
+        //}
+
+        foreach (GameObject _recipe in WorkbenchUI.instance.unlockedRecipes)
         {
-            recipeSlots[i].SetRecipe(tempRecipe);
+            GameObject curRecipe = Instantiate(recipeSlot, recipeGroup);
+            unlockedRecipes.Add(curRecipe);
+            w_PotionRecipe spawnedSlot = curRecipe.GetComponent<w_PotionRecipe>();
+
+            wRecipe recipe = _recipe.GetComponent<wRecipe>();
+            spawnedSlot.SetRecipe(recipe.myRecipe);
+
         }
     }
 
