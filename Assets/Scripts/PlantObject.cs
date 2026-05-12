@@ -14,7 +14,6 @@ public class PlantObject : MonoBehaviour
     //timers
     //these get set to their respective maximums based on plantSO, and then count down as appropriate via CheckPlant
     private float growthTime;
-    private float dryTime;
 
     //harvestability and withered status
     private bool isHarvestable;
@@ -35,7 +34,7 @@ public class PlantObject : MonoBehaviour
     //bool to toggle if it's been setup
     private bool isSet;
 
-    void Awake()
+    void Start()
     {
         //add to time manager
         currentStage = 0;
@@ -51,7 +50,7 @@ public class PlantObject : MonoBehaviour
         {
             //set the plant SO correctly based on the seed used
             growthTime = plant.cropTime;
-            dryTime = plant.droughtResistance;
+            currentStage = 0;
             currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
             isSet = true;
 
@@ -71,18 +70,19 @@ public class PlantObject : MonoBehaviour
         //increment the dry timer while dry
         if(!soilScript.Wet())
         {
-            //if it's been dry too long, it withers
-            if(dryTime < plant.droughtResistance)
+            if (!isHarvestable)
             {
                 Wither();
             }
+            
 
         }
 
-        //update growth time as long as the plant isn't withered, the light is appropriate, and it isn't harvestable
-        if (growthTime > 0 && soilScript.Wet() && !withered && plant.lightPreference == _light && !isHarvestable)
+        //update growth time as long as the soil is wet, the light is appropriate, and it isn't harvestable
+        if (growthTime > 0 && soilScript.isWet && plant.lightPreference == _light && !isHarvestable)
         {
             growthTime = growthTime - deltaTime;
+            Unwither();
 
             //grow twice as fast before the tutorial is complete
             if (!TutorialManager.instance.harvesting)
@@ -90,17 +90,12 @@ public class PlantObject : MonoBehaviour
                 growthTime = growthTime - (deltaTime * 100);
             }
 
-            if (withered)
-            {
-                //if plant is growing that means it's time to unwither it
-                Unwither();
-            }
 
         }
-        else
+        else if (growthTime <= 0)
         {
             //check wetness again before growing
-            if (soilScript.Wet())
+            if (soilScript.isWet)
             {
                 Debug.Log("before growth: " + currentStage);
 
@@ -137,7 +132,7 @@ public class PlantObject : MonoBehaviour
             growthProgressBar.fillAmount = growthTime / plant.cropTime;
 
             waterTimer.text = " " + Mathf.Round(soilScript.waterTimer);
-            waterTimerBar.fillAmount = soilScript.waterTimer / soilScript.soil.wetnessDuration;
+            waterTimerBar.fillAmount = soilScript.waterTimer / plant.droughtResistance;
         }
 
     }
