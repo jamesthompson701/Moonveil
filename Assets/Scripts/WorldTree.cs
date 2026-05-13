@@ -90,6 +90,8 @@ public class WorldTree : MonoBehaviour
                     }
                 }
 
+                //Because this function goes through the progress of each item and increased complete counter if they are complete than complete count needs to be zero before going throught them
+                completeCount = 0;
                 //check if this item is completed
                 if (progressTracker[i] == curQuest.numberRequired[i])
                 {

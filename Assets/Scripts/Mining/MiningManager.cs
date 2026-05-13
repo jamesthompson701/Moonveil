@@ -51,13 +51,12 @@ public class MiningManager : MonoBehaviour
 
     public void StartMining(MineRock rock)
     {
-        if (isMining) return;
 
         Debug.Log("StartMining called");
 
         input.Disable();
+        ClickSelector.Instance.gameObject.SetActive(false);
 
-        isMining = true;
         currentRock = rock;
 
         StartCoroutine(StartMiningRoutine());
@@ -99,6 +98,7 @@ public class MiningManager : MonoBehaviour
 
 
         yield return Fade(0f);
+        isMining = true;
     }
 
     public void EndMining(bool success)
@@ -143,10 +143,12 @@ public class MiningManager : MonoBehaviour
         if (CanvasManager.Instance != null)
             CanvasManager.Instance.CloseMiniGame(miniGameUI.gameObject);
 
-        isMining = false;
-        input.Enable();
+        
 
         yield return Fade(0f);
+        isMining = false;
+        input.Enable();
+        ClickSelector.Instance.gameObject.SetActive(true);
     }
 
     void GiveReward(MineRock rock)
