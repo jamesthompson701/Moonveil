@@ -23,6 +23,7 @@ public class TreeQuestSO : ScriptableObject
     {
         CanvasManager.Instance.FlashOpenMenu(3);
         WorkbenchUI.instance.UnlockRecipe(questReward);
+        HUD.instance.UnlockPopup("YOU UNLOCKED " + questReward.output.name);
         CanvasManager.Instance.FlashCloseMenu(3);
     }
 }

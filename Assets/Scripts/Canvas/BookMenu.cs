@@ -14,7 +14,7 @@ public class BookMenu : MonoBehaviour
     public GameObject recipeSlot;
     public GameObject recipesTab;
     public Transform recipeGroup;
-    List<GameObject> recipeList;
+    public List<GameObject> recipeList;
 
 
     //DELETE THIS LATER
@@ -32,6 +32,7 @@ public class BookMenu : MonoBehaviour
 
         DisplayRecipes();
     }
+
 
     // capture gameplay screen and display on book
     public void DisplayGameplay()
@@ -55,37 +56,36 @@ public class BookMenu : MonoBehaviour
             {
                 item.gameObject.SetActive(true);
             }
-
         }
     }
 
     // for each recipe in recipe list instantiate a new page prefab
     public void DisplayRecipes()
     {
-        //for (int i = 0; i < recipeSlots.Length; i++)
-        //{
-        //    recipeSlots[i].SetRecipe(tempRecipe);
-        //}
+        foreach (GameObject _recipe in recipeList)
+        {
+            Destroy(_recipe);
+        }
+        recipeList.Clear();
 
         if (WorkbenchUI.instance != null)
         {
-            foreach (GameObject _recipe in WorkbenchUI.instance.unlockedRecipes)
+  
+            foreach (wRecipe _recipe in WorkbenchUI.instance.unlockedRecipes)
             {
                 // tracks spawned recipes
                 GameObject curRecipe = Instantiate(recipeSlot, recipeGroup);
                 recipeList.Add(curRecipe);
 
+                //gets set method
                 w_PotionRecipe spawnedSlot = curRecipe.GetComponent<w_PotionRecipe>();
-                wRecipe recipe = _recipe.GetComponent<wRecipe>();
-
-                spawnedSlot.SetRecipe(recipe.myRecipe);
+                spawnedSlot.SetRecipe(_recipe.myRecipe);
 
             }
-        }
-        else
-        {
+            
 
         }
+
 
     }
 
