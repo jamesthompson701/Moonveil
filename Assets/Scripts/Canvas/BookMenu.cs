@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Net.Mail;
+using TMPro;
 using UnityEngine;
 
 public class BookMenu : MonoBehaviour
@@ -5,11 +8,13 @@ public class BookMenu : MonoBehaviour
     [Header("Content Screens")]
     public GameObject[] contentScreens;
     public GameObject mainScreen;
+    public TMP_Text menuTitle;
 
-    [Header("Potion Recipes Tab")]
-    public w_PotionRecipe[] recipeSlots;
-    public GameObject potionRecipesTab;
-
+    [Header("Recipes Tab")]
+    public GameObject recipeSlot;
+    public GameObject recipesTab;
+    public Transform recipeGroup;
+    public List<GameObject> recipeList;
 
 
     //DELETE THIS LATER
@@ -23,9 +28,11 @@ public class BookMenu : MonoBehaviour
             item.gameObject.SetActive(false);
         }
         mainScreen.SetActive(true);
+        menuTitle.text = "";
 
         DisplayRecipes();
     }
+
 
     // capture gameplay screen and display on book
     public void DisplayGameplay()
@@ -49,17 +56,37 @@ public class BookMenu : MonoBehaviour
             {
                 item.gameObject.SetActive(true);
             }
-
         }
     }
 
     // for each recipe in recipe list instantiate a new page prefab
     public void DisplayRecipes()
     {
-        for (int i = 0; i < recipeSlots.Length; i++)
+        foreach (GameObject _recipe in recipeList)
         {
-            recipeSlots[i].SetRecipe(tempRecipe);
+            Destroy(_recipe);
         }
+        recipeList.Clear();
+
+        if (WorkbenchUI.instance != null)
+        {
+  
+            foreach (wRecipe _recipe in WorkbenchUI.instance.unlockedRecipes)
+            {
+                // tracks spawned recipes
+                GameObject curRecipe = Instantiate(recipeSlot, recipeGroup);
+                recipeList.Add(curRecipe);
+
+                //gets set method
+                w_PotionRecipe spawnedSlot = curRecipe.GetComponent<w_PotionRecipe>();
+                spawnedSlot.SetRecipe(_recipe.myRecipe);
+
+            }
+            
+
+        }
+
+
     }
 
     public void OnFastTravelClicked()

@@ -52,6 +52,8 @@ public class CanvasManager : MonoBehaviour
 
         starterAssets = FindFirstObjectByType<StarterAssetsInputs>();
 
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         //Making canvas manager a singleton
         if (Instance != null && Instance != this)

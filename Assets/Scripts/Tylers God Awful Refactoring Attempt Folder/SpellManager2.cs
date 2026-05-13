@@ -233,7 +233,7 @@ public class SpellManager2 : MonoBehaviour
         {
             timer = 0;
         }
-        Debug.Log("timer is: " + timer);
+        //Debug.Log("timer is: " + timer);
     }
     // calls basic attack on attack action
     public void TryBasicAttack(InputAction.CallbackContext context)

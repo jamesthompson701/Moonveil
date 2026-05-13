@@ -18,7 +18,7 @@ public class WorkbenchUI : MonoBehaviour
     public TMP_Text outputName2;
 
     //list of unlocked recipes
-    public List<GameObject> unlockedRecipes;
+    public List<wRecipe> unlockedRecipes;
 
     //wRecipe prefab
     public GameObject blankRecipeWidget;
@@ -88,6 +88,9 @@ public class WorkbenchUI : MonoBehaviour
         GameObject unlockedRecipe = Instantiate(blankRecipeWidget);
         wRecipe w_Recipe = unlockedRecipe.GetComponent<wRecipe>();
         unlockedRecipe.transform.SetParent(recipeBox.transform);
+
+        unlockedRecipes.Add(w_Recipe);
+
         w_Recipe.myRecipe = _recipe;
         w_Recipe.myImage.sprite = _recipe.output.itemSprite;
         w_Recipe.Refresh();
