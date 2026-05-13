@@ -17,9 +17,11 @@ namespace StarterAssets
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
+        private float DefaultMoveSpeed;
 
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
+        private float DefaultSprintSpeed;
 
         [Tooltip("How fast the character turns to face movement direction")]
         [Range(0.0f, 0.3f)]
@@ -35,6 +37,7 @@ namespace StarterAssets
         [Space(10)]
         [Tooltip("The height the player can jump")]
         public float JumpHeight = 1.2f;
+        private float DefaultJumpHeight;
 
         [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
         public float Gravity = -15.0f;
@@ -158,6 +161,11 @@ namespace StarterAssets
 
         private void Awake()
         {
+            //get defaults so can end potion buffs later
+            DefaultMoveSpeed = MoveSpeed;
+            DefaultSprintSpeed = SprintSpeed;
+            DefaultJumpHeight = JumpHeight;
+
             // get a reference to our main camera
             if (_mainCamera == null)
             {
@@ -640,6 +648,20 @@ namespace StarterAssets
 
                 yield return null;
             }
+        }
+
+        //Moonchild potion buff
+        public void MoonBuff(float _duration)
+        {
+            dodgeSpeed = DefaultMoveSpeed * 10f;
+            Invoke("ResetSpeedAndJump", _duration);
+        }
+        private void ResetSpeedAndJump()
+        {
+            dodgeSpeed = DefaultMoveSpeed / 10f;
+            MoveSpeed = DefaultMoveSpeed;
+            SprintSpeed = DefaultSprintSpeed;
+            JumpHeight = DefaultJumpHeight;
         }
     }
 }

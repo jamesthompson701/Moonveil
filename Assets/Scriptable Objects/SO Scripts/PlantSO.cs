@@ -19,7 +19,7 @@ public class PlantSO : ScriptableObject
     public float droughtResistance;
 
     // When the plant grows: day or night?
-    [Header("1 = morning, 2 = evening, 3 = night")]
+    [Header("1 = morning, 2 = night")]
     public int lightPreference;
 
     //itemSOs of the seed, fruit
