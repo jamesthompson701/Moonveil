@@ -88,9 +88,9 @@ namespace StarterAssets
 
         [Header("Flight Mode")]
         [Tooltip("Move speed while in flight mode (horizontal movement)")]
-        public float FlightMoveSpeed = 4.0f;
+        public float FlightMoveSpeed = 16.0f;
         [Tooltip("Sprint speed while in flight mode (horizontal movement)")]
-        public float FlightSprintSpeed = 8.0f;
+        public float FlightSprintSpeed = 32.0f;
         [Tooltip("Input action name for toggling flight mode")]
         public string FlightToggleActionName = "ToggleFlight";
 
