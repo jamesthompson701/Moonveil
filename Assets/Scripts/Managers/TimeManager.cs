@@ -106,7 +106,6 @@ public class TimeManager : MonoBehaviour
         {
             daylightCycleTime = 0;
             timeOfDay = 1;
-            worldLight.transform.rotation = new Quaternion(0, 0, 0, 0);
 
             HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 300f);
         }
