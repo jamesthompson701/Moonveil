@@ -19,13 +19,18 @@ public class TimeManager : MonoBehaviour
     public float time;
 
     // Time of day
-    //1 = morning, 2 = evening, 3 = night
+    //1 = morning, 2 = night
     public int timeOfDay;
+
+    //rotation time of day (only used by TimeManager)
+    // 1-evening 2-night 3-sunrise 4-morning
+    private int rotationTimeOfDay;
+
     //length of day in seconds
     private float dayLength = 1200f;
 
     // seperate time for day/night cycle
-    public float daylightCycleTime;
+    public float daylightCycleTime = 1;
 
     // world light
     public GameObject worldLight;
@@ -66,13 +71,21 @@ public class TimeManager : MonoBehaviour
 
     public void Sleep()
     {
-        if (timeOfDay == 1)
+        if (rotationTimeOfDay == 1)
         {
-            daylightCycleTime = 699;
+            daylightCycleTime = 750;
         }
-        else if (timeOfDay == 3)
+        else if (rotationTimeOfDay == 2)
         {
-            daylightCycleTime = 1149;
+            daylightCycleTime = 1150;
+        }
+        else if (rotationTimeOfDay == 3)
+        {
+            daylightCycleTime = 1200;
+        }
+        else if (rotationTimeOfDay == 4)
+        {
+            daylightCycleTime = 700;
         }
     }
 
@@ -84,21 +97,34 @@ public class TimeManager : MonoBehaviour
         //change time of day based on time
         if (daylightCycleTime >= 700 && daylightCycleTime < 750)
         {
-            timeOfDay = 2;
-            worldLight.transform.Rotate(0.06f, 0, 0);
+            timeOfDay = 1;
+            if (rotationTimeOfDay != 1)
+            {
+                worldLight.transform.Rotate(90, 0, 0);
+                rotationTimeOfDay = 1;
+            }
 
             HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 180f);
         }
         else if (daylightCycleTime >= 750 && daylightCycleTime < 1150)
         {
-            timeOfDay = 3;
+            timeOfDay = 2;
+            if (rotationTimeOfDay != 2)
+            {
+                worldLight.transform.Rotate(90, 0, 0);
+                rotationTimeOfDay = 2;
+            }
 
             HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 67f);
         }
         else if (daylightCycleTime >= 1150 && daylightCycleTime < 1200)
         {
-            timeOfDay = 2;
-            worldLight.transform.Rotate(0.06f, 0, 0);
+            timeOfDay = 1;
+            if (rotationTimeOfDay != 3)
+            {
+                worldLight.transform.Rotate(90, 0, 0);
+                rotationTimeOfDay = 3;
+            } 
 
             HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 180f);
         }
@@ -106,6 +132,14 @@ public class TimeManager : MonoBehaviour
         {
             daylightCycleTime = 0;
             timeOfDay = 1;
+<<<<<<< Updated upstream
+=======
+            if (rotationTimeOfDay != 4)
+            {
+                worldLight.transform.Rotate(90, 0, 0);
+                rotationTimeOfDay = 4;
+            }
+>>>>>>> Stashed changes
 
             HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 300f);
         }
