@@ -124,7 +124,7 @@ public class TimeManager : MonoBehaviour
             {
                 worldLight.transform.Rotate(90, 0, 0);
                 rotationTimeOfDay = 3;
-            } 
+            }
 
             HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 180f);
         }
@@ -132,14 +132,11 @@ public class TimeManager : MonoBehaviour
         {
             daylightCycleTime = 0;
             timeOfDay = 1;
-<<<<<<< Updated upstream
-=======
             if (rotationTimeOfDay != 4)
             {
                 worldLight.transform.Rotate(90, 0, 0);
                 rotationTimeOfDay = 4;
             }
->>>>>>> Stashed changes
 
             HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 300f);
         }
@@ -156,7 +153,7 @@ public class TimeManager : MonoBehaviour
             soilObject.CheckSoil(time);
 
         }
-        
+
 
         //if tutorial hasn't been completed, then check if all the soil has been tilled
         //if they're all tilled, progress the tutorial
