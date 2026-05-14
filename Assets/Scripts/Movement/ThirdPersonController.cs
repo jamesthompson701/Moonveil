@@ -653,12 +653,12 @@ namespace StarterAssets
         //Moonchild potion buff
         public void MoonBuff(float _duration)
         {
-            dodgeSpeed = DefaultMoveSpeed * 10f;
+            dodgeSpeed = DefaultMoveSpeed * 6f;
             Invoke("ResetSpeedAndJump", _duration);
         }
         private void ResetSpeedAndJump()
         {
-            dodgeSpeed = DefaultMoveSpeed / 10f;
+            dodgeSpeed = DefaultMoveSpeed / 6f;
             MoveSpeed = DefaultMoveSpeed;
             SprintSpeed = DefaultSprintSpeed;
             JumpHeight = DefaultJumpHeight;
