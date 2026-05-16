@@ -122,7 +122,7 @@ public class FishingManager : MonoBehaviour
         if (currentArea != null && !inFishingMode)
         {
             startFishingPrompt.gameObject.SetActive(true);
-            startFishingPrompt.text = "Press " + startFishingInput + " to start fishing";
+            startFishingPrompt.text = "Press Right Click to start fishing";
         }
         else if (startFishingPrompt != null)
         {
@@ -135,6 +135,11 @@ public class FishingManager : MonoBehaviour
         if (SpellManager2.Instance != null)
         {
             SpellManager2.Instance.timerOn = false;
+        }
+
+        if (ThirdPersonController.Instance != null)
+        {
+            ThirdPersonController.Instance.isCasting = false;
         }
 
         if (area == null)
