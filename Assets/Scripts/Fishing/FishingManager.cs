@@ -122,7 +122,7 @@ public class FishingManager : MonoBehaviour
         if (currentArea != null && !inFishingMode)
         {
             startFishingPrompt.gameObject.SetActive(true);
-            startFishingPrompt.text = "Press " + startFishingInput + " to start fishing";
+            startFishingPrompt.text = "Press Right Click to start fishing";
         }
         else if (startFishingPrompt != null)
         {
