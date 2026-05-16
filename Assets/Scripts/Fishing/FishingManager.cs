@@ -137,6 +137,11 @@ public class FishingManager : MonoBehaviour
             SpellManager2.Instance.timerOn = false;
         }
 
+        if (ThirdPersonController.Instance != null)
+        {
+            ThirdPersonController.Instance.isCasting = false;
+        }
+
         if (area == null)
         {
             Debug.LogError("FishingArea is NULL");
