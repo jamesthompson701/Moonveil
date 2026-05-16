@@ -8619,7 +8619,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &539960152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17282,6 +17282,45 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90bdb8398e186b34282d968564dfec29, type: 3}
+--- !u!21 &939974507
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI Extensions/UIMultiply
+  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!4 &940352175 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2154067754139245277, guid: dbecebf571d557a41ba52c0145a20f48, type: 3}
@@ -17721,45 +17760,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b16c006f16eec3e448de4cd321836357, type: 3}
   m_PrefabInstance: {fileID: 2021328912}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &972945914
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI Extensions/UIMultiply
-  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!4 &974392661 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4529219833782444227, guid: 14e076341535d5b4ab926e4563028626, type: 3}
@@ -29491,15 +29491,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 697.38
+      value: 707.67
       objectReference: {fileID: 0}
     - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20.29
+      value: 20.42
       objectReference: {fileID: 0}
     - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 592.11
+      value: 615.21
       objectReference: {fileID: 0}
     - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_LocalRotation.w
@@ -29535,7 +29535,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4188393393823029980, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6916493433911802702, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_Name
@@ -29547,13 +29547,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7928974988864360270, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_text
-      value: 'This is your garden. To get started, let''s clean up a bit.
+      value: '
 
-        Use
-        1 and 2 to switch between your fire and earth spells, and right click to
-        cast them.
-
-        Remove all the weeds and till all of the soil to continue!'
+        Press "Escape" to pull up the "Options" menu, look at your
+        basic controls, and explore to your hearts content!'
       objectReference: {fileID: 0}
     - target: {fileID: 7928974988864360270, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_fontSize
@@ -35462,16 +35459,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.9623888
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9623888
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.9623888
+      objectReference: {fileID: 0}
+    - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 708.14
+      value: 710.42
       objectReference: {fileID: 0}
     - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20.236
+      value: 20.522
       objectReference: {fileID: 0}
     - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 618.71
+      value: 615.41
       objectReference: {fileID: 0}
     - target: {fileID: 2256442912923558525, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_LocalRotation.w
@@ -35507,7 +35516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4188393393823029980, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6916493433911802702, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_Name
@@ -35523,26 +35532,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7928974988864360270, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_text
-      value: 'Welcome to Moonveil, Maeve!
+      value: 'Welcome To Moonveil!
 
 
-        - Controls -
-
-        Use WASD
-        and SPACE to move
-
-        Press Left ALT to dash
-
-        Use the mouse
-        to look around
-
-        Left click to interact with objects
-
-
-        Once
-        you''re comfortable, talk to the fellow ahead to receive your first quest.
-
-'
+        This world is your oyster! Go and gather
+        from all different aspects (farming, fishing, mining, combat) using your
+        spells and help the villagers restore their world trees (one on each three
+        islands) and in doing so you will become stronger!'
       objectReference: {fileID: 0}
     - target: {fileID: 7928974988864360270, guid: 14e076341535d5b4ab926e4563028626, type: 3}
       propertyPath: m_fontSize
