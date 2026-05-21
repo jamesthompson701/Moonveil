@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-#if ENABLE_INPUT_SYSTEM 
+using System.Collections;
+#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
@@ -102,6 +103,10 @@ namespace StarterAssets
 
         InputAction ascend;
         InputAction descend;
+
+        [SerializeField] private GameObject slowWind;
+        [SerializeField] private GameObject fastWind;
+        private Coroutine windCoroutine;
 
         // cinemachine
         private float _cinemachineTargetYaw;
@@ -280,6 +285,22 @@ namespace StarterAssets
             }
 
             inFlightMode = !inFlightMode;
+
+            if (inFlightMode)
+            {
+                if (windCoroutine == null)
+                    windCoroutine = StartCoroutine(GenerateWind());
+            }
+            else
+            {
+                if (windCoroutine != null)
+                {
+                    StopCoroutine(windCoroutine);
+                    windCoroutine = null;
+                }
+                slowWind.SetActive(false);
+                fastWind.SetActive(false);
+            }
         }
 
 
@@ -536,6 +557,72 @@ namespace StarterAssets
 
             // set the vertical velocity used by Move()
             _verticalVelocity = verticalSpeed;
+        }
+
+        private IEnumerator GenerateWind()
+        {
+            while (inFlightMode)
+            {
+                bool isMoving = _input.move != Vector2.zero;
+                bool isSprinting = _input.sprint;
+
+                if (isMoving && !isSprinting)
+                {
+                    slowWind.SetActive(true);
+                    fastWind.SetActive(false);
+
+                    // Randomly enable a child
+                    int childCount = slowWind.transform.childCount;
+                    if (childCount > 0)
+                    {
+                        int randomIndex = Random.Range(0, childCount);
+                        Transform child = slowWind.transform.GetChild(randomIndex);
+                        child.gameObject.SetActive(true);
+
+                        yield return new WaitForSeconds(8f);
+
+                        child.gameObject.SetActive(false);
+
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        yield return null;
+                    }
+                }
+                else if (isMoving && isSprinting)
+                {
+                    fastWind.SetActive(true);
+                    slowWind.SetActive(false);
+
+                    // Randomly enable a child
+                    int childCount = fastWind.transform.childCount;
+                    if (childCount > 0)
+                    {
+                        int randomIndex = Random.Range(0, childCount);
+                        Transform child = fastWind.transform.GetChild(randomIndex);
+                        child.gameObject.SetActive(true);
+
+                        yield return new WaitForSeconds(8f);
+
+                        child.gameObject.SetActive(false);
+
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        yield return null;
+                    }
+                }
+                else
+                {
+                    slowWind.SetActive(false);
+                    fastWind.SetActive(false);
+                    yield return null;
+                }
+            }
+            slowWind.SetActive(false);
+            fastWind.SetActive(false);
         }
 
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
