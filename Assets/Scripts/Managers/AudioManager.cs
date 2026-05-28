@@ -6,7 +6,7 @@ using UnityEngine.Audio;
 /// </summary>
 
 public enum eMixers { music, effects }
-public enum eEffects { farmFire, combatFire, farmEarth, combatEarth, farmWater, combatWater, farmAir, combatAir, harvest, footstep, jump, till, castHook, bubblePop}
+public enum eEffects { farmFire, combatFire, farmEarth, combatEarth, farmWater, combatWater, farmAir, combatAir, harvest, footstep, jump, till, castHook, bubblePop, playerHurt, flying,}
 
 public enum eMusic { mainIslandDay, fireIslandDay, fireIslandCombat}
 public class AudioManager : MonoBehaviour

@@ -46,6 +46,8 @@ public abstract class SO_SpellDefs2 : ScriptableObject
     public float upwardOffset = 0f;
     public float horizontalOffset = 0f;
 
+    public Transform audioSource = SpellManager2.Instance.player.transform;
+
     public abstract void CastSpell2(SpellCastContext ctx);
 
     protected Rigidbody SpawnProjectile(Rigidbody prefab, Vector3 pos, Quaternion rot)
@@ -67,5 +69,26 @@ public abstract class SO_SpellDefs2 : ScriptableObject
     protected void SetVelocity(Rigidbody rb, Vector3 vel)
     {
         rb.linearVelocity = vel;
+    }
+
+    public void playSpellAudio()
+    {
+        if (spellType == SpellType.Fire && SpellManager2.Instance.inCombatArea)
+            AudioManager.PlayOneShot(eEffects.combatFire, audioSource, 100);
+        else if (spellType == SpellType.Earth && SpellManager2.Instance.inCombatArea)
+            AudioManager.PlayOneShot(eEffects.combatEarth, audioSource, 100);
+        else if (spellType == SpellType.Water && SpellManager2.Instance.inCombatArea)
+            AudioManager.PlayOneShot(eEffects.combatWater, audioSource, 100);
+        else if (spellType == SpellType.Air && SpellManager2.Instance.inCombatArea)
+            AudioManager.PlayOneShot(eEffects.combatAir, audioSource, 100);
+
+        if (spellType == SpellType.Fire && !SpellManager2.Instance.inCombatArea)
+            AudioManager.PlayOneShot(eEffects.farmFire, audioSource, 100);
+        else if (spellType == SpellType.Earth && !SpellManager2.Instance.inCombatArea)
+            AudioManager.PlayOneShot(eEffects.farmEarth, audioSource, 100);
+        else if (spellType == SpellType.Water && !SpellManager2.Instance.inCombatArea)
+            AudioManager.PlayOneShot(eEffects.farmWater, audioSource, 100);
+        else if (spellType == SpellType.Air && !SpellManager2.Instance.inCombatArea)
+            AudioManager.PlayOneShot(eEffects.farmAir, audioSource, 100);
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayerDamageReceiver : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class PlayerDamageReceiver : MonoBehaviour
 
     // Renderers and materials set in the inspector (kept original names to preserve serialized references)
     public GameObject playerBodyDefault;
+    public Transform audioSource = SpellManager2.Instance.player.transform;
     public Material playerDamaged;
     public Material PlayerDefault;
 
@@ -65,7 +67,7 @@ public class PlayerDamageReceiver : MonoBehaviour
 
         // Start invincibility and visual feedback
         _invincibilityTimer = invincibilityDuration;
-
+        AudioManager.PlayOneShot(eEffects.playerHurt, audioSource, 100);
         StartCoroutine(ShowDamageTaken());
     }
 
