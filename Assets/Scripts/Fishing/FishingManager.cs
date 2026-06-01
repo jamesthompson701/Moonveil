@@ -334,6 +334,8 @@ public class FishingManager : MonoBehaviour
             {
                 if (Input.GetButtonDown(reelInput))
                 {
+                    miniGameUI.PlayReelSound();
+
                     // begin minigame
                     startedMinigame = true;
                     StartMiniGame(fish);
