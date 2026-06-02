@@ -62,6 +62,7 @@ public class GroundTargetSpells : SO_SpellDefs2
             if (ctx.caster != null)
                 dmg.InitProjectile2(damage, spellType);
         }
+        playSpellAudio();
 
         if (Lifetime > 0f)
             Destroy(spawned, Lifetime);

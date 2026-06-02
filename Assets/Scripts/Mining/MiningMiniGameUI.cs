@@ -2,9 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class MiningMiniGameUI : MonoBehaviour
 {
+
+    public AudioSource audioSource;
+    public AudioClip highlightSound;
+    public AudioClip correctSound;
+    public AudioClip failSound;
+    
     private bool canInput = false;
     public List<Button> buttons;
 
@@ -86,6 +93,8 @@ public class MiningMiniGameUI : MonoBehaviour
             buttons[index].image.color = Color.yellow;
             yield return new WaitForSeconds(speed);
 
+            audioSource.PlayOneShot(highlightSound);
+
             buttons[index].image.color = Color.white;
             yield return new WaitForSeconds(0.2f);
         }
@@ -117,6 +126,7 @@ public class MiningMiniGameUI : MonoBehaviour
 
             Debug.Log("Correct");
             Debug.Log("Current Index After: " + currentIndex);
+            audioSource.PlayOneShot(correctSound);
 
             if (currentIndex >= sequence.Count)
             {
@@ -137,6 +147,7 @@ public class MiningMiniGameUI : MonoBehaviour
         else
         {
             Debug.Log("WRONG BUTTON");
+            audioSource.PlayOneShot(failSound);
 
             canInput = false;
             SetButtonsInteractable(false);

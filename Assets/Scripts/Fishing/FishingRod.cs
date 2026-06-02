@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class FishingRod : MonoBehaviour
 {
+    private Coroutine waitingSoundRoutine;
+
     public GameObject baitPrefab;
     public Transform castOrigin; // where bait should appear from (rod tip)
     public float castDelay = 1f;
@@ -42,7 +44,7 @@ public class FishingRod : MonoBehaviour
         if (spawnedBait != null)
         {
             spawnedBait.transform.Rotate(0f, baitRotateSpeed * Time.deltaTime, 0f);
-        }  
+        }
     }
 
     Vector3 GetWaterHitPoint()
@@ -67,6 +69,10 @@ public class FishingRod : MonoBehaviour
 
         spawnedBait = Instantiate(baitPrefab);
         spawnedBait.transform.position = targetPosition;
+
+        manager.miniGameUI.PlayCastSound();
+        waitingSoundRoutine = StartCoroutine(WaitingSoundLoop());
+        
         //Debug.Log("Rod casted. Bait in the water.");
 
         // notify manager
@@ -79,6 +85,12 @@ public class FishingRod : MonoBehaviour
         isCasted = false;
         if (spawnedBait) Destroy(spawnedBait);
         manager.OnRodPulled();
+
+        if (waitingSoundRoutine != null)
+        {
+            StopCoroutine(waitingSoundRoutine);
+            waitingSoundRoutine = null;
+        }
     }
 
     // called when a fish was caught and you want to update visuals (pull rod, remove bait)
@@ -87,5 +99,21 @@ public class FishingRod : MonoBehaviour
         if (spawnedBait) Destroy(spawnedBait);
         isCasted = false;
         // add animations reel, reward, etc.
+
+        if (waitingSoundRoutine != null)
+        {
+            StopCoroutine(waitingSoundRoutine);
+            waitingSoundRoutine = null;
+        }
+    }
+
+    IEnumerator WaitingSoundLoop()
+    {
+        while (spawnedBait != null)
+        {
+            yield return new WaitForSeconds(Random.Range(2f, 5f));
+
+            manager.miniGameUI.PlayRandomWaitingSound();
+        }
     }
 }
