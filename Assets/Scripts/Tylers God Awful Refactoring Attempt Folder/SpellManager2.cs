@@ -146,6 +146,8 @@ public class SpellManager2 : MonoBehaviour
             attackAction.performed += TryBasicAttack;
             if (!attackAction.enabled) attackAction.Enable();
         }
+
+        
     }
 
     private void OnDisable()
@@ -217,6 +219,23 @@ public class SpellManager2 : MonoBehaviour
             else if (Input.GetKeyUp(KeyCode.Alpha2)) attackChoice = 2;
             else if (Input.GetKeyUp(KeyCode.Alpha3)) attackChoice = 3;
             else if (Input.GetKeyUp(KeyCode.Alpha4)) attackChoice = 4;
+
+            // Fetch the Vector2 scroll delta from the mouse
+            Vector2 scrollDelta = Mouse.current.scroll.ReadValue();
+
+            // Check the Y axis value for up/down motion
+            if (scrollDelta.y < 0)
+            {
+                Debug.Log("Scrolling Up!");
+                attackChoice++;
+                if (attackChoice > 4) attackChoice = 0;
+            }
+            else if (scrollDelta.y > 0)
+            {
+                Debug.Log("Scrolling Down!");
+                attackChoice--;
+                if (attackChoice < 0) attackChoice = 4;
+            }
         }
     }
 
