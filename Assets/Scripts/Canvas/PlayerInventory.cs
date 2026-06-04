@@ -15,6 +15,9 @@ public class PlayerInventory: MonoBehaviour
     public Image itemImage;
     public TMP_Text itemName;
     public TMP_Text itemDescription;
+    public InventoryItem selectedItem;
+
+    public GameObject itemDisplay;
 
     private void OnEnable()
     {
@@ -32,16 +35,14 @@ public class PlayerInventory: MonoBehaviour
         // Handles inventory slots
         for (int i = 0; i < InventorySlots.Length; i++)
         {
-            //Clears entire inventory
             InventorySlots[i].ResetSlot();
+        }
 
-            // Sets slots to items in inventory
-            for (int j = 0; j < inventory.InventoryItems.Count; j++)
-            {
-                InventoryItem curItem = inventory.InventoryItems[j];
-                InventorySlots[j].SetSlot(curItem);
-            }
-
+        // Sets slots to items in inventory
+        for (int j = 0; j < inventory.InventoryItems.Count; j++)
+        {
+            InventoryItem curItem = inventory.InventoryItems[j];
+            InventorySlots[j].SetSlot(curItem);
         }
     }
 
@@ -51,9 +52,4 @@ public class PlayerInventory: MonoBehaviour
         itemName.text = hoveredItem.item.itemName;
         itemDescription.text = hoveredItem.item.itemDescription;
     }
-
-
-
- 
-
 }

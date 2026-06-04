@@ -10,8 +10,8 @@ public class w_Slot : MonoBehaviour, IPointerEnterHandler
     public GameObject button;
     public Image image;
     public TMP_Text amount;
-
     public PlayerInventory managerRef;
+    public SeedItemSO seed;
 
     //Finds inventory manager
     private void Awake()
@@ -37,7 +37,6 @@ public class w_Slot : MonoBehaviour, IPointerEnterHandler
         item = null;
     }
 
-
     //Displays information when hovered
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -45,17 +44,44 @@ public class w_Slot : MonoBehaviour, IPointerEnterHandler
         {
             managerRef.DisplayInfo(item);
         }
-
     }
+
+    // Handle left mouse click to select item. This determines which item is displayed on screen and if it is a seed sets it as the current SeeditemSO.
+    //public void OnItemClicked()
+    //{
+    //    Debug.Log("You pwessed me!");
+    //    HUD.instance.DisplaySelectedItem(item.item, item.amount);
+    //    w_Slot thisSlot = this;
+    //    HUD.instance.UpdateDisplayedItemAmount(thisSlot,  item.amount);
+    //    seed.plantType =
+    //    InventoryManager.instance.seedRef = 
+    //}
 
     public void OnItemClicked()
     {
-        if(item.item.effect != null)
+        Debug.Log("You pwessed me!");
+
+        if (item == null || item.item == null)
         {
-            item.item.effect.UseItem();
-            managerRef.inventory.RemoveItem(item.item, -1);
-            managerRef.DisplayInventory();
+            Debug.LogWarning("Clicked an empty slot.");
+            return;
+        }
+
+        // Update HUD display
+        HUD.instance.DisplaySelectedItem(item.item, item.amount);
+        HUD.instance.UpdateDisplayedItemAmount(this, item.amount);
+
+        // If the clicked item is a seed, set the InventoryManager's seedRef so planting logic can use it.
+        SeedItemSO clickedSeed = item.item as SeedItemSO;
+        if (clickedSeed != null)
+        {
+            InventoryManager.instance.seedRef = clickedSeed;
+            Debug.Log("Selected seed: " + clickedSeed.itemName);
+        }
+        else
+        {
+            // Clear seedRef when a non-seed is selected
+            InventoryManager.instance.seedRef = null;
         }
     }
-
 }

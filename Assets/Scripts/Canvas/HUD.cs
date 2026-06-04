@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,7 @@ public class HUD : MonoBehaviour
     PlayerDamageReceiver playerHealthRef;
 
     public List<GameObject> itemPopups;
-    
+
     public GameObject[] highlight;
 
     public GameObject slot;
@@ -32,7 +33,12 @@ public class HUD : MonoBehaviour
     bool textActive = false;
 
     public Image clockWheel;
-
+    public GameObject itemDisplay;
+    public Image displayImage;
+    public TMP_Text displayText;
+    public ItemSO selectedItem;
+    public int amount;
+    public w_Slot lastSelectedSlot;
 
 
     private void Awake()
@@ -42,17 +48,17 @@ public class HUD : MonoBehaviour
         playerHealthRef = playerRef.GetComponent<PlayerDamageReceiver>();
 
         InventoryManager.instance.invSO.GetInventoryItem += InstantiatePopup;
-
+        itemDisplay.SetActive(false);
         if (instance == null)
         {
             instance = this;
         }
-
-
     }
+
     private void Update()
     {
         UpdateHealthDisplay();
+        UpdateDisplay();
 
         if (FishingManager.Instance != null && FishingManager.Instance.inFishingMode == false)
         {
@@ -71,12 +77,8 @@ public class HUD : MonoBehaviour
                     SetActive(3);
                     break;
             }
-        return;
+            return;
         }
-
-        
-        
-
     }
 
     /*
@@ -130,7 +132,7 @@ public class HUD : MonoBehaviour
 
     public void UpdatedSpellCharge(int tier)
     {
-        switch(tier)
+        switch (tier)
         {
             case 0:
                 foreach (GameObject item in SpellChargeIcons)
@@ -200,4 +202,24 @@ public class HUD : MonoBehaviour
         StartCoroutine(InventoryManager.instance.DestroyPopup(popUp));
     }
 
+    public void DisplaySelectedItem(ItemSO _item, int _amount)
+    {
+        itemDisplay.SetActive(true);
+        selectedItem = _item;
+        amount = _amount;
+        displayImage.enabled = true;
+        displayImage.sprite = _item.itemSprite;
+        displayText.text = "" + amount;
+    }
+
+    public void UpdateDisplayedItemAmount(w_Slot slot, int _amount)
+    {
+        amount = _amount;
+        lastSelectedSlot = slot;
+    }
+
+    public void UpdateDisplay()
+    {
+        displayText.text = "" + lastSelectedSlot.item.amount;
+    }
 }
