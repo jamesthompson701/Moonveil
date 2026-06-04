@@ -1,41 +1,65 @@
-using Unity.Cinemachine;
 using UnityEngine;
 
 public class InteractableHighlight : MonoBehaviour
 {
-    public GameObject objectToHighlight;
     public GameObject leftClickIcon;
 
-    private void OnTriggerEnter(Collider other)
+    // Currently highlighted object from the interaction raycast
+    private GameObject currentHighlighted;
+
+    private void OnDisable()
     {
-        if (other.CompareTag("Player"))
+        ClearHighlight();
+    }
+
+    private void Update()
+    {
+        // Use the same raycast as ClickSelector: cast from the main camera through the mouse.
+        if (Camera.main == null || ClickSelector.Instance == null) return;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        bool foundInteractable = false;
+        if (Physics.Raycast(ray, out hit, ClickSelector.Instance.raycastDistance))
         {
-            HighlightObject();
+            Interactable interactable = hit.collider.GetComponent<Interactable>();
+            if (interactable == null)
+            {
+                interactable = hit.collider.GetComponentInParent<Interactable>();
+            }
+
+            if (interactable != null)
+            {
+                GameObject toHighlight = interactable.gameObject;
+                if (toHighlight != currentHighlighted)
+                {
+                    ClearHighlight();
+                    ApplyHighlight(toHighlight);
+                }
+                foundInteractable = true;
+            }
+        }
+
+        if (!foundInteractable)
+        {
+            ClearHighlight();
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void ApplyHighlight(GameObject target)
     {
-        Destroy(objectToHighlight.GetComponent<Outline>());
-        if (leftClickIcon != null)
+        if (target == null) return;
+
+        // Add Outline if not present
+        var outline = target.GetComponent<Outline>();
+        if (outline == null)
         {
-            leftClickIcon.SetActive(false);
+            outline = target.AddComponent<Outline>();
         }
 
-    }
-
-
-    private void HighlightObject()
-    {
-        if (leftClickIcon != null)
-        {
-            leftClickIcon.SetActive(true);
-        }
-
-        //leftClickIcon.SetActive(true);
-        var outline = objectToHighlight.AddComponent<Outline>();
-
-        if (objectToHighlight.CompareTag("Dialogue")) //Change to NPC if NPC tag is made
+        // Style based on tag (matches previous behavior)
+        if (target.CompareTag("Dialogue"))
         {
             outline.OutlineMode = Outline.Mode.OutlineVisible;
             outline.OutlineColor = Color.blue;
@@ -48,6 +72,29 @@ public class InteractableHighlight : MonoBehaviour
             outline.OutlineWidth = 5f;
         }
 
+        if (leftClickIcon != null)
+        {
+            leftClickIcon.SetActive(true);
+        }
 
+        currentHighlighted = target;
+    }
+
+    private void ClearHighlight()
+    {
+        if (currentHighlighted != null)
+        {
+            var existing = currentHighlighted.GetComponent<Outline>();
+            if (existing != null)
+            {
+                Destroy(existing);
+            }
+            currentHighlighted = null;
+        }
+
+        if (leftClickIcon != null)
+        {
+            leftClickIcon.SetActive(false);
+        }
     }
 }
