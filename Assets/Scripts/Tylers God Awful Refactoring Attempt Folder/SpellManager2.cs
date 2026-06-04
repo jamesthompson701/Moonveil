@@ -146,6 +146,8 @@ public class SpellManager2 : MonoBehaviour
             attackAction.performed += TryBasicAttack;
             if (!attackAction.enabled) attackAction.Enable();
         }
+
+        
     }
 
     private void OnDisable()
@@ -217,6 +219,23 @@ public class SpellManager2 : MonoBehaviour
             else if (Input.GetKeyUp(KeyCode.Alpha2)) attackChoice = 2;
             else if (Input.GetKeyUp(KeyCode.Alpha3)) attackChoice = 3;
             else if (Input.GetKeyUp(KeyCode.Alpha4)) attackChoice = 4;
+
+            // Fetch the Vector2 scroll delta from the mouse
+            Vector2 scrollDelta = Mouse.current.scroll.ReadValue();
+
+            // Check the Y axis value for up/down motion
+            if (scrollDelta.y < 0)
+            {
+                Debug.Log("Scrolling Up!");
+                attackChoice++;
+                if (attackChoice > 4) attackChoice = 0;
+            }
+            else if (scrollDelta.y > 0)
+            {
+                Debug.Log("Scrolling Down!");
+                attackChoice--;
+                if (attackChoice < 0) attackChoice = 4;
+            }
         }
     }
 
@@ -270,12 +289,12 @@ public class SpellManager2 : MonoBehaviour
             return;
         }
 
-        // block during mining
+        /*// block during mining
         if (MiningManager.Instance.isMining)
         {
             Debug.Log("Cannot basic attack while mining");
             return;
-        }
+        }*/
 
         // Block while not in combat area
         if (!inCombatArea)
@@ -374,12 +393,12 @@ public class SpellManager2 : MonoBehaviour
             return;
         }
 
-        // block while mining
+        /*// block while mining
         if (MiningManager.Instance.isMining)
         {
             Debug.Log("Cannot cast spells while mining");
             return;
-        }
+        }*/
 
         // Block casting if player is currently in flight
         if (ThirdPersonController.Instance != null && ThirdPersonController.Instance.inFlightMode)
@@ -523,7 +542,7 @@ public class SpellManager2 : MonoBehaviour
             timerOn = false;
             timer = 0f;
 
-            // note: do not clear isCasting or midCast here — Cast() (or TryBasicAttack) will clear based on prefab lifetime
+            // note: do not clear isCasting or midCast here ï¿½ Cast() (or TryBasicAttack) will clear based on prefab lifetime
 
             return;
         }
