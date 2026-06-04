@@ -53,15 +53,18 @@ public class Interactable : MonoBehaviour
         }
         else if (gameObject.CompareTag("Crafting"))
         {
+            SpellManager2.Instance.inMenu = true;
             CanvasManager.Instance.OpenMenu(3);
         }
         else if (gameObject.CompareTag("FastTravel"))
         {
+            SpellManager2.Instance.inMenu = true;
             CanvasManager.Instance.OpenMenu(5);
         }
         else if (gameObject.CompareTag("Dialogue"))
         {
             Debug.Log("Talking");
+            SpellManager2.Instance.inMenu = true;
             foreach (InventoryItem _item in InventoryManager.instance.invSO.InventoryItems)
             {
                 Debug.Log("Item Name: " +  _item.item.name);
@@ -79,6 +82,7 @@ public class Interactable : MonoBehaviour
         }
         else if (gameObject.CompareTag("World Tree"))
         {
+            SpellManager2.Instance.inMenu = true;
             this.gameObject.GetComponent<WorldTree>().OnInteract();
         }
         else if (gameObject.CompareTag("Bed"))

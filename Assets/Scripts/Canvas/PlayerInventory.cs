@@ -22,7 +22,7 @@ public class PlayerInventory: MonoBehaviour
     private void OnEnable()
     {
         DisplayInventory();
-
+        SpellManager2.Instance.inMenu = true;
         itemImage.sprite = null;
         itemName.text = "";
         itemDescription.text = "";

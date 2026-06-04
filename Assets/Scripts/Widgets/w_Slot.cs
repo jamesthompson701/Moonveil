@@ -67,11 +67,48 @@ public class w_Slot : MonoBehaviour, IPointerEnterHandler
             return;
         }
 
-        // Update HUD display
+        // If item has an effect, activate it immediately
+        if (item.item.effect != null)
+        {
+            Debug.Log("Using item effect for: " + item.item.itemName);
+            item.item.effect.UseItem();
+
+            // Remove one from inventory (match pattern used elsewhere in project)
+            InventoryManager.instance.invSO.RemoveItem(item.item, -1);
+
+            // Update local stack count and UI
+            item.amount -= 1;
+            if (item.amount <= 0)
+            {
+                ResetSlot();
+                // Ensure HUD doesn't try to display a removed slot
+                if (HUD.instance.lastSelectedSlot == this)
+                {
+                    HUD.instance.itemDisplay.SetActive(false);
+                }
+            }
+            else
+            {
+                amount.text = "" + item.amount;
+                HUD.instance.UpdateDisplayedItemAmount(this, item.amount);
+                HUD.instance.DisplaySelectedItem(item.item, item.amount);
+            }
+
+            // If the used item was a seed, clear seedRef because it's a use action, not a selection
+            InventoryManager.instance.seedRef = item.item as SeedItemSO;
+            if (InventoryManager.instance.seedRef == null)
+            {
+                // ensure seedRef cleared when not selecting a seed
+                InventoryManager.instance.seedRef = null;
+            }
+
+            return;
+        }
+
+        // No effect: treat as selection (for display / planting)
         HUD.instance.DisplaySelectedItem(item.item, item.amount);
         HUD.instance.UpdateDisplayedItemAmount(this, item.amount);
 
-        // If the clicked item is a seed, set the InventoryManager's seedRef so planting logic can use it.
         SeedItemSO clickedSeed = item.item as SeedItemSO;
         if (clickedSeed != null)
         {
@@ -80,7 +117,6 @@ public class w_Slot : MonoBehaviour, IPointerEnterHandler
         }
         else
         {
-            // Clear seedRef when a non-seed is selected
             InventoryManager.instance.seedRef = null;
         }
     }

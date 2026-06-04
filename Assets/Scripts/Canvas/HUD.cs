@@ -220,6 +220,6 @@ public class HUD : MonoBehaviour
 
     public void UpdateDisplay()
     {
-        displayText.text = "" + lastSelectedSlot.item.amount;
+        if (lastSelectedSlot.item.item == selectedItem) displayText.text = "" + lastSelectedSlot.item.amount;
     }
 }
