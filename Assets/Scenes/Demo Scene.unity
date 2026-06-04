@@ -5427,6 +5427,7 @@ GameObject:
   m_Component:
   - component: {fileID: 328191351}
   - component: {fileID: 328191350}
+  - component: {fileID: 328191352}
   m_Layer: 0
   m_Name: CanvasManager
   m_TagString: Untagged
@@ -5458,6 +5459,7 @@ MonoBehaviour:
   - {fileID: 1436598296}
   escCloseableCanvases: []
   input: {fileID: -944628639613478452, guid: 4419d82f33d36e848b3ed5af4c8da37e, type: 3}
+  screenshotToBook: {fileID: 328191352}
 --- !u!4 &328191351
 Transform:
   m_ObjectHideFlags: 0
@@ -5473,6 +5475,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &328191352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328191349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0164f288912343afbcdfd58bf8f7c48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseScreenshotToBook
+  bookPageImage: {fileID: 1506406214}
 --- !u!1001 &333475041
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11072,45 +11087,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 198395826775195183, guid: 7b409ce850dcfd44e9367e4c32a2123f, type: 3}
   m_PrefabInstance: {fileID: 599836117}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &670325731
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI Extensions/UIMultiply
-  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!4 &674916884 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 545db656d930db845ab0c38c62699b0b, type: 3}
@@ -24211,6 +24187,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71de2f0593209ee4f8e31d2a5a8a970c, type: 3}
+--- !u!114 &1506406214 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6131683221997924570, guid: 71de2f0593209ee4f8e31d2a5a8a970c, type: 3}
+  m_PrefabInstance: {fileID: 1506406213}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &1507469470
 GameObject:
   m_ObjectHideFlags: 0
@@ -28255,6 +28242,45 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6122026415690569425, guid: dccadf946e46ef446b2499e6e13a4b8c, type: 3}
   m_PrefabInstance: {fileID: 1908522052}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &1775506247
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI Extensions/UIMultiply
+  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!223 &1782708220 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 288084592498464725, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
