@@ -37,6 +37,8 @@ public class CanvasManager : MonoBehaviour
 
     public static CanvasManager Instance;
 
+    public PauseScreenshotToBook screenshotToBook;
+
 
     private void Awake()
     {
@@ -128,7 +130,8 @@ public class CanvasManager : MonoBehaviour
                 if (currentCanvas != 999)
                 {
                     //Opens pause menu
-                    OpenMenu(1);
+                    screenshotToBook.PauseAndOpenBook();
+                    //OpenMenu(1);
                 }
 
             }
