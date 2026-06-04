@@ -289,12 +289,12 @@ public class SpellManager2 : MonoBehaviour
             return;
         }
 
-        // block during mining
+        /*// block during mining
         if (MiningManager.Instance.isMining)
         {
             Debug.Log("Cannot basic attack while mining");
             return;
-        }
+        }*/
 
         // Block while not in combat area
         if (!inCombatArea)
@@ -393,12 +393,12 @@ public class SpellManager2 : MonoBehaviour
             return;
         }
 
-        // block while mining
+        /*// block while mining
         if (MiningManager.Instance.isMining)
         {
             Debug.Log("Cannot cast spells while mining");
             return;
-        }
+        }*/
 
         // Block casting if player is currently in flight
         if (ThirdPersonController.Instance != null && ThirdPersonController.Instance.inFlightMode)
@@ -542,7 +542,7 @@ public class SpellManager2 : MonoBehaviour
             timerOn = false;
             timer = 0f;
 
-            // note: do not clear isCasting or midCast here — Cast() (or TryBasicAttack) will clear based on prefab lifetime
+            // note: do not clear isCasting or midCast here ï¿½ Cast() (or TryBasicAttack) will clear based on prefab lifetime
 
             return;
         }
