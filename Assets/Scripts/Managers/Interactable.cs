@@ -64,7 +64,6 @@ public class Interactable : MonoBehaviour
         else if (gameObject.CompareTag("Dialogue"))
         {
             Debug.Log("Talking");
-            SpellManager2.Instance.inMenu = true;
             foreach (InventoryItem _item in InventoryManager.instance.invSO.InventoryItems)
             {
                 Debug.Log("Item Name: " +  _item.item.name);

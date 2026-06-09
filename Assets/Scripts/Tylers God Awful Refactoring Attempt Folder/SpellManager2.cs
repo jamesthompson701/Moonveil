@@ -405,7 +405,13 @@ public class SpellManager2 : MonoBehaviour
         {
             Debug.Log("Cannot cast spells while in flight");
             return;
-        }     
+        }
+
+        if (InteractableHighlight.HasHighlightedInteractable)
+        {
+            Debug.Log("Cannot cast spells while looking at an interactable.");
+            return;
+        }
 
         // Start the hold timer on press
         if (context.started)

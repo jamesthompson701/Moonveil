@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class InteractableHighlight : MonoBehaviour
 {
+    public static bool HasHighlightedInteractable { get; private set; }
+
     public GameObject leftClickIcon;
 
     // Currently highlighted object from the interaction raycast
@@ -10,6 +12,7 @@ public class InteractableHighlight : MonoBehaviour
     private void OnDisable()
     {
         ClearHighlight();
+        HasHighlightedInteractable = false;
     }
 
     private void Update()
@@ -40,6 +43,8 @@ public class InteractableHighlight : MonoBehaviour
                 foundInteractable = true;
             }
         }
+
+        HasHighlightedInteractable = foundInteractable;
 
         if (!foundInteractable)
         {
