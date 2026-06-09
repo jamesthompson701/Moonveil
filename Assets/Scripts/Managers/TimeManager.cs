@@ -100,14 +100,14 @@ public class TimeManager : MonoBehaviour
             case 1:
                 if (sun.intensity < 3 )
                 {
-                    sun.intensity = sun.intensity + 0.03f;
+                    sun.intensity = sun.intensity + 0.01f;
                 }
                 worldLight.transform.Rotate(0.6f * Time.deltaTime,0,0);
                 break;
             case 2:
                 if (sun.intensity > 0)
                 {
-                    sun.intensity = sun.intensity - 0.03f;
+                    sun.intensity = sun.intensity - 0.01f;
                 }
                 break;
         }
