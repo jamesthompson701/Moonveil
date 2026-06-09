@@ -6,6 +6,7 @@ public class InventoryManager : MonoBehaviour
     //just tracks seeds
     // ^does not, in fact, just track seeds anymore
     public static InventoryManager instance;
+    public InventoryRepository inventoryRepository;
     public InventorySO invSO;
 
     public SoilObject soilRef;
