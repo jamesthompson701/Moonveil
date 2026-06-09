@@ -51,7 +51,7 @@ public class MineRock : MonoBehaviour
 
         SetGemVisible(false);
 
-        Debug.Log("Gem Count: " + gemRenderers.Length);
+        Debug.Log(name + " gem count = " + gemRenderers.Length);
     }
 
     void SetGemMaterial(Material mat)
@@ -78,7 +78,6 @@ public class MineRock : MonoBehaviour
 
    public void Interact()
     {
-        // space for tutorial or debug
         Debug.Log("Use Earth Spell");
     }
 
@@ -111,7 +110,7 @@ public class MineRock : MonoBehaviour
         }
 
         // air spell
-        if (other.CompareTag("WindSpell"))
+        if (other.CompareTag("HarvestSpell"))
         {
             CheckSpell(MineralType.Air);
         }
@@ -119,7 +118,9 @@ public class MineRock : MonoBehaviour
 
     void RaiseCrystal()
     {
-         raised = true;
+        //Debug.Log(name + " buried: " + buriedPosition);
+
+        raised = true;
 
         SetGemVisible(true);
 
@@ -151,6 +152,7 @@ public class MineRock : MonoBehaviour
         if(audioSource && raiseSound)
         {
             audioSource.PlayOneShot(raiseSound);
+            Debug.Log("raiseSound played");
         }
 
         if (activeTimerRoutine != null)
@@ -159,6 +161,8 @@ public class MineRock : MonoBehaviour
         }
 
         activeTimerRoutine = StartCoroutine(ActiveTimer());
+
+        //Debug.Log(name + " raised: " + raisedPosition);
     }
 
     void CheckSpell(MineralType spellType)
@@ -181,6 +185,7 @@ public class MineRock : MonoBehaviour
         if(audioSource && successSound)
         {
             audioSource.PlayOneShot(successSound);
+            Debug.Log("successSound played");
         }
 
         StartCoroutine(CooldownRoutine());
@@ -212,6 +217,7 @@ public class MineRock : MonoBehaviour
         if(audioSource && sinkSound)
         {
             audioSource.PlayOneShot(sinkSound);
+            Debug.Log("sinkSound played");
         }
 
         transform.position = buriedPosition;
@@ -219,7 +225,5 @@ public class MineRock : MonoBehaviour
         yield return new WaitForSeconds(respawnTime);
 
         onCooldown = false;
-
-        SetGemVisible(true);
     }
 }
