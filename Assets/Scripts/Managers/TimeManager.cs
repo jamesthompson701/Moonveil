@@ -35,6 +35,7 @@ public class TimeManager : MonoBehaviour
 
     // world light
     public GameObject worldLight;
+    public Light sun;
 
     public static TimeManager instance;
 
@@ -72,7 +73,7 @@ public class TimeManager : MonoBehaviour
 
     public void Sleep()
     {
-
+        
     }
 
     public void Update()
@@ -84,19 +85,24 @@ public class TimeManager : MonoBehaviour
         switch(timeOfDay)
         {
             case 1:
-                worldLight.SetActive(true);
-                worldLight.transform.Rotate(0.01f,0,0);
+                if (sun.intensity < 3 )
+                {
+                    sun.intensity = sun.intensity + 0.03f;
+                }
+                worldLight.transform.Rotate(0.6f * Time.deltaTime,0,0);
                 break;
             case 2:
-                worldLight.SetActive(false);
+                if (sun.intensity > 0)
+                {
+                    sun.intensity = sun.intensity - 0.03f;
+                }
                 break;
         }
 
         //update the time of day
-        if (daylightCycleTime > 250)
+        if (daylightCycleTime > 300)
         {
             timeOfDay = 2;
-
         }
         if (daylightCycleTime > 600)
         {
