@@ -17283,7 +17283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5656288875319828478, guid: 8de1699b05066be4998c5ecb839395fa, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 11.87
+      value: 9.5
       objectReference: {fileID: 0}
     - target: {fileID: 5656288875319828478, guid: 8de1699b05066be4998c5ecb839395fa, type: 3}
       propertyPath: m_LocalPosition.z
@@ -17320,7 +17320,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4986888241394140484, guid: 8de1699b05066be4998c5ecb839395fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1151731603}
   m_SourcePrefab: {fileID: 100100000, guid: 8de1699b05066be4998c5ecb839395fa, type: 3}
 --- !u!1001 &389842617
 PrefabInstance:
@@ -18484,6 +18487,45 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5799899275858907336, guid: bc0c494cb4804e846a69014190f9a1de, type: 3}
   m_PrefabInstance: {fileID: 6852396838235554688}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &432033303
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI Extensions/UIMultiply
+  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!224 &433245185 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8241045846913272386, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
@@ -24729,8 +24771,8 @@ MeshFilter:
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &612278106 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 5990257768572495565, guid: 43ccbefd2811b044ba82b621b7869bda, type: 3}
-  m_PrefabInstance: {fileID: 664727570}
+  m_CorrespondingSourceObject: {fileID: 7690940753248606642, guid: b58051034eec0c743a184264335ad312, type: 3}
+  m_PrefabInstance: {fileID: 6184234284694143508}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &613769404
 GameObject:
@@ -26357,63 +26399,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8906750831039749364, guid: 84da7e5defcebe143ac374ecbba501c2, type: 3}
   m_PrefabInstance: {fileID: 660140421}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &664727570
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1308334016}
-    m_Modifications:
-    - target: {fileID: 5990257768572495565, guid: 43ccbefd2811b044ba82b621b7869bda, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 55.001465
-      objectReference: {fileID: 0}
-    - target: {fileID: 5990257768572495565, guid: 43ccbefd2811b044ba82b621b7869bda, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5990257768572495565, guid: 43ccbefd2811b044ba82b621b7869bda, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.5146484
-      objectReference: {fileID: 0}
-    - target: {fileID: 5990257768572495565, guid: 43ccbefd2811b044ba82b621b7869bda, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 5990257768572495565, guid: 43ccbefd2811b044ba82b621b7869bda, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 5990257768572495565, guid: 43ccbefd2811b044ba82b621b7869bda, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5990257768572495565, guid: 43ccbefd2811b044ba82b621b7869bda, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5990257768572495565, guid: 43ccbefd2811b044ba82b621b7869bda, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5990257768572495565, guid: 43ccbefd2811b044ba82b621b7869bda, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5990257768572495565, guid: 43ccbefd2811b044ba82b621b7869bda, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6371039997863787639, guid: 43ccbefd2811b044ba82b621b7869bda, type: 3}
-      propertyPath: m_Name
-      value: Red_MushroomTree_Lmoreno
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 43ccbefd2811b044ba82b621b7869bda, type: 3}
 --- !u!1 &667628500
 GameObject:
   m_ObjectHideFlags: 0
@@ -44207,6 +44192,33 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &1151731599 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4986888241394140484, guid: 8de1699b05066be4998c5ecb839395fa, type: 3}
+  m_PrefabInstance: {fileID: 388172050}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1151731603
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151731599}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4013275331872712965, guid: 2a63233d64885654aa448e945fb41313, type: 3}
 --- !u!1 &1153472179
 GameObject:
   m_ObjectHideFlags: 0
@@ -58364,45 +58376,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c612b938e9638b43a39578918b78b1e, type: 3}
---- !u!21 &1461333683
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI Extensions/UIMultiply
-  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &1462731154
 GameObject:
   m_ObjectHideFlags: 0
@@ -116937,6 +116910,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1247412085088237749}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1001 &6184234284694143508
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1308334016}
+    m_Modifications:
+    - target: {fileID: 7057252154163397384, guid: b58051034eec0c743a184264335ad312, type: 3}
+      propertyPath: m_Name
+      value: Red_MushroomTree_Lmoreno
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690940753248606642, guid: b58051034eec0c743a184264335ad312, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 55.001465
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690940753248606642, guid: b58051034eec0c743a184264335ad312, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690940753248606642, guid: b58051034eec0c743a184264335ad312, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.5146484
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690940753248606642, guid: b58051034eec0c743a184264335ad312, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690940753248606642, guid: b58051034eec0c743a184264335ad312, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690940753248606642, guid: b58051034eec0c743a184264335ad312, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690940753248606642, guid: b58051034eec0c743a184264335ad312, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690940753248606642, guid: b58051034eec0c743a184264335ad312, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690940753248606642, guid: b58051034eec0c743a184264335ad312, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690940753248606642, guid: b58051034eec0c743a184264335ad312, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b58051034eec0c743a184264335ad312, type: 3}
 --- !u!4 &6198313789151327159
 Transform:
   m_ObjectHideFlags: 0
