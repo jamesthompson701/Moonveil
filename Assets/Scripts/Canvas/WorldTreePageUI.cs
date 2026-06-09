@@ -23,9 +23,19 @@ public class WorldTreePageUI : MonoBehaviour
     public WorldTree treeThree;
     public WorldTree treeFour;
 
-    [Header("Book Page Content")]
-    // This is the Content object inside the book page where copied widgets will appear.
-    public Transform bookContentParent;
+    [Header("Book Tree Containers")]
+    // These are child containers inside the book page Content object.
+    // Each one should have its own Vertical Layout Group.
+    // Example:
+    // Content
+    // ├── FirstTree
+    // ├── SecondTree
+    // ├── ThirdTree
+    // └── FourthTree
+    public Transform firstTreeContainer;
+    public Transform secondTreeContainer;
+    public Transform thirdTreeContainer;
+    public Transform fourthTreeContainer;
 
     // Runs every time this book page becomes active/opened.
     private void OnEnable()
@@ -40,19 +50,27 @@ public class WorldTreePageUI : MonoBehaviour
             titleText.text = "WORLD TREES";
 
         // Remove old copied widgets so the page does not duplicate entries every time it opens.
-        ClearBookWidgets();
+        ClearAllTreeContainers();
 
-        // Copy each tree's current quest item widgets into the book page.
-        CopyTreeSection(treeOneContent, treeOne, "World Tree 1");
-        CopyTreeSection(treeTwoContent, treeTwo, "World Tree 2");
-        CopyTreeSection(treeThreeContent, treeThree, "World Tree 3");
-        CopyTreeSection(treeFourContent, treeFour, "World Tree 4");
+        // Copy each tree's current quest item widgets into its matching book page container.
+        CopyTreeSection(treeOneContent, treeOne, firstTreeContainer, "World Tree 1");
+        CopyTreeSection(treeTwoContent, treeTwo, secondTreeContainer, "World Tree 2");
+        CopyTreeSection(treeThreeContent, treeThree, thirdTreeContainer, "World Tree 3");
+        CopyTreeSection(treeFourContent, treeFour, fourthTreeContainer, "World Tree 4");
     }
 
-    private void CopyTreeSection(Transform sourceContent, WorldTree tree, string fallbackName)
+    private void CopyTreeSection(
+        Transform sourceContent,
+        WorldTree tree,
+        Transform targetContainer,
+        string fallbackName)
     {
         // If this tree/content slot is not assigned, skip it.
         if (sourceContent == null)
+            return;
+
+        // If this book page container is not assigned, skip it.
+        if (targetContainer == null)
             return;
 
         // Find all existing wQuestItem widgets under this tree menu's content object.
@@ -63,9 +81,9 @@ public class WorldTreePageUI : MonoBehaviour
         if (questItems.Length == 0)
             return;
 
-        // Create a simple text header for this tree section.
+        // Create a simple text header inside this tree's container.
         GameObject headerObject = new GameObject("Tree Header");
-        headerObject.transform.SetParent(bookContentParent, false);
+        headerObject.transform.SetParent(targetContainer, false);
 
         TextMeshProUGUI headerText = headerObject.AddComponent<TextMeshProUGUI>();
 
@@ -82,10 +100,10 @@ public class WorldTreePageUI : MonoBehaviour
         headerText.fontSize = 28;
         headerText.alignment = TextAlignmentOptions.Center;
 
-        // Copy each existing quest widget into the book page.
+        // Copy each existing quest widget into this tree's book page container.
         foreach (wQuestItem originalQuestItem in questItems)
         {
-            GameObject copiedWidget = Instantiate(originalQuestItem.gameObject, bookContentParent);
+            GameObject copiedWidget = Instantiate(originalQuestItem.gameObject, targetContainer);
             copiedWidget.SetActive(true);
 
             // Make sure copied images are fully visible.
@@ -104,7 +122,7 @@ public class WorldTreePageUI : MonoBehaviour
             if (copiedQuestItem != null)
                 copiedQuestItem.myWorldTree = null;
 
-            // Disable the copied button's behavior while keeping its visuals normal.
+            // Remove button behavior while keeping the widget visually normal.
             Button button = copiedWidget.GetComponent<Button>();
             if (button != null)
             {
@@ -115,15 +133,24 @@ public class WorldTreePageUI : MonoBehaviour
         }
     }
 
-    // Deletes all copied widgets/headers from the book page before rebuilding it.
-    private void ClearBookWidgets()
+    // Clears every tree container before rebuilding the page.
+    private void ClearAllTreeContainers()
     {
-        if (bookContentParent == null)
+        ClearContainer(firstTreeContainer);
+        ClearContainer(secondTreeContainer);
+        ClearContainer(thirdTreeContainer);
+        ClearContainer(fourthTreeContainer);
+    }
+
+    // Deletes all copied widgets/headers from one specific tree container.
+    private void ClearContainer(Transform container)
+    {
+        if (container == null)
             return;
 
-        for (int i = bookContentParent.childCount - 1; i >= 0; i--)
+        for (int i = container.childCount - 1; i >= 0; i--)
         {
-            Destroy(bookContentParent.GetChild(i).gameObject);
+            Destroy(container.GetChild(i).gameObject);
         }
     }
 }
