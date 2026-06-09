@@ -28,6 +28,14 @@ public class HUD : MonoBehaviour
     float maxFill = 1;
     public Image healthBar;
 
+    //health bottle sprites
+    public Image healthBottle;
+
+    public Sprite maxHealth;
+    public Sprite highHealth;
+    public Sprite mediumHealth;
+    public Sprite lowHealth;
+
     public GameObject manaText;
     bool textActive = false;
 
@@ -122,7 +130,25 @@ public class HUD : MonoBehaviour
     public void UpdateHealthDisplay()
     {
         healthBar.fillAmount = playerHealthRef.currentHealth / playerHealthRef.maxHealth;
+
+        if (playerHealthRef.currentHealth >= playerHealthRef.maxHealth)
+        {
+            healthBottle.sprite = maxHealth;
+        }
+        else if (playerHealthRef.currentHealth > playerHealthRef.maxHealth * 0.75)
+        {
+            healthBottle.sprite = highHealth;
+        }
+        else if (playerHealthRef.currentHealth > playerHealthRef.maxHealth * 0.25)
+        {
+            healthBottle.sprite = mediumHealth;
+        }
+        else
+        {
+            healthBottle.sprite = lowHealth;
+        }
     }
+
     public void SetManaText()
     {
         manaText.SetActive(false);
