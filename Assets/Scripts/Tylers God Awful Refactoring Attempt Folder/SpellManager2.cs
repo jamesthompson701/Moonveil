@@ -407,10 +407,15 @@ public class SpellManager2 : MonoBehaviour
             return;
         }
 
+        // If there's a highlighted interactable, only block casting when it's NOT Soil.
         if (InteractableHighlight.HasHighlightedInteractable)
         {
-            Debug.Log("Cannot cast spells while looking at an interactable.");
-            return;
+            var highlighted = InteractableHighlight.CurrentHighlighted;
+            if (highlighted == null || !highlighted.CompareTag("Soil") || attackChoice == 1)
+            {
+                Debug.Log("Cannot cast spells while looking at an interactable.");
+                return;
+            }
         }
 
         // Start the hold timer on press

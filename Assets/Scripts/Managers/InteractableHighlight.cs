@@ -4,15 +4,19 @@ public class InteractableHighlight : MonoBehaviour
 {
     public static bool HasHighlightedInteractable { get; private set; }
 
+    // Static accessor for the currently highlighted GameObject (so other systems can check tag/type)
+    public static GameObject CurrentHighlighted { get; private set; }
+
     public GameObject leftClickIcon;
 
     // Currently highlighted object from the interaction raycast
-    private GameObject currentHighlighted;
+    public GameObject currentHighlighted;
 
     private void OnDisable()
     {
         ClearHighlight();
         HasHighlightedInteractable = false;
+        CurrentHighlighted = null;
     }
 
     private void Update()
@@ -83,6 +87,7 @@ public class InteractableHighlight : MonoBehaviour
         }
 
         currentHighlighted = target;
+        CurrentHighlighted = target;
     }
 
     private void ClearHighlight()
@@ -96,6 +101,9 @@ public class InteractableHighlight : MonoBehaviour
             }
             currentHighlighted = null;
         }
+
+        // ensure static property is cleared too
+        CurrentHighlighted = null;
 
         if (leftClickIcon != null)
         {

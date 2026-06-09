@@ -535,7 +535,7 @@ public class CreatureDefs : MonoBehaviour
         Debug.Log("Melee hitbox = " + meleeHitbox.enabled);
 
         //Tells Animator to play attack anim
-        animator.SetTrigger("Attack");
+        if (animator != null) animator.SetTrigger("Attack");
     }
 
     private IEnumerator DoStraightProjectile()
@@ -548,7 +548,7 @@ public class CreatureDefs : MonoBehaviour
         Vector3 dir = (target.position - origin.position).normalized;
         proj.linearVelocity = dir * projectileSpeed;
 
-        animator.SetTrigger("Attack");
+        if (animator != null) animator.SetTrigger("Attack");
 
         yield break;
     }
@@ -570,7 +570,7 @@ public class CreatureDefs : MonoBehaviour
 
 
         //Tells Animator to play attack anim
-        animator.SetTrigger("Attack");
+        if (animator != null) animator.SetTrigger("Attack");
 
         yield break;
     }
@@ -586,7 +586,7 @@ public class CreatureDefs : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         //Tells Animator to play attack anim
-        animator.SetTrigger("Attack");
+        if (animator != null) animator.SetTrigger("Attack");
     }
 
     private static bool TryComputeBallisticVelocity(Vector3 start, Vector3 end, float apexExtraHeight, out Vector3 initialVelocity)
@@ -677,7 +677,8 @@ public class CreatureDefs : MonoBehaviour
         InventoryManager.instance.invSO.AddItem(dropItem, amount);
 
         //Tells Animator to play Death anim
-        animator.SetTrigger("Death");
+        if (animator != null)
+            animator.SetTrigger("Death");
 
 
         Destroy(gameObject);

@@ -549,13 +549,13 @@ namespace StarterAssets
             // ascend input moves up
             if (ascend != null && ascend.enabled && ascend.IsPressed())
             {
-                verticalSpeed += MoveSpeed;
+                verticalSpeed += FlightMoveSpeed / 2;
             }
 
             // descend input moves down
             if (descend != null && descend.enabled && descend.IsPressed())
             {
-                verticalSpeed -= MoveSpeed;
+                verticalSpeed -= FlightMoveSpeed / 2;
             }
 
             // set the vertical velocity used by Move()
