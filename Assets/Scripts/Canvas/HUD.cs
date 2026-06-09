@@ -31,7 +31,10 @@ public class HUD : MonoBehaviour
     public GameObject manaText;
     bool textActive = false;
 
+    // sundial images
     public Image clockWheel;
+    public Sprite daySundial;
+    public Sprite nightSundial;
 
 
 
@@ -53,6 +56,7 @@ public class HUD : MonoBehaviour
     private void Update()
     {
         UpdateHealthDisplay();
+        UpdateSundial();
 
         if (FishingManager.Instance != null && FishingManager.Instance.inFishingMode == false)
         {
@@ -73,9 +77,6 @@ public class HUD : MonoBehaviour
             }
         return;
         }
-
-        
-        
 
     }
 
@@ -150,6 +151,18 @@ public class HUD : MonoBehaviour
             case 4:
                 SpellChargeIcons[3].SetActive(true);
                 break;
+        }
+    }
+
+    public void UpdateSundial()
+    {
+        if (TimeManager.instance.timeOfDay == 1)
+        {
+            clockWheel.sprite = daySundial;
+        }
+        if (TimeManager.instance.timeOfDay == 2)
+        {
+            clockWheel.sprite = nightSundial;
         }
     }
 
