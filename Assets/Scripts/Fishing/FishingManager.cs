@@ -253,6 +253,7 @@ public class FishingManager : MonoBehaviour
 
         if (spellManager != null)
         spellManager.enabled = true;
+        HUD.instance.UpdatedSpellCharge(0);
 
         inFishingMode = false;
         currentArea = null;
