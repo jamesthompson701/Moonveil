@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class OptionsMenu : MonoBehaviour
 {
+    
     [Header("Audio Sliders")]
     public Slider mainSlider;
     public Slider musicSlider;
@@ -11,6 +12,12 @@ public class OptionsMenu : MonoBehaviour
 
     [Header("Audio Mixers")]
     public AudioMixer audioMixer;
+
+    public void OnBackClicked()
+    {
+        Instantiate(Resources.Load("Canvas/" + "TitleScreen") as GameObject);
+        DestroyCanvas();
+    }
 
     public void QuitGame()
     {
@@ -32,5 +39,10 @@ public class OptionsMenu : MonoBehaviour
     public void FXVolume()
     {
         audioMixer.SetFloat("fxVol", fxSlider.value);
+    }
+
+    void DestroyCanvas()
+    {
+        Destroy(this.gameObject);
     }
 }

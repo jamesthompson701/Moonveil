@@ -24,21 +24,28 @@ public class TitleScreen : MonoBehaviour
     public void OpenOptions()
     {
         Debug.Log("Options Button Clicked");
-        
-        optionsCanvas.SetActive(true);
-        optionsCanvas.transform.SetAsLastSibling();
+
+        Instantiate(Resources.Load("Canvas/" + "OptionsTitleScreen") as GameObject);
+        DestroyCanvas();
+        //optionsCanvas.SetActive(true);
+        //optionsCanvas.transform.SetAsLastSibling();
     }
 
     public void OpenCredits()
     {
         Debug.Log("Credits Button Clicked");
 
-        creditsCanvas.SetActive(true);
-        creditsCanvas.transform.SetAsLastSibling();
+        Instantiate(Resources.Load("Canvas/" + "Credits") as GameObject);
+        DestroyCanvas();
     }
 
     public void CloseOptions()
     {
         optionsCanvas.SetActive(false);
+    }
+
+    void DestroyCanvas()
+    {
+        Destroy(this.gameObject);
     }
 }

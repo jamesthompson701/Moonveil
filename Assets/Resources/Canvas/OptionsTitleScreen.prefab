@@ -1404,7 +1404,7 @@ GameObject:
   - component: {fileID: 7188975435879042972}
   - component: {fileID: 5921773093556256065}
   m_Layer: 5
-  m_Name: Options Title Screen
+  m_Name: OptionsTitleScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1815,9 +1815,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3355857659584032189, guid: 454b0e506da22404584c2e11e7bca52f, type: 3}
-        m_TargetAssemblyTypeName: TitleScreen, Assembly-CSharp
-        m_MethodName: CloseOptions
+      - m_Target: {fileID: 5921773093556256065}
+        m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
+        m_MethodName: OnBackClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
