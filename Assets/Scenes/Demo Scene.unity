@@ -20501,6 +20501,67 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1252564537}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1253011760
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1485484556988176, guid: 522b8f0998669a845b1c579fe936b086, type: 3}
+      propertyPath: m_Name
+      value: MeteorOutProj
+      objectReference: {fileID: 0}
+    - target: {fileID: 4320020512241290, guid: 522b8f0998669a845b1c579fe936b086, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 854.0203
+      objectReference: {fileID: 0}
+    - target: {fileID: 4320020512241290, guid: 522b8f0998669a845b1c579fe936b086, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 17.1875
+      objectReference: {fileID: 0}
+    - target: {fileID: 4320020512241290, guid: 522b8f0998669a845b1c579fe936b086, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 610.56635
+      objectReference: {fileID: 0}
+    - target: {fileID: 4320020512241290, guid: 522b8f0998669a845b1c579fe936b086, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4320020512241290, guid: 522b8f0998669a845b1c579fe936b086, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4320020512241290, guid: 522b8f0998669a845b1c579fe936b086, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4320020512241290, guid: 522b8f0998669a845b1c579fe936b086, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4320020512241290, guid: 522b8f0998669a845b1c579fe936b086, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4320020512241290, guid: 522b8f0998669a845b1c579fe936b086, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4320020512241290, guid: 522b8f0998669a845b1c579fe936b086, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199066164304405248, guid: 522b8f0998669a845b1c579fe936b086, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 522b8f0998669a845b1c579fe936b086, type: 3}
 --- !u!1001 &1256306843
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22024,6 +22085,45 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2154067754139245277, guid: dbecebf571d557a41ba52c0145a20f48, type: 3}
   m_PrefabInstance: {fileID: 1699731112}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &1340247332
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI Extensions/UIMultiply
+  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1340519285 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4188393393823029980, guid: 14e076341535d5b4ab926e4563028626, type: 3}
@@ -28242,45 +28342,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6122026415690569425, guid: dccadf946e46ef446b2499e6e13a4b8c, type: 3}
   m_PrefabInstance: {fileID: 1908522052}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &1775506247
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI Extensions/UIMultiply
-  m_Shader: {fileID: 4800000, guid: d287872ca8fd776418c28d332df585c3, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!223 &1782708220 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 288084592498464725, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
@@ -34719,6 +34780,22 @@ PrefabInstance:
       propertyPath: slowWind
       value: 
       objectReference: {fileID: 1435621814}
+    - target: {fileID: 5583989196395046802, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: MoveSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583989196395046802, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: SprintSpeed
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583989196395046802, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: FlightMoveSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583989196395046802, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: FlightSprintSpeed
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 5645205454241313286, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
       propertyPath: lengthInSec
       value: 2
@@ -35736,3 +35813,4 @@ SceneRoots:
   - {fileID: 2135222755}
   - {fileID: 1230433194}
   - {fileID: 1262896747}
+  - {fileID: 1253011760}
