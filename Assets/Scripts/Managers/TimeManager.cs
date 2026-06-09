@@ -73,7 +73,20 @@ public class TimeManager : MonoBehaviour
 
     public void Sleep()
     {
-        
+        // Sleeping immediately swaps from day to night, and vice versa
+        // ONLY WORKS WHILE DEBUG MENU IS ENABLED
+
+        if (DebugCanvas.instance.gameObject.activeInHierarchy)
+        {
+            if (timeOfDay == 1)
+            {
+                daylightCycleTime = 300;
+            }
+            if (timeOfDay == 2)
+            {
+                daylightCycleTime = 600;
+            }
+        }
     }
 
     public void Update()
