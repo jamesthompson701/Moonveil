@@ -6,18 +6,26 @@ public enum FishingBiome
 [RequireComponent(typeof(Collider))]
 public class FishingArea : MonoBehaviour
 {
+
+[Header("New Fishing")]
+
+public Transform fishContainer;
+
+public float catchRadius = 5f;
+
+
 [Tooltip("Camera to use while fishing (disable by default)")]
-    public Camera fishingCamera;
+public Camera fishingCamera;
 
-    [Tooltip("Fish that can be caught in this area.")]
-    public List<FishData> fishInThisArea = new List<FishData>();
+[Tooltip("Fish that can be caught in this area.")]
+public List<FishData> fishInThisArea = new List<FishData>();
 
-    [Tooltip("Optional display name for the area")]
-    public string areaName = "Lake";
+[Tooltip("Optional display name for the area")]
+public string areaName = "Lake";
 
-    public FishingBiome biome;
+public FishingBiome biome;
 
-    // Called by fishingManager to request a fish from this area
+// Called by fishingManager to request a fish from this area
     public FishData GetRandomFish()
     {
         if (fishInThisArea == null || fishInThisArea.Count == 0) return null;
