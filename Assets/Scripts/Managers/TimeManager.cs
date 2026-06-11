@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.AdaptivePerformance;
+using System.Collections;
 
 
 //This is the Universal Time Manager
@@ -19,7 +20,7 @@ public class TimeManager : MonoBehaviour
     public float time;
 
     // Time of day
-    //1 = morning, 2 = night
+    //1 = day, 2 = night
     public int timeOfDay;
 
     //rotation time of day (only used by TimeManager)
@@ -27,13 +28,14 @@ public class TimeManager : MonoBehaviour
     private int rotationTimeOfDay;
 
     //length of day in seconds
-    private float dayLength = 1200f;
+    private float dayLength = 600f;
 
     // seperate time for day/night cycle
     public float daylightCycleTime = 1;
 
     // world light
     public GameObject worldLight;
+    public Light sun;
 
     public static TimeManager instance;
 
@@ -71,21 +73,19 @@ public class TimeManager : MonoBehaviour
 
     public void Sleep()
     {
-        if (rotationTimeOfDay == 1)
+        // Sleeping immediately swaps from day to night, and vice versa
+        // ONLY WORKS WHILE DEBUG MENU IS ENABLED
+
+        if (DebugCanvas.instance.gameObject.activeInHierarchy)
         {
-            daylightCycleTime = 750;
-        }
-        else if (rotationTimeOfDay == 2)
-        {
-            daylightCycleTime = 1150;
-        }
-        else if (rotationTimeOfDay == 3)
-        {
-            daylightCycleTime = 1200;
-        }
-        else if (rotationTimeOfDay == 4)
-        {
-            daylightCycleTime = 700;
+            if (timeOfDay == 1)
+            {
+                daylightCycleTime = 300;
+            }
+            if (timeOfDay == 2)
+            {
+                daylightCycleTime = 600;
+            }
         }
     }
 
@@ -94,51 +94,34 @@ public class TimeManager : MonoBehaviour
         time = Time.deltaTime;
         daylightCycleTime = daylightCycleTime + time;
 
-        //change time of day based on time
-        if (daylightCycleTime >= 700 && daylightCycleTime < 750)
+        //rotate the sky
+        switch(timeOfDay)
         {
-            timeOfDay = 1;
-            if (rotationTimeOfDay != 1)
-            {
-                worldLight.transform.Rotate(90, 0, 0);
-                rotationTimeOfDay = 1;
-            }
-
-            HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 180f);
+            case 1:
+                if (sun.intensity < 3 )
+                {
+                    sun.intensity = sun.intensity + 0.01f;
+                }
+                worldLight.transform.Rotate(0.6f * Time.deltaTime,0,0);
+                break;
+            case 2:
+                if (sun.intensity > 0)
+                {
+                    sun.intensity = sun.intensity - 0.01f;
+                }
+                break;
         }
-        else if (daylightCycleTime >= 750 && daylightCycleTime < 1150)
+
+        //update the time of day
+        if (daylightCycleTime > 300)
         {
             timeOfDay = 2;
-            if (rotationTimeOfDay != 2)
-            {
-                worldLight.transform.Rotate(90, 0, 0);
-                rotationTimeOfDay = 2;
-            }
-
-            HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 67f);
         }
-        else if (daylightCycleTime >= 1150 && daylightCycleTime < 1200)
+        if (daylightCycleTime > 600)
         {
+            daylightCycleTime = 1;
             timeOfDay = 1;
-            if (rotationTimeOfDay != 3)
-            {
-                worldLight.transform.Rotate(90, 0, 0);
-                rotationTimeOfDay = 3;
-            }
-
-            HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 180f);
-        }
-        else if (daylightCycleTime >= dayLength)
-        {
-            daylightCycleTime = 0;
-            timeOfDay = 1;
-            if (rotationTimeOfDay != 4)
-            {
-                worldLight.transform.Rotate(90, 0, 0);
-                rotationTimeOfDay = 4;
-            }
-
-            HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 300f);
+            worldLight.transform.rotation = new Quaternion(0, 0, 0, 0);
         }
 
         //check each plant in the list
