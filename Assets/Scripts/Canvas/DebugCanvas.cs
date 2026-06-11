@@ -12,7 +12,17 @@ public class DebugCanvas : MonoBehaviour
     public DatabaseSO database;
     public TMP_Dropdown dropdown;
 
-    private void Start()
+    public static DebugCanvas instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
+
+        private void Start()
     {
         movementSlider.value = 4.0f;
     }
