@@ -32,7 +32,6 @@ public class InventoryManager : MonoBehaviour
             instance = this;
         }
         ResetInv();
-
     }
 
     private void Update()
@@ -68,7 +67,6 @@ public class InventoryManager : MonoBehaviour
     public void AddFish(FishData _fish, int _amount)
     {
         invSO.AddItem(_fish.fishItem, _amount);
-
     }
 
     public void ResetInv()
@@ -79,7 +77,6 @@ public class InventoryManager : MonoBehaviour
         isMultiplierBuffActive = false;
     }
 
-
     public IEnumerator DestroyPopup(GameObject popUp)
     {
         Debug.Log("COROUTINE RAN");
@@ -87,5 +84,4 @@ public class InventoryManager : MonoBehaviour
         Destroy(popUp);
         HUD.instance.itemPopups.Remove(popUp);
     }
-
 }
