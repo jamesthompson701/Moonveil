@@ -111,24 +111,26 @@ public class TimeManager : MonoBehaviour
                     sun.intensity = sun.intensity + 0.01f;
                 }
                 worldLight.transform.Rotate(0.6f * Time.deltaTime,0,0);
-                RenderSettings.skybox = day;
-                /*RenderSettings.skybox.Lerp(day, night, skyboxTransitionStatus);
-                if (skyboxTransitionStatus < 1)
+                //RenderSettings.skybox = day;
+                Debug.Log(skyboxTransitionStatus);
+                RenderSettings.skybox.Lerp(day, night, skyboxTransitionStatus);
+                if (skyboxTransitionStatus > 0)
                 {
-                    skyboxTransitionStatus = skyboxTransitionStatus + 0.1f;
-                }*/
+                    skyboxTransitionStatus = skyboxTransitionStatus - 0.1f;
+                }
                 break;
             case 2:
                 if (sun.intensity > 0)
                 {
                     sun.intensity = sun.intensity - 0.01f;
                 }
-                RenderSettings.skybox = night;
-                /*RenderSettings.skybox.Lerp(day, night, skyboxTransitionStatus);
+                //RenderSettings.skybox = night;
+                Debug.Log(skyboxTransitionStatus);
+                RenderSettings.skybox.Lerp(day, night, skyboxTransitionStatus);
                 if (skyboxTransitionStatus > 0)
                 {
                     skyboxTransitionStatus = skyboxTransitionStatus - 0.1f;
-                }*/
+                }
                 break;
         }
 
