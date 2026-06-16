@@ -44,7 +44,12 @@ public class HUD : MonoBehaviour
     public Sprite daySundial;
     public Sprite nightSundial;
 
-
+    public GameObject itemDisplay;
+    public Image displayImage;
+    public TMP_Text displayText;
+    public ItemSO selectedItem;
+    public int amount;
+    public w_Slot lastSelectedSlot;
 
     private void Awake()
     {
@@ -53,7 +58,7 @@ public class HUD : MonoBehaviour
         playerHealthRef = playerRef.GetComponent<PlayerDamageReceiver>();
 
         InventoryManager.instance.invSO.GetInventoryItem += InstantiatePopup;
-
+        itemDisplay.SetActive(false);
         if (instance == null)
         {
             instance = this;
@@ -65,6 +70,7 @@ public class HUD : MonoBehaviour
     {
         UpdateHealthDisplay();
         UpdateSundial();
+        UpdateDisplay();
 
         if (FishingManager.Instance != null && FishingManager.Instance.inFishingMode == false)
         {
@@ -237,6 +243,27 @@ public class HUD : MonoBehaviour
         spawnedPopup.SetUnlock();
 
         StartCoroutine(InventoryManager.instance.DestroyPopup(popUp));
+    }
+
+    public void DisplaySelectedItem(ItemSO _item, int _amount)
+    {
+        itemDisplay.SetActive(true);
+        selectedItem = _item;
+        amount = _amount;
+        displayImage.enabled = true;
+        displayImage.sprite = _item.itemSprite;
+        displayText.text = "" + amount;
+    }
+
+    public void UpdateDisplayedItemAmount(w_Slot slot, int _amount)
+    {
+        amount = _amount;
+        lastSelectedSlot = slot;
+    }
+
+    public void UpdateDisplay()
+    {
+        if (lastSelectedSlot.item.item == selectedItem) displayText.text = "" + lastSelectedSlot.item.amount;
     }
 
 }
