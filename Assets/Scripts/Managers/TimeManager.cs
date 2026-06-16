@@ -44,8 +44,6 @@ public class TimeManager : MonoBehaviour
     public Material night;
     public Material day;
 
-    private float skyboxTransitionStatus = 0;
-
     //tutorial
     public bool tutorialDone;
 
@@ -111,26 +109,15 @@ public class TimeManager : MonoBehaviour
                     sun.intensity = sun.intensity + 0.01f;
                 }
                 worldLight.transform.Rotate(0.6f * Time.deltaTime,0,0);
-                //RenderSettings.skybox = day;
-                Debug.Log(skyboxTransitionStatus);
-                RenderSettings.skybox.Lerp(day, night, skyboxTransitionStatus);
-                if (skyboxTransitionStatus > 0)
-                {
-                    skyboxTransitionStatus = skyboxTransitionStatus - 0.1f;
-                }
+                RenderSettings.skybox = day;
                 break;
             case 2:
                 if (sun.intensity > 0)
                 {
                     sun.intensity = sun.intensity - 0.01f;
                 }
-                //RenderSettings.skybox = night;
-                Debug.Log(skyboxTransitionStatus);
-                RenderSettings.skybox.Lerp(day, night, skyboxTransitionStatus);
-                if (skyboxTransitionStatus > 0)
-                {
-                    skyboxTransitionStatus = skyboxTransitionStatus - 0.1f;
-                }
+                RenderSettings.skybox = night;
+                //RenderSettings.skybox.SetFloat("_Blend", Time.deltaTime * 0.1f);
                 break;
         }
 
