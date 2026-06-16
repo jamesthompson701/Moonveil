@@ -405,7 +405,18 @@ public class SpellManager2 : MonoBehaviour
         {
             Debug.Log("Cannot cast spells while in flight");
             return;
-        }     
+        }
+
+        // If there's a highlighted interactable, only block casting when it's NOT Soil.
+        if (InteractableHighlight.HasHighlightedInteractable)
+        {
+            var highlighted = InteractableHighlight.CurrentHighlighted;
+            if (highlighted == null || !highlighted.CompareTag("Soil") || attackChoice == 1)
+            {
+                Debug.Log("Cannot cast spells while looking at an interactable.");
+                return;
+            }
+        }
 
         // Start the hold timer on press
         if (context.started)

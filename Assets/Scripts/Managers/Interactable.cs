@@ -53,10 +53,12 @@ public class Interactable : MonoBehaviour
         }
         else if (gameObject.CompareTag("Crafting"))
         {
+            SpellManager2.Instance.inMenu = true;
             CanvasManager.Instance.OpenMenu(3);
         }
         else if (gameObject.CompareTag("FastTravel"))
         {
+            SpellManager2.Instance.inMenu = true;
             CanvasManager.Instance.OpenMenu(5);
         }
         else if (gameObject.CompareTag("Dialogue"))
@@ -79,6 +81,7 @@ public class Interactable : MonoBehaviour
         }
         else if (gameObject.CompareTag("World Tree"))
         {
+            SpellManager2.Instance.inMenu = true;
             this.gameObject.GetComponent<WorldTree>().OnInteract();
         }
         else if (gameObject.CompareTag("Bed"))

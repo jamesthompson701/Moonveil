@@ -22,4 +22,5 @@ public class ItemSO : ScriptableObject
 
     public ItemEffectSO effect;
 
+    public GameObject displayPrefab;
 }

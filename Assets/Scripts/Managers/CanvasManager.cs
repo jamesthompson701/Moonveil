@@ -110,6 +110,7 @@ public class CanvasManager : MonoBehaviour
         
         if (pause)
         {
+            SpellManager2.Instance.inMenu = true;
             if (currentCanvas != 0)
             {
                 // checks if options is open 
@@ -120,6 +121,7 @@ public class CanvasManager : MonoBehaviour
                 else
                 {
                     //Closes current canvas
+                    SpellManager2.Instance.inMenu = false;
                     OpenMenu(currentCanvas);
                 }
 
@@ -155,7 +157,7 @@ public class CanvasManager : MonoBehaviour
 
             menus[menu].SetActive(true);
             currentCanvas = menu;
-
+            SpellManager2.Instance.inMenu = true;
             playerMap.Disable();
             UIMap.Enable();
             menus[0].GetComponent<Canvas>().enabled = false;
@@ -185,6 +187,7 @@ public class CanvasManager : MonoBehaviour
     {
         for (int i = 1; i < menus.Length; i++)
         {
+            SpellManager2.Instance.inMenu = false;
             menus[i].SetActive(false);
             currentCanvas = 0;
 
@@ -204,6 +207,7 @@ public class CanvasManager : MonoBehaviour
 
     public void OpenMiniGame(GameObject canvas)
     {
+        SpellManager2.Instance.inMenu = true;
         canvas.SetActive(true);
         currentCanvas = 999;
 
@@ -217,6 +221,7 @@ public class CanvasManager : MonoBehaviour
 
     public void CloseMiniGame(GameObject canvas)
     {
+        SpellManager2.Instance.inMenu = false;
         canvas.SetActive(false);
         miniGame = true;
         currentCanvas = 0;
@@ -230,6 +235,7 @@ public class CanvasManager : MonoBehaviour
 
     public void OpenTreeMenu(GameObject treeMenu)
     {
+        SpellManager2.Instance.inMenu = true;
         menus[6] = treeMenu;
         OpenMenu(6);
         
