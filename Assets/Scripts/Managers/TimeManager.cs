@@ -44,6 +44,8 @@ public class TimeManager : MonoBehaviour
     public Material night;
     public Material day;
 
+    private float currentBlend;
+
     //tutorial
     public bool tutorialDone;
 
@@ -54,7 +56,6 @@ public class TimeManager : MonoBehaviour
             instance = this;
         }
         timeOfDay = 1;
-        RenderSettings.skybox = day;
     }
 
     //add or remove plants
@@ -109,15 +110,23 @@ public class TimeManager : MonoBehaviour
                     sun.intensity = sun.intensity + 0.01f;
                 }
                 worldLight.transform.Rotate(0.6f * Time.deltaTime,0,0);
-                RenderSettings.skybox = day;
+                if(currentBlend > 0)
+                {
+                    currentBlend = currentBlend - 0.01f;
+                }
+                RenderSettings.skybox.SetFloat("_Blend", currentBlend);
                 break;
             case 2:
                 if (sun.intensity > 0)
                 {
                     sun.intensity = sun.intensity - 0.01f;
                 }
-                RenderSettings.skybox = night;
-                //RenderSettings.skybox.SetFloat("_Blend", Time.deltaTime * 0.1f);
+                worldLight.transform.Rotate(0.6f * Time.deltaTime, 0, 0);
+                if (currentBlend < 1)
+                {
+                    currentBlend = currentBlend + 0.01f;
+                }
+                RenderSettings.skybox.SetFloat("_Blend", currentBlend);
                 break;
         }
 
@@ -125,12 +134,13 @@ public class TimeManager : MonoBehaviour
         if (daylightCycleTime > 300)
         {
             timeOfDay = 2;
+            worldLight.transform.eulerAngles = new Vector3(180, 180, 0);
         }
         if (daylightCycleTime > 600)
         {
             daylightCycleTime = 1;
             timeOfDay = 1;
-            worldLight.transform.rotation = new Quaternion(0, 0, 0, 0);
+            worldLight.transform.eulerAngles = new Vector3(0,180,0);
         }
 
         //check each plant in the list
