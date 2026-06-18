@@ -4,9 +4,6 @@ using UnityEngine.UIElements;
 
 public class ShakeableSpawner : MonoBehaviour
 {
-    //things to spawn (chosen from at random)
-    //public List<GameObject> drops;
-
     //seed to spawn + particle
     public GameObject seed;
     public GameObject shakenParticle;
@@ -25,16 +22,18 @@ public class ShakeableSpawner : MonoBehaviour
         {
             if (currentSeeds > 0)
             {
-                int randomNum1 = Random.Range(-1, 2);
-                int randomNum2 = Random.Range(-1, 2);
-                int randomNum3 = Random.Range(-1, 2);
-                Vector3 spawnPos = new Vector3(transform.position.x + randomNum1, transform.position.y + randomNum2, transform.position.z + randomNum3);
-                Instantiate(seed, spawnPos, transform.rotation);
+                Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+                GameObject newSeed = Instantiate(seed, spawnPos, transform.rotation);
+                Rigidbody newSeedRB = newSeed.GetComponent<Rigidbody>();
+
+                int randomNum1 = Random.Range(-4, 5);
+                int randomNum2 = Random.Range(3, 9);
+                int randomNum3 = Random.Range(-4, 5);
+                newSeedRB.linearVelocity = new Vector3(randomNum1, randomNum2, randomNum3);
+
                 Instantiate(shakenParticle, spawnPos, transform.rotation);
                 currentSeeds = currentSeeds - 1;
                 Invoke("ReplenishSeed", 60f);
-                //SpawnFromTable();
-                //Debug.Log("spawned seed");
             }
         }
     }
@@ -43,18 +42,5 @@ public class ShakeableSpawner : MonoBehaviour
     {
         currentSeeds++;
     }
-
-    /*
-    private void SpawnFromTable()
-    {
-        GameObject obj = ObjectPooler.Instance.GetPooledObject(drops[Random.Range(0, drops.Count)]);
-        if (obj != null)
-        {
-            obj.transform.position = transform.position + Vector3.up * 2;
-            obj.transform.rotation = transform.rotation;
-            obj.SetActive(true);
-        }
-    }
-    */
 
 }
