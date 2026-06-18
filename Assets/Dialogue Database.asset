@@ -360,7 +360,10 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks: []
       conditionsString: 
-      userScript: SetQuestState("Quest 0", "active");
+      userScript: 'SetQuestState("Quest 0", "active");
+
+        Variable["McGuffinNum"]
+        = Variable["McGuffinNum"] + 0'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
