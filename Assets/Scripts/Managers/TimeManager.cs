@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.AdaptivePerformance;
 using System.Collections;
+using UnityEditorInternal;
 
 
 //This is the Universal Time Manager
@@ -38,6 +39,12 @@ public class TimeManager : MonoBehaviour
     public Light sun;
 
     public static TimeManager instance;
+
+    // skybox
+    public Material night;
+    public Material day;
+
+    private float currentBlend;
 
     //tutorial
     public bool tutorialDone;
@@ -103,12 +110,23 @@ public class TimeManager : MonoBehaviour
                     sun.intensity = sun.intensity + 0.01f;
                 }
                 worldLight.transform.Rotate(0.6f * Time.deltaTime,0,0);
+                if(currentBlend > 0)
+                {
+                    currentBlend = currentBlend - 0.01f;
+                }
+                RenderSettings.skybox.SetFloat("_Blend", currentBlend);
                 break;
             case 2:
                 if (sun.intensity > 0)
                 {
                     sun.intensity = sun.intensity - 0.01f;
                 }
+                worldLight.transform.Rotate(0.6f * Time.deltaTime, 0, 0);
+                if (currentBlend < 1)
+                {
+                    currentBlend = currentBlend + 0.01f;
+                }
+                RenderSettings.skybox.SetFloat("_Blend", currentBlend);
                 break;
         }
 
@@ -116,12 +134,13 @@ public class TimeManager : MonoBehaviour
         if (daylightCycleTime > 300)
         {
             timeOfDay = 2;
+            worldLight.transform.eulerAngles = new Vector3(180, 180, 0);
         }
         if (daylightCycleTime > 600)
         {
             daylightCycleTime = 1;
             timeOfDay = 1;
-            worldLight.transform.rotation = new Quaternion(0, 0, 0, 0);
+            worldLight.transform.eulerAngles = new Vector3(0,180,0);
         }
 
         //check each plant in the list
