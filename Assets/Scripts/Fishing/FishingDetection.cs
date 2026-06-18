@@ -1,16 +1,17 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FishingDetection : MonoBehaviour
 {
- public FishingFish currentFish;
+    public List<FishingFish> fishInside = new List<FishingFish>();
 
     private void OnTriggerEnter(Collider other)
     {
         FishingFish fish = other.GetComponent<FishingFish>();
 
-        if (fish != null)
+        if(fish != null && !fishInside.Contains(fish))
         {
-            currentFish = fish;
+            fishInside.Add(fish);
         }
     }
 
@@ -18,9 +19,9 @@ public class FishingDetection : MonoBehaviour
     {
         FishingFish fish = other.GetComponent<FishingFish>();
 
-        if (fish == currentFish)
+        if(fish != null)
         {
-            currentFish = null;
+            fishInside.Remove(fish);
         }
     }
 }

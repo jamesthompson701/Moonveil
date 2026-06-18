@@ -2,16 +2,21 @@ using UnityEngine;
 
 public class FishingCameraController : MonoBehaviour
 {
+    public Transform target;
+
     public float rotateSpeed = 100f;
+
+    float yaw;
+    float pitch;
 
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X");
+        yaw += Input.GetAxis("Mouse X") * rotateSpeed * Time.deltaTime;
 
-        transform.Rotate(Vector3.up, mouseX * rotateSpeed * Time.deltaTime);
+        pitch -= Input.GetAxis("Mouse Y") * rotateSpeed * Time.deltaTime;
 
-        float mouseY = Input.GetAxis("Mouse Y");
+        pitch = Mathf.Clamp(pitch, -45f, 60f);
 
-        transform.Rotate(Vector3.up, mouseY * rotateSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Euler(pitch,yaw,0f);
     }
 }

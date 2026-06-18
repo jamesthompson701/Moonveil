@@ -25,12 +25,25 @@ public string areaName = "Lake";
 
 public FishingBiome biome;
 
-// Called by fishingManager to request a fish from this area
+// called by fishingManager to request a fish from this area
     public FishData GetRandomFish()
     {
-        if (fishInThisArea == null || fishInThisArea.Count == 0) return null;
+        if (fishInThisArea == null || fishInThisArea.Count == 0) 
+        {
+            return null;
+        }
+
         // random selection
         int idx = Random.Range(0, fishInThisArea.Count);
         return fishInThisArea[idx];
+    }
+
+    // water spell to enter fishing
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("WateringSpell"))
+        {
+            FishingManager.Instance.EnterFishingMode(this);
+        }
     }
 }
