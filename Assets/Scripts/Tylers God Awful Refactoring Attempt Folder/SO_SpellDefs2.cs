@@ -46,7 +46,9 @@ public abstract class SO_SpellDefs2 : ScriptableObject
     public float upwardOffset = 0f;
     public float horizontalOffset = 0f;
 
-    public Transform audioSource = SpellManager2.Instance.player.transform;
+    // Make audio source optional and don't reference SpellManager2.Instance during asset construction.
+    [Tooltip("Optional transform used as audio source. If null, SpellManager2.Instance.player.transform will be used at runtime if available.")]
+    public Transform audioSource;
 
     public abstract void CastSpell2(SpellCastContext ctx);
 
@@ -73,22 +75,40 @@ public abstract class SO_SpellDefs2 : ScriptableObject
 
     public void playSpellAudio()
     {
-        if (spellType == SpellType.Fire && SpellManager2.Instance.inCombatArea)
-            AudioManager.PlayOneShot(eEffects.combatFire, audioSource, 100);
-        else if (spellType == SpellType.Earth && SpellManager2.Instance.inCombatArea)
-            AudioManager.PlayOneShot(eEffects.combatEarth, audioSource, 100);
-        else if (spellType == SpellType.Water && SpellManager2.Instance.inCombatArea)
-            AudioManager.PlayOneShot(eEffects.combatWater, audioSource, 100);
-        else if (spellType == SpellType.Air && SpellManager2.Instance.inCombatArea)
-            AudioManager.PlayOneShot(eEffects.combatAir, audioSource, 100);
+        // Resolve manager and audio source at runtime and guard against nulls.
+        var mgr = SpellManager2.Instance;
+        Transform src = audioSource ?? mgr?.player?.transform;
 
-        if (spellType == SpellType.Fire && !SpellManager2.Instance.inCombatArea)
-            AudioManager.PlayOneShot(eEffects.farmFire, audioSource, 100);
-        else if (spellType == SpellType.Earth && !SpellManager2.Instance.inCombatArea)
-            AudioManager.PlayOneShot(eEffects.farmEarth, audioSource, 100);
-        else if (spellType == SpellType.Water && !SpellManager2.Instance.inCombatArea)
-            AudioManager.PlayOneShot(eEffects.farmWater, audioSource, 100);
-        else if (spellType == SpellType.Air && !SpellManager2.Instance.inCombatArea)
-            AudioManager.PlayOneShot(eEffects.farmAir, audioSource, 100);
+        if (mgr == null)
+        {
+            Debug.LogWarning("playSpellAudio: SpellManager2.Instance is null. Audio aborted.");
+            return;
+        }
+
+        if (src == null)
+        {
+            Debug.LogWarning("playSpellAudio: audio source is null. Audio aborted.");
+            return;
+        }
+
+        bool inCombat = mgr.inCombatArea;
+
+        if (spellType == SpellType.Fire && inCombat)
+            AudioManager.PlayOneShot(eEffects.combatFire, src, 100);
+        else if (spellType == SpellType.Earth && inCombat)
+            AudioManager.PlayOneShot(eEffects.combatEarth, src, 100);
+        else if (spellType == SpellType.Water && inCombat)
+            AudioManager.PlayOneShot(eEffects.combatWater, src, 100);
+        else if (spellType == SpellType.Air && inCombat)
+            AudioManager.PlayOneShot(eEffects.combatAir, src, 100);
+
+        if (spellType == SpellType.Fire && !inCombat)
+            AudioManager.PlayOneShot(eEffects.farmFire, src, 100);
+        else if (spellType == SpellType.Earth && !inCombat)
+            AudioManager.PlayOneShot(eEffects.farmEarth, src, 100);
+        else if (spellType == SpellType.Water && !inCombat)
+            AudioManager.PlayOneShot(eEffects.farmWater, src, 100);
+        else if (spellType == SpellType.Air && !inCombat)
+            AudioManager.PlayOneShot(eEffects.farmAir, src, 100);
     }
 }

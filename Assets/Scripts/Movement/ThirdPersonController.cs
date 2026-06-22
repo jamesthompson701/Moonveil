@@ -90,6 +90,10 @@ namespace StarterAssets
         [Tooltip("Determines if the player is in flight mode or not")]
         public bool inFlightMode = false;
 
+
+        [Tooltip("When true, prevents the player from toggling flight (set by combat manager)")]
+        public bool flightLocked = false;
+
         [Header("Flight Mode")]
         [Tooltip("Move speed while in flight mode (horizontal movement)")]
         public float FlightMoveSpeed = 16.0f;
@@ -281,6 +285,13 @@ namespace StarterAssets
             if (isCasting)
             {
                 Debug.Log("Cannot toggle flight while casting.");
+                return;
+            }
+
+            // Prevent toggling flight while combat or other systems lock it
+            if (flightLocked)
+            {
+                Debug.Log("Cannot toggle flight right now (locked by combat).");
                 return;
             }
 

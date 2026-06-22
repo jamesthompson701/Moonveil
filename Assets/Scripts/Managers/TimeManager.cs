@@ -29,7 +29,7 @@ public class TimeManager : MonoBehaviour
     private int rotationTimeOfDay;
 
     //length of day in seconds
-    private float dayLength = 600f;
+    public float dayLength = 600f;
 
     // seperate time for day/night cycle
     public float daylightCycleTime = 1;

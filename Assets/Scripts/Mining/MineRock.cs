@@ -76,7 +76,7 @@ public class MineRock : MonoBehaviour
         }
     }
 
-   public void Interact()
+    public void Interact()
     {
         Debug.Log("Use Earth Spell");
     }
@@ -131,25 +131,25 @@ public class MineRock : MonoBehaviour
         switch (requiredType)
         {
             case MineralType.Fire:
-            {
-                SetGemMaterial(fireMaterial);
-                break;
-            }
+                {
+                    SetGemMaterial(fireMaterial);
+                    break;
+                }
 
             case MineralType.Water:
-            {
-                SetGemMaterial(waterMaterial);
-                break;
-            }
+                {
+                    SetGemMaterial(waterMaterial);
+                    break;
+                }
 
             case MineralType.Air:
-            {
-                SetGemMaterial(airMaterial);
-                break;
-            }
+                {
+                    SetGemMaterial(airMaterial);
+                    break;
+                }
         }
 
-        if(audioSource && raiseSound)
+        if (audioSource && raiseSound)
         {
             audioSource.PlayOneShot(raiseSound);
             Debug.Log("raiseSound played");
@@ -182,7 +182,7 @@ public class MineRock : MonoBehaviour
 
         InventoryManager.instance.invSO.AddItem(rewardGem, 1);
 
-        if(audioSource && successSound)
+        if (audioSource && successSound)
         {
             audioSource.PlayOneShot(successSound);
             Debug.Log("successSound played");
@@ -214,7 +214,7 @@ public class MineRock : MonoBehaviour
 
         SetGemVisible(false);
 
-        if(audioSource && sinkSound)
+        if (audioSource && sinkSound)
         {
             audioSource.PlayOneShot(sinkSound);
             Debug.Log("sinkSound played");

@@ -34,6 +34,9 @@ public class EnemyAttacks : MonoBehaviour
     private readonly Dictionary<int, float> _lastHitTime = new(8);
     private readonly HashSet<int> _hitThisSwing = new();
 
+    [SerializeField] private bool isPenguinToss = false;
+    [SerializeField] private GameObject penguinionPrefab;
+
     /// <summary>
     /// Call this right before enabling a melee hitbox for a new attack swing.
     /// </summary>
@@ -47,15 +50,23 @@ public class EnemyAttacks : MonoBehaviour
     {
         TryHit(other);
         if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || other.CompareTag(targetTag) || other.CompareTag("Ground")))
+        {
+            SpawnPenguinion();
             Destroy(gameObject);
+        }
         else if (destroyOnHit)
+        {
             Destroy(gameObject, destroyDelay);
+        }
     }
     private void OnTriggerStay(Collider other)
     {
         TryHit(other);
         if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || other.CompareTag(targetTag) || other.CompareTag("Ground")))
+        {
+            SpawnPenguinion();
             Destroy(gameObject);
+        }
         else if (destroyOnHit)
             Destroy(gameObject, destroyDelay);
     }
@@ -64,7 +75,10 @@ public class EnemyAttacks : MonoBehaviour
         TryHit(collision.collider);
         // destroys object if it hits the target or the ground tag
         if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || collision.collider.CompareTag(targetTag) || collision.collider.CompareTag("Ground")))
+        {
+            SpawnPenguinion();
             Destroy(gameObject);
+        }
         else if (destroyOnHit)
             Destroy(gameObject, destroyDelay);
     }
@@ -94,6 +108,14 @@ public class EnemyAttacks : MonoBehaviour
         _lastHitTime[targetId] = Time.time;
         if (IsMelee) _hitThisSwing.Add(targetId);
 
+    }
+
+    private void SpawnPenguinion()
+    {
+        if (!isPenguinToss) return;
+        for (int i = 0; i < 3; i++)
+            Instantiate(penguinionPrefab, transform.position + Vector3.up * 0.5f, Quaternion.identity);
+        Debug.Log("Spawning Penguinion!");
     }
 }
 

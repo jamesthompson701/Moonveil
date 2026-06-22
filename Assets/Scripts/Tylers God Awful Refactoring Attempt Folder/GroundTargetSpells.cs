@@ -9,15 +9,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GroundTargetSpells", menuName = "Scriptable Objects/GroundTargetSpells")]
 public class GroundTargetSpells : SO_SpellDefs2
 {
-    //TODO
-    //find prefab
-    //find cast point
-    //raycast to ground to find target location
-    //Show preveiw of spell area of effect at target location while aiming
-    //instantiate or enable prefab/object at target location
-    //apply effects to enemies in area of effect
-    //destroy or disable prefab/object when spell ends
-
     public override void CastSpell2(SpellCastContext ctx)
     {
         Debug.Log($"Casting {SpellName} at {ctx.aimCamera.transform.position + ctx.cameraPlanarForward * forwardOffset}");

@@ -14,14 +14,8 @@ public class SpawnManager : MonoBehaviour
     [Tooltip("If true, spawn/respawn when a new day begins (recommended). If false, use SpawnTime instead.")]
     public bool spawnOnNewDay = true;
 
-    [Tooltip("Daylight cycle time to trigger spawn when spawnOnNewDay is false. (Range: 1..600)")]
-    public float spawnTime = 1f;
-
     // current spawned instances; parallel to spawnPoints (null when empty or destroyed)
     private List<GameObject> spawnedInstances = new List<GameObject>();
-
-    // last observed daylightCycleTime from TimeManager to detect rollovers / crossings
-    private float lastObservedCycleTime = -1f;
 
     private void Awake()
     {
@@ -34,12 +28,6 @@ public class SpawnManager : MonoBehaviour
 
     private void Start()
     {
-        // initialize lastObservedCycleTime from TimeManager if available
-        if (TimeManager.instance != null)
-        {
-            lastObservedCycleTime = TimeManager.instance.daylightCycleTime;
-        }
-
         // optionally spawn initial wave at start (comment this out if you don't want immediate spawn)
         SpawnAllMissing();
     }
@@ -48,7 +36,7 @@ public class SpawnManager : MonoBehaviour
     {
         if (TimeManager.instance == null) return;
 
-        float currentCycle = TimeManager.instance.daylightCycleTime;
+        float currentCycle = TimeManager.instance.dayLength;
 
         // Detect new day (cycle rollover) OR crossing the configured spawnTime
         bool shouldTrigger = false;
@@ -57,22 +45,7 @@ public class SpawnManager : MonoBehaviour
         {
             // DaylightCycleTime is reset to a small value when the day rolls over.
             // If lastObservedCycleTime > currentCycle we had a reset -> new day.
-            if (lastObservedCycleTime > currentCycle)
-            {
-                shouldTrigger = true;
-            }
-        }
-        else
-        {
-            // Normal rising value -> detect crossing spawnTime once.
-            // Handle case where spawnTime is 1 or very small.
-            if (lastObservedCycleTime < spawnTime && currentCycle >= spawnTime)
-            {
-                shouldTrigger = true;
-            }
-
-            // Also handle the case of a rollover where spawnTime is near the start of the cycle:
-            if (lastObservedCycleTime > currentCycle && currentCycle >= spawnTime)
+            if (currentCycle == 0)
             {
                 shouldTrigger = true;
             }
@@ -82,8 +55,6 @@ public class SpawnManager : MonoBehaviour
         {
             SpawnAllMissing();
         }
-
-        lastObservedCycleTime = currentCycle;
     }
 
     // Ensures spawnedInstances has the same capacity as spawnPoints (keeps indices aligned)

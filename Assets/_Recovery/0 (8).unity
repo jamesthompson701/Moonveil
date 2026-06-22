@@ -1304,14 +1304,13 @@ GameObject:
   - component: {fileID: 47650077}
   - component: {fileID: 47650076}
   - component: {fileID: 47650075}
-  - component: {fileID: 47650078}
   m_Layer: 0
   m_Name: BossGem (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &47650074
 Transform:
   m_ObjectHideFlags: 0
@@ -1407,20 +1406,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47650073}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &47650078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 47650073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f07c654aafa4d04081e5ab18eb4209e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Weakpoints
-  pengKing: {fileID: 1465837437}
-  elementType: 0
 --- !u!1 &48966951 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1535615643571255803, guid: 1fc646a8ebd83234d82ef3c1b07eca3e, type: 3}
@@ -2070,6 +2055,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 68915800}
+  - component: {fileID: 68915801}
   m_Layer: 0
   m_Name: GameObject (3)
   m_TagString: Weakpoint
@@ -2093,6 +2079,20 @@ Transform:
   - {fileID: 944151159}
   m_Father: {fileID: 407241506}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &68915801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 68915799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f07c654aafa4d04081e5ab18eb4209e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  pengKing: {fileID: 0}
+  elementType: 0
 --- !u!1001 &73261016
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4929,6 +4929,18 @@ PrefabInstance:
       value: King_Penguin-UW
       objectReference: {fileID: 0}
     - target: {fileID: 3429447771088931464, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 17.91
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429447771088931464, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 17.91
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429447771088931464, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 17.91
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429447771088931464, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -4968,50 +4980,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: arenaCollider
+    - target: {fileID: 5006549721811300812, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: maxSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5006549721811300812, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: minSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5006549721811300812, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: drawGizmos
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5006549721811300812, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: attackRange
+      value: 95
+      objectReference: {fileID: 0}
+    - target: {fileID: 5006549721811300812, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: aggroDistance
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5006549721811300812, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: deaggroDistance
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 5006549721811300812, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: maxAcceleration
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5006549721811300812, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: projectilePrefab
       value: 
-      objectReference: {fileID: 848160131}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: arenaRenderer
-      value: 
-      objectReference: {fileID: 848160132}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: shieldCollider
-      value: 
-      objectReference: {fileID: 1368014757}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: shieldRenderer
-      value: 
-      objectReference: {fileID: 1368014758}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: 'weakpoints.Array.data[0]'
-      value: 
-      objectReference: {fileID: 1093862643}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: 'weakpoints.Array.data[1]'
-      value: 
-      objectReference: {fileID: 47650073}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: 'weakpoints.Array.data[2]'
-      value: 
-      objectReference: {fileID: 2119373442}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: 'weakpoints.Array.data[3]'
-      value: 
-      objectReference: {fileID: 944151158}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: 'weakpoints.Array.data[4]'
-      value: 
-      objectReference: {fileID: 1527973510}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: 'weakpoints.Array.data[5]'
-      value: 
-      objectReference: {fileID: 1303028617}
+      objectReference: {fileID: 9028756490494239848, guid: 23152c3a389d61045936c0a0f8763ed8, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2656006948816850994, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1465837437}
   m_SourcePrefab: {fileID: 100100000, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
 --- !u!4 &178856892 stripped
 Transform:
@@ -19313,6 +19320,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 809568772}
+  - component: {fileID: 809568773}
   m_Layer: 0
   m_Name: GameObject (1)
   m_TagString: Weakpoint
@@ -19336,6 +19344,20 @@ Transform:
   - {fileID: 47650074}
   m_Father: {fileID: 407241506}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &809568773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809568771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f07c654aafa4d04081e5ab18eb4209e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  pengKing: {fileID: 0}
+  elementType: 0
 --- !u!4 &810205115 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2154067754139245277, guid: dbecebf571d557a41ba52c0145a20f48, type: 3}
@@ -21333,7 +21355,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &848160128
 Transform:
   m_ObjectHideFlags: 0
@@ -25305,14 +25327,13 @@ GameObject:
   - component: {fileID: 944151162}
   - component: {fileID: 944151161}
   - component: {fileID: 944151160}
-  - component: {fileID: 944151163}
   m_Layer: 0
   m_Name: BossGem (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &944151159
 Transform:
   m_ObjectHideFlags: 0
@@ -25408,20 +25429,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 944151158}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &944151163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 944151158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f07c654aafa4d04081e5ab18eb4209e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Weakpoints
-  pengKing: {fileID: 1465837437}
-  elementType: 0
 --- !u!1001 &945586474
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28250,14 +28257,13 @@ GameObject:
   - component: {fileID: 1093862647}
   - component: {fileID: 1093862646}
   - component: {fileID: 1093862645}
-  - component: {fileID: 1093862648}
   m_Layer: 0
   m_Name: BossGem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1093862644
 Transform:
   m_ObjectHideFlags: 0
@@ -28353,20 +28359,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1093862643}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1093862648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1093862643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f07c654aafa4d04081e5ab18eb4209e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Weakpoints
-  pengKing: {fileID: 1465837437}
-  elementType: 0
 --- !u!1 &1095607409 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8065224517355000528, guid: 000ce5cdd29d5144bbea879d4328e366, type: 3}
@@ -30069,6 +30061,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1143188918}
+  - component: {fileID: 1143188919}
   m_Layer: 0
   m_Name: GameObject (5)
   m_TagString: Weakpoint
@@ -30092,6 +30085,20 @@ Transform:
   - {fileID: 1303028618}
   m_Father: {fileID: 407241506}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1143188919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143188916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f07c654aafa4d04081e5ab18eb4209e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  pengKing: {fileID: 0}
+  elementType: 0
 --- !u!4 &1143481052 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2162936073421366081, guid: 1fc646a8ebd83234d82ef3c1b07eca3e, type: 3}
@@ -33790,14 +33797,13 @@ GameObject:
   - component: {fileID: 1303028621}
   - component: {fileID: 1303028620}
   - component: {fileID: 1303028619}
-  - component: {fileID: 1303028622}
   m_Layer: 0
   m_Name: BossGem (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1303028618
 Transform:
   m_ObjectHideFlags: 0
@@ -33893,20 +33899,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1303028617}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1303028622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1303028617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f07c654aafa4d04081e5ab18eb4209e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Weakpoints
-  pengKing: {fileID: 1465837437}
-  elementType: 0
 --- !u!4 &1305402569 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2154067754139245277, guid: dbecebf571d557a41ba52c0145a20f48, type: 3}
@@ -35721,7 +35713,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!135 &1368014757
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -37744,17 +37736,37 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1376901601}
   m_SourcePrefab: {fileID: 100100000, guid: 41bf98094de8b9244b2928f028f7f5c9, type: 3}
---- !u!114 &1465837437 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+--- !u!1 &1465837436 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2656006948816850994, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
   m_PrefabInstance: {fileID: 178015617}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+--- !u!114 &1465837437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465837436}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3cff7d5474c1e1048b37adec32ac9608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  shieldCollider: {fileID: 1368014757}
+  shieldRenderer: {fileID: 1368014758}
+  arenaCollider: {fileID: 848160131}
+  arenaRenderer: {fileID: 848160132}
+  pengKing: {fileID: 0}
+  destroyedWeakpointsCount: 0
+  activeWeakpointsCount: 0
+  weakpoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!4 &1465837438 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3429447771088931464, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
@@ -38611,14 +38623,13 @@ GameObject:
   - component: {fileID: 1527973514}
   - component: {fileID: 1527973513}
   - component: {fileID: 1527973512}
-  - component: {fileID: 1527973515}
   m_Layer: 0
   m_Name: BossGem (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1527973511
 Transform:
   m_ObjectHideFlags: 0
@@ -38714,20 +38725,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1527973510}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1527973515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1527973510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f07c654aafa4d04081e5ab18eb4209e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Weakpoints
-  pengKing: {fileID: 1465837437}
-  elementType: 0
 --- !u!1001 &1528897154
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44777,6 +44774,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1775649921}
+  - component: {fileID: 1775649922}
   m_Layer: 0
   m_Name: GameObject (2)
   m_TagString: Weakpoint
@@ -44800,6 +44798,20 @@ Transform:
   - {fileID: 2119373443}
   m_Father: {fileID: 407241506}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1775649922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775649920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f07c654aafa4d04081e5ab18eb4209e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  pengKing: {fileID: 0}
+  elementType: 0
 --- !u!1001 &1777530797
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45236,6 +45248,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1792822106}
+  - component: {fileID: 1792822107}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Weakpoint
@@ -45259,6 +45272,20 @@ Transform:
   - {fileID: 1093862644}
   m_Father: {fileID: 407241506}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1792822107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792822105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f07c654aafa4d04081e5ab18eb4209e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  pengKing: {fileID: 0}
+  elementType: 0
 --- !u!1 &1794128896 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7029883026777484072, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
@@ -46591,7 +46618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnManager
   enemyPrefabs:
-  - {fileID: 5835833651935109696, guid: 0d4597985075a614885bc59d97bb7df4, type: 3}
+  - {fileID: 2656006948816850994, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
   - {fileID: 5835833651935109696, guid: e91623232c4481942af3544ac9f371af, type: 3}
   - {fileID: 6884222217625323323, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
   - {fileID: 792440819834715892, guid: 93baaa498a236f9409e87ae71dbaaa09, type: 3}
@@ -47893,6 +47920,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1917124675}
+  - component: {fileID: 1917124676}
   m_Layer: 0
   m_Name: GameObject (4)
   m_TagString: Weakpoint
@@ -47916,6 +47944,20 @@ Transform:
   - {fileID: 1527973511}
   m_Father: {fileID: 407241506}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1917124676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917124674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f07c654aafa4d04081e5ab18eb4209e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  pengKing: {fileID: 0}
+  elementType: 0
 --- !u!1001 &1918871002
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52638,14 +52680,13 @@ GameObject:
   - component: {fileID: 2119373446}
   - component: {fileID: 2119373445}
   - component: {fileID: 2119373444}
-  - component: {fileID: 2119373447}
   m_Layer: 0
   m_Name: BossGem (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2119373443
 Transform:
   m_ObjectHideFlags: 0
@@ -52741,20 +52782,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2119373442}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &2119373447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2119373442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f07c654aafa4d04081e5ab18eb4209e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Weakpoints
-  pengKing: {fileID: 1465837437}
-  elementType: 0
 --- !u!1 &2123732664
 GameObject:
   m_ObjectHideFlags: 0

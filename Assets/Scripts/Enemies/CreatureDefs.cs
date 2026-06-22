@@ -178,6 +178,8 @@ public class CreatureDefs : MonoBehaviour
     public Material enemyDefault;
     public Material _bodyOriginalMaterial;
 
+    // Expose health as a normalized percent (0..1) for external controllers (boss, UI, etc.)
+    public float HealthPercent => Mathf.Clamp01(_health / maxHealth);
 
     private void Awake()
     {
@@ -210,6 +212,12 @@ public class CreatureDefs : MonoBehaviour
 
         // Sets bool thats used to check if we have animator before trying to call it, just to avoid errors
         hasAnimator = TryGetComponent(out animator);
+    }
+
+    // Public API to reset health (used when boss fight is canceled)
+    public void ResetHealth()
+    {
+        _health = maxHealth;
     }
 
     private void FixedUpdate()
@@ -252,6 +260,8 @@ public class CreatureDefs : MonoBehaviour
     {
         if (!target) { _hasAggro = false; return; }
 
+        bool previousAggro = _hasAggro;
+
         float sqrDist = HorizontalSqrDistance(transform.position, target.position);
         float aggroSqr = aggroDistance * aggroDistance;
         float deaggroSqr = deaggroDistance * deaggroDistance;
@@ -263,6 +273,12 @@ public class CreatureDefs : MonoBehaviour
         else
         {
             if (sqrDist >= deaggroSqr) _hasAggro = false;
+        }
+
+        // Notify SpellManager2 when aggro changes
+        if (previousAggro != _hasAggro && SpellManager2.Instance != null)
+        {
+            SpellManager2.Instance.NotifyEnemyAggro(_hasAggro);
         }
     }
 

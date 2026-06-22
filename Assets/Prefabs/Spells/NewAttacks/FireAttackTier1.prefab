@@ -24185,7 +24185,7 @@ GameObject:
   - component: {fileID: 3532932018106001037}
   m_Layer: 0
   m_Name: FireAttackTier1
-  m_TagString: Untagged
+  m_TagString: FireSpell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24283,8 +24283,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 2.0796406}
+  m_Center: {x: 0, y: 0, z: 0.9491933}
 --- !u!114 &7184041584282153872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24305,12 +24305,9 @@ MonoBehaviour:
   duration: 1
   slowAmount: 0
   isProjectile: 0
-  appliesBurn: 1
-  appliesSlow: 0
   appliesRoot: 0
   appliesKnockback: 0
   appliesAOE: 0
-  appliesDamageOverTime: 0
 --- !u!54 &3532932018106001037
 Rigidbody:
   m_ObjectHideFlags: 0

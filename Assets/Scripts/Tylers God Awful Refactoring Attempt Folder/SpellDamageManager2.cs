@@ -22,19 +22,24 @@ public class SpellDamageManager2 : MonoBehaviour
     private CreatureDefs _creatureDefs;
     
     [Header("Status Effects")]
-    [SerializeField] private bool appliesBurn;
-    [SerializeField] private bool appliesSlow;
+    //[SerializeField] private bool appliesBurn;
+    //[SerializeField] private bool appliesSlow;
     [SerializeField] private bool appliesRoot;
     [SerializeField] private bool appliesKnockback;
     [SerializeField, Tooltip("Aplies overlap sphere effect. Not the same as water Tier 2-4")] private bool appliesAOE;
-    [SerializeField, Tooltip("Use on Water Tier 2-4 Combat to do damage to enemies that linger in the attack")] private bool appliesDamageOverTime;
+    //[SerializeField, Tooltip("Use on Water Tier 2-4 Combat to do damage to enemies that linger in the attack")] private bool appliesDamageOverTime;
 
     // Track which enemies are already being damaged over time
     private readonly HashSet<CreatureDefs> _dotActive = new HashSet<CreatureDefs>();
 
+    // Store element of this projectile/spell so other systems (weakpoints) can read it.
+    private SO_SpellDefs2.SpellType _elementType = SO_SpellDefs2.SpellType.Fire;
+    public SO_SpellDefs2.SpellType ElementType => _elementType;
+
     public void InitProjectile2(int dmg, SO_SpellDefs2.SpellType type)
     {
         damage = dmg;
+        _elementType = type;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -59,10 +64,10 @@ public class SpellDamageManager2 : MonoBehaviour
                         {
                             alreadyHit.Add(creature);
 
-                            if (appliesBurn)
-                                creature.ApplyBurn(duration);
-                            if (appliesSlow)
-                                creature.ApplySlow(duration);
+                            //if (appliesBurn)
+                            //    creature.ApplyBurn(duration);
+                            //if (appliesSlow)
+                            //    creature.ApplySlow(duration);
                             if (appliesRoot)
                                 creature.ApplyRoot(duration);
                             ApplyDamage(hit, aoeDamage);
@@ -77,16 +82,16 @@ public class SpellDamageManager2 : MonoBehaviour
             return;
         }
 
-        if (!other.CompareTag("Enemy")) return;
+        if (!other.CompareTag("Enemy") && !other.CompareTag("Weakpoint")) return;
 
         if (_creatureDefs != null)
         {
             ApplyDamage(other, damage);
 
-            if (appliesBurn)
-                _creatureDefs.ApplyBurn(duration);
-            if (appliesSlow)
-                _creatureDefs.ApplySlow(duration);
+            //if (appliesBurn)
+            //    _creatureDefs.ApplyBurn(duration);
+            //if (appliesSlow)
+            //    _creatureDefs.ApplySlow(duration);
             if (appliesRoot)
                 _creatureDefs.ApplyRoot(duration);
             if (appliesKnockback)
@@ -109,10 +114,10 @@ public class SpellDamageManager2 : MonoBehaviour
                         alreadyHit.Add(creature);
 
                         ApplyDamage(hit, aoeDamage);
-                        if (appliesBurn)
-                            creature.ApplyBurn(duration);
-                        if (appliesSlow)
-                            creature.ApplySlow(duration);
+                        //if (appliesBurn)
+                        //    creature.ApplyBurn(duration);
+                        //if (appliesSlow)
+                        //    creature.ApplySlow(duration);
                         if (appliesRoot)
                             creature.ApplyRoot(duration);
                         if (appliesKnockback)
@@ -130,29 +135,29 @@ public class SpellDamageManager2 : MonoBehaviour
     {
         if (!other.CompareTag("Enemy")) return;
 
-        if (appliesDamageOverTime)
-        {
-            var creature = other.GetComponentInParent<CreatureDefs>();
-            if (creature != null && !_dotActive.Contains(creature))
-            {
-                _dotActive.Add(creature);
-                StartCoroutine(ApplyDamageInIntervalsCoroutine(creature, damage, 1f));
-            }
-        }
+        //if (appliesDamageOverTime)
+        //{
+        //    var creature = other.GetComponentInParent<CreatureDefs>();
+        //    if (creature != null && !_dotActive.Contains(creature))
+        //    {
+        //        _dotActive.Add(creature);
+        //        StartCoroutine(ApplyDamageInIntervalsCoroutine(creature, damage, 1f));
+        //    }
+        //}
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Enemy")) return;
 
-        if (appliesDamageOverTime)
-        {
-            var creature = other.GetComponentInParent<CreatureDefs>();
-            if (creature != null)
-            {
-                _dotActive.Remove(creature);
-            }
-        }
+        //if (appliesDamageOverTime)
+        //{
+        //    var creature = other.GetComponentInParent<CreatureDefs>();
+        //    if (creature != null)
+        //    {
+        //        _dotActive.Remove(creature);
+        //    }
+        //}
     }
 
     private void ApplyDamage(Collider target, float damage)

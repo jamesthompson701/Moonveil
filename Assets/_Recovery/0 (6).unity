@@ -1305,6 +1305,7 @@ GameObject:
   - component: {fileID: 47650076}
   - component: {fileID: 47650075}
   - component: {fileID: 47650078}
+  - component: {fileID: 47650079}
   m_Layer: 0
   m_Name: BossGem (1)
   m_TagString: Untagged
@@ -1342,7 +1343,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1421,6 +1422,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weakpoints
   pengKing: {fileID: 1465837437}
   elementType: 0
+--- !u!54 &47650079
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47650073}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 2
 --- !u!1 &48966951 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1535615643571255803, guid: 1fc646a8ebd83234d82ef3c1b07eca3e, type: 3}
@@ -4924,6 +4952,46 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 407241506}
     m_Modifications:
+    - target: {fileID: 2017906440189343319, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: arenaCollider
+      value: 
+      objectReference: {fileID: 848160131}
+    - target: {fileID: 2017906440189343319, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: arenaRenderer
+      value: 
+      objectReference: {fileID: 848160132}
+    - target: {fileID: 2017906440189343319, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: shieldCollider
+      value: 
+      objectReference: {fileID: 1368014757}
+    - target: {fileID: 2017906440189343319, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: shieldRenderer
+      value: 
+      objectReference: {fileID: 1368014758}
+    - target: {fileID: 2017906440189343319, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: 'weakpoints.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1093862643}
+    - target: {fileID: 2017906440189343319, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: 'weakpoints.Array.data[1]'
+      value: 
+      objectReference: {fileID: 47650073}
+    - target: {fileID: 2017906440189343319, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: 'weakpoints.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2119373442}
+    - target: {fileID: 2017906440189343319, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: 'weakpoints.Array.data[3]'
+      value: 
+      objectReference: {fileID: 944151158}
+    - target: {fileID: 2017906440189343319, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: 'weakpoints.Array.data[4]'
+      value: 
+      objectReference: {fileID: 1527973510}
+    - target: {fileID: 2017906440189343319, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+      propertyPath: 'weakpoints.Array.data[5]'
+      value: 
+      objectReference: {fileID: 1303028617}
     - target: {fileID: 2656006948816850994, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
       propertyPath: m_Name
       value: King_Penguin-UW
@@ -4968,46 +5036,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: arenaCollider
-      value: 
-      objectReference: {fileID: 848160131}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: arenaRenderer
-      value: 
-      objectReference: {fileID: 848160132}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: shieldCollider
-      value: 
-      objectReference: {fileID: 1368014757}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: shieldRenderer
-      value: 
-      objectReference: {fileID: 1368014758}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: 'weakpoints.Array.data[0]'
-      value: 
-      objectReference: {fileID: 1093862643}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: 'weakpoints.Array.data[1]'
-      value: 
-      objectReference: {fileID: 47650073}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: 'weakpoints.Array.data[2]'
-      value: 
-      objectReference: {fileID: 2119373442}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: 'weakpoints.Array.data[3]'
-      value: 
-      objectReference: {fileID: 944151158}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: 'weakpoints.Array.data[4]'
-      value: 
-      objectReference: {fileID: 1527973510}
-    - target: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
-      propertyPath: 'weakpoints.Array.data[5]'
-      value: 
-      objectReference: {fileID: 1303028617}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -21333,7 +21361,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &848160128
 Transform:
   m_ObjectHideFlags: 0
@@ -25306,6 +25334,7 @@ GameObject:
   - component: {fileID: 944151161}
   - component: {fileID: 944151160}
   - component: {fileID: 944151163}
+  - component: {fileID: 944151164}
   m_Layer: 0
   m_Name: BossGem (3)
   m_TagString: Untagged
@@ -25343,7 +25372,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -25422,6 +25451,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weakpoints
   pengKing: {fileID: 1465837437}
   elementType: 0
+--- !u!54 &944151164
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944151158}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 2
 --- !u!1001 &945586474
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28251,6 +28307,7 @@ GameObject:
   - component: {fileID: 1093862646}
   - component: {fileID: 1093862645}
   - component: {fileID: 1093862648}
+  - component: {fileID: 1093862649}
   m_Layer: 0
   m_Name: BossGem
   m_TagString: Untagged
@@ -28288,7 +28345,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -28367,6 +28424,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weakpoints
   pengKing: {fileID: 1465837437}
   elementType: 0
+--- !u!54 &1093862649
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093862643}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 2
 --- !u!1 &1095607409 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8065224517355000528, guid: 000ce5cdd29d5144bbea879d4328e366, type: 3}
@@ -33791,6 +33875,7 @@ GameObject:
   - component: {fileID: 1303028620}
   - component: {fileID: 1303028619}
   - component: {fileID: 1303028622}
+  - component: {fileID: 1303028623}
   m_Layer: 0
   m_Name: BossGem (5)
   m_TagString: Untagged
@@ -33828,7 +33913,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -33907,6 +33992,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weakpoints
   pengKing: {fileID: 1465837437}
   elementType: 0
+--- !u!54 &1303028623
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303028617}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 2
 --- !u!4 &1305402569 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2154067754139245277, guid: dbecebf571d557a41ba52c0145a20f48, type: 3}
@@ -35721,7 +35833,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!135 &1368014757
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -37746,7 +37858,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 41bf98094de8b9244b2928f028f7f5c9, type: 3}
 --- !u!114 &1465837437 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9195514142487749557, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2017906440189343319, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
   m_PrefabInstance: {fileID: 178015617}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -38612,6 +38724,7 @@ GameObject:
   - component: {fileID: 1527973513}
   - component: {fileID: 1527973512}
   - component: {fileID: 1527973515}
+  - component: {fileID: 1527973516}
   m_Layer: 0
   m_Name: BossGem (4)
   m_TagString: Untagged
@@ -38628,7 +38741,7 @@ Transform:
   m_GameObject: {fileID: 1527973510}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1429744, y: -0, z: -0, w: 0.98972636}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 6.08, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -38649,7 +38762,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -38728,6 +38841,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weakpoints
   pengKing: {fileID: 1465837437}
   elementType: 0
+--- !u!54 &1527973516
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527973510}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 2
 --- !u!1001 &1528897154
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46591,7 +46731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnManager
   enemyPrefabs:
-  - {fileID: 5835833651935109696, guid: 0d4597985075a614885bc59d97bb7df4, type: 3}
+  - {fileID: 2656006948816850994, guid: 7227e4975e38bf642940f326509bdf67, type: 3}
   - {fileID: 5835833651935109696, guid: e91623232c4481942af3544ac9f371af, type: 3}
   - {fileID: 6884222217625323323, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
   - {fileID: 792440819834715892, guid: 93baaa498a236f9409e87ae71dbaaa09, type: 3}
@@ -52639,6 +52779,7 @@ GameObject:
   - component: {fileID: 2119373445}
   - component: {fileID: 2119373444}
   - component: {fileID: 2119373447}
+  - component: {fileID: 2119373448}
   m_Layer: 0
   m_Name: BossGem (2)
   m_TagString: Untagged
@@ -52676,7 +52817,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -52755,6 +52896,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weakpoints
   pengKing: {fileID: 1465837437}
   elementType: 0
+--- !u!54 &2119373448
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119373442}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 2
 --- !u!1 &2123732664
 GameObject:
   m_ObjectHideFlags: 0

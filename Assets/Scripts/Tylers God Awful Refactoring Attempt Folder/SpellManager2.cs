@@ -100,6 +100,9 @@ public class SpellManager2 : MonoBehaviour
 
     public bool midCast = false;
 
+    // SpellManager2 will set inCombatArea = true while any creature is aggroed.
+    private int _engagedEnemyCount = 0;
+
     //Checks for CombatArea trigger tag to switch between combat and farm spells
     private void OnTriggerEnter(Collider other)
     {
@@ -208,6 +211,40 @@ public class SpellManager2 : MonoBehaviour
 
         if (!inCombatArea) infiniteManaRegen = true;
         else infiniteManaRegen = false;
+    }
+
+    // Called by creatures to indicate an enemy has gained or lost aggro.
+    // When any enemy is aggroed we set inCombatArea = true and lock flight.
+    public void NotifyEnemyAggro(bool engaged)
+    {
+        if (engaged)
+            _engagedEnemyCount++;
+        else
+            _engagedEnemyCount = Mathf.Max(0, _engagedEnemyCount - 1);
+
+        bool nowInCombat = _engagedEnemyCount > 0;
+
+        // Only update if state changed
+        if (inCombatArea != nowInCombat)
+        {
+            inCombatArea = nowInCombat;
+
+            // Block or unblock flight via the ThirdPersonController
+            if (ThirdPersonController.Instance != null)
+            {
+                if (nowInCombat)
+                {
+                    // Force player out of flight and lock flight toggling while enemies are engaged
+                    ThirdPersonController.Instance.inFlightMode = false;
+                    ThirdPersonController.Instance.flightLocked = true;
+                }
+                else
+                {
+                    // No engaged enemies: allow flight toggling again
+                    ThirdPersonController.Instance.flightLocked = false;
+                }
+            }
+        }
     }
 
     public void ChooseSpell()
