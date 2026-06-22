@@ -347,7 +347,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   animator: {fileID: 0}
-  maxHealth: 100
+  maxHealth: 20
   minSpeed: 2
   maxSpeed: 5
   maxAcceleration: 25
@@ -362,7 +362,7 @@ MonoBehaviour:
   deaggroDistance: 80
   attackMode: 3
   attackRange: 5
-  attackCooldownSeconds: 1.2
+  attackCooldownSeconds: 2
   attackWindupSeconds: 1
   meleeActiveSeconds: 0.2
   meleeHitbox: {fileID: 8143482868559019353}
@@ -380,6 +380,8 @@ MonoBehaviour:
   playerInventory: {fileID: 0}
   invSO: {fileID: 0}
   _health: 0
+  canAttack: 1
+  isBossPenguinion: 1
   _burnDps: 10
   _canBurn: 0
   _canSlow: 0

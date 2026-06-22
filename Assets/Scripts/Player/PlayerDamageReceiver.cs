@@ -97,6 +97,8 @@ public class PlayerDamageReceiver : MonoBehaviour
     {
         Debug.Log("Player has died.");
         // Implement death logic (e.g., respawn, game over screen)
+        EnvironmentManager.Instance.Travel(eFastTravel.home);
+        currentHealth = maxHealth; // Reset health for respawn
     }
 
     private IEnumerator ShowDamageTaken()

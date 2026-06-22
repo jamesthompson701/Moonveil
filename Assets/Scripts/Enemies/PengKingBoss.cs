@@ -16,6 +16,12 @@ public class PengKingBoss : MonoBehaviour
 
     public GameObject[] weakpoints; // Array to hold weakpoint GameObjects
 
+    // --- Spawn tracking for minions created by the boss ---
+    [Tooltip("Number of active spawned minions created by the boss.")]
+    public int spawnedMinionsCount = 0;
+    [Tooltip("Maximum allowed spawned minions before the boss stops attacking.")]
+    public int maxSpawnedMinions = 6;
+
     public void Awake()
     {
         DeactivateShield();
@@ -122,5 +128,30 @@ public class PengKingBoss : MonoBehaviour
         // Reset destroyed count for the new wave and set active count
         destroyedWeakpointsCount = 0;
         activeWeakpointsCount = toActivate;
+    }
+
+    // --- API for spawn tracking ---
+    // Call when the boss's projectile/prefab spawns a minion.
+    public void RegisterSpawnedMinion()
+    {
+        spawnedMinionsCount++;
+        UpdateAttackState();
+    }
+
+    // Call when a spawned minion dies / is destroyed.
+    public void UnregisterSpawnedMinion()
+    {
+        spawnedMinionsCount = Mathf.Max(0, spawnedMinionsCount - 1);
+        UpdateAttackState();
+    }
+
+    private void UpdateAttackState()
+    {
+        if (pengKing != null)
+        {
+            bool allowAttack = spawnedMinionsCount < maxSpawnedMinions;
+            // Do not abort current attack by default; set second arg true if you want immediate abort.
+            pengKing.SetCanAttack(allowAttack, abortCurrentAttack: false);
+        }
     }
 }

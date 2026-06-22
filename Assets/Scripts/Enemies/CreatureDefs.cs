@@ -153,6 +153,13 @@ public class CreatureDefs : MonoBehaviour
     private float _nextDirectorRequestTime;
     private int _orbitSign;
 
+    // New: allow enabling/disabling attacks at runtime (used by bosses)
+    [Header("Runtime Control")]
+    [Tooltip("When false, this creature will not start new attacks.")]
+    [SerializeField] private bool canAttack = true;
+    public bool CanAttack { get => canAttack; set => canAttack = value; }
+    public bool isBossPenguinion = false;
+
     private const string DefaultPlayerTag = "PlayerHitPt";
 
     //For Animation
@@ -484,6 +491,9 @@ public class CreatureDefs : MonoBehaviour
 
     private void TryStartAttack(float sqrDistToTarget)
     {
+        // Respect runtime allow-attack flag
+        if (!CanAttack) return;
+
         if (_isAttacking) return;
 
         if (useAttackDirector && _director)
@@ -500,6 +510,17 @@ public class CreatureDefs : MonoBehaviour
         }
 
         StartCoroutine(AttackRoutine());
+    }
+
+    // Public API to enable/disable attacks and optionally abort current attack
+    public void SetCanAttack(bool allow, bool abortCurrentAttack = false)
+    {
+        CanAttack = allow;
+        if (!allow && abortCurrentAttack && _isAttacking)
+        {
+            // EndAttack will mark _isAttacking = false and inform director
+            EndAttack();
+        }
     }
 
     private IEnumerator AttackRoutine()
@@ -696,6 +717,9 @@ public class CreatureDefs : MonoBehaviour
         if (animator != null)
             animator.SetTrigger("Death");
 
+        PengKingBoss boss = Object.FindFirstObjectByType<PengKingBoss>();
+        if (isBossPenguinion)
+            boss.UnregisterSpawnedMinion();
 
         Destroy(gameObject);
 
