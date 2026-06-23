@@ -28,6 +28,8 @@ public class SaveManager : MonoBehaviour
 
         InventoryRepository repo = InventoryManager.instance.inventoryRepository;
 
+        InventoryManager.instance.ResetInv();
+
         string itemInventory = PlayerPrefs.GetString("inventory");
         Debug.Log("Inventory String " + itemInventory);
         string[] str = itemInventory.Split(new string[] { ";"}, System.StringSplitOptions.RemoveEmptyEntries);
@@ -41,19 +43,5 @@ public class SaveManager : MonoBehaviour
 
             InventoryManager.instance.invSO.AddItem(repo.items[itemID], amount);
         }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyUp(KeyCode.S)) 
-        {
-            SaveInventory();
-        }
-
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyUp(KeyCode.R))
-        {
-            RestoreInventory();
-        }
-
     }
 }

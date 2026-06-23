@@ -19,6 +19,16 @@ public class OptionsMenu : MonoBehaviour
         DestroyCanvas();
     }
 
+    public void OnSaveGameClicked()
+    {
+        SaveManager.Instance.SaveInventory();
+    }
+
+    public void OnRestoreInventoryClicked()
+    {
+        SaveManager.Instance.RestoreInventory();
+    }
+
     public void QuitGame()
     {
         Application.Quit();
