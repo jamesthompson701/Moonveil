@@ -19,7 +19,6 @@ public class w_ItemPopup : MonoBehaviour
         image.enabled = true;
         image.sprite = _item.itemSprite;
         amountText.text = "" + amount;
-
     }
 
     public void AddAmount(int newAmount)

@@ -5,6 +5,13 @@ using System.Collections;
 
 public class FishingMiniGameUI : MonoBehaviour
 {
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip castSplash;
+    public AudioClip[] waitingSplashes; //make array later to have it fit length better and be more varied
+    public AudioClip reelSplash;
+    public AudioClip FailPop;
+
     [Header("UI Elements")]
     public RectTransform upperBound;  // visual max bound
     public RectTransform innerRing;   // the player-controlled ring (scale)
@@ -36,6 +43,7 @@ public class FishingMiniGameUI : MonoBehaviour
 
         IsActiveAndPlaying = true;
         gameObject.SetActive(true);
+        
         StartCoroutine(MinigameLoop());
     }
 
@@ -60,6 +68,7 @@ public class FishingMiniGameUI : MonoBehaviour
             // check fail conditions
             if (innerScale >= currentFish.maxInnerScale)
             {
+                audioSource.PlayOneShot(FailPop);
                 Debug.Log("Bubble pops and fish escapes");
                 EndGame(false);
                 yield break;
@@ -123,5 +132,27 @@ public class FishingMiniGameUI : MonoBehaviour
         gameObject.SetActive(false);
         onComplete = null;
         currentFish = null;
+    }
+
+    public void PlayCastSound()
+    {
+        if (castSplash != null)
+            audioSource.PlayOneShot(castSplash);
+    }
+
+    public void PlayReelSound()
+    {
+        if (reelSplash != null)
+            audioSource.PlayOneShot(reelSplash);
+    }
+
+    public void PlayRandomWaitingSound()
+    {
+        if (waitingSplashes == null || waitingSplashes.Length == 0)
+            return;
+
+        int index = UnityEngine.Random.Range(0, waitingSplashes.Length);
+
+        audioSource.PlayOneShot(waitingSplashes[index]);
     }
 }

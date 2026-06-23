@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-#if ENABLE_INPUT_SYSTEM 
+using System.Collections;
+#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
@@ -17,9 +18,11 @@ namespace StarterAssets
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
+        private float DefaultMoveSpeed;
 
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
+        private float DefaultSprintSpeed;
 
         [Tooltip("How fast the character turns to face movement direction")]
         [Range(0.0f, 0.3f)]
@@ -35,6 +38,7 @@ namespace StarterAssets
         [Space(10)]
         [Tooltip("The height the player can jump")]
         public float JumpHeight = 1.2f;
+        private float DefaultJumpHeight;
 
         [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
         public float Gravity = -15.0f;
@@ -86,11 +90,15 @@ namespace StarterAssets
         [Tooltip("Determines if the player is in flight mode or not")]
         public bool inFlightMode = false;
 
+
+        [Tooltip("When true, prevents the player from toggling flight (set by combat manager)")]
+        public bool flightLocked = false;
+
         [Header("Flight Mode")]
         [Tooltip("Move speed while in flight mode (horizontal movement)")]
-        public float FlightMoveSpeed = 4.0f;
+        public float FlightMoveSpeed = 16.0f;
         [Tooltip("Sprint speed while in flight mode (horizontal movement)")]
-        public float FlightSprintSpeed = 8.0f;
+        public float FlightSprintSpeed = 32.0f;
         [Tooltip("Input action name for toggling flight mode")]
         public string FlightToggleActionName = "ToggleFlight";
 
@@ -99,6 +107,10 @@ namespace StarterAssets
 
         InputAction ascend;
         InputAction descend;
+
+        [SerializeField] private GameObject slowWind;
+        [SerializeField] private GameObject fastWind;
+        private Coroutine windCoroutine;
 
         // cinemachine
         private float _cinemachineTargetYaw;
@@ -158,6 +170,11 @@ namespace StarterAssets
 
         private void Awake()
         {
+            //get defaults so can end potion buffs later
+            DefaultMoveSpeed = MoveSpeed;
+            DefaultSprintSpeed = SprintSpeed;
+            DefaultJumpHeight = JumpHeight;
+
             // get a reference to our main camera
             if (_mainCamera == null)
             {
@@ -271,7 +288,30 @@ namespace StarterAssets
                 return;
             }
 
+            // Prevent toggling flight while combat or other systems lock it
+            if (flightLocked)
+            {
+                Debug.Log("Cannot toggle flight right now (locked by combat).");
+                return;
+            }
+
             inFlightMode = !inFlightMode;
+
+            if (inFlightMode)
+            {
+                if (windCoroutine == null)
+                    windCoroutine = StartCoroutine(GenerateWind());
+            }
+            else
+            {
+                if (windCoroutine != null)
+                {
+                    StopCoroutine(windCoroutine);
+                    windCoroutine = null;
+                }
+                slowWind.SetActive(false);
+                fastWind.SetActive(false);
+            }
         }
 
 
@@ -449,11 +489,14 @@ namespace StarterAssets
                 if (_verticalVelocity < 0.0f)
                 {
                     _verticalVelocity = -2f;
+                    OnLand();
                 }
 
                 // Jump
                 if (_input.jump && _jumpTimeoutDelta <= 0.0f)
                 {
+                    OnJump();
+
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
@@ -517,17 +560,83 @@ namespace StarterAssets
             // ascend input moves up
             if (ascend != null && ascend.enabled && ascend.IsPressed())
             {
-                verticalSpeed += MoveSpeed;
+                verticalSpeed += FlightMoveSpeed / 2;
             }
 
             // descend input moves down
             if (descend != null && descend.enabled && descend.IsPressed())
             {
-                verticalSpeed -= MoveSpeed;
+                verticalSpeed -= FlightMoveSpeed / 2;
             }
 
             // set the vertical velocity used by Move()
             _verticalVelocity = verticalSpeed;
+        }
+
+        private IEnumerator GenerateWind()
+        {
+            while (inFlightMode)
+            {
+                bool isMoving = _input.move != Vector2.zero;
+                bool isSprinting = _input.sprint;
+
+                if (isMoving && !isSprinting)
+                {
+                    slowWind.SetActive(true);
+                    fastWind.SetActive(false);
+
+                    // Randomly enable a child
+                    int childCount = slowWind.transform.childCount;
+                    if (childCount > 0)
+                    {
+                        int randomIndex = Random.Range(0, childCount);
+                        Transform child = slowWind.transform.GetChild(randomIndex);
+                        child.gameObject.SetActive(true);
+
+                        yield return new WaitForSeconds(8f);
+
+                        child.gameObject.SetActive(false);
+
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        yield return null;
+                    }
+                }
+                else if (isMoving && isSprinting)
+                {
+                    fastWind.SetActive(true);
+                    slowWind.SetActive(false);
+
+                    // Randomly enable a child
+                    int childCount = fastWind.transform.childCount;
+                    if (childCount > 0)
+                    {
+                        int randomIndex = Random.Range(0, childCount);
+                        Transform child = fastWind.transform.GetChild(randomIndex);
+                        child.gameObject.SetActive(true);
+
+                        yield return new WaitForSeconds(8f);
+
+                        child.gameObject.SetActive(false);
+
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        yield return null;
+                    }
+                }
+                else
+                {
+                    slowWind.SetActive(false);
+                    fastWind.SetActive(false);
+                    yield return null;
+                }
+            }
+            slowWind.SetActive(false);
+            fastWind.SetActive(false);
         }
 
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -551,24 +660,14 @@ namespace StarterAssets
                 GroundedRadius);
         }
 
-        private void OnFootstep(AnimationEvent animationEvent)
+        private void OnLand()
         {
-            if (animationEvent.animatorClipInfo.weight > 0.5f)
-            {
-                if (FootstepAudioClips.Length > 0)
-                {
-                    var index = Random.Range(0, FootstepAudioClips.Length);
-                    AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.center), FootstepAudioVolume);
-                }
-            }
+            
         }
 
-        private void OnLand(AnimationEvent animationEvent)
+        private void OnJump()
         {
-            if (animationEvent.animatorClipInfo.weight > 0.5f)
-            {
-                AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
-            }
+            AudioManager.PlayOneShot(eEffects.jump, transform, 100);
         }
 
         public void PlayFootstep(int foot)//Foot is left or right, left is 0, right is 1
@@ -640,6 +739,20 @@ namespace StarterAssets
 
                 yield return null;
             }
+        }
+
+        //Moonchild potion buff
+        public void MoonBuff(float _duration)
+        {
+            dodgeSpeed = DefaultMoveSpeed * 6f;
+            Invoke("ResetSpeedAndJump", _duration);
+        }
+        private void ResetSpeedAndJump()
+        {
+            dodgeSpeed = DefaultMoveSpeed / 6f;
+            MoveSpeed = DefaultMoveSpeed;
+            SprintSpeed = DefaultSprintSpeed;
+            JumpHeight = DefaultJumpHeight;
         }
     }
 }

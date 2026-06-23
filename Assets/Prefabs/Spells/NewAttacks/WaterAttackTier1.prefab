@@ -4934,7 +4934,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2762054973761861764}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3427945, y: 1.7000543, z: 1.6344173}
   m_ConstrainProportionsScale: 0
@@ -4945,7 +4945,7 @@ Transform:
   - {fileID: 4818296071409955801}
   - {fileID: 2793781280412824977}
   m_Father: {fileID: 4583286420777675818}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!199 &7238186766927845777
 ParticleSystemRenderer:
   serializedVersion: 7
@@ -5665,7 +5665,7 @@ ParticleSystem:
     radiusThickness: 1
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
-    m_Rotation: {x: 0, y: 0, z: 0}
+    m_Rotation: {x: 0, y: -90, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
     placementMode: 0
     m_MeshMaterialIndex: 0
@@ -9950,7 +9950,7 @@ GameObject:
   - component: {fileID: 1430776862154851405}
   m_Layer: 0
   m_Name: WaterAttackTier1
-  m_TagString: Untagged
+  m_TagString: WateringSpell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10047,8 +10047,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.881413, y: 1.5343355, z: 0.30048472}
+  m_Center: {x: 0.076547064, y: -0.22752507, z: -0.016254647}
 --- !u!114 &2488083838202231126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10069,12 +10069,9 @@ MonoBehaviour:
   duration: 2
   slowAmount: 0.5
   isProjectile: 1
-  appliesBurn: 0
-  appliesSlow: 1
   appliesRoot: 0
   appliesKnockback: 0
   appliesAOE: 0
-  appliesDamageOverTime: 0
 --- !u!54 &1430776862154851405
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -90,6 +90,9 @@ public class WorldTree : MonoBehaviour
                     }
                 }
 
+                //Because this function goes through the progress of each item and increased complete counter if they are complete than complete count needs to be zero before going throught them
+                completeCount = 0;
+
                 //check if this item is completed
                 if (progressTracker[i] == curQuest.numberRequired[i])
                 {
@@ -141,18 +144,26 @@ public class WorldTree : MonoBehaviour
 
     public void SetupQuest()
     {
-        curQuest = quests[curQuestInt];
-
-        for (int i = 0; i < curQuest.questItems.Count; i++)
+        if (curQuestInt <= quests.Count - 1)
         {
-            //set up the widgets and progress tracker
-            Debug.Log("widget gen");
-            GenerateQuestItemWidget(curQuest.questItems[i]);
-            progressTracker.Add(0);
-            listOfWidgets[i].GetComponent<wQuestItem>().Progress(progressTracker[i], curQuest.numberRequired[i]);
-            levelUpReward.sprite = curQuest.questReward.output.itemSprite;
+            curQuest = quests[curQuestInt];
 
-            completeCount = 0;
+            for (int i = 0; i < curQuest.questItems.Count; i++)
+            {
+                //set up the widgets and progress tracker
+                Debug.Log("widget gen");
+                GenerateQuestItemWidget(curQuest.questItems[i]);
+                progressTracker.Add(0);
+                listOfWidgets[i].GetComponent<wQuestItem>().Progress(progressTracker[i], curQuest.numberRequired[i]);
+                levelUpReward.sprite = curQuest.questReward.output.itemSprite;
+
+                completeCount = 0;
+            }
+        }
+        else
+        {
+            Destroy(levelUpReward);
+
         }
 
         //refresh the tree level
@@ -169,6 +180,8 @@ public class WorldTree : MonoBehaviour
         {
             treeTop.SetActive(true);
         }
+
+
     }
 
     public void GenerateQuestItemWidget(ItemSO _item)

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayerDamageReceiver : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class PlayerDamageReceiver : MonoBehaviour
 
     // Renderers and materials set in the inspector (kept original names to preserve serialized references)
     public GameObject playerBodyDefault;
+
+    [Tooltip("Optional transform used as audio source. If not set, will try to use SpellManager2.Instance.player.transform at runtime.")]
+    public Transform audioSource;
+
     public Material playerDamaged;
     public Material PlayerDefault;
 
@@ -23,10 +28,20 @@ public class PlayerDamageReceiver : MonoBehaviour
 
     private void Awake()
     {
+        // Ensure currentHealth is valid
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
 
+        // Resolve audio source safely at runtime (avoid referencing singletons during field initialization)
+        if (audioSource == null)
+        {
+            audioSource = SpellManager2.Instance?.player?.transform;
+            if (audioSource == null)
+            {
+                Debug.LogWarning("PlayerDamageReceiver: audioSource is not assigned and SpellManager2.Instance.player is unavailable.");
+            }
+        }
+
         // Cache the original materials from the renderers if possible.
-        // Prefer the renderer's shared material (asset) so we restore exactly what was assigned in the scene.
         if (playerBodyDefault != null)
         {
             if (_bodyOriginalMaterial == null && PlayerDefault != null)
@@ -66,6 +81,15 @@ public class PlayerDamageReceiver : MonoBehaviour
         // Start invincibility and visual feedback
         _invincibilityTimer = invincibilityDuration;
 
+        if (audioSource != null)
+        {
+            AudioManager.PlayOneShot(eEffects.playerHurt, audioSource, 100);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerDamageReceiver: Cannot play hurt audio because audioSource is null.");
+        }
+
         StartCoroutine(ShowDamageTaken());
     }
 
@@ -73,6 +97,8 @@ public class PlayerDamageReceiver : MonoBehaviour
     {
         Debug.Log("Player has died.");
         // Implement death logic (e.g., respawn, game over screen)
+        EnvironmentManager.Instance.Travel(eFastTravel.home);
+        currentHealth = maxHealth; // Reset health for respawn
     }
 
     private IEnumerator ShowDamageTaken()

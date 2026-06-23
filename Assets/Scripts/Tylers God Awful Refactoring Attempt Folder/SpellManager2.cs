@@ -100,6 +100,9 @@ public class SpellManager2 : MonoBehaviour
 
     public bool midCast = false;
 
+    // SpellManager2 will set inCombatArea = true while any creature is aggroed.
+    private int _engagedEnemyCount = 0;
+
     //Checks for CombatArea trigger tag to switch between combat and farm spells
     private void OnTriggerEnter(Collider other)
     {
@@ -146,6 +149,8 @@ public class SpellManager2 : MonoBehaviour
             attackAction.performed += TryBasicAttack;
             if (!attackAction.enabled) attackAction.Enable();
         }
+
+        
     }
 
     private void OnDisable()
@@ -208,6 +213,40 @@ public class SpellManager2 : MonoBehaviour
         else infiniteManaRegen = false;
     }
 
+    // Called by creatures to indicate an enemy has gained or lost aggro.
+    // When any enemy is aggroed we set inCombatArea = true and lock flight.
+    public void NotifyEnemyAggro(bool engaged)
+    {
+        if (engaged)
+            _engagedEnemyCount++;
+        else
+            _engagedEnemyCount = Mathf.Max(0, _engagedEnemyCount - 1);
+
+        bool nowInCombat = _engagedEnemyCount > 0;
+
+        // Only update if state changed
+        if (inCombatArea != nowInCombat)
+        {
+            inCombatArea = nowInCombat;
+
+            // Block or unblock flight via the ThirdPersonController
+            if (ThirdPersonController.Instance != null)
+            {
+                if (nowInCombat)
+                {
+                    // Force player out of flight and lock flight toggling while enemies are engaged
+                    ThirdPersonController.Instance.inFlightMode = false;
+                    ThirdPersonController.Instance.flightLocked = true;
+                }
+                else
+                {
+                    // No engaged enemies: allow flight toggling again
+                    ThirdPersonController.Instance.flightLocked = false;
+                }
+            }
+        }
+    }
+
     public void ChooseSpell()
     {
         // Only allow spell switching if not holding the attack button
@@ -217,6 +256,23 @@ public class SpellManager2 : MonoBehaviour
             else if (Input.GetKeyUp(KeyCode.Alpha2)) attackChoice = 2;
             else if (Input.GetKeyUp(KeyCode.Alpha3)) attackChoice = 3;
             else if (Input.GetKeyUp(KeyCode.Alpha4)) attackChoice = 4;
+
+            // Fetch the Vector2 scroll delta from the mouse
+            Vector2 scrollDelta = Mouse.current.scroll.ReadValue();
+
+            // Check the Y axis value for up/down motion
+            if (scrollDelta.y < 0)
+            {
+                Debug.Log("Scrolling Up!");
+                attackChoice++;
+                if (attackChoice > 4) attackChoice = 0;
+            }
+            else if (scrollDelta.y > 0)
+            {
+                Debug.Log("Scrolling Down!");
+                attackChoice--;
+                if (attackChoice < 0) attackChoice = 4;
+            }
         }
     }
 
@@ -270,12 +326,12 @@ public class SpellManager2 : MonoBehaviour
             return;
         }
 
-        // block during mining
+        /*// block during mining
         if (MiningManager.Instance.isMining)
         {
             Debug.Log("Cannot basic attack while mining");
             return;
-        }
+        }*/
 
         // Block while not in combat area
         if (!inCombatArea)
@@ -374,19 +430,30 @@ public class SpellManager2 : MonoBehaviour
             return;
         }
 
-        // block while mining
+        /*// block while mining
         if (MiningManager.Instance.isMining)
         {
             Debug.Log("Cannot cast spells while mining");
             return;
-        }
+        }*/
 
         // Block casting if player is currently in flight
         if (ThirdPersonController.Instance != null && ThirdPersonController.Instance.inFlightMode)
         {
             Debug.Log("Cannot cast spells while in flight");
             return;
-        }     
+        }
+
+        // If there's a highlighted interactable, only block casting when it's NOT Soil.
+        if (InteractableHighlight.HasHighlightedInteractable)
+        {
+            var highlighted = InteractableHighlight.CurrentHighlighted;
+            if (highlighted == null || !highlighted.CompareTag("Soil") || attackChoice == 1)
+            {
+                Debug.Log("Cannot cast spells while looking at an interactable.");
+                return;
+            }
+        }
 
         // Start the hold timer on press
         if (context.started)
@@ -523,7 +590,7 @@ public class SpellManager2 : MonoBehaviour
             timerOn = false;
             timer = 0f;
 
-            // note: do not clear isCasting or midCast here — Cast() (or TryBasicAttack) will clear based on prefab lifetime
+            // note: do not clear isCasting or midCast here ï¿½ Cast() (or TryBasicAttack) will clear based on prefab lifetime
 
             return;
         }

@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.AdaptivePerformance;
+using System.Collections;
+using UnityEditorInternal;
 
 
 //This is the Universal Time Manager
@@ -19,18 +21,30 @@ public class TimeManager : MonoBehaviour
     public float time;
 
     // Time of day
-    //1 = morning, 2 = evening, 3 = night
+    //1 = day, 2 = night
     public int timeOfDay;
+
+    //rotation time of day (only used by TimeManager)
+    // 1-evening 2-night 3-sunrise 4-morning
+    private int rotationTimeOfDay;
+
     //length of day in seconds
-    private float dayLength = 1200f;
+    public float dayLength = 600f;
 
     // seperate time for day/night cycle
-    public float daylightCycleTime;
+    public float daylightCycleTime = 1;
 
     // world light
     public GameObject worldLight;
+    public Light sun;
 
     public static TimeManager instance;
+
+    // skybox
+    public Material night;
+    public Material day;
+
+    private float currentBlend;
 
     //tutorial
     public bool tutorialDone;
@@ -66,13 +80,19 @@ public class TimeManager : MonoBehaviour
 
     public void Sleep()
     {
-        if (timeOfDay == 1)
+        // Sleeping immediately swaps from day to night, and vice versa
+        // ONLY WORKS WHILE DEBUG MENU IS ENABLED
+
+        if (DebugCanvas.instance.gameObject.activeInHierarchy)
         {
-            daylightCycleTime = 699;
-        }
-        else if (timeOfDay == 3)
-        {
-            daylightCycleTime = 1149;
+            if (timeOfDay == 1)
+            {
+                daylightCycleTime = 300;
+            }
+            if (timeOfDay == 2)
+            {
+                daylightCycleTime = 600;
+            }
         }
     }
 
@@ -81,34 +101,46 @@ public class TimeManager : MonoBehaviour
         time = Time.deltaTime;
         daylightCycleTime = daylightCycleTime + time;
 
-        //change time of day based on time
-        if (daylightCycleTime >= 700 && daylightCycleTime < 750)
+        //rotate the sky
+        switch(timeOfDay)
+        {
+            case 1:
+                if (sun.intensity < 3 )
+                {
+                    sun.intensity = sun.intensity + 0.01f;
+                }
+                worldLight.transform.Rotate(0.6f * Time.deltaTime,0,0);
+                if(currentBlend > 0)
+                {
+                    currentBlend = currentBlend - 0.01f;
+                }
+                RenderSettings.skybox.SetFloat("_Blend", currentBlend);
+                break;
+            case 2:
+                if (sun.intensity > 0)
+                {
+                    sun.intensity = sun.intensity - 0.01f;
+                }
+                worldLight.transform.Rotate(0.6f * Time.deltaTime, 0, 0);
+                if (currentBlend < 1)
+                {
+                    currentBlend = currentBlend + 0.01f;
+                }
+                RenderSettings.skybox.SetFloat("_Blend", currentBlend);
+                break;
+        }
+
+        //update the time of day
+        if (daylightCycleTime > 300)
         {
             timeOfDay = 2;
-            worldLight.transform.Rotate(0.06f, 0, 0);
-
-            HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 180f);
+            worldLight.transform.eulerAngles = new Vector3(180, 180, 0);
         }
-        else if (daylightCycleTime >= 750 && daylightCycleTime < 1150)
+        if (daylightCycleTime > 600)
         {
-            timeOfDay = 3;
-
-            HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 67f);
-        }
-        else if (daylightCycleTime >= 1150 && daylightCycleTime < 1200)
-        {
-            timeOfDay = 2;
-            worldLight.transform.Rotate(0.06f, 0, 0);
-
-            HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 180f);
-        }
-        else if (daylightCycleTime >= dayLength)
-        {
-            daylightCycleTime = 0;
+            daylightCycleTime = 1;
             timeOfDay = 1;
-            worldLight.transform.rotation = new Quaternion(0, 0, 0, 0);
-
-            HUD.instance.clockWheel.transform.eulerAngles = new Vector3(0, 0, 300f);
+            worldLight.transform.eulerAngles = new Vector3(0,180,0);
         }
 
         //check each plant in the list
@@ -123,7 +155,7 @@ public class TimeManager : MonoBehaviour
             soilObject.CheckSoil(time);
 
         }
-        
+
 
         //if tutorial hasn't been completed, then check if all the soil has been tilled
         //if they're all tilled, progress the tutorial

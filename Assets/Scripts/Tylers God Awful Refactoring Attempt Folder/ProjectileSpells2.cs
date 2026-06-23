@@ -13,8 +13,6 @@ public class ProjectileSpells2 : SO_SpellDefs2
 
     public override void CastSpell2(SpellCastContext ctx)
     {
-        if (SpellPrefab == null) return;
-
         // REQUIRE spawn anchor: prefab must spawn at the castOrigin.
         if (ctx.castOrigin == null)
         {
@@ -103,8 +101,9 @@ public class ProjectileSpells2 : SO_SpellDefs2
         if (clone.TryGetComponent<SpellDamageManager2>(out var dmg))
         {
             // Pass spell type and effects
-            dmg.InitProjectile2(damage, spellType);
+            dmg.InitProjectile2(damage, spellType); 
         }
+        playSpellAudio();
 
         Destroy(clone.gameObject, usedLifetime);
     }

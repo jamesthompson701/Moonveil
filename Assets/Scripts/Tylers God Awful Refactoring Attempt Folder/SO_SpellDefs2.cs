@@ -46,6 +46,10 @@ public abstract class SO_SpellDefs2 : ScriptableObject
     public float upwardOffset = 0f;
     public float horizontalOffset = 0f;
 
+    // Make audio source optional and don't reference SpellManager2.Instance during asset construction.
+    [Tooltip("Optional transform used as audio source. If null, SpellManager2.Instance.player.transform will be used at runtime if available.")]
+    public Transform audioSource;
+
     public abstract void CastSpell2(SpellCastContext ctx);
 
     protected Rigidbody SpawnProjectile(Rigidbody prefab, Vector3 pos, Quaternion rot)
@@ -67,5 +71,44 @@ public abstract class SO_SpellDefs2 : ScriptableObject
     protected void SetVelocity(Rigidbody rb, Vector3 vel)
     {
         rb.linearVelocity = vel;
+    }
+
+    public void playSpellAudio()
+    {
+        // Resolve manager and audio source at runtime and guard against nulls.
+        var mgr = SpellManager2.Instance;
+        Transform src = audioSource ?? mgr?.player?.transform;
+
+        if (mgr == null)
+        {
+            Debug.LogWarning("playSpellAudio: SpellManager2.Instance is null. Audio aborted.");
+            return;
+        }
+
+        if (src == null)
+        {
+            Debug.LogWarning("playSpellAudio: audio source is null. Audio aborted.");
+            return;
+        }
+
+        bool inCombat = mgr.inCombatArea;
+
+        if (spellType == SpellType.Fire && inCombat)
+            AudioManager.PlayOneShot(eEffects.combatFire, src, 100);
+        else if (spellType == SpellType.Earth && inCombat)
+            AudioManager.PlayOneShot(eEffects.combatEarth, src, 100);
+        else if (spellType == SpellType.Water && inCombat)
+            AudioManager.PlayOneShot(eEffects.combatWater, src, 100);
+        else if (spellType == SpellType.Air && inCombat)
+            AudioManager.PlayOneShot(eEffects.combatAir, src, 100);
+
+        if (spellType == SpellType.Fire && !inCombat)
+            AudioManager.PlayOneShot(eEffects.farmFire, src, 100);
+        else if (spellType == SpellType.Earth && !inCombat)
+            AudioManager.PlayOneShot(eEffects.farmEarth, src, 100);
+        else if (spellType == SpellType.Water && !inCombat)
+            AudioManager.PlayOneShot(eEffects.farmWater, src, 100);
+        else if (spellType == SpellType.Air && !inCombat)
+            AudioManager.PlayOneShot(eEffects.farmAir, src, 100);
     }
 }

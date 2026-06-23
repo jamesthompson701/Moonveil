@@ -4,6 +4,15 @@ using UnityEngine;
 public class SelfDestructFunction : MonoBehaviour
 {
     public bool isPartOfTutorial;
+    public bool isTimed;
+
+    public void Start()
+    {
+        if (isTimed)
+        {
+            Invoke("SelfDestruct", 5f);
+        }
+    }
     public void SelfDestruct()
     {
         if (isPartOfTutorial)
