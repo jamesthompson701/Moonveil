@@ -44729,6 +44729,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1774117091}
   - component: {fileID: 1774117092}
+  - component: {fileID: 1774117093}
   m_Layer: 0
   m_Name: InventoryManager
   m_TagString: Untagged
@@ -44763,6 +44764,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e29d14064d5016449b28eb845896e6e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
+  inventoryRepository: {fileID: 11400000, guid: 91a14ee83ad351c4580b9a64f9bdaa75, type: 2}
   invSO: {fileID: 11400000, guid: acc2de9322b7d98469f1a5d43d2f58f0, type: 2}
   soilRef: {fileID: 0}
   crescants: 0
@@ -44771,6 +44773,18 @@ MonoBehaviour:
   fishRef: {fileID: 0}
   isMultiplierBuffActive: 0
   multiplierBuffTime: 0
+--- !u!114 &1774117093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1774117089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 552bab00288c08848909284bfef7b52e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
 --- !u!1 &1774125059 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 542303694040515606, guid: 15bdb6c11d3fc9543836c737a891af1c, type: 3}
