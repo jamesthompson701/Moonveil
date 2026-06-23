@@ -1,57 +1,95 @@
 using UnityEngine;
-using System.Collections;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class FishingElementChallenge : MonoBehaviour
 {
-FishingFish currentFish;
-
-    int currentIndex;
-
     public bool completed;
 
-    public void StartChallenge(FishingFish fish)
+    private ElementType currentRequired;
+
+    private bool wasCorrectLastFrame;
+
+    public float winTime = 20f;
+    private float successTimer;
+
+    public float swapGraceTime = 1.2f;
+    private float graceTimer;
+
+    void Update()
     {
-        currentFish = fish;
-
-        currentIndex = 0;
-
-        completed = false;
-
-        StartCoroutine(RunChallenge());
-    }
-
-    IEnumerator RunChallenge()
-    {
-        while(currentIndex < currentFish.elementSequence.Length)
+        if (!FishingManager.Instance.inFishingMode || completed)
         {
-            ElementType required = currentFish.elementSequence[currentIndex];
+            return;
+        }
 
-            float timer = currentFish.switchTime;
+        if (graceTimer > 0f)
+        {
+            graceTimer -= Time.deltaTime;
+        }
 
-            while(timer > 0)
+        bool correct = PlayerHasCorrectElement(currentRequired);
+
+        if (correct)
+        {
+            successTimer += Time.deltaTime;
+
+            if (successTimer >= winTime)
             {
-                timer -= Time.deltaTime;
+                completed = true;
 
-                if(PlayerHasCorrectElement(required))
-                {
-                    currentIndex++;
-                    break;
-                }
+                FishingManager.Instance.SuccessFishing();
 
-                yield return null;
+                return;
             }
 
-            if(timer <= 0)
+            if (!wasCorrectLastFrame)
             {
-                yield break;
+                graceTimer = swapGraceTime;
             }
         }
 
-        completed = true;
+        wasCorrectLastFrame = correct;
+
+        if (graceTimer <= 0f)
+        {
+            FishingManager.Instance.FailFishing();
+        }
     }
 
-    bool PlayerHasCorrectElement(ElementType element)
+    private void OnTriggerEnter(Collider other)
     {
-        return true;
+        ElementZone zone = other.GetComponent<ElementZone>();
+        if (zone != null)
+        {
+            SetRequired(zone.element);
+        }
+    }
+
+    private bool PlayerHasCorrectElement(ElementType required)
+    {
+        if (SpellManager2.Instance == null)
+            return false;
+
+        int choice = SpellManager2.Instance.attackChoice;
+
+        return required switch
+        {
+            ElementType.Fire => choice == 1,
+            ElementType.Earth => choice == 2,
+            ElementType.Water => choice == 3,
+            ElementType.Air => choice == 4,
+            _ => false
+        };
+    }
+    private void SetRequired(ElementType newElement)
+    {
+        currentRequired = newElement;
+
+        FishingManager.Instance.SetRequiredElementUI(newElement);
+
+        graceTimer = swapGraceTime;
+
+        wasCorrectLastFrame = false;
+
+        Debug.Log("New required element: " + newElement);
     }
 }

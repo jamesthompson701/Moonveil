@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 using StarterAssets;
 using System.Collections.Generic;
 using System.Collections;
@@ -26,6 +27,13 @@ public class FishingManager : MonoBehaviour
 
     [Header("UI")]
     public TMP_Text startFishingPrompt;
+
+    [Header("Element UI")]
+    public Image requiredElementImage;
+    public Sprite fireSprite;
+    public Sprite earthSprite;
+    public Sprite waterSprite;
+    public Sprite airSprite;
 
     [Header("Fishing Areas")]
     public FishingArea currentArea;
@@ -70,7 +78,7 @@ public class FishingManager : MonoBehaviour
         // exit fishing
         if (inFishingMode && Input.GetKeyDown(KeyCode.Escape))
         {
-            ExitFishingMode();
+            FailFishing();
             StartCoroutine(ClearBufferedInput());
         }
     }
@@ -136,10 +144,10 @@ public class FishingManager : MonoBehaviour
             playerController.enabled = false;
         }
 
-        if (spellManager)
+        /*if (spellManager)
         {
             spellManager.enabled = false;
-        }
+        }*/
 
         ClickSelector selector = player.GetComponent<ClickSelector>();
 
@@ -227,10 +235,10 @@ public class FishingManager : MonoBehaviour
             playerController.enabled = true;
         }
 
-        if (spellManager)
+        /*if (spellManager)
         {
             spellManager.enabled = true;
-        }
+        }*/
 
         if (activeBiomeUI != null)
         {
@@ -325,4 +333,31 @@ public class FishingManager : MonoBehaviour
     {
         yield return null;
     }
+
+    public void SetRequiredElementUI(ElementType element)
+{
+    if(requiredElementImage == null)
+    {
+        return;
+    }
+
+    switch(element)
+    {
+        case ElementType.Fire:
+            requiredElementImage.sprite = fireSprite;
+            break;
+
+        case ElementType.Earth:
+            requiredElementImage.sprite = earthSprite;
+            break;
+
+        case ElementType.Water:
+            requiredElementImage.sprite = waterSprite;
+            break;
+
+        case ElementType.Air:
+            requiredElementImage.sprite = airSprite;
+            break;
+    }
+}
 }

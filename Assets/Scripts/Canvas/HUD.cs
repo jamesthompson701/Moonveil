@@ -54,29 +54,27 @@ public class HUD : MonoBehaviour
     {
         UpdateHealthDisplay();
 
-        if (FishingManager.Instance != null && FishingManager.Instance.inFishingMode == false)
+        if (attackManagerRef == null) 
         {
-            switch (attackManagerRef.attackChoice)
-            {
-                case 1:
-                    SetActive(0);
-                    break;
-                case 2:
-                    SetActive(1);
-                    break;
-                case 3:
-                    SetActive(2);
-                    break;
-                case 4:
-                    SetActive(3);
-                    break;
-            }
         return;
         }
 
-        
-        
+        if (FishingManager.Instance != null && FishingManager.Instance.inFishingMode)
+        {
+            return;
+        }
 
+        switch (attackManagerRef.attackChoice)
+        {
+            case 1: SetActive(0); 
+            break;
+            case 2: SetActive(1); 
+            break;
+            case 3: SetActive(2); 
+            break;
+            case 4: SetActive(3); 
+            break;
+        }
     }
 
     /*
@@ -198,6 +196,17 @@ public class HUD : MonoBehaviour
         spawnedPopup.SetUnlock();
 
         StartCoroutine(InventoryManager.instance.DestroyPopup(popUp));
+    }
+
+    public void UpdateSpellSelection(int choice)
+    {
+        if (attackManagerRef == null) 
+        {
+        return;
+        }
+
+        attackManagerRef.attackChoice = choice;
+        SetActive(choice - 1);
     }
 
 }

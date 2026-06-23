@@ -33,6 +33,13 @@ public class FishingCapture : MonoBehaviour
 
             fish.transform.SetParent(bubbleAnchor);
             fish.transform.localPosition = Random.insideUnitSphere * 0.5f;
+
+            FishMovement movement = fish.GetComponent<FishMovement>();
+
+            if(movement != null)
+            {
+                movement.enabled = false;
+            }
         }
 
         if(capturedFish.Count <= 0)

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BubbleVisabilityCheck : MonoBehaviour
 {
-    bool bubbleInside;
+    bool bubbleInside = true;
     float timer;
 
     void Update()
@@ -40,6 +40,7 @@ public class BubbleVisabilityCheck : MonoBehaviour
     {
         if(other.GetComponent<FishingBubble>())
         {
+            Debug.Log("Bubble Left Camera Zone");
             bubbleInside = false;
         }
     }
