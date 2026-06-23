@@ -21,6 +21,7 @@ public class OptionsMenu : MonoBehaviour
 
     public void OnSaveGameClicked()
     {
+        Debug.Log("Save Clicked");
         SaveManager.Instance.SaveInventory();
     }
 

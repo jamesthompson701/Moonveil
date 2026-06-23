@@ -8,6 +8,7 @@ public class SaveManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        Debug.Log("Instance is: " + Instance);
     }
 
     public void SaveInventory()
