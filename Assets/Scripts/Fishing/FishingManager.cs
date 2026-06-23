@@ -127,6 +127,7 @@ public class FishingManager : MonoBehaviour
         activeBiomeUI.fishingCamera.transform.position = cameraAnchor.position;
         activeBiomeUI.fishingCamera.transform.rotation = cameraAnchor.rotation;
         activeBiomeUI.fishingCamera.gameObject.SetActive(true);
+        activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
 
         if(playerCamera != null)
         {
@@ -143,11 +144,6 @@ public class FishingManager : MonoBehaviour
         {
             playerController.enabled = false;
         }
-
-        /*if (spellManager)
-        {
-            spellManager.enabled = false;
-        }*/
 
         ClickSelector selector = player.GetComponent<ClickSelector>();
 
@@ -235,11 +231,6 @@ public class FishingManager : MonoBehaviour
             playerController.enabled = true;
         }
 
-        /*if (spellManager)
-        {
-            spellManager.enabled = true;
-        }*/
-
         if (activeBiomeUI != null)
         {
             activeBiomeUI.fishingCanvas.gameObject.SetActive(false);
@@ -298,15 +289,12 @@ public class FishingManager : MonoBehaviour
                 InventoryManager.instance.AddFish(fish.fishData, 1);
             }
         }
-
         ExitFishingMode();
     }
 
     public void FailFishing()
     {
         Debug.Log("Fishing Failed");
-
-        //ShowPrompt("The fish escaped!");
 
         foreach(FishingFish fish in currentCapturedFish)
         {

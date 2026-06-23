@@ -17,7 +17,7 @@ public class FishingCapture : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             CaptureFish();
         }
@@ -47,7 +47,7 @@ public class FishingCapture : MonoBehaviour
             return;
         }
 
-        Debug.Log("Space pressed");
+        Debug.Log("Mouse1 pressed");
         Debug.Log("Fish Count: " + capturedFish.Count);
 
         FishingManager.Instance.StartBubblePhase(capturedFish);
