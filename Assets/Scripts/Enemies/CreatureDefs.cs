@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -9,7 +10,7 @@ using UnityEngine;
 public class CreatureDefs : MonoBehaviour
 {
     public enum RoamMode { Waypoints, RandomRoam }
-    public enum AttackMode { Melee, ProjectileStraight, ProjectileArc, Charger }
+    public enum AttackMode { Melee, ProjectileStraight, ProjectileArc, Charger, Contact }
 
     [Header("References")]
     [Tooltip("Optional. If empty, will auto-find the Player by tag.")]
@@ -102,6 +103,12 @@ public class CreatureDefs : MonoBehaviour
     [Tooltip("For arc shots: extra height of the arc apex above the higher of start/target (meters).")]
     [SerializeField, Min(0f)] private float arcApexHeight = 3f;
 
+    [Tooltip("Damage applied per contact tick when using Contact attack.")]
+    [SerializeField, Min(0f)] private float contactDamage = 10f;
+
+    [Tooltip("Seconds between contact damage ticks while in continuous contact.")]
+    [SerializeField, Min(0f)] private float contactTickInterval = 0.5f;
+
     [Header("Anti-Clump")]
     [Tooltip("Radius to look for nearby enemies to push away from.")]
     [SerializeField, Min(0f)] private float separationRadius = 1.2f;
@@ -123,8 +130,6 @@ public class CreatureDefs : MonoBehaviour
     [SerializeField] private bool drawGizmos = false;
 
     public ItemSO dropItem;
-    public PlayerInventory playerInventory;
-    public InventorySO invSO;
 
     private Rigidbody _rb;
     [SerializeField] private float _health;
@@ -184,6 +189,9 @@ public class CreatureDefs : MonoBehaviour
     public Material enemyDamaged;
     public Material enemyDefault;
     public Material _bodyOriginalMaterial;
+
+    // Tracks next allowed damage time per contacting GameObject (used for continuous contact ticks)
+    private readonly Dictionary<GameObject, float> _contactNextDamageTime = new Dictionary<GameObject, float>();
 
     // Expose health as a normalized percent (0..1) for external controllers (boss, UI, etc.)
     public float HealthPercent => Mathf.Clamp01(_health / maxHealth);
@@ -491,12 +499,12 @@ public class CreatureDefs : MonoBehaviour
 
     private void TryStartAttack(float sqrDistToTarget)
     {
-        // Respect runtime allow-attack flag
-        if (!CanAttack) return;
+        // Respect runtime allow-attack flag for active attack modes (Contact is passive and will not use the director)
+        if (!CanAttack && attackMode != AttackMode.Contact) return;
 
         if (_isAttacking) return;
 
-        if (useAttackDirector && _director)
+        if (attackMode != AttackMode.Contact && useAttackDirector && _director)
         {
             if (Time.time >= _nextDirectorRequestTime)
             {
@@ -551,6 +559,9 @@ public class CreatureDefs : MonoBehaviour
                 break;
             case AttackMode.Charger:
                 yield return DoChargeAttack();
+                break;
+            case AttackMode.Contact:
+                // Contact is passive; no active animation-driven attack here.
                 break;
         }
 
@@ -661,6 +672,135 @@ public class CreatureDefs : MonoBehaviour
         if (useAttackDirector && _director) _director.EndAttack(this);
     }
 
+    // --- Passive contact hurtbox implementation ---
+    // This uses the assigned `physicsCollider` and acts passively when `attackMode == Contact`.
+    // It ignores the attack director and CanAttack checks so that players take damage whenever they run into the physics collider.
+
+    private void TryDealContactDamage(GameObject other)
+    {
+        if (other == null) return;
+
+        // Prefer PlayerDamageReceiver (player API) if present in the hierarchy
+        PlayerDamageReceiver pdr = other.GetComponentInParent<PlayerDamageReceiver>();
+        if (pdr != null)
+        {
+            // Use player's invincibility-aware API
+            pdr.CheckInvincibleFrames(contactDamage);
+            _contactNextDamageTime[other] = Time.time + contactTickInterval;
+            return;
+        }
+
+        // Fall back to the generic IDamageable interface if available
+        IDamageable dmg = other.GetComponentInParent<IDamageable>();
+        if (dmg != null)
+        {
+            dmg.TakeDamage(contactDamage, transform.position, transform.forward, 0f, gameObject);
+            _contactNextDamageTime[other] = Time.time + contactTickInterval;
+            return;
+        }
+
+        // Nothing to damage on this collider
+    }
+
+    private void HandleContactEnter(GameObject other)
+    {
+        if (attackMode != AttackMode.Contact) return;
+        if (other == null) return;
+
+        // Apply immediate damage and start tick timer
+        TryDealContactDamage(other);
+    }
+
+    private void HandleContactStay(GameObject other)
+    {
+        if (attackMode != AttackMode.Contact) return;
+        if (other == null) return;
+
+        if (_contactNextDamageTime.TryGetValue(other, out float nextTime))
+        {
+            if (Time.time >= nextTime)
+                TryDealContactDamage(other);
+        }
+        else
+        {
+            // If no timer entry exists (e.g. missed enter), apply immediately
+            TryDealContactDamage(other);
+        }
+    }
+
+    private void HandleContactExit(GameObject other)
+    {
+        if (other == null) return;
+        if (_contactNextDamageTime.ContainsKey(other))
+            _contactNextDamageTime.Remove(other);
+    }
+
+    // Collision handlers: only respond when the contact involves the configured `physicsCollider`.
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (physicsCollider == null) return;
+
+        foreach (ContactPoint cp in collision.contacts)
+        {
+            if (cp.thisCollider == physicsCollider)
+            {
+                HandleContactEnter(cp.otherCollider.gameObject);
+                break;
+            }
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (physicsCollider == null) return;
+
+        foreach (ContactPoint cp in collision.contacts)
+        {
+            if (cp.thisCollider == physicsCollider)
+            {
+                HandleContactStay(cp.otherCollider.gameObject);
+                // don't break — multiple contacts might involve different other colliders
+            }
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (physicsCollider == null) return;
+
+        // CollisionExit may not provide contacts; use collision.gameObject as the other.
+        // It's acceptable to clear any tracking for that object.
+        HandleContactExit(collision.gameObject);
+    }
+
+    // If you happen to use trigger physics for the hurtbox (rare since physicsCollider is non-trigger),
+    // also support trigger callbacks but only when the other collider is the physicsCollider's partner.
+    // We can't directly inspect "this" trigger from the callback, so only use triggers if physicsCollider is a trigger.
+    private void OnTriggerEnter(Collider other)
+    {
+        if (physicsCollider == null) return;
+        if (!physicsCollider.isTrigger) return;
+
+        HandleContactEnter(other.gameObject);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (physicsCollider == null) return;
+        if (!physicsCollider.isTrigger) return;
+
+        HandleContactStay(other.gameObject);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (physicsCollider == null) return;
+        if (!physicsCollider.isTrigger) return;
+
+        HandleContactExit(other.gameObject);
+    }
+    // --- end passive contact hurtbox implementation ---
+
     public void TakeDamage(float amount, GameObject instigator)
     {
         if (amount <= 0f) return;
@@ -709,15 +849,17 @@ public class CreatureDefs : MonoBehaviour
         //if (meleeHitbox) meleeHitbox.enabled = false;
         if (physicsCollider) physicsCollider.enabled = false;
 
-
-        int amount = 1;
-        InventoryManager.instance.invSO.AddItem(dropItem, amount);
+        if (dropItem != null)
+        {
+            int amount = 1;
+            InventoryManager.instance.invSO.AddItem(dropItem, amount);
+        }
 
         //Tells Animator to play Death anim
         if (animator != null)
             animator.SetTrigger("Death");
 
-        PengKingBoss boss = Object.FindFirstObjectByType<PengKingBoss>();
+        PengKingBoss boss = FindFirstObjectByType<PengKingBoss>();
         if (isBossPenguinion)
             boss.UnregisterSpawnedMinion();
 

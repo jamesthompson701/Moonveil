@@ -11,6 +11,14 @@ public class Weakpoints : MonoBehaviour
 {
     public PengKingBoss pengKing;
 
+    [Header("Gem Visual")]
+    public Renderer[] gemRenderers;
+
+    public Material fireMaterial;
+    public Material waterMaterial;
+    public Material airMaterial;
+    public Material earthMaterial;
+
     public enum ElementType
     {
         Fire,
@@ -18,7 +26,7 @@ public class Weakpoints : MonoBehaviour
         Earth,
         Air
     }
-    
+
     public ElementType elementType;
 
     public void OnEnable()
@@ -26,25 +34,22 @@ public class Weakpoints : MonoBehaviour
         int elementIndex = Random.Range(0, System.Enum.GetValues(typeof(ElementType)).Length);
         elementType = (ElementType)elementIndex;
 
-        var rend = gameObject.GetComponent<Renderer>();
-        if (rend != null)
+        switch (elementType)
         {
-            switch (elementType)
-            {
-                case ElementType.Earth:
-                    rend.material.color = Color.green;
-                    break;
-                case ElementType.Fire:
-                    rend.material.color = Color.red;
-                    break;
-                case ElementType.Air:
-                    rend.material.color = Color.white;
-                    break;
-                case ElementType.Water:
-                    rend.material.color = Color.blue;
-                    break;
-            }
+            case ElementType.Earth:
+                SetGemMaterial(earthMaterial);
+                break;
+            case ElementType.Fire:
+                SetGemMaterial(fireMaterial);
+                break;
+            case ElementType.Air:
+                SetGemMaterial(airMaterial);
+                break;
+            case ElementType.Water:
+                SetGemMaterial(waterMaterial);
+                break;
         }
+
     }
 
     // Handle normal physics collisions
@@ -78,6 +83,33 @@ public class Weakpoints : MonoBehaviour
         {
             pengKing?.WeakpointDestroyed();
             gameObject.SetActive(false);
+        }
+    }
+
+    void SetGemMaterial(Material mat)
+    {
+        if (mat == null)
+        {
+            Debug.LogWarning($"{nameof(SetGemMaterial)} called with null material on '{name}'.");
+            return;
+        }
+
+        if (gemRenderers == null || gemRenderers.Length == 0)
+        {
+            gemRenderers = GetComponentsInChildren<Renderer>();
+            if (gemRenderers == null || gemRenderers.Length == 0)
+            {
+                Debug.LogWarning($"{nameof(Weakpoints)} on '{name}' found no Renderers to set.");
+                return;
+            }
+        }
+
+        foreach (Renderer r in gemRenderers)
+        {
+            if (r == null)
+                continue;
+
+            r.material = mat;
         }
     }
 }

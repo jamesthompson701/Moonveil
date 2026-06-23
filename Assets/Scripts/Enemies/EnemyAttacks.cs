@@ -50,7 +50,10 @@ public class EnemyAttacks : MonoBehaviour
     {
         TryHit(other);
         if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || other.CompareTag(targetTag) || other.CompareTag("Ground")))
+        {
+            SpawnPenguinion();
             Destroy(gameObject);
+        }
 
         else if (destroyOnHit)
         {
@@ -69,12 +72,10 @@ public class EnemyAttacks : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         TryHit(collision.collider);
-        // destroys object if it hits the target or the ground tag
-        if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || collision.collider.CompareTag(targetTag) || collision.collider.CompareTag("Ground")))
-        {
+        if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || CompareTag(targetTag) || CompareTag("Ground")))
             SpawnPenguinion();
-            Destroy(gameObject);
-        }
+        // destroys object if it hits the target or the ground tag
+
         else if (destroyOnHit)
             Destroy(gameObject, destroyDelay);
     }

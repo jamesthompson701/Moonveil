@@ -348,8 +348,8 @@ MonoBehaviour:
     m_Bits: 256
   animator: {fileID: 0}
   maxHealth: 20
-  minSpeed: 2
-  maxSpeed: 5
+  minSpeed: 4
+  maxSpeed: 7
   maxAcceleration: 25
   turnSpeedDegPerSec: 720
   controlLockSecondsOnHit: 0.15
@@ -360,25 +360,25 @@ MonoBehaviour:
   roamWaitSeconds: 0.25
   aggroDistance: 50
   deaggroDistance: 80
-  attackMode: 3
-  attackRange: 5
-  attackCooldownSeconds: 2
-  attackWindupSeconds: 1
+  attackMode: 4
+  attackRange: 0
+  attackCooldownSeconds: 0.5
+  attackWindupSeconds: 0.5
   meleeActiveSeconds: 0.2
   meleeHitbox: {fileID: 8143482868559019353}
   projectilePrefab: {fileID: 0}
   projectileSpeed: 40
   chargeSpeed: 14
   arcApexHeight: 3
+  contactDamage: 10
+  contactTickInterval: 0.5
   separationRadius: 1.2
   separationStrength: 20
   maxSeparationNeighbors: 16
-  useAttackDirector: 0
+  useAttackDirector: 1
   directorRequestInterval: 0.15
   drawGizmos: 1
   dropItem: {fileID: 0}
-  playerInventory: {fileID: 0}
-  invSO: {fileID: 0}
   _health: 0
   canAttack: 1
   isBossPenguinion: 1
