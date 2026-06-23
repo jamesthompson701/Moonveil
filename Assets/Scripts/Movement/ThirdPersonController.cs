@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Runtime.CompilerServices;
+using UnityEngine.Rendering;
+
+
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -42,6 +46,7 @@ namespace StarterAssets
 
         [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
         public float Gravity = -15.0f;
+        private float DefaultGravity;
 
         [Space(10)]
         [Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")]
@@ -93,6 +98,7 @@ namespace StarterAssets
         [Header("Flight Mode")]
         [Tooltip("Move speed while in flight mode (horizontal movement)")]
         public float FlightMoveSpeed = 16.0f;
+        private float DefaultFlightMoveSpeed;
         [Tooltip("Sprint speed while in flight mode (horizontal movement)")]
         public float FlightSprintSpeed = 32.0f;
         [Tooltip("Input action name for toggling flight mode")]
@@ -133,6 +139,13 @@ namespace StarterAssets
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
 
+        // Buff Timers
+        public bool isMoonJumpActive;
+        public bool isWindForceActive;
+        public float moonJumpTimer;
+        public float windForceTimer;
+
+
         // Check for combat zone restrictions
         public SpellManager2 attackManager;
 
@@ -166,10 +179,12 @@ namespace StarterAssets
 
         private void Awake()
         {
-            //get defaults so can end potion buffs later
+            //get defaults so we can revert potion buffs later
             DefaultMoveSpeed = MoveSpeed;
             DefaultSprintSpeed = SprintSpeed;
             DefaultJumpHeight = JumpHeight;
+            DefaultGravity = Gravity;
+            DefaultFlightMoveSpeed = FlightMoveSpeed;
 
             // get a reference to our main camera
             if (_mainCamera == null)
@@ -234,6 +249,31 @@ namespace StarterAssets
             GroundedCheck();
             Move();
             Dodge();
+
+            // potion buffs
+            if (isMoonJumpActive)
+            {
+                moonJumpTimer -= Time.deltaTime;
+
+                if (moonJumpTimer <= 0f)
+                {
+                    isMoonJumpActive = false;
+                    moonJumpTimer = 0f;
+                    Gravity = DefaultGravity;
+                    JumpHeight = DefaultJumpHeight;
+                }
+            }
+            if (isWindForceActive)
+            {
+                windForceTimer -= Time.deltaTime;
+
+                if (windForceTimer <= 0f)
+                {
+                    isWindForceActive = false;
+                    windForceTimer = 0f;
+
+                }
+            }
         }
 
         private void OnEnable()
@@ -730,18 +770,10 @@ namespace StarterAssets
             }
         }
 
-        //Moonchild potion buff
-        public void MoonBuff(float _duration)
+        //MoonJump Potion buff
+        public void MoonJump(float _duration)
         {
-            dodgeSpeed = DefaultMoveSpeed * 6f;
-            Invoke("ResetSpeedAndJump", _duration);
-        }
-        private void ResetSpeedAndJump()
-        {
-            dodgeSpeed = DefaultMoveSpeed / 6f;
-            MoveSpeed = DefaultMoveSpeed;
-            SprintSpeed = DefaultSprintSpeed;
-            JumpHeight = DefaultJumpHeight;
+
         }
     }
 }

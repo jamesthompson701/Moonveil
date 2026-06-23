@@ -27,7 +27,7 @@ public class ShakeableSpawner : MonoBehaviour
                 Rigidbody newSeedRB = newSeed.GetComponent<Rigidbody>();
 
                 int randomNum1 = Random.Range(-4, 5);
-                int randomNum2 = Random.Range(3, 9);
+                int randomNum2 = Random.Range(4, 9);
                 int randomNum3 = Random.Range(-4, 5);
                 newSeedRB.linearVelocity = new Vector3(randomNum1, randomNum2, randomNum3);
 
