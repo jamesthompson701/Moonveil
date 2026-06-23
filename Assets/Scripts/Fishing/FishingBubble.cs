@@ -6,6 +6,8 @@ public class FishingBubble : MonoBehaviour
     public float radius = 5f;
     public float moveSpeed = 3f;
 
+    public BoxCollider movementBounds;
+
     Vector3 targetPos;
     Vector3 startPos;
 
@@ -26,32 +28,34 @@ public class FishingBubble : MonoBehaviour
             PickNewTarget();
         }
 
-        //detection
-                Vector3 view = Camera.main.WorldToViewportPoint(bubble.position);
+        Debug.DrawLine(transform.position,targetPos,Color.red);
+    }
 
-        bool visible = view.z > 0 && view.x > 0 && view.x < 1 && view.y > 0 && view.y < 1;
-
-        if(visible)
+    public void BeginBubblePhase()
+    {
+        if(movementBounds != null)
         {
-            visabliityTimer = 0;
+            transform.position = movementBounds.bounds.center;
         }
-        else
-        {
-            visabliityTimer += Time.deltaTime;
 
-            if(visabliityTimer >= 3f)
-            {
-                FishingManager.Instance.FailFishing();
-            }
-        }
+        PickNewTarget();
     }
 
     // detection
     void PickNewTarget()
     {
-        Vector2 random =Random.insideUnitCircle * radius;
+        if(movementBounds == null)
+        {
+            Debug.LogError("Movement Bounds Missing!");
+            return;
+        }
 
-        targetPos = startPos + new Vector3(random.x,0,random.y);
+        Bounds bounds = movementBounds.bounds;
+
+        float x = Random.Range(bounds.min.x, bounds.max.x);
+        float y = Random.Range(bounds.min.y, bounds.max.y);
+
+        targetPos = new Vector3(x, y, bounds.center.z);
     }
 
     public float failTime = 2f;

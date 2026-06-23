@@ -43,6 +43,7 @@ public FishingBiome biome;
     {
         if (other.CompareTag("WateringSpell"))
         {
+            Debug.Log("Water Spell Hit");
             FishingManager.Instance.EnterFishingMode(this);
         }
     }

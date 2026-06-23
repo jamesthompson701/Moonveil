@@ -6,25 +6,37 @@ public class FishingFish : MonoBehaviour
   public Vector3 startPosition;
   public FishData fishData;
 
-    [Header("Element Sequence")]
-    public ElementType[] elementSequence;
+  [Header("Element Sequence")]
+  public ElementType[] elementSequence;
 
-    [Header("Difficulty")]
-    public float switchTime = 2f;
+  [Header("Difficulty")]
+  public float switchTime = 2f;
 
-    void Start()
+  void Start()
   {
-      startPosition = transform.position;
+    startPosition = transform.position;
   }
 
   public void ResetFish()
   {
+    transform.SetParent(null);
+
     transform.position = startPosition;
+
+    NavMeshAgent agent = GetComponent<NavMeshAgent>();
+
+    if(agent != null)
+    {
+      agent.Warp(startPosition);
+    }
+
     gameObject.SetActive(true);
   }
 
   public void RemoveFish(float respawnTime)
   {
+    transform.SetParent(null);
+    
     StartCoroutine(RespawnRoutine(respawnTime));
   }
 
@@ -35,6 +47,14 @@ public class FishingFish : MonoBehaviour
     yield return new WaitForSeconds(time);
 
     transform.position = startPosition;
+
+    NavMeshAgent agent = GetComponent<NavMeshAgent>();
+
+    if(agent != null)
+    {
+      agent.Warp(startPosition);
+    }
+
     gameObject.SetActive(true);
   }
 }

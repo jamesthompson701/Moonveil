@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using StarterAssets;
 using System.Collections.Generic;
+using System.Collections;
 
 public class FishingManager : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class FishingManager : MonoBehaviour
     [Header("Player")]
     public GameObject player;
     public Transform cameraAnchor;
+    private Camera playerCamera;
 
     [Header("UI")]
     public TMP_Text startFishingPrompt;
@@ -37,9 +39,13 @@ public class FishingManager : MonoBehaviour
 
     private SkinnedMeshRenderer[] playerMeshes;
 
-    [Header("Fishing Phases")]
+    [Header("Capture Phase")]
     public GameObject captureCircle;
+
+
+    [Header("Bubble Phase")]
     public GameObject bubbleObject;
+    public GameObject elementZones;
 
     private List<FishingFish> currentCapturedFish = new List<FishingFish>();
 
@@ -55,6 +61,8 @@ public class FishingManager : MonoBehaviour
         spellManager = FindFirstObjectByType<SpellManager2>();
 
         playerMeshes = player.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+
+        playerCamera = Camera.main;
     }
 
     void Update()
@@ -63,6 +71,7 @@ public class FishingManager : MonoBehaviour
         if (inFishingMode && Input.GetKeyDown(KeyCode.Escape))
         {
             ExitFishingMode();
+            StartCoroutine(ClearBufferedInput());
         }
     }
 
@@ -111,6 +120,11 @@ public class FishingManager : MonoBehaviour
         activeBiomeUI.fishingCamera.transform.rotation = cameraAnchor.rotation;
         activeBiomeUI.fishingCamera.gameObject.SetActive(true);
 
+        if(playerCamera != null)
+        {
+            playerCamera.gameObject.SetActive(false);
+        }
+
         // disable player
         if (playerInput)
         {
@@ -158,6 +172,34 @@ public class FishingManager : MonoBehaviour
         Debug.Log("Fishing Started");
     }
 
+    public void StartCapturePhase()
+    {
+        currentPhase = FishingPhase.Capture;
+
+        captureCircle.SetActive(true);
+        bubbleObject.SetActive(false);
+
+        currentCapturedFish.Clear();
+    }
+
+    public void StartBubblePhase(List<FishingFish> capturedFish)
+    {
+        currentCapturedFish = capturedFish;
+
+        currentPhase = FishingPhase.Bubble;
+
+        captureCircle.SetActive(false);
+
+        bubbleObject.SetActive(true);
+        elementZones.SetActive(true);
+
+        FishingBubble bubble = bubbleObject.GetComponent<FishingBubble>();
+
+        bubble.BeginBubblePhase();
+
+        Debug.Log("Bubble phase started");
+    }
+
     public void ExitFishingMode()
     {
         Debug.Log("Exited Fishing");
@@ -168,6 +210,11 @@ public class FishingManager : MonoBehaviour
         bubbleObject.SetActive(false);
         
         inFishingMode = false;
+
+        if(elementZones != null)
+        {
+            elementZones.SetActive(false);
+        }
 
         // enable player stuff
         if (playerInput)
@@ -214,8 +261,13 @@ public class FishingManager : MonoBehaviour
 
         currentArea = null;
 
-        activeBiomeUI.fishingCamera.gameObject.SetActive(true);
-        activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
+        activeBiomeUI.fishingCamera.gameObject.SetActive(false);
+        activeBiomeUI.fishingCanvas.gameObject.SetActive(false);
+
+        if (playerCamera != null)
+        {
+            playerCamera.gameObject.SetActive(true);
+        }
 
         if (activeBiomeUI != null)
         {
@@ -225,16 +277,21 @@ public class FishingManager : MonoBehaviour
         Debug.Log("Fishing Ended");
     }
 
-    public void StartBubblePhase(List<FishingFish> capturedFish)
+    public void SuccessFishing()
     {
-        currentCapturedFish = capturedFish;
+        Debug.Log("Fishing Success");
 
-        currentPhase = FishingPhase.Bubble;
+        foreach(FishingFish fish in currentCapturedFish)
+        {
+            fish.RemoveFish(180f);
 
-        captureCircle.SetActive(false);
-        bubbleObject.SetActive(true);
+            if(fish.fishData != null)
+            {
+                InventoryManager.instance.AddFish(fish.fishData, 1);
+            }
+        }
 
-        Debug.Log("Bubble phase started");
+        ExitFishingMode();
     }
 
     public void FailFishing()
@@ -262,5 +319,10 @@ public class FishingManager : MonoBehaviour
         {
             currentArea = null;
         }
+    }
+
+    IEnumerator ClearBufferedInput()
+    {
+        yield return null;
     }
 }

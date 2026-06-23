@@ -11,6 +11,7 @@ public class FishingDetection : MonoBehaviour
 
         if(fish != null && !fishInside.Contains(fish))
         {
+            Debug.Log("Fish in capture area");
             fishInside.Add(fish);
         }
     }
@@ -21,6 +22,7 @@ public class FishingDetection : MonoBehaviour
 
         if(fish != null)
         {
+            Debug.Log("Fish left capture area");
             fishInside.Remove(fish);
         }
     }

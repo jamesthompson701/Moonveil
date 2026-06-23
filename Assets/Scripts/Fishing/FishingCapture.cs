@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+//using System.Diagnostics;
 using UnityEngine;
 
 public class FishingCapture : MonoBehaviour
@@ -9,6 +10,8 @@ public class FishingCapture : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("Capture update");
+
         if (!FishingManager.Instance.inFishingMode)
         {
             return;
@@ -29,7 +32,6 @@ public class FishingCapture : MonoBehaviour
             capturedFish.Add(fish);
 
             fish.transform.SetParent(bubbleAnchor);
-
             fish.transform.localPosition = Random.insideUnitSphere * 0.5f;
         }
 
@@ -38,6 +40,9 @@ public class FishingCapture : MonoBehaviour
             return;
         }
 
+        Debug.Log("Space pressed");
+        Debug.Log("Fish Count: " + capturedFish.Count);
+
         FishingManager.Instance.StartBubblePhase(capturedFish);
-    }    
+    }
 }
