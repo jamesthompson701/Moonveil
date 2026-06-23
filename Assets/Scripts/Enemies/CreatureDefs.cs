@@ -190,6 +190,8 @@ public class CreatureDefs : MonoBehaviour
     public Material enemyDefault;
     public Material _bodyOriginalMaterial;
 
+    public PengKingBoss boss;
+
     // Tracks next allowed damage time per contacting GameObject (used for continuous contact ticks)
     private readonly Dictionary<GameObject, float> _contactNextDamageTime = new Dictionary<GameObject, float>();
 
@@ -859,9 +861,13 @@ public class CreatureDefs : MonoBehaviour
         if (animator != null)
             animator.SetTrigger("Death");
 
-        PengKingBoss boss = FindFirstObjectByType<PengKingBoss>();
+
         if (isBossPenguinion)
+        {
+            boss = GameObject.FindFirstObjectByType<PengKingBoss>();
             boss.UnregisterSpawnedMinion();
+        }
+            
 
         Destroy(gameObject);
 

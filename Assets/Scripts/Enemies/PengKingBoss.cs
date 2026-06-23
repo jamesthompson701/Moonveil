@@ -22,6 +22,8 @@ public class PengKingBoss : MonoBehaviour
     [Tooltip("Maximum allowed spawned minions before the boss stops attacking.")]
     public int maxSpawnedMinions = 6;
 
+    public PlayerDamageReceiver playerDamageReceiver;
+
     public void Awake()
     {
         DeactivateShield();
@@ -30,6 +32,7 @@ public class PengKingBoss : MonoBehaviour
     public void Update()
     {
         CheckBossHealth();
+        CheckForPlayerDeath();
     }
 
     public void CheckBossHealth()
@@ -149,9 +152,31 @@ public class PengKingBoss : MonoBehaviour
     {
         if (pengKing != null)
         {
-            bool allowAttack = spawnedMinionsCount < maxSpawnedMinions;
+            bool allowAttack = spawnedMinionsCount == 0;
             // Do not abort current attack by default; set second arg true if you want immediate abort.
             pengKing.SetCanAttack(allowAttack, abortCurrentAttack: false);
+        }
+    }
+
+    private void CheckForPlayerDeath()
+    {
+        if (playerDamageReceiver != null)
+        {
+            if (playerDamageReceiver.currentHealth <= 0f)
+            {
+                // Player has died, handle logic here
+                Debug.Log("Player has died during the boss fight!");
+
+                DeactivateShield();
+
+                pengKing.ResetHealth();
+
+                for (int i = 0; i < weakpoints.Length; i++)
+                {
+                    if (weakpoints[i] != null)
+                        weakpoints[i].SetActive(false);
+                }
+            }
         }
     }
 }
