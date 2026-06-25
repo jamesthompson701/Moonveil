@@ -38,14 +38,14 @@ public class FishingElementChallenge : MonoBehaviour
         }
 
         bool correct = PlayerHasCorrectElement(currentRequired);
-        Debug.Log("Required: " + currentRequired + " | Choice: " + SpellManager2.Instance.attackChoice + " | Correct: " + correct);
+        //Debug.Log("Required: " + currentRequired + " | Choice: " + SpellManager2.Instance.attackChoice + " | Correct: " + correct);
 
         if (correct)
         {
             successTimer += Time.deltaTime;
-            Debug.Log("Timer: " + successTimer + " | Object: " + gameObject.name + " | Frame: " + Time.frameCount);
+            //Debug.Log("Timer: " + successTimer + " | Object: " + gameObject.name + " | Frame: " + Time.frameCount);
 
-            Debug.Log("Success Timer = " + successTimer);
+            //Debug.Log("Success Timer = " + successTimer);
 
             if (successTimer >= winTime)
             {
@@ -105,6 +105,6 @@ public class FishingElementChallenge : MonoBehaviour
 
         wasCorrectLastFrame = false;
 
-        Debug.Log("New required element: " + newElement);
+        //Debug.Log("New required element: " + newElement);
     }
 }

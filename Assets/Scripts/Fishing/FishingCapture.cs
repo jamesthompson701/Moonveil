@@ -10,7 +10,7 @@ public class FishingCapture : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("Capture update");
+        //Debug.Log("Capture update");
 
         if (!FishingManager.Instance.inFishingMode)
         {
@@ -47,8 +47,8 @@ public class FishingCapture : MonoBehaviour
             return;
         }
 
-        Debug.Log("Mouse1 pressed");
-        Debug.Log("Fish Count: " + capturedFish.Count);
+        //Debug.Log("Mouse1 pressed");
+        //Debug.Log("Fish Count: " + capturedFish.Count);
 
         FishingManager.Instance.StartBubblePhase(capturedFish);
     }

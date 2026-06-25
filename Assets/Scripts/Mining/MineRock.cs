@@ -3,9 +3,7 @@ using UnityEngine;
 
 public enum MineralType
 {
-    Fire,
-    Water,
-    Air
+    Fire, Water, Air
 }
 
 public class MineRock : MonoBehaviour
@@ -51,7 +49,7 @@ public class MineRock : MonoBehaviour
 
         SetGemVisible(false);
 
-        Debug.Log(name + " gem count = " + gemRenderers.Length);
+        //Debug.Log(name + " gem count = " + gemRenderers.Length);
     }
 
     void SetGemMaterial(Material mat)
@@ -88,7 +86,7 @@ public class MineRock : MonoBehaviour
             return;
         }
 
-        // EARTH SPELL
+        // earth spell
         if (other.CompareTag("TillSpell"))
         {
             if (!raised)
@@ -160,6 +158,9 @@ public class MineRock : MonoBehaviour
             StopCoroutine(activeTimerRoutine);
         }
 
+        // play all stone raise vfx
+        
+
         activeTimerRoutine = StartCoroutine(ActiveTimer());
 
         //Debug.Log(name + " raised: " + raisedPosition);
@@ -187,6 +188,8 @@ public class MineRock : MonoBehaviour
             audioSource.PlayOneShot(successSound);
             Debug.Log("successSound played");
         }
+
+        // disable all the vfx and have sink down into the ground (need to make a fail just to have it sink for that too)
 
         StartCoroutine(CooldownRoutine());
     }

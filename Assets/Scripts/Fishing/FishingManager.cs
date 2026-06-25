@@ -85,7 +85,7 @@ public class FishingManager : MonoBehaviour
 
     public void EnterFishingMode(FishingArea area)
     {
-        Debug.Log("Entered Fishing");
+        //Debug.Log("Entered Fishing");
 
         if (area == null)
         {
@@ -173,7 +173,7 @@ public class FishingManager : MonoBehaviour
         captureCircle.SetActive(true);
         bubbleObject.SetActive(false);
 
-        Debug.Log("Fishing Started");
+        //Debug.Log("Fishing Started");
     }
 
     public void StartCapturePhase()
@@ -201,12 +201,12 @@ public class FishingManager : MonoBehaviour
 
         bubble.BeginBubblePhase();
 
-        Debug.Log("Bubble phase started");
+        //Debug.Log("Bubble phase started");
     }
 
     public void ExitFishingMode()
     {
-        Debug.Log("Exited Fishing");
+        //Debug.Log("Exited Fishing");
 
         currentPhase = FishingPhase.None;
 
@@ -273,12 +273,12 @@ public class FishingManager : MonoBehaviour
             activeBiomeUI.fishingCanvas.gameObject.SetActive(false);
         }
 
-        Debug.Log("Fishing Ended");
+        //Debug.Log("Fishing Ended");
     }
 
     public void SuccessFishing()
     {
-        Debug.Log("Fishing Success");
+        //Debug.Log("Fishing Success");
 
         foreach(FishingFish fish in currentCapturedFish)
         {
@@ -294,7 +294,7 @@ public class FishingManager : MonoBehaviour
 
     public void FailFishing()
     {
-        Debug.Log("Fishing Failed");
+        //Debug.Log("Fishing Failed");
 
         foreach(FishingFish fish in currentCapturedFish)
         {
