@@ -810,6 +810,11 @@ public class CreatureDefs : MonoBehaviour
         // Guard against null instigator and only ignore damage if the instigator actually has the "Ground" tag.
         if (instigator != null && instigator.CompareTag("Ground")) return;
 
+        if(EnemyAttackDirector.Instance.isSourSorceryActive)
+        {
+            amount = amount * 1.25f;
+        }
+        
         _health -= amount;
 
         if (controlLockSecondsOnHit > 0f)

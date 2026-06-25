@@ -26,8 +26,16 @@ public class PlayerDamageReceiver : MonoBehaviour
     private Material _bodyOriginalMaterial;
     private float _invincibilityTimer = 0f;
 
+    //singleton
+    public static PlayerDamageReceiver instance;
+
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+
         // Ensure currentHealth is valid
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
 

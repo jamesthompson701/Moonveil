@@ -1,16 +1,22 @@
+using StarterAssets;
 using UnityEngine;
+using System.Collections.Generic;
 
-public class WindForcePotionSO : MonoBehaviour
+[CreateAssetMenu(fileName = "WindForcePotion", menuName = "Scriptable Objects/ItemEffects/WindForcePotion")]
+public class WindForcePotionSO : ItemEffectSO
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    //attributes
+    public float newMoveSpeed;
+    public float newSprintSpeed;
+    public float newFlightMoveSpeed;
+    public float buffLength;
 
-    // Update is called once per frame
-    void Update()
+    public override void UseItem()
     {
-        
+        ThirdPersonController.Instance.windForceTimer = buffLength;
+        ThirdPersonController.Instance.isWindForceActive = true;
+        ThirdPersonController.Instance.MoveSpeed = newMoveSpeed;
+        ThirdPersonController.Instance.SprintSpeed = newSprintSpeed;
+        ThirdPersonController.Instance.FlightMoveSpeed = newFlightMoveSpeed;
     }
 }
