@@ -2,7 +2,7 @@ using StarterAssets;
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "MoonChildSO", menuName = "Scriptable Objects/ItemEffects/MoonChildSO")]
+[CreateAssetMenu(fileName = "MoonChildSO(unused)", menuName = "Scriptable Objects/ItemEffects/MoonChildSO")]
 public class MoonChild : ItemEffectSO
 {
     //need these to restore the original speed
@@ -19,6 +19,6 @@ public class MoonChild : ItemEffectSO
         // times 2.65 to preserve the same ratio that the defaults have to eachother
         ThirdPersonController.Instance.SprintSpeed = newMoveSpeed * 2.65f;
         ThirdPersonController.Instance.JumpHeight = newJumpHeight;
-        ThirdPersonController.Instance.MoonBuff(buffLength);
+        //ThirdPersonController.Instance.MoonBuff(buffLength);
     }
 }
