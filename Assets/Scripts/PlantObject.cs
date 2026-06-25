@@ -10,12 +10,10 @@ public class PlantObject : MonoBehaviour
 
     //current stage of growth
     private int currentStage;
-    public bool isDead;
 
     //timers
     //these get set to their respective maximums based on plantSO, and then count down as appropriate via CheckPlant
     private float growthTime;
-    private float dryTime;
 
     //harvestability and withered status
     private bool isHarvestable;
@@ -30,10 +28,13 @@ public class PlantObject : MonoBehaviour
     public TMP_Text growthTimer;
     public Image growthProgressBar;
 
+    public TMP_Text waterTimer;
+    public Image waterTimerBar;
+
     //bool to toggle if it's been setup
     private bool isSet;
 
-    void Awake()
+    void Start()
     {
         //add to time manager
         currentStage = 0;
@@ -41,68 +42,71 @@ public class PlantObject : MonoBehaviour
 
     }
 
-    public void CheckPlant(float deltaTime)
+    //checkplant
+    // light refers to the time of day; 1 = morning, 2 = evening, 3 = night
+    public void CheckPlant(float deltaTime, int _light)
     {
         if (!isSet)
         {
             //set the plant SO correctly based on the seed used
             growthTime = plant.cropTime;
-            dryTime = plant.droughtResistance;
+            currentStage = 0;
             currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
             isSet = true;
+
+            //tutorial
+            if (TutorialManager.instance != null && !TutorialManager.instance.planting)
+            {
+                //completes billboard 3: plant seeds
+                if (TutorialManager.instance.currentBillboard == 2)
+                {
+                    TutorialManager.instance.ProgressTutorial(3);
+                    TutorialManager.instance.planting = true;
+                }
+
+            }
         }
 
         //increment the dry timer while dry
         if(!soilScript.Wet())
         {
-
-            //if it's been dry too long, it withers
-            if(dryTime < plant.droughtResistance / 2)
+            if (!isHarvestable)
             {
                 Wither();
             }
+            
 
-            //if it's been dry WAY too long, then it dies
-            if (dryTime > 0 && !isHarvestable)
-            {
-                dryTime = dryTime - deltaTime;
-
-            }
-            else
-            {
-                isDead = true;
-                isHarvestable = false;
-                Destroy(myCanvas);
-                Destroy(currentPlant);
-                currentPlant = Instantiate(plant.plantDead, transform);
-            }
         }
 
-        //update growth time
-        if(growthTime > 0 && soilScript.Wet())
+        //update growth time as long as the soil is wet, the light is appropriate, and it isn't harvestable
+        if (growthTime > 0 && soilScript.isWet && plant.lightPreference == _light && !isHarvestable)
         {
             growthTime = growthTime - deltaTime;
-            if(!isHarvestable)
+            Unwither();
+
+            //grow twice as fast before the tutorial is complete
+            if (!TutorialManager.instance.harvesting)
             {
-                //if plant is growing that means it's time to unwither it
-                //but if it's harvestable just keep it green
-                Unwither();
+                growthTime = growthTime - (deltaTime * 100);
             }
 
+
         }
-        else
+        else if (growthTime <= 0)
         {
-            //check wetness and make sure the plant is alive before growing
-            if (soilScript.Wet() && !isDead)
+            //check wetness again before growing
+            if (soilScript.isWet)
             {
                 Debug.Log("before growth: " + currentStage);
+
+                //reset growth timer
                 growthTime = plant.cropTime;
-                dryTime = plant.droughtResistance;
 
                 //then increment, but not past the max
                 if (currentStage < plant.MaxStage)
                 {
                     currentStage++;
+                    
                 }
                 if (currentStage == plant.MaxStage)
                 {
@@ -111,7 +115,6 @@ public class PlantObject : MonoBehaviour
                     Debug.Log("Harvestable!");
                 }
 
-                //if a prefab exists for the current stage,
                 //destroy the current object and make a new one at the new growth stage
                 if (plant.GetPrefabByStage(currentStage) != null)
                 {
@@ -122,9 +125,15 @@ public class PlantObject : MonoBehaviour
             }
         }
 
-        //update growth timer UI
-        growthTimer.text = "" + Mathf.Round(growthTime);
-        growthProgressBar.fillAmount = growthTime / plant.cropTime;
+        //update growth timer UI and water timer UI (skip if harvestable)
+        if (!isHarvestable)
+        {
+            growthTimer.text = "" + Mathf.Round(growthTime);
+            growthProgressBar.fillAmount = growthTime / plant.cropTime;
+
+            waterTimer.text = " " + Mathf.Round(soilScript.waterTimer);
+            waterTimerBar.fillAmount = soilScript.waterTimer / plant.droughtResistance;
+        }
 
     }
 
@@ -152,7 +161,24 @@ public class PlantObject : MonoBehaviour
     //add the correct items to the player's inventory and then unregisters and destroys the plant
     public void Harvest()
     {
-        PlayerInventory.instance.invSO.AddItem(plant.seed, 2);
+        //tutorial
+        if (TutorialManager.instance != null && !TutorialManager.instance.harvesting)
+        {
+            //completes billboard 5: harvest crops
+            if(TutorialManager.instance.currentBillboard == 4)
+            {
+                Debug.Log("Harvasted :" + plant.plantName);
+                if (plant.plantName == "Wool Of Bat")
+                {
+                    TutorialManager.instance.ProgressTutorial(5);
+                    TutorialManager.instance.harvesting = true;
+                }
+            }
+
+        }
+
+        InventoryManager.instance.invSO.AddItem(plant.fruit, 1);
+
         Debug.Log("Harvested");
         Destroy(currentPlant);
         TimeManager.instance.UnregisterPlant(this);

@@ -10,5 +10,5 @@ public enum SoilContent { empty, weed, crop }
 [CreateAssetMenu(fileName = "SoilSO", menuName = "Scriptable Objects/SoilSO")]
 public class SoilSO : ScriptableObject
 {
-    public float wetnessDuration;
+    //empty now
 }

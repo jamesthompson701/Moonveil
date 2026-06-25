@@ -7,7 +7,7 @@ public class CanvasFacesPlayer : MonoBehaviour
     //player cam
     public Camera playerCam;
 
-    private void Awake()
+    private void Start()
     {
         playerCam = PlayerCamera.instance.myCamera;
     }

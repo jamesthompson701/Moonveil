@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 
 public class WorkbenchUI : MonoBehaviour
 {
@@ -17,9 +17,19 @@ public class WorkbenchUI : MonoBehaviour
     public TMP_Text outputName;
     public TMP_Text outputName2;
 
+    //list of unlocked recipes
+    public List<wRecipe> unlockedRecipes;
+
+    //wRecipe prefab
+    public GameObject blankRecipeWidget;
+
+    //place to instantiate the recipes
+    public GameObject recipeBox;
+
     //Craft failed and succeeded text
     public GameObject craftFailed;
     public GameObject craftSuccess;
+
 
     public static WorkbenchUI instance;
 
@@ -68,7 +78,23 @@ public class WorkbenchUI : MonoBehaviour
 
     public void ExitCrafting()
     {
-        CanvasManager.Instance.OpenWorkbench();
+        CanvasManager.Instance.OpenMenu(3);
+    }
+
+    //function that instantiates a new recipe widget
+    public void UnlockRecipe(RecipeSO _recipe)
+    {
+        //make sure to flash open and close it if you're using this while the workbench is inactive
+        GameObject unlockedRecipe = Instantiate(blankRecipeWidget);
+        wRecipe w_Recipe = unlockedRecipe.GetComponent<wRecipe>();
+        unlockedRecipe.transform.SetParent(recipeBox.transform);
+
+        unlockedRecipes.Add(w_Recipe);
+
+        w_Recipe.myRecipe = _recipe;
+        w_Recipe.myImage.sprite = _recipe.output.itemSprite;
+        w_Recipe.Refresh();
+
     }
 
     //chud invokeable functions

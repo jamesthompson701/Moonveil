@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
-#if ENABLE_INPUT_SYSTEM 
+using System.Collections;
+using System.Runtime.CompilerServices;
+using UnityEngine.Rendering;
+
+
+#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
@@ -17,9 +22,11 @@ namespace StarterAssets
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
+        private float DefaultMoveSpeed;
 
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
+        private float DefaultSprintSpeed;
 
         [Tooltip("How fast the character turns to face movement direction")]
         [Range(0.0f, 0.3f)]
@@ -35,9 +42,11 @@ namespace StarterAssets
         [Space(10)]
         [Tooltip("The height the player can jump")]
         public float JumpHeight = 1.2f;
+        private float DefaultJumpHeight;
 
         [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
         public float Gravity = -15.0f;
+        private float DefaultGravity;
 
         [Space(10)]
         [Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")]
@@ -59,6 +68,14 @@ namespace StarterAssets
         [Tooltip("What layers the character uses as ground")]
         public LayerMask GroundLayers;
 
+        [Header("Flying Anim Data")]
+        [Tooltip("Used for animation trigger")]
+        public bool isSpriting = false;
+        public GameObject broomModel;
+
+        [Tooltip("True while the player is casting a spell. Prevents toggling flight during cast.")]
+        public bool isCasting = false;
+
         [Header("Cinemachine")]
         [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
         public GameObject CinemachineCameraTarget;
@@ -75,6 +92,32 @@ namespace StarterAssets
         [Tooltip("For locking the camera position on all axis")]
         public bool LockCameraPosition = false;
 
+        [Tooltip("Determines if the player is in flight mode or not")]
+        public bool inFlightMode = false;
+
+
+        [Tooltip("When true, prevents the player from toggling flight (set by combat manager)")]
+        public bool flightLocked = false;
+
+        [Header("Flight Mode")]
+        [Tooltip("Move speed while in flight mode (horizontal movement)")]
+        public float FlightMoveSpeed = 16.0f;
+        private float DefaultFlightMoveSpeed;
+        [Tooltip("Sprint speed while in flight mode (horizontal movement)")]
+        public float FlightSprintSpeed = 32.0f;
+        [Tooltip("Input action name for toggling flight mode")]
+        public string FlightToggleActionName = "ToggleFlight";
+
+        // Internal reference to the toggle action
+        private InputAction flightToggleAction;
+
+        InputAction ascend;
+        InputAction descend;
+
+        [SerializeField] private GameObject slowWind;
+        [SerializeField] private GameObject fastWind;
+        private Coroutine windCoroutine;
+
         // cinemachine
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
@@ -86,7 +129,8 @@ namespace StarterAssets
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
-        private Vector3 motion;
+        public Vector3 motion;
+        private float defaultMoveSpeed;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -99,8 +143,15 @@ namespace StarterAssets
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
 
+        // Buff Timers
+        public bool isMoonJumpActive;
+        public bool isWindForceActive;
+        public float moonJumpTimer;
+        public float windForceTimer;
+
+
         // Check for combat zone restrictions
-        public SpellManager attackManager;
+        public SpellManager2 attackManager;
 
         //Singleton
         public static ThirdPersonController Instance;
@@ -132,6 +183,13 @@ namespace StarterAssets
 
         private void Awake()
         {
+            //get defaults so we can revert potion buffs later
+            DefaultMoveSpeed = MoveSpeed;
+            DefaultSprintSpeed = SprintSpeed;
+            DefaultJumpHeight = JumpHeight;
+            DefaultGravity = Gravity;
+            DefaultFlightMoveSpeed = FlightMoveSpeed;
+
             // get a reference to our main camera
             if (_mainCamera == null)
             {
@@ -148,6 +206,13 @@ namespace StarterAssets
             {
                 Instance = this;
             }
+
+            defaultMoveSpeed = MoveSpeed;
+
+            ascend = InputSystem.actions.FindAction("Ascend");
+            descend = InputSystem.actions.FindAction("Descend");
+
+            flightToggleAction = InputSystem.actions.FindAction(FlightToggleActionName);
         }
 
         private void Start()
@@ -174,15 +239,121 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
-            JumpAndGravity();
+            if (inFlightMode)
+            {
+                // While in flight mode, disable jump & gravity and allow vertical control via ascend/descend inputs.
+                FlightUpdate();
+            }
+            else
+            {
+                JumpAndGravity();
+            }
+
+            flightAnimation();
             GroundedCheck();
             Move();
+            Dodge();
+
+            // potion buffs
+            if (isMoonJumpActive)
+            {
+                moonJumpTimer -= Time.deltaTime;
+
+                if (moonJumpTimer <= 0f)
+                {
+                    isMoonJumpActive = false;
+                    moonJumpTimer = 0f;
+                    Gravity = DefaultGravity;
+                    JumpHeight = DefaultJumpHeight;
+                }
+            }
+            if (isWindForceActive)
+            {
+                windForceTimer -= Time.deltaTime;
+
+                if (windForceTimer <= 0f)
+                {
+                    isWindForceActive = false;
+                    windForceTimer = 0f;
+
+                }
+            }
+        }
+
+        private void OnEnable()
+        {
+            // Ensure ascend/descend actions are valid and enabled. No event subscription needed for polling.
+            if (ascend == null) ascend = InputSystem.actions.FindAction("Ascend");
+            if (ascend != null && !ascend.enabled) ascend.Enable();
+
+            if (descend == null) descend = InputSystem.actions.FindAction("Descend");
+            if (descend != null && !descend.enabled) descend.Enable();
+
+            if (flightToggleAction == null)
+                flightToggleAction = InputSystem.actions.FindAction(FlightToggleActionName);
+            if (flightToggleAction != null && !flightToggleAction.enabled)
+                flightToggleAction.Enable();
+            if (flightToggleAction != null)
+                flightToggleAction.performed += OnFlightToggle;
+        }
+        private void OnDisable()
+        {
+            if (descend != null)
+            {
+                if (descend.enabled) descend.Disable();
+            }
+            if (ascend != null)
+            {
+                if (ascend.enabled) ascend.Disable();
+            }
+
+            if (flightToggleAction != null)
+                flightToggleAction.performed -= OnFlightToggle;
+            if (flightToggleAction != null && flightToggleAction.enabled)
+                flightToggleAction.Disable();
         }
 
         private void LateUpdate()
         {
             CameraRotation();
         }
+
+        // Handler for toggling flight mode
+        private void OnFlightToggle(InputAction.CallbackContext ctx)
+        {
+            // Prevent entering/exiting flight while casting
+            if (isCasting)
+            {
+                Debug.Log("Cannot toggle flight while casting.");
+                return;
+            }
+
+            // Prevent toggling flight while combat or other systems lock it
+            if (flightLocked)
+            {
+                Debug.Log("Cannot toggle flight right now (locked by combat).");
+                return;
+            }
+
+            inFlightMode = !inFlightMode;
+
+            if (inFlightMode)
+            {
+                if (windCoroutine == null)
+                    windCoroutine = StartCoroutine(GenerateWind());
+            }
+            else
+            {
+                if (windCoroutine != null)
+                {
+                    StopCoroutine(windCoroutine);
+                    windCoroutine = null;
+                }
+                slowWind.SetActive(false);
+                fastWind.SetActive(false);
+            }
+        }
+
 
         private void AssignAnimationIDs()
         {
@@ -232,7 +403,15 @@ namespace StarterAssets
         private void Move()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
-            float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            float targetSpeed;
+            if (inFlightMode)
+            {
+                targetSpeed = _input.sprint ? FlightSprintSpeed : FlightMoveSpeed;
+            }
+            else
+            {
+                targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            }
 
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -322,11 +501,11 @@ namespace StarterAssets
                 }
                 else
                 {
-                    
+
                     _animator.SetFloat("MoveX", _input.move.x, 0.1f, Time.deltaTime);
                     _animator.SetFloat("MoveY", _input.move.y, 0.1f, Time.deltaTime);
                 }
-                
+
 
             }
         }
@@ -350,11 +529,14 @@ namespace StarterAssets
                 if (_verticalVelocity < 0.0f)
                 {
                     _verticalVelocity = -2f;
+                    OnLand();
                 }
 
                 // Jump
                 if (_input.jump && _jumpTimeoutDelta <= 0.0f)
                 {
+                    OnJump();
+
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
@@ -407,6 +589,96 @@ namespace StarterAssets
             }
         }
 
+        // Flight mode: poll ascend/descend input and set vertical velocity. Gravity and jump are skipped while inFlightMode.
+        private void FlightUpdate()
+        {
+            // stop accumulated gravity while in flight
+            _verticalVelocity = 0f;
+
+            float verticalSpeed = 0f;
+
+            // ascend input moves up
+            if (ascend != null && ascend.enabled && ascend.IsPressed())
+            {
+                verticalSpeed += FlightMoveSpeed / 2;
+            }
+
+            // descend input moves down
+            if (descend != null && descend.enabled && descend.IsPressed())
+            {
+                verticalSpeed -= FlightMoveSpeed / 2;
+            }
+
+            // set the vertical velocity used by Move()
+            _verticalVelocity = verticalSpeed;
+        }
+
+        private IEnumerator GenerateWind()
+        {
+            while (inFlightMode)
+            {
+                bool isMoving = _input.move != Vector2.zero;
+                bool isSprinting = _input.sprint;
+
+                if (isMoving && !isSprinting)
+                {
+                    slowWind.SetActive(true);
+                    fastWind.SetActive(false);
+
+                    // Randomly enable a child
+                    int childCount = slowWind.transform.childCount;
+                    if (childCount > 0)
+                    {
+                        int randomIndex = Random.Range(0, childCount);
+                        Transform child = slowWind.transform.GetChild(randomIndex);
+                        child.gameObject.SetActive(true);
+
+                        yield return new WaitForSeconds(8f);
+
+                        child.gameObject.SetActive(false);
+
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        yield return null;
+                    }
+                }
+                else if (isMoving && isSprinting)
+                {
+                    fastWind.SetActive(true);
+                    slowWind.SetActive(false);
+
+                    // Randomly enable a child
+                    int childCount = fastWind.transform.childCount;
+                    if (childCount > 0)
+                    {
+                        int randomIndex = Random.Range(0, childCount);
+                        Transform child = fastWind.transform.GetChild(randomIndex);
+                        child.gameObject.SetActive(true);
+
+                        yield return new WaitForSeconds(8f);
+
+                        child.gameObject.SetActive(false);
+
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        yield return null;
+                    }
+                }
+                else
+                {
+                    slowWind.SetActive(false);
+                    fastWind.SetActive(false);
+                    yield return null;
+                }
+            }
+            slowWind.SetActive(false);
+            fastWind.SetActive(false);
+        }
+
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
         {
             if (lfAngle < -360f) lfAngle += 360f;
@@ -416,7 +688,7 @@ namespace StarterAssets
 
         private void OnDrawGizmosSelected()
         {
-            Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
+            Color transparentGreen = new Color(0.0f, 1.0f, 0.35f, 0.35f);
             Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
 
             if (Grounded) Gizmos.color = transparentGreen;
@@ -428,24 +700,14 @@ namespace StarterAssets
                 GroundedRadius);
         }
 
-        private void OnFootstep(AnimationEvent animationEvent)
+        private void OnLand()
         {
-            if (animationEvent.animatorClipInfo.weight > 0.5f)
-            {
-                if (FootstepAudioClips.Length > 0)
-                {
-                    var index = Random.Range(0, FootstepAudioClips.Length);
-                    AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.center), FootstepAudioVolume);
-                }
-            }
+            
         }
 
-        private void OnLand(AnimationEvent animationEvent)
+        private void OnJump()
         {
-            if (animationEvent.animatorClipInfo.weight > 0.5f)
-            {
-                AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
-            }
+            AudioManager.PlayOneShot(eEffects.jump, transform, 100);
         }
 
         public void PlayFootstep(int foot)//Foot is left or right, left is 0, right is 1
@@ -459,6 +721,70 @@ namespace StarterAssets
             {
                 AudioManager.PlayOneShot(eEffects.footstep, transform, 100);
             }
+        }
+
+        //public void Teleport(Vector3 destination)
+        //{
+        //    Debug.Log("Teleport player to these cords: " + destination);
+        //    _controller.Move(destination);
+        //}
+
+        [SerializeField] private float dodgeDuration = 0.5f;
+        [SerializeField] private float dodgeSpeed = 10f;
+
+        // Call this method to trigger a dodge in the current movement direction
+        [SerializeField] private float dodgeCooldown = 1f;
+        private float lastDodgeTime = -Mathf.Infinity;
+
+        private void Dodge()
+        {
+            if (_input.dodge && Time.time >= lastDodgeTime + dodgeCooldown && !inFlightMode)
+            {
+                StartCoroutine(PerformDodge());
+                lastDodgeTime = Time.time;
+                _input.dodge = false; // Consume the dodge input
+            }
+        }
+
+        private void flightAnimation()
+        {
+            isSpriting = _input.sprint;
+
+            broomModel.SetActive(isSpriting || inFlightMode);
+
+            // update animator if using character
+            if (_hasAnimator)
+            {
+                _animator.SetBool("Flying", isSpriting || inFlightMode);
+            }
+
+
+        }
+
+        private System.Collections.IEnumerator PerformDodge()
+        {
+            float startTime = Time.time;
+            Vector3 dodgeDirection = new Vector3(_input.move.x, 0, _input.move.y).normalized;
+            if (dodgeDirection == Vector3.zero)
+            {
+                dodgeDirection = transform.forward; // Default to forward if no input
+            }
+            while (Time.time < startTime + dodgeDuration)
+            {
+
+                //_controller.Move(dodgeDirection * dodgeSpeed * Time.deltaTime);
+                MoveSpeed = dodgeSpeed; // Temporarily increase move speed for dodging
+                Move();
+                MoveSpeed = defaultMoveSpeed; // Reset move speed after dodge
+
+                yield return null;
+            }
+        }
+
+        //MoonJump Potion buff
+        public void MoonJump(float _duration)
+        {
+
         }
     }
 }

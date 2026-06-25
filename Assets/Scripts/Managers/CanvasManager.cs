@@ -1,49 +1,66 @@
-using Unity.VisualScripting;
-using System.Collections;
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using System;
+using Unity.VisualScripting;
+using StarterAssets;
 
+[DefaultExecutionOrder(-100)] //change for mining fade canvas staying on enter/exit bug
 public class CanvasManager : MonoBehaviour
 {
-    public GameObject inventoryCanvas;
-    public GameObject menuCanvas;
-    public GameObject fastTravelCanvas;
-    public GameObject selectionCanvas;
-    public GameObject HUD;
-    public GameObject workbenchCanvas;
-    bool isActive = false;
+
+    public GameObject miniGameCanvas;
+
+    // TRACKS CURRENT ACTIVE CANVAS; 0 = HUD/NONE ACTIVE ; 999 = MINIGAMES
+    int currentCanvas = 0;
+    bool miniGame = false;
+
+    [Header("DO NOT MOVE THINGS you can add though")]
+    [SerializeField] private GameObject[] menus;
+    // 0 - HUD; 1 - Book; 2 - SelectionWheel; 3 - Workbench ; 4 - Inventory; 5 - FastTravel; 6 - WorldTrees ; 7 - Options
+
+
 
     //In awake this was initialize with all the canvases that we want to close with esc
     [SerializeField] private GameObject[] escCloseableCanvases;
 
-    public InputActionAsset input;
-    InputAction openInv;
-    InputAction openPause;
-    InputAction openSelection;
 
-    InputActionMap player;
-    InputActionMap UI;
+    // GETS THE KEYBINDS
+    StarterAssetsInputs starterAssets;
+    public InputActionAsset input;
+    InputAction inventoryAction;
+    InputAction pauseAction;
+    InputAction selectionAction;
+
+    // CONTROLS WHAT KEYBINDS DO
+    InputActionMap playerMap;
+    InputActionMap UIMap;
 
     public static CanvasManager Instance;
+
+    public PauseScreenshotToBook screenshotToBook;
 
 
     private void Awake()
     {
         //When adding a new menu you want to close with esc add it to this array
-        escCloseableCanvases = new GameObject[]{fastTravelCanvas, workbenchCanvas};
+        escCloseableCanvases = new GameObject[] { menus[5], menus[3], miniGameCanvas};
 
-        openInv = input.FindAction("Inventory");
-        openPause = input.FindAction("Pause");
-        openSelection = input.FindAction("Selection");
+        inventoryAction = input.FindAction("Inventory");
+        pauseAction = input.FindAction("Pause");
+        selectionAction = input.FindAction("Selection");
 
-        player = input.FindActionMap("Player");
-        UI = input.FindActionMap("UI");
+        playerMap = input.FindActionMap("Player");
+        UIMap = input.FindActionMap("UI");
+
+        starterAssets = FindFirstObjectByType<StarterAssetsInputs>();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         //Making canvas manager a singleton
         if (Instance != null && Instance != this)
         {
-            Debug.Log("Destroy New AudioManager");
+            Debug.Log("Destroy New Canvas Manager");
             Destroy(this.gameObject);
         }
         else
@@ -51,215 +68,221 @@ public class CanvasManager : MonoBehaviour
             Instance = this;
         }
 
+
+    }
+
+    // Needed for cursor to lock into game
+    private void OnApplicationFocus(bool focus)
+    {
+        if (focus)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            ClickSelector.Instance.enabled = true;
+        }
     }
 
     private void Update()
     {
-        bool inv = openInv.WasPressedThisFrame();
-        if (inv == true)
+        // THIS IS JUST FOR DEBUG MENU
+        if (Input.GetKey(KeyCode.Tab))
         {
-            Debug.Log("ITS PRESSED");
-            OpenInventory();
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            ClickSelector.Instance.enabled = false;
+        }
+        if (Input.GetKeyUp(KeyCode.Tab))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            ClickSelector.Instance.enabled = true;
         }
 
-        bool pause = openPause.WasPressedThisFrame();
-        if (pause == true)
+        bool inv = inventoryAction.WasPressedThisFrame();
+        if (inv)
         {
-            Debug.Log("Esc Pressed");
-            bool canvasClosed = false;
-            foreach (GameObject canvas in escCloseableCanvases)
-            {
-                Debug.Log("Canvas " +  canvas.name + " is " + canvas.activeInHierarchy);
-                if(canvas.activeInHierarchy)
-                {
-                    isActive = false;
-                    canvas.SetActive(false);
-                    CloseMenu();
-                    canvasClosed = true;
-                }
-            }
-            if (!canvasClosed)
-            {
-                OpenPause();
-            }
+            OpenMenu(4);
+           
         }
 
-        bool selection = openSelection.WasPressedThisFrame();
-        if (selection == true)
+        // Opens pause menu and closes whatever is open
+        bool pause = this.pauseAction.WasPressedThisFrame();
+        
+        if (pause)
         {
-            OpenSelectionWheel();
-        }
-    }
-    /*
-     *         bool esc = escMenu.WasPressedThisFrame();
-        if (esc == true)
-        {
-            if (!menuCanvas.activeInHierarchy)
+            SpellManager2.Instance.inMenu = true;
+            if (currentCanvas != 0)
             {
-                //count the inactive menus
-                int inactiveMenus = 0;
-                foreach (GameObject _menu in escCloseableMenus)
+                // checks if options is open 
+                if (currentCanvas == 7)
                 {
-                    if (!_menu.activeInHierarchy)
-                    {
-                        inactiveMenus++;
-                        Debug.Log("inactive menus: " + inactiveMenus);
-                        Debug.Log("number of closeable menus: " + escCloseableMenus.Count);
-                    }
-
+                    OpenMenu(1);
                 }
-
-                //if all the menus were inactive, open the pause menu
-                if (inactiveMenus == allMenus.Count)
-                {
-                    OpenPause();
-                }
-                //otherwise, close all the menus closeable by esc
                 else
                 {
-                    foreach (GameObject _menu in escCloseableMenus)
-                    {
-                        if (_menu.activeInHierarchy)
-                        {
-                            isActive = false;
-                            _menu.SetActive(false);
-                            CloseMenu();
-                        }
-                    }
+                    //Closes current canvas
+                    SpellManager2.Instance.inMenu = false;
+                    OpenMenu(currentCanvas);
                 }
+
             }
-            //or if the pause menu was active, just close it
             else
             {
-                OpenPause();
+                // Checks if mini game canvases are open
+                if (currentCanvas != 999)
+                {
+                    //Opens pause menu
+                    screenshotToBook.PauseAndOpenBook();
+                    //OpenMenu(1);
+                }
+
             }
+                 
+        }
+
+        bool selection = selectionAction.WasPressedThisFrame();
+        if (selection)
+        {
+            OpenMenu(2);
+        }
+    }
+
+
+
+    public void OpenMenu(int menu)
+    {
+        if (!menus[menu].activeInHierarchy)
+        {
+            CloseAllMenus();
+
+            menus[menu].SetActive(true);
+            currentCanvas = menu;
+            SpellManager2.Instance.inMenu = true;
+            playerMap.Disable();
+            UIMap.Enable();
+            menus[0].GetComponent<Canvas>().enabled = false;
+
+            Time.timeScale = 0f;
+
+            starterAssets.cursorLocked = false;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            ClickSelector.Instance.enabled = false;
+
             
         }
-     */
-
-    public void OpenInventory()
-    {
-
-        if (!isActive)
+        else if (menus[menu].activeInHierarchy)
         {
-            isActive = true;
-            inventoryCanvas.SetActive(true);
-            OpenMenu();
+            CloseAllMenus();
         }
-        else
-        {
-            isActive = false;
-            inventoryCanvas.SetActive(false);
-            CloseMenu();
-        }
-        openInv = input.FindAction("Inventory");
+
+        //Resets all actions
+        inventoryAction = input.FindAction("Inventory");
+        pauseAction = input.FindAction("Pause");
+        selectionAction = input.FindAction("Selection");
+
     }
 
-    public void OpenFastTravel()
+    public void CloseAllMenus()
     {
-
-        if (!isActive)
+        for (int i = 1; i < menus.Length; i++)
         {
-            isActive = true;
-            fastTravelCanvas.SetActive(true);
-            OpenMenu();
+            SpellManager2.Instance.inMenu = false;
+            menus[i].SetActive(false);
+            currentCanvas = 0;
 
-        }
-        else
-        {
-            isActive = false;
-            fastTravelCanvas.SetActive(false);
-            CloseMenu();
+            playerMap.Enable();
+            UIMap.Disable();
+
+            menus[0].GetComponent<Canvas>().enabled = true;
+
+            Time.timeScale = 1f;
+
+            starterAssets.cursorLocked = true;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            ClickSelector.Instance.enabled = true;
         }
     }
 
-    public void OpenWorkbench()
+    public void OpenMiniGame(GameObject canvas)
     {
-        if(!isActive)
-        {
-            isActive = true;
-            workbenchCanvas.SetActive(true);
-            OpenMenu();
-        }
-        else
-        {
-            isActive = false;
-            workbenchCanvas.SetActive(false);
-            CloseMenu();
-        }
-    }
+        SpellManager2.Instance.inMenu = true;
+        canvas.SetActive(true);
+        currentCanvas = 999;
 
-    public void OpenPause()
-    {
-        if (!isActive)
-        {
-            isActive = true;
-            menuCanvas.SetActive(true);
-            OpenMenu();
+        menus[0].GetComponent<Canvas>().enabled = false;
 
-        }
-        else
-        {
-            isActive = false;
-            menuCanvas.SetActive(false);
-            CloseMenu();
-        }
-        openPause = input.FindAction("Pause");
-    }
-
-    public void OpenSelectionWheel()
-    {
-        if (!isActive)
-        {
-            isActive = true;
-            selectionCanvas.SetActive(true);
-            OpenMenu();
-
-        }
-        else
-        {
-            isActive = false;
-            selectionCanvas.SetActive(false);
-            CloseMenu();
-
-        }
-        openSelection = input.FindAction("Selection");
-    }
-
-    public void OpenMenu()
-    {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         ClickSelector.Instance.enabled = false;
 
-        player.Disable();
-        UI.Enable();
-
-        HUD.SetActive(false);
- 
     }
 
-    public void CloseMenu()
+    public void CloseMiniGame(GameObject canvas)
     {
+        SpellManager2.Instance.inMenu = false;
+        canvas.SetActive(false);
+        miniGame = true;
+        currentCanvas = 0;
+
+        menus[0].GetComponent<Canvas>().enabled = true;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         ClickSelector.Instance.enabled = true;
-
-        player.Enable();
-        UI.Disable();
-        openInv = input.FindAction("Inventory");
-
-        HUD.SetActive(true);
     }
 
-
-    // handles taking screenshot
-    IEnumerator TakeScreenshot()
+    public void OpenTreeMenu(GameObject treeMenu)
     {
-        yield return new WaitForEndOfFrame();
-
-        ScreenCapture.CaptureScreenshotAsTexture();
-
-
+        SpellManager2.Instance.inMenu = true;
+        menus[6] = treeMenu;
+        OpenMenu(6);
+        
     }
+
+
+    // ALWAYS use these together
+    // for when you need to open a menu to instantiate something on it
+    public void FlashOpenMenu(int _menuToFlash)
+    {
+        menus[_menuToFlash].SetActive(true);
+    }
+    public void FlashCloseMenu(int _menuToFlash)
+    {
+        menus[_menuToFlash].SetActive(false);
+    }
+
+
+
+    //public void OpenTitleScreen()
+    //{
+    //    Cursor.lockState = CursorLockMode.None;
+    //    Cursor.visible = true;
+    //    ClickSelector.Instance.enabled = false;
+
+    //    player.Disable();
+    //    UI.Enable();
+    //}
+
+    //public void CloseTitleScreen()
+    //{
+    //    CloseMenu();
+
+    //    titleScreenCanvas.SetActive(false);
+
+    //}
+
+
+    //// handles taking screenshot
+    //IEnumerator TakeScreenshot()
+    //{
+    //    yield return new WaitForEndOfFrame();
+
+    //    ScreenCapture.CaptureScreenshotAsTexture();
+
+
+    //}
 }
+
+

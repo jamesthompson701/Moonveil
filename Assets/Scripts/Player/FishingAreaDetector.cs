@@ -2,32 +2,41 @@ using UnityEngine;
 
 public class FishingAreaDetector : MonoBehaviour
 {
-    public FishingManager manager;
-    private FishingArea current;
+public FishingManager manager;
+private FishingArea current;
 
-    void OnTriggerEnter(Collider other)
+void Awake()
+{
+    if (manager == null)
     {
-        Debug.Log("Entered trigger with: " + other.name);
-        FishingArea area = other.GetComponent<FishingArea>();
-        if (area != null)
+        manager = FindFirstObjectByType<FishingManager>();
+    }
+}
+  void OnTriggerEnter(Collider other)
+{
+    FishingArea area = other.GetComponent<FishingArea>();
+    if (area != null)
+    {
+        current = area;
+        if (manager != null)
         {
-            current = area;
             manager.SetCurrentArea(area);
-            Debug.Log("Entered fishing area");
-            manager.startFishingPrompt.text = "Press " + manager.startFishingInput + " to start fishing";
-            manager.startFishingPrompt.gameObject.SetActive(true);
+            Debug.Log("Entered fishing area: " + area.name);
         }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        FishingArea area = other.GetComponent<FishingArea>();
-        if (area != null && area == current)
+        else
         {
-            current = null;
-            manager.ClearCurrentArea(area);
-            Debug.Log("Left fishing area");
-            manager.startFishingPrompt.gameObject.SetActive(false);
+            Debug.LogError("FishingManager not assigned on FishingAreaDetector!");
         }
     }
+}
+
+void OnTriggerExit(Collider other)
+{
+    FishingArea area = other.GetComponent<FishingArea>();
+    if (area != null && area == current)
+    {
+        current = null;
+        manager.ClearCurrentArea(area);
+    }
+}
 }

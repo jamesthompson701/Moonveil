@@ -6,7 +6,7 @@ public enum FishingBiome
 [RequireComponent(typeof(Collider))]
 public class FishingArea : MonoBehaviour
 {
-    [Tooltip("Camera to use while fishing (disable by default)")]
+[Tooltip("Camera to use while fishing (disable by default)")]
     public Camera fishingCamera;
 
     [Tooltip("Fish that can be caught in this area.")]
