@@ -79,7 +79,8 @@ public class FishingManager : MonoBehaviour
         if (inFishingMode && Input.GetKeyDown(KeyCode.Escape))
         {
             FailFishing();
-            StartCoroutine(ClearBufferedInput());
+            
+            CanvasManager.Instance.CloseMiniGame(activeBiomeUI.fishingCanvas.gameObject);
         }
     }
 
@@ -315,11 +316,6 @@ public class FishingManager : MonoBehaviour
         {
             currentArea = null;
         }
-    }
-
-    IEnumerator ClearBufferedInput()
-    {
-        yield return null;
     }
 
     public void SetRequiredElementUI(ElementType element)
