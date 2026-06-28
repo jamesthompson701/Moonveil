@@ -66,6 +66,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 90d349f5c63195248877e582ddbbf582, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8498727946387800004}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 90d349f5c63195248877e582ddbbf582, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6861398351314925808}
   m_SourcePrefab: {fileID: 100100000, guid: 90d349f5c63195248877e582ddbbf582, type: 3}
 --- !u!1 &5203805692586249003 stripped
 GameObject:
@@ -120,3 +123,18 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.9868469
   m_Center: {x: 0.13717651, y: 0.08817005, z: 0}
+--- !u!114 &6861398351314925808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5203805692586249003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 031e02bd2f75d4e4eb8655273c8694c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PotionPrefabBehavior
+  followPlayer: 0
+  destroyTime: 5
+  followSpeed: 5
