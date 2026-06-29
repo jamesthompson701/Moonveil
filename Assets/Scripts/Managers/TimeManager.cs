@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.AdaptivePerformance;
 using System.Collections;
 using UnityEditorInternal;
+using TMPro;
+using UnityEngine.UI;
 
 
 //This is the Universal Time Manager
@@ -37,6 +39,11 @@ public class TimeManager : MonoBehaviour
     // world light
     public GameObject worldLight;
     public Light sun;
+
+    //blackout screen
+    public Image blackout;
+    public bool isBlackout;
+    public float blackoutTimer;
 
     public static TimeManager instance;
 
@@ -81,10 +88,7 @@ public class TimeManager : MonoBehaviour
     public void Sleep()
     {
         // Sleeping immediately swaps from day to night, and vice versa
-        // ONLY WORKS WHILE DEBUG MENU IS ENABLED
-
-        if (DebugCanvas.instance.gameObject.activeInHierarchy)
-        {
+        //Witches don't sleep, they drink
             if (timeOfDay == 1)
             {
                 daylightCycleTime = 300;
@@ -93,7 +97,7 @@ public class TimeManager : MonoBehaviour
             {
                 daylightCycleTime = 600;
             }
-        }
+
     }
 
     public void Update()
@@ -101,15 +105,35 @@ public class TimeManager : MonoBehaviour
         time = Time.deltaTime;
         daylightCycleTime = daylightCycleTime + time;
 
+        if (isBlackout)
+        {
+            blackoutTimer -= Time.deltaTime;
+            Color colorRef = blackout.color;
+            colorRef.a = 255;
+            blackout.color = colorRef;
+
+            if (blackoutTimer <= 0f)
+            {
+                isBlackout = false;
+                blackoutTimer = 0f;
+            }
+        }
+        else
+        {
+            Color colorRef = blackout.color;
+            colorRef.a = 0;
+            blackout.color = colorRef;
+        }
+
         //rotate the sky
-        switch(timeOfDay)
+        switch (timeOfDay)
         {
             case 1:
                 if (sun.intensity < 3 )
                 {
                     sun.intensity = sun.intensity + 0.01f;
                 }
-                worldLight.transform.Rotate(0.6f * Time.deltaTime,0,0);
+                worldLight.transform.Rotate(0.6f * Time.deltaTime, 0, 0);
                 if(currentBlend > 0)
                 {
                     currentBlend = currentBlend - 0.01f;
@@ -131,7 +155,7 @@ public class TimeManager : MonoBehaviour
         }
 
         //update the time of day
-        if (daylightCycleTime > 300)
+        if (daylightCycleTime > 300 && daylightCycleTime < 303)
         {
             timeOfDay = 2;
             worldLight.transform.eulerAngles = new Vector3(180, 180, 0);

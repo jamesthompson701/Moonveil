@@ -42,6 +42,10 @@ public class EnemyAttackDirector : MonoBehaviour
     private float _nextReevalTime;
     private float _nextGlobalAttackStartTime;
 
+    // Buff timers
+    public bool isSourSorceryActive;
+    public float sourSorceryTimer;
+
     private struct Candidate
     {
         public CreatureDefs Enemy;
@@ -74,6 +78,18 @@ public class EnemyAttackDirector : MonoBehaviour
 
         CleanupExpiredPermits();
         GrantPermits();
+
+        // potion buffs
+        if (isSourSorceryActive)
+        {
+            sourSorceryTimer -= Time.deltaTime;
+
+            if (sourSorceryTimer <= 0f)
+            {
+                isSourSorceryActive = false;
+                sourSorceryTimer = 0f;
+            }
+        }
     }
 
     public void ReportReadyToAttack(CreatureDefs enemy, float distanceToTarget)
