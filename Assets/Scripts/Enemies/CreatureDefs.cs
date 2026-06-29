@@ -812,7 +812,7 @@ public class CreatureDefs : MonoBehaviour
 
         if(EnemyAttackDirector.Instance.isSourSorceryActive)
         {
-            amount = amount * 1.25f;
+            amount = amount * 2;
         }
         
         _health -= amount;
