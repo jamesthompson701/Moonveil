@@ -3,9 +3,7 @@ using UnityEngine;
 
 public enum MineralType
 {
-    Fire,
-    Water,
-    Air
+    Fire, Water, Air
 }
 
 public class MineRock : MonoBehaviour
@@ -33,11 +31,17 @@ public class MineRock : MonoBehaviour
     private Vector3 buriedPosition;
     private Vector3 raisedPosition;
 
+    [Header("SFX")]
     private AudioSource audioSource;
-
     public AudioClip raiseSound;
     public AudioClip successSound;
     public AudioClip sinkSound;
+
+    [Header("VFX")]
+    public ParticleSystem[] raiseFX;
+    public ParticleSystem[] successFX;
+    public ParticleSystem[] failFX;
+    public ParticleSystem[] readyFX;
 
     void Start()
     {
@@ -51,7 +55,9 @@ public class MineRock : MonoBehaviour
 
         SetGemVisible(false);
 
-        Debug.Log(name + " gem count = " + gemRenderers.Length);
+        PlayFX(readyFX);
+
+        //Debug.Log(name + " gem count = " + gemRenderers.Length);
     }
 
     void SetGemMaterial(Material mat)
@@ -68,7 +74,9 @@ public class MineRock : MonoBehaviour
     void SetGemVisible(bool visible)
     {
         if (gemRenderers == null)
+        {
             return;
+        }
 
         foreach (Renderer r in gemRenderers)
         {
@@ -88,7 +96,7 @@ public class MineRock : MonoBehaviour
             return;
         }
 
-        // EARTH SPELL
+        // earth spell
         if (other.CompareTag("TillSpell"))
         {
             if (!raised)
@@ -120,11 +128,15 @@ public class MineRock : MonoBehaviour
     {
         //Debug.Log(name + " buried: " + buriedPosition);
 
+        StopFX(readyFX);
+
         raised = true;
 
         SetGemVisible(true);
 
         transform.position = raisedPosition;
+
+        PlayFX(raiseFX);
 
         requiredType = (MineralType)Random.Range(0, 3);
 
@@ -180,6 +192,8 @@ public class MineRock : MonoBehaviour
     {
         Debug.Log("Correct Element");
 
+        PlayFX(successFX);
+
         InventoryManager.instance.invSO.AddItem(rewardGem, 1);
 
         if (audioSource && successSound)
@@ -191,13 +205,20 @@ public class MineRock : MonoBehaviour
         StartCoroutine(CooldownRoutine());
     }
 
+    void Fail()
+    {
+        PlayFX(failFX);
+
+        StartCoroutine(CooldownRoutine());
+    }
+
     IEnumerator ActiveTimer()
     {
         yield return new WaitForSeconds(activeTime);
 
         if (raised)
         {
-            StartCoroutine(CooldownRoutine());
+            Fail();
         }
     }
 
@@ -220,10 +241,60 @@ public class MineRock : MonoBehaviour
             Debug.Log("sinkSound played");
         }
 
-        transform.position = buriedPosition;
+        yield return StartCoroutine(SinkRock());
 
         yield return new WaitForSeconds(respawnTime);
 
         onCooldown = false;
+
+        PlayFX(readyFX);
+    }
+
+    IEnumerator SinkRock()
+    {
+        float duration = 1f;
+
+        Vector3 startPos = transform.position;
+
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+
+            transform.position = Vector3.Lerp(startPos, buriedPosition, timer / duration);
+
+            yield return null;
+        }
+
+        transform.position = buriedPosition;
+    }
+
+    void PlayFX(ParticleSystem[] effects)
+    {
+        if (effects == null)
+            return;
+
+        foreach (ParticleSystem fx in effects)
+        {
+            if (fx != null)
+            {
+                fx.Play();
+            }
+        }
+    }
+
+    void StopFX(ParticleSystem[] effects)
+    {
+        if (effects == null)
+            return;
+
+        foreach (ParticleSystem fx in effects)
+        {
+            if (fx != null)
+            {
+                fx.Stop();
+            }
+        }
     }
 }
