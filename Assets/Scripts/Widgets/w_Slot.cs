@@ -77,7 +77,7 @@ public class w_Slot : MonoBehaviour, IPointerEnterHandler
             InventoryManager.instance.invSO.RemoveItem(item.item, -1);
 
             // Update local stack count and UI
-            item.amount -= 1;
+            //item.amount -= 1;
             if (item.amount <= 0)
             {
                 ResetSlot();
