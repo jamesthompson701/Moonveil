@@ -3442,6 +3442,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 033f06f9a574bef4fa978bd165517d82, type: 3}
+--- !u!114 &240401818 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1751395377635713316, guid: 4f837409a489f774e9c8bc69c76daef3, type: 3}
+  m_PrefabInstance: {fileID: 903762703}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &240486358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7509,8 +7520,9 @@ MonoBehaviour:
   - {fileID: 1974277219}
   player: {fileID: 1677809325087806448}
   cameraAnchor: {fileID: 9121860606249299588}
-  startFishingPrompt: {fileID: 0}
+  startFishingPrompt: {fileID: 240401818}
   requiredElementImage: {fileID: 71794729}
+  blankSprite: {fileID: 21300000, guid: 2616ebe3f42474096806b1f597441216, type: 3}
   fireSprite: {fileID: 21300000, guid: 22ede7dee62134db5937f5e24f63031e, type: 3}
   earthSprite: {fileID: 21300000, guid: 41eeb7f54120f4963bcbfeaa1fb7a2f1, type: 3}
   waterSprite: {fileID: 21300000, guid: 4890955eab37443b09dbfe690e011f99, type: 3}
@@ -22079,8 +22091,8 @@ AudioReverbZone:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1392080371}
   m_Enabled: 1
-  m_MinDistance: 30
-  m_MaxDistance: 55
+  m_MinDistance: 50
+  m_MaxDistance: 76.83
   m_ReverbPreset: 9
   m_Room: -1000
   m_RoomHF: 0
@@ -22104,7 +22116,7 @@ Transform:
   m_GameObject: {fileID: 1392080371}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 867.7, y: 16.2, z: 655.7}
+  m_LocalPosition: {x: 867.7, y: 16.2, z: 662.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -32561,6 +32573,14 @@ PrefabInstance:
     - target: {fileID: 1693062533856474934, guid: 32a772c09d5a94dbfb38aec7be288426, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -21.419
+      objectReference: {fileID: 0}
+    - target: {fileID: 5324020870958205680, guid: 32a772c09d5a94dbfb38aec7be288426, type: 3}
+      propertyPath: m_Volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5324020870958205680, guid: 32a772c09d5a94dbfb38aec7be288426, type: 3}
+      propertyPath: spreadCustomCurve.m_Curve.Array.data[0].value
+      value: 0.013888889
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

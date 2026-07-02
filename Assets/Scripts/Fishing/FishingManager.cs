@@ -30,6 +30,7 @@ public class FishingManager : MonoBehaviour
 
     [Header("Element UI")]
     public Image requiredElementImage;
+    public Sprite blankSprite;
     public Sprite fireSprite;
     public Sprite earthSprite;
     public Sprite waterSprite;
