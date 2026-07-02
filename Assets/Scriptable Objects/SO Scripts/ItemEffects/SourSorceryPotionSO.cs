@@ -1,16 +1,18 @@
+using StarterAssets;
 using UnityEngine;
+using System.Collections.Generic;
 
-public class SourSorceryPotionSO : MonoBehaviour
+[CreateAssetMenu(fileName = "SourSorceryPotion", menuName = "Scriptable Objects/ItemEffects/SourSorceryPotion")]
+public class SourSorceryPotionSO : ItemEffectSO
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    // attributes
+    public float buffLength;
+
+    public override void UseItem()
     {
-        
+        EnemyAttackDirector.Instance.sourSorceryTimer = buffLength;
+        EnemyAttackDirector.Instance.isSourSorceryActive = true;
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

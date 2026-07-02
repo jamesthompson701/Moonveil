@@ -1,16 +1,32 @@
+using StarterAssets;
 using UnityEngine;
 
-public class MonsoonFlaskSO : MonoBehaviour
+[CreateAssetMenu(fileName = "Monsoon", menuName = "Scriptable Objects/ItemEffects/MonsoonFlaskSO")]
+public class MonsoonFlaskSO : ItemEffectSO
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Header("Prefab Settings")]
+    public GameObject projectilePrefab;
+    
+    public override void UseItem()
     {
-        
+        Transform playerTransform = ThirdPersonController.Instance.transform;
+        Activate(playerTransform);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Activate(Transform playerTransform)
     {
-        
+        if (projectilePrefab == null)
+        {
+            Debug.LogError("MonsoonFlaskSO: projectilePrefab is not assigned.");
+            return;
+        }
+
+        if (playerTransform == null)
+        {
+            Debug.LogError("MonsoonFlaskSO: playerTransform is null.");
+            return;
+        }
+
+        Instantiate(projectilePrefab, playerTransform.position, Quaternion.identity);
     }
 }

@@ -1,16 +1,16 @@
+using StarterAssets;
 using UnityEngine;
+using System.Collections.Generic;
 
-public class LifeForcePotionSO : MonoBehaviour
+[CreateAssetMenu(fileName = "LifeForcePotion", menuName = "Scriptable Objects/ItemEffects/LifeForcePotion")]
+public class LifeForcePotionSO : ItemEffectSO
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void UseItem()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        PlayerDamageReceiver.instance.currentHealth += 25;
+        if(PlayerDamageReceiver.instance.currentHealth > PlayerDamageReceiver.instance.maxHealth)
+        {
+            PlayerDamageReceiver.instance.currentHealth = PlayerDamageReceiver.instance.maxHealth;
+        }
     }
 }

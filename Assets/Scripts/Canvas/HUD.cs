@@ -72,26 +72,26 @@ public class HUD : MonoBehaviour
         UpdateSundial();
         UpdateDisplay();
 
-        if (FishingManager.Instance != null && FishingManager.Instance.inFishingMode == false)
+        if (attackManagerRef == null) 
         {
-            switch (attackManagerRef.attackChoice)
-            {
-                case 1:
-                    SetActive(0);
-                    break;
-                case 2:
-                    SetActive(1);
-                    break;
-                case 3:
-                    SetActive(2);
-                    break;
-                case 4:
-                    SetActive(3);
-                    break;
-            }
         return;
         }
+        if (FishingManager.Instance != null && FishingManager.Instance.inFishingMode)
+        {
+            return;
+        }
 
+        switch (attackManagerRef.attackChoice)
+        {
+            case 1: SetActive(0); 
+            break;
+            case 2: SetActive(1); 
+            break;
+            case 3: SetActive(2); 
+            break;
+            case 4: SetActive(3); 
+            break;
+        }
     }
 
     /*
@@ -265,6 +265,16 @@ public class HUD : MonoBehaviour
     {
         if (lastSelectedSlot == null) return;
         if (lastSelectedSlot.item.item == selectedItem) displayText.text = "" + lastSelectedSlot.item.amount;
+    }
+    public void UpdateSpellSelection(int choice)
+    {
+        if (attackManagerRef == null) 
+        {
+        return;
+        }
+
+        attackManagerRef.attackChoice = choice;
+        SetActive(choice - 1);
     }
 
 }
