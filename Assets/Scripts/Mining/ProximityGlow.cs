@@ -8,6 +8,7 @@ public class ProximityGlow : MonoBehaviour
     [Header("SFX")]
     private AudioSource audioSource;
     public AudioClip lightSound;
+    public AudioClip idleSound;
     public AudioClip extinguishSound;
 
     void Start()
@@ -41,6 +42,7 @@ public class ProximityGlow : MonoBehaviour
             }
 
             audioSource.PlayOneShot(lightSound);
+            audioSource.PlayOneShot(idleSound); // want this to play while its active and stop when its off, make it not a OneShot
         }
     }
 
