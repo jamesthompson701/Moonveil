@@ -4,6 +4,7 @@ public class ProximityGlow : MonoBehaviour
 {
     public Light glowLight;
     public ParticleSystem glowParticles;
+    public bool alwaysOn = false;
 
     [Header("SFX")]
     private AudioSource audioSource;
@@ -13,6 +14,25 @@ public class ProximityGlow : MonoBehaviour
 
     void Start()
     {
+        if (alwaysOn)
+        {
+            if (glowLight != null)
+                glowLight.enabled = true;
+
+            if (glowParticles != null)
+                glowParticles.Play();
+
+            if (audioSource != null && idleSound != null)
+            {
+                audioSource.clip = idleSound;
+                audioSource.loop = true;
+                audioSource.Play();
+            }
+
+            return;
+        }
+
+
         if (glowLight != null)
         {
             glowLight.enabled = false;
@@ -42,7 +62,15 @@ public class ProximityGlow : MonoBehaviour
             }
 
             audioSource.PlayOneShot(lightSound);
-            audioSource.PlayOneShot(idleSound); // want this to play while its active and stop when its off, make it not a OneShot
+
+            if (audioSource != null)
+            {
+                audioSource.PlayOneShot(lightSound);
+
+                audioSource.clip = idleSound;
+                audioSource.loop = true;
+                audioSource.Play();
+            }
         }
     }
 
@@ -60,6 +88,7 @@ public class ProximityGlow : MonoBehaviour
                 glowParticles.Stop();
             }
 
+            audioSource.Stop();
             audioSource.PlayOneShot(extinguishSound);
         }
     }
