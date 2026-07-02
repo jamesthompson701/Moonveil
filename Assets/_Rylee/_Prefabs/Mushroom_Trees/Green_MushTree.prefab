@@ -49,6 +49,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 9edfd90e9a29c8545b8c4b3d012d53e7, type: 3}
+      propertyPath: m_ForceMeshLod
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 9edfd90e9a29c8545b8c4b3d012d53e7, type: 3}
+      propertyPath: m_MeshLodSelectionBias
+      value: -1.85
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 9edfd90e9a29c8545b8c4b3d012d53e7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f33f7302b7a0081449145d969dacf731, type: 2}
@@ -91,7 +99,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6571506424998889177, guid: 9edfd90e9a29c8545b8c4b3d012d53e7, type: 3}
 --- !u!54 &3906291755368147004

@@ -19,8 +19,8 @@ public class w_SelectionWheel : MonoBehaviour
 
     public void SelectSeed()
     {
-        PlayerInventory.instance.seedRef = seed;
-        managerRef.OpenSelectionWheel();
+        InventoryManager.instance.seedRef = seed;
+        managerRef.OpenMenu(2);
     }
 
 

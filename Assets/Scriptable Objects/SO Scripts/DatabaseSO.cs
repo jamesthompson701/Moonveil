@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Database SO", menuName = "Item Database")]
 public class DatabaseSO : ScriptableObject
 {
-    public List<ItemSO> items;
+    [SerializeField] public List<ItemSO> items;
 
     public ItemSO ReferenceItem(int _itemID)
     {

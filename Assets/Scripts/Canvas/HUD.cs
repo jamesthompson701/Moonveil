@@ -1,38 +1,200 @@
+using JetBrains.Annotations;
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
-    GameObject playerRef;
-    SpellManager attackManagerRef;
+    public static HUD instance;
 
+    GameObject playerRef;
+    SpellManager2 attackManagerRef;
+    PlayerDamageReceiver playerHealthRef;
+
+    public List<GameObject> itemPopups;
+    
     public GameObject[] highlight;
 
-    
+    public GameObject slot;
+    public Transform popupGroup;
+
+    public GameObject[] SpellChargeIcons;
+
+    public ItemSO unlockItem;
+
+    //fill bars
+    float maxFill = 1;
+    public Image healthBar;
+
+    //health bottle sprites
+    public Image healthBottle;
+
+    public Sprite maxHealth;
+    public Sprite highHealth;
+    public Sprite mediumHealth;
+    public Sprite lowHealth;
+
+    public GameObject manaText;
+    bool textActive = false;
+
+    // sundial images
+    public Image clockWheel;
+    public Sprite daySundial;
+    public Sprite nightSundial;
+
+    public GameObject itemDisplay;
+    public Image displayImage;
+    public TMP_Text displayText;
+    public ItemSO selectedItem;
+    public int amount;
+    public w_Slot lastSelectedSlot;
 
     private void Awake()
     {
         playerRef = GameObject.Find("Player");
-        attackManagerRef = playerRef.GetComponent<SpellManager>();
-         
+        attackManagerRef = playerRef.GetComponent<SpellManager2>();
+        playerHealthRef = playerRef.GetComponent<PlayerDamageReceiver>();
+
+        InventoryManager.instance.invSO.GetInventoryItem += InstantiatePopup;
+        itemDisplay.SetActive(false);
+        if (instance == null)
+        {
+            instance = this;
+        }
+
 
     }
     private void Update()
     {
-       switch (attackManagerRef.attackChoice)
+        UpdateHealthDisplay();
+        UpdateSundial();
+        UpdateDisplay();
+
+        if (FishingManager.Instance != null && FishingManager.Instance.inFishingMode == false)
         {
+            switch (attackManagerRef.attackChoice)
+            {
+                case 1:
+                    SetActive(0);
+                    break;
+                case 2:
+                    SetActive(1);
+                    break;
+                case 3:
+                    SetActive(2);
+                    break;
+                case 4:
+                    SetActive(3);
+                    break;
+            }
+        return;
+        }
+
+    }
+
+    /*
+    //float fireManaPercent, float earthManaPercent, float waterManaPercent, float airManaPercent
+    public void UpdateManaDisplay(float[] fillPercents)
+    {
+        Debug.Log("Updating fire mana UI amount to " + fillPercents[0]);
+
+        for (int i = 0; i < highlight.Length; i++)
+        {
+            Debug.Log
+            highlight[i].GetComponent<Image>().fillAmount = fillPercents[i];
+        }
+    }
+    */
+
+    public void UpdateManaDisplay(float[] fillPercents)
+    {
+
+        if (fillPercents != null)
+        {
+            if (highlight != null)
+            {
+                for (int i = 0; i < highlight.Length; i++)
+                {
+
+                    var img = highlight[i].GetComponent<UnityEngine.UI.Image>();
+
+                    highlight[i].GetComponent<UnityEngine.UI.Image>().fillAmount = fillPercents[i];
+                    if (manaText.activeInHierarchy && !textActive)
+                    {
+                        textActive = true;
+                        Invoke("SetManaText", 1.0f);
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    public void UpdateHealthDisplay()
+    {
+        healthBar.fillAmount = playerHealthRef.currentHealth / playerHealthRef.maxHealth;
+
+        if (playerHealthRef.currentHealth >= playerHealthRef.maxHealth)
+        {
+            healthBottle.sprite = maxHealth;
+        }
+        else if (playerHealthRef.currentHealth > playerHealthRef.maxHealth * 0.75)
+        {
+            healthBottle.sprite = highHealth;
+        }
+        else if (playerHealthRef.currentHealth > playerHealthRef.maxHealth * 0.25)
+        {
+            healthBottle.sprite = mediumHealth;
+        }
+        else
+        {
+            healthBottle.sprite = lowHealth;
+        }
+    }
+
+    public void SetManaText()
+    {
+        manaText.SetActive(false);
+        textActive = false;
+    }
+
+    public void UpdatedSpellCharge(int tier)
+    {
+        switch(tier)
+        {
+            case 0:
+                foreach (GameObject item in SpellChargeIcons)
+                {
+                    item.SetActive(false);
+                }
+                break;
             case 1:
-                SetActive(0);
+                SpellChargeIcons[0].SetActive(true);
                 break;
             case 2:
-                SetActive(1);
+                SpellChargeIcons[1].SetActive(true);
                 break;
             case 3:
-                SetActive(2);
+                SpellChargeIcons[2].SetActive(true);
                 break;
             case 4:
-                SetActive(3);
+                SpellChargeIcons[3].SetActive(true);
                 break;
+        }
+    }
+
+    public void UpdateSundial()
+    {
+        if (TimeManager.instance.timeOfDay == 1)
+        {
+            clockWheel.sprite = daySundial;
+        }
+        if (TimeManager.instance.timeOfDay == 2)
+        {
+            clockWheel.sprite = nightSundial;
         }
     }
 
@@ -44,4 +206,65 @@ public class HUD : MonoBehaviour
         }
         highlight[index].SetActive(true);
     }
+
+    public void InstantiatePopup(ItemSO _item, int _amount, bool isNew)
+    {
+        // Prevents another Pop Up from spawning if not new
+        foreach (var popUp in itemPopups)
+        {
+            w_ItemPopup spawnedPopup = popUp.GetComponent<w_ItemPopup>();
+            if (spawnedPopup.item == _item)
+            {
+                spawnedPopup.AddAmount(_amount);
+                return;
+            }
+
+        }
+
+        if (isNew)
+        {
+            GameObject popUp = Instantiate(slot, popupGroup);
+            itemPopups.Add(popUp);
+            w_ItemPopup spawnedPopup = popUp.GetComponent<w_ItemPopup>();
+            spawnedPopup.SetPopup(_item, _amount);
+
+            StartCoroutine(InventoryManager.instance.DestroyPopup(popUp));
+
+        }
+    }
+
+    public void UnlockPopup(string unlockText)
+    {
+        GameObject popUp = Instantiate(slot, popupGroup);
+        itemPopups.Add(popUp);
+        w_ItemPopup spawnedPopup = popUp.GetComponent<w_ItemPopup>();
+
+        unlockItem.itemName = unlockText;
+        spawnedPopup.SetUnlock();
+
+        StartCoroutine(InventoryManager.instance.DestroyPopup(popUp));
+    }
+
+    public void DisplaySelectedItem(ItemSO _item, int _amount)
+    {
+        itemDisplay.SetActive(true);
+        selectedItem = _item;
+        amount = _amount;
+        displayImage.enabled = true;
+        displayImage.sprite = _item.itemSprite;
+        displayText.text = "" + amount;
+    }
+
+    public void UpdateDisplayedItemAmount(w_Slot slot, int _amount)
+    {
+        amount = _amount;
+        lastSelectedSlot = slot;
+    }
+
+    public void UpdateDisplay()
+    {
+        if (lastSelectedSlot == null) return;
+        if (lastSelectedSlot.item.item == selectedItem) displayText.text = "" + lastSelectedSlot.item.amount;
+    }
+
 }

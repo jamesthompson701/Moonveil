@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using PixelCrushers.DialogueSystem;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
 
@@ -10,11 +11,10 @@ public class Interactable : MonoBehaviour
     //reference to soil script
     private SoilObject soil;
 
-    //for testing purposes
-    public RecipeSO trailMix;
-
-    //if this is a dispenser, what it dispenses
-    public SeedItemSO dispenserItem;
+    //variables for dispensers
+    public ItemSO dispenserItem;
+    public int dispenseAmount;
+    public bool destroyOnDispense;
 
     // This method will be called by our ClickSelector
     public virtual void OnInteract()
@@ -23,14 +23,14 @@ public class Interactable : MonoBehaviour
         {
             //reference to soil being clicked
             soil = gameObject.GetComponent<SoilObject>();
-            if (PlayerInventory.instance.CheckSeeds() > 0)
+            if (InventoryManager.instance.CheckSeeds() > 0)
             {
                 //make sure soil is empty and tilled before removing a seed and spawning the crop
                 if (soil.GetComponent<SoilObject>().soilContent == SoilContent.empty && soil.tilled)
                 {
-                    soil.SetPlantType(PlayerInventory.instance.seedRef);
+                    soil.SetPlantType(InventoryManager.instance.seedRef);
                     soil.SpawnCrop();
-                    PlayerInventory.instance.invSO.RemoveItem(PlayerInventory.instance.seedRef, -1);
+                    InventoryManager.instance.invSO.RemoveItem(InventoryManager.instance.seedRef, -1);
                     Debug.Log("Seed Planted");
                 }
                 else
@@ -47,15 +47,46 @@ public class Interactable : MonoBehaviour
         }
         else if(gameObject.CompareTag("Dock"))
         {
-            FishingManager.Instance.EnterFishingMode(FishingManager.Instance.currentArea);
+            // Do nothing — detector handles area, input starts fishing
+            Debug.Log("Dock clicked");
+            Debug.LogError("Dock is missing FishingArea component!");
         }
         else if (gameObject.CompareTag("Crafting"))
         {
-            CanvasManager.Instance.OpenWorkbench();
+            SpellManager2.Instance.inMenu = true;
+            CanvasManager.Instance.OpenMenu(3);
         }
         else if (gameObject.CompareTag("FastTravel"))
         {
-            CanvasManager.Instance.OpenFastTravel();
+            SpellManager2.Instance.inMenu = true;
+            CanvasManager.Instance.OpenMenu(5);
+        }
+        else if (gameObject.CompareTag("Dialogue"))
+        {
+            Debug.Log("Talking");
+            foreach (InventoryItem _item in InventoryManager.instance.invSO.InventoryItems)
+            {
+                Debug.Log("Item Name: " +  _item.item.name);
+                if (_item.item.name == "SharkIdol")
+                {
+                    Debug.Log("Setting SharkIdol to" + _item.amount);
+                    DialogueLua.SetVariable("McGuffinNum", _item.amount);
+                }
+            }
+            DialogueManager.StartConversation("New Conversation 1");
+        }
+        else if (gameObject.CompareTag("Mineable"))
+        {
+            this.gameObject.GetComponent<MineRock>().Interact();
+        }
+        else if (gameObject.CompareTag("World Tree"))
+        {
+            SpellManager2.Instance.inMenu = true;
+            this.gameObject.GetComponent<WorldTree>().OnInteract();
+        }
+        else if (gameObject.CompareTag("Bed"))
+        {
+            TimeManager.instance.Sleep();
         }
         else
         {
@@ -65,8 +96,16 @@ public class Interactable : MonoBehaviour
         //add an item to inventory when clicked, must be set in editor
         if (gameObject.CompareTag("Dispenser"))
         {
-            PlayerInventory.instance.invSO.AddItem(dispenserItem, 1);
+
+            InventoryManager.instance.invSO.AddItem(dispenserItem, 1);
+
+            if (destroyOnDispense)
+            {
+                Destroy(this.gameObject);
+            }
+
         }
+        
     }
 
     // Optional: A method to reset the color

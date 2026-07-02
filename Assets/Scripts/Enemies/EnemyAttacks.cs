@@ -31,8 +31,11 @@ public class EnemyAttacks : MonoBehaviour
     [Tooltip("Time before the projectile is automatically destroyed if it doesn't hit anything.")]
     [SerializeField] private float destroyDelay = 3f;
 
-    private readonly Dictionary<int, float> _lastHitTime = new Dictionary<int, float>(8);
-    private readonly HashSet<int> _hitThisSwing = new HashSet<int>();
+    private readonly Dictionary<int, float> _lastHitTime = new(8);
+    private readonly HashSet<int> _hitThisSwing = new();
+
+    [SerializeField] private bool isPenguinToss = false;
+    [SerializeField] private GameObject penguinionPrefab;
 
     /// <summary>
     /// Call this right before enabling a melee hitbox for a new attack swing.
@@ -43,13 +46,42 @@ public class EnemyAttacks : MonoBehaviour
         _hitThisSwing.Clear();
     }
 
-    private void OnTriggerEnter(Collider other) => TryHit(other);
-    private void OnTriggerStay(Collider other) => TryHit(other);
-    private void OnCollisionEnter(Collision collision) => TryHit(collision.collider);
+    private void OnTriggerEnter(Collider other)
+    {
+        TryHit(other);
+        if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || other.CompareTag(targetTag) || other.CompareTag("Ground")))
+        {
+            SpawnPenguinion();
+            Destroy(gameObject);
+        }
+
+        else if (destroyOnHit)
+        {
+            Destroy(gameObject, destroyDelay);
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        TryHit(other);
+        if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || other.CompareTag(targetTag) || other.CompareTag("Ground")))
+            SpawnPenguinion();
+        
+        else if (destroyOnHit)
+            Destroy(gameObject, destroyDelay);
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        TryHit(collision.collider);
+        if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || CompareTag(targetTag) || CompareTag("Ground")))
+            SpawnPenguinion();
+        // destroys object if it hits the target or the ground tag
+
+        else if (destroyOnHit)
+            Destroy(gameObject, destroyDelay);
+    }
 
     private void TryHit(Collider other)
     {
-        Debug.Log("Enemy attack collided with " + other.name);
         if (!other) return;
 
         if (!string.IsNullOrWhiteSpace(targetTag) && !other.CompareTag(targetTag))
@@ -66,27 +98,26 @@ public class EnemyAttacks : MonoBehaviour
                 return;
         }
 
-        IDamageable damageable = other.GetComponentInParent<IDamageable>();
-        Vector3 hitPoint = other.ClosestPoint(transform.position);
-        Vector3 dir = Vector3.ProjectOnPlane(other.transform.position - transform.position, Vector3.up).normalized;
+        PlayerDamageReceiver receiver = other.GetComponentInParent<PlayerDamageReceiver>();
+        if (receiver) receiver.TakeDamage(Damage);
 
-        if (damageable != null)
-            damageable.TakeDamage(Damage, hitPoint, dir, 0f, gameObject);
-        else
-        {
-            PlayerDamageReceiver receiver = other.GetComponentInParent<PlayerDamageReceiver>();
-            if (receiver) receiver.TakeDamage(Damage);
-        }
         Debug.Log("Enemy attack hit " + other.name + " for " + Damage + " damage!");
         _lastHitTime[targetId] = Time.time;
         if (IsMelee) _hitThisSwing.Add(targetId);
 
-        if (!IsMelee && destroyOnHit)
+    }
+
+    private void SpawnPenguinion()
+    {
+        if (!isPenguinToss) return;
+        PengKingBoss boss = Object.FindFirstObjectByType<PengKingBoss>();
+        for (int i = 0; i < 3; i++)
         {
-            Destroy(gameObject);
-            Destroy(gameObject, destroyDelay); // Destroy after set time in case it misses.
+            Instantiate(penguinionPrefab, transform.position + Vector3.up * 0.5f, Quaternion.identity);
+            boss.RegisterSpawnedMinion();
         }
-            
+
+        Debug.Log("Spawning Penguinion!");
     }
 }
 

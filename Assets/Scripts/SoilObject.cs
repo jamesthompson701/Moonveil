@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SoilObject : MonoBehaviour
 {
-    [SerializeField] private SoilSO soil;
+    [SerializeField] public SoilSO soil;
 
     //what's in the soil (weed, crop, tilled, empty)
     public SoilContent soilContent;
@@ -31,7 +31,8 @@ public class SoilObject : MonoBehaviour
     public GameObject fire;
 
     //wetness timer
-    private float waterTimer;
+    public float waterTimer;
+    public float wetnessDuration;
 
     //bools for tilled and wet
     public bool tilled;
@@ -51,10 +52,17 @@ public class SoilObject : MonoBehaviour
             {
                 weed = Instantiate(weedObj, gameObject.transform.position, gameObject.transform.rotation);
             }
+        wetnessDuration = 120;
     }
 
     public void CheckSoil(float deltaTime)
     {
+        if (currentPlantSO != null)
+        {
+            wetnessDuration = currentPlantSO.droughtResistance;
+        }
+        else { wetnessDuration = 120; }
+
         //if the soil is tilled or untilled, update it accordingly
         if (!tilled)
         {
@@ -67,16 +75,18 @@ public class SoilObject : MonoBehaviour
             //if the soil is wet, make it the wet material and check how long ago it was watered
             if (isWet)
             {
+                if (waterTimer > wetnessDuration)
+                {
+                    waterTimer = wetnessDuration;
+                }
+
                 waterTimer = waterTimer - deltaTime;
                 mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
 
                 //if its wetness time is up, make it dry
-                if (waterTimer < 0)
+                if (waterTimer <= 0)
                 {
-                    waterTimer = soil.wetnessDuration;
                     isWet = false;
-                    mySoilObj.GetComponent<MeshRenderer>().material = drySoil;
-                    //Debug.Log("Soil dry");
                 }
             }
         }
@@ -90,15 +100,26 @@ public class SoilObject : MonoBehaviour
         if (other.CompareTag("WateringSpell") && tilled)
         {
             isWet = true;
-            waterTimer = soil.wetnessDuration;
+            waterTimer = wetnessDuration;
             mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
-            //Debug.Log("Soil wet");
+
+            //tutorial
+            if (TutorialManager.instance != null && !TutorialManager.instance.watering)
+            {
+                //completes billboard 4: water soil
+                if (TutorialManager.instance.currentBillboard == 3)
+                {
+                    TutorialManager.instance.ProgressTutorial(4);
+                    TutorialManager.instance.watering = true;
+                }
+
+            }
         }
 
         if (other.CompareTag("WateringSpellSmall") && tilled)
         {
             isWet = true;
-            waterTimer = soil.wetnessDuration;
+            waterTimer = wetnessDuration;
             mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
             Destroy(other.gameObject);
         }
@@ -123,15 +144,20 @@ public class SoilObject : MonoBehaviour
         }
 
         //if it's a fire spell, destroy crop unless it's watered
+        //unwater it if it is watered
         if (other.CompareTag("FireSpell") && plantScript != null)
         {
-            if(!isWet || plantScript.isDead)
+            if(!isWet)
             {
                 Debug.Log("FireSpelled");
                 Destroy(other.gameObject);
                 plantScript.Destroy();
                 soilContent = SoilContent.empty;
                 Instantiate(fire, transform);
+            }
+            else
+            {
+                waterTimer = 0;
             }
 
         }

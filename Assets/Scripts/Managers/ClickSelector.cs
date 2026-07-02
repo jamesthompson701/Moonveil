@@ -40,6 +40,8 @@ public class ClickSelector : MonoBehaviour
 
     private void OnInteractReleased(InputAction.CallbackContext ctx)
     {
+        if (!enabled || !gameObject.activeInHierarchy) return; // fishing null ref fix
+
         // Only trigger on RELEASE
         if (ctx.phase != InputActionPhase.Performed) return;
 
@@ -52,7 +54,11 @@ public class ClickSelector : MonoBehaviour
         {
  
             Interactable interactable = hit.collider.GetComponent<Interactable>();
-            
+            if (interactable == null)
+            {
+                interactable = hit.collider.GetComponentInParent<Interactable>();
+            }
+
             //If its a fishin area tells the manager to change the fishing area
             FishingArea currentArea;
             if (currentArea = hit.collider.GetComponent<FishingArea>())
@@ -67,7 +73,6 @@ public class ClickSelector : MonoBehaviour
                 interactable.OnInteract();
             }
         }
-
         
     }
 }

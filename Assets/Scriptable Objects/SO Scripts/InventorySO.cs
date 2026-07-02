@@ -1,16 +1,37 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Create New Inventory")]
 public class InventorySO : ScriptableObject
 {
     public List<InventoryItem> InventoryItems = new List<InventoryItem>();
     public int maxItems;
-
-    //TODO| Account for removing items
+    public int dropMultiplier;
+    public event Action<ItemSO, int, bool> GetInventoryItem;
+    public event Action<int> AddInventoryItem;
 
     public void AddItem(ItemSO newItem, int newAmount)
     {
+        //tutorial
+        if (!InventoryManager.instance.tutorialDone)
+        {
+            //complete billboard 2; go forage
+            if(TutorialManager.instance.currentBillboard == 1)
+            {
+                //Item id 1 is the wool of bat seed
+                if(newItem.itemID == 1)
+                {
+                    TutorialManager.instance.ProgressTutorial(2);
+                    InventoryManager.instance.tutorialDone = true;
+                }
+                
+            }
+
+        }
+
+        GetInventoryItem?.Invoke(newItem, newAmount, true);
+
         //Check if item is in inventory for stacking
         if (newItem.isStackable)
         {
@@ -18,7 +39,9 @@ public class InventorySO : ScriptableObject
             {
                 if (item.item == newItem)
                 {
-                    item.AddAmount(newAmount);
+                    item.AddAmount(newAmount * dropMultiplier);
+                    //GetInventoryItem?.Invoke(newItem, newAmount, false);
+                    //AddInventoryItem?.Invoke(newAmount);
                     return;
                 }
             }
@@ -27,8 +50,10 @@ public class InventorySO : ScriptableObject
         //Adds item to inventory item list if not stackable
         if (InventoryItems.Count < maxItems)
         {
-            InventoryItems.Add(new InventoryItem(newItem, newAmount));
+            InventoryItems.Add(new InventoryItem(newItem, newAmount * dropMultiplier));
+
         }
+
     }
 
     public void RemoveItem(ItemSO newItem, int newAmount)

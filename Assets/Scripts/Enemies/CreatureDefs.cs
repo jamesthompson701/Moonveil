@@ -1,16 +1,16 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 /// <summary>
 /// Master enemy script. Drives physics-based movement, spacing, targeting, and attack pacing.
 /// Attach to the Enemy root object (the one with the Rigidbody).
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
-public class CreatureDefs : MonoBehaviour, IDamageable
+public class CreatureDefs : MonoBehaviour
 {
     public enum RoamMode { Waypoints, RandomRoam }
-    public enum AttackMode { Melee, ProjectileStraight, ProjectileArc, Charger }
+    public enum AttackMode { Melee, ProjectileStraight, ProjectileArc, Charger, Contact }
 
     [Header("References")]
     [Tooltip("Optional. If empty, will auto-find the Player by tag.")]
@@ -35,18 +35,18 @@ public class CreatureDefs : MonoBehaviour, IDamageable
     [Header("Movement")]
     [Tooltip("Minimum desired horizontal move speed.")]
     [SerializeField, Min(0f)] private float minSpeed = 2f;
+    private float minSpeedReference = 2f;
 
     [Tooltip("Maximum desired horizontal move speed.")]
-    [SerializeField, Min(0f)] private float maxSpeed = 4f;
+    [Min(0f)] public float maxSpeed = 4f;
+    private float maxSpeedReference = 4f;
 
     [Tooltip("Max horizontal acceleration (m/s^2) applied while steering.")]
     [SerializeField, Min(0f)] private float maxAcceleration = 25f;
+    private float maxAccelerationReference = 25f;
 
     [Tooltip("How quickly the enemy rotates to face target/movement (degrees/sec).")]
     [SerializeField, Min(0f)] private float turnSpeedDegPerSec = 720f;
-
-    [Tooltip("Preferred combat distance for ranged styles (meters). Melee uses it to back away and wait for their next allowed attack.")]
-    [SerializeField, Min(0f)] private float HoldDistance = 6f;
 
     [Tooltip("Stop steering briefly after being hit/knocked back (seconds) so physics actually 'wins'.")]
     [SerializeField, Min(0f)] private float controlLockSecondsOnHit = 0.15f;
@@ -103,6 +103,12 @@ public class CreatureDefs : MonoBehaviour, IDamageable
     [Tooltip("For arc shots: extra height of the arc apex above the higher of start/target (meters).")]
     [SerializeField, Min(0f)] private float arcApexHeight = 3f;
 
+    [Tooltip("Damage applied per contact tick when using Contact attack.")]
+    [SerializeField, Min(0f)] private float contactDamage = 10f;
+
+    [Tooltip("Seconds between contact damage ticks while in continuous contact.")]
+    [SerializeField, Min(0f)] private float contactTickInterval = 0.5f;
+
     [Header("Anti-Clump")]
     [Tooltip("Radius to look for nearby enemies to push away from.")]
     [SerializeField, Min(0f)] private float separationRadius = 1.2f;
@@ -123,8 +129,10 @@ public class CreatureDefs : MonoBehaviour, IDamageable
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = false;
 
+    public ItemSO dropItem;
+
     private Rigidbody _rb;
-    private float _health;
+    [SerializeField] private float _health;
     private Vector3 _spawnPos;
 
     private bool _hasAggro;
@@ -142,13 +150,20 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
     // Status effects
     private float _controlLockUntil;
-    private float _slipUntil;
-    private float _slipSteerMultiplier = 1f;
+    private readonly float _slipUntil;
+    private readonly float _slipSteerMultiplier = 1f;
 
     // Attack pacing
     private EnemyAttackDirector _director;
     private float _nextDirectorRequestTime;
     private int _orbitSign;
+
+    // New: allow enabling/disabling attacks at runtime (used by bosses)
+    [Header("Runtime Control")]
+    [Tooltip("When false, this creature will not start new attacks.")]
+    [SerializeField] private bool canAttack = true;
+    public bool CanAttack { get => canAttack; set => canAttack = value; }
+    public bool isBossPenguinion = false;
 
     private const string DefaultPlayerTag = "PlayerHitPt";
 
@@ -156,11 +171,45 @@ public class CreatureDefs : MonoBehaviour, IDamageable
     private float animSmoothSpeed;
     private bool hasAnimator;
 
+    // Slow state
+    private float _slowRemaining;
+    private bool _slowApplied;
+
+    // Burn state
+    private float _burnTime = 3f;
+    [SerializeField] private float _burnDps = 10;
+    private bool _isBurning;
+
+    [Header("Immunity Settings")]
+    [SerializeField] private bool _canBurn;
+    [SerializeField] private bool _canSlow;
+    [SerializeField] private bool _canRoot;
+
+    public Renderer enemyBody;
+    public Material enemyDamaged;
+    public Material enemyDefault;
+    public Material _bodyOriginalMaterial;
+
+    public PengKingBoss boss;
+
+    // Tracks next allowed damage time per contacting GameObject (used for continuous contact ticks)
+    private readonly Dictionary<GameObject, float> _contactNextDamageTime = new Dictionary<GameObject, float>();
+
+    // Expose health as a normalized percent (0..1) for external controllers (boss, UI, etc.)
+    public float HealthPercent => Mathf.Clamp01(_health / maxHealth);
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        _rb.interpolation = RigidbodyInterpolation.Interpolate;
         _health = maxHealth;
         _spawnPos = transform.position;
+
+        /*
+        playerInventory = PlayerInventory.instance;
+        invSO = playerInventory.invSO;
+        */
 
         _orbitSign = (Random.value < 0.5f) ? -1 : 1;
 
@@ -180,6 +229,12 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
         // Sets bool thats used to check if we have animator before trying to call it, just to avoid errors
         hasAnimator = TryGetComponent(out animator);
+    }
+
+    // Public API to reset health (used when boss fight is canceled)
+    public void ResetHealth()
+    {
+        _health = maxHealth;
     }
 
     private void FixedUpdate()
@@ -222,6 +277,8 @@ public class CreatureDefs : MonoBehaviour, IDamageable
     {
         if (!target) { _hasAggro = false; return; }
 
+        bool previousAggro = _hasAggro;
+
         float sqrDist = HorizontalSqrDistance(transform.position, target.position);
         float aggroSqr = aggroDistance * aggroDistance;
         float deaggroSqr = deaggroDistance * deaggroDistance;
@@ -233,6 +290,12 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         else
         {
             if (sqrDist >= deaggroSqr) _hasAggro = false;
+        }
+
+        // Notify SpellManager2 when aggro changes
+        if (previousAggro != _hasAggro && SpellManager2.Instance != null)
+        {
+            SpellManager2.Instance.NotifyEnemyAggro(_hasAggro);
         }
     }
 
@@ -246,32 +309,39 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
         float steerMultiplier = GetSteerMultiplier();
 
+        // If we're within attack range, stop moving so we don't orbit.
+        // Applies to most attack modes (Charger is intentionally excluded so chargers can still perform charge behavior).
+        if (dist <= attackRange && attackMode != AttackMode.Charger)
+        {
+            desiredDir = Vector3.zero;
+            desiredSpeed = 0f;
+
+            // Immediately kill residual movement so physics doesn't keep us orbiting.
+            if (_rb != null)
+            {
+                // Use both velocity and angularVelocity to aggressively stop motion.
+                _rb.linearVelocity = Vector3.zero;
+                _rb.angularVelocity = Vector3.zero;
+            }
+
+            // Update animation speed to zero
+            animSmoothSpeed = 0f;
+            if (hasAnimator)
+                animator.SetFloat("Speed", 0f);
+
+            return;
+        }
+
         if (attackMode == AttackMode.Melee)
         {
-            // Has the melee enemy stay at a distance and circle the player until it gets permission to attack
-            if (!_isAttacking)
-            {
-                Vector3 tangent2 = Vector3.Cross(Vector3.up, dirToTarget) * _orbitSign;
-                desiredDir = (dirToTarget + tangent2 * 0.5f).normalized;
-                desiredSpeed = Mathf.Lerp(minSpeed, maxSpeed, steerMultiplier);
-                return;
-            }
+            // If not within attack range, steer toward target normally for melee
             desiredDir = dirToTarget;
             desiredSpeed = Mathf.Lerp(minSpeed, maxSpeed, steerMultiplier);
             return;
         }
 
-        float hold = Mathf.Max(attackRange * 0.85f, HoldDistance);
-        float deadBand = 0.6f;
-
-        Vector3 radial;
-        if (dist > hold + deadBand) radial = dirToTarget;
-        else if (dist < hold - deadBand) radial = -dirToTarget;
-        else radial = Vector3.zero;
-
-        Vector3 tangent = Vector3.Cross(Vector3.up, dirToTarget) * _orbitSign;
-
-        desiredDir = (radial + tangent * 0.65f).normalized;
+        // Non-melee: steer directly toward the player (no tangential/orbit component).
+        desiredDir = dirToTarget;
         desiredSpeed = Mathf.Lerp(minSpeed, maxSpeed, steerMultiplier);
 
         //The speed used in the animation blend tree is set
@@ -282,13 +352,11 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         {
             //Sets the speed paramater in the animator compontent to the speed of the creature  
             animator.SetFloat("Speed", animSmoothSpeed);
-            Debug.Log("Speed set to " + animSmoothSpeed);
         }
     }
 
     private void RoamMove(out Vector3 desiredDir, out float desiredSpeed)
     {
-        desiredSpeed = Mathf.Lerp(minSpeed, maxSpeed, 0.5f);
 
         if (Time.time < _nextRoamPickTime)
         {
@@ -365,6 +433,13 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
     private void ApplySeparation()
     {
+        // If inside attack range, skip separation so nearby neighbors don't push us out of our attack position.
+        if (target != null)
+        {
+            float sqrDist = HorizontalSqrDistance(transform.position, target.position);
+            if (sqrDist <= attackRange * attackRange) return;
+        }
+
         if (separationRadius <= 0.001f || separationStrength <= 0.001f) return;
 
         int count = Physics.OverlapSphereNonAlloc(
@@ -426,9 +501,12 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
     private void TryStartAttack(float sqrDistToTarget)
     {
+        // Respect runtime allow-attack flag for active attack modes (Contact is passive and will not use the director)
+        if (!CanAttack && attackMode != AttackMode.Contact) return;
+
         if (_isAttacking) return;
 
-        if (useAttackDirector && _director)
+        if (attackMode != AttackMode.Contact && useAttackDirector && _director)
         {
             if (Time.time >= _nextDirectorRequestTime)
             {
@@ -442,6 +520,17 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         }
 
         StartCoroutine(AttackRoutine());
+    }
+
+    // Public API to enable/disable attacks and optionally abort current attack
+    public void SetCanAttack(bool allow, bool abortCurrentAttack = false)
+    {
+        CanAttack = allow;
+        if (!allow && abortCurrentAttack && _isAttacking)
+        {
+            // EndAttack will mark _isAttacking = false and inform director
+            EndAttack();
+        }
     }
 
     private IEnumerator AttackRoutine()
@@ -464,14 +553,17 @@ public class CreatureDefs : MonoBehaviour, IDamageable
                 break;
 
             case AttackMode.ProjectileStraight:
-                DoStraightProjectile();
+                yield return DoStraightProjectile();
                 break;
 
             case AttackMode.ProjectileArc:
-                DoArcProjectile();
+                yield return DoArcProjectile();
                 break;
             case AttackMode.Charger:
                 yield return DoChargeAttack();
+                break;
+            case AttackMode.Contact:
+                // Contact is passive; no active animation-driven attack here.
                 break;
         }
 
@@ -493,12 +585,12 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         Debug.Log("Melee hitbox = " + meleeHitbox.enabled);
 
         //Tells Animator to play attack anim
-        animator.SetTrigger("Attack");
+        if (animator != null) animator.SetTrigger("Attack");
     }
 
-    private void DoStraightProjectile()
+    private IEnumerator DoStraightProjectile()
     {
-        if (!projectilePrefab) return;
+        if (!projectilePrefab) yield break;
 
         Transform origin = attackPoint ? attackPoint : transform;
         Rigidbody proj = Instantiate(projectilePrefab, origin.position, origin.rotation);
@@ -506,13 +598,14 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         Vector3 dir = (target.position - origin.position).normalized;
         proj.linearVelocity = dir * projectileSpeed;
 
-        //Tells Animator to play attack anim
-        animator.SetTrigger("Attack");
+        if (animator != null) animator.SetTrigger("Attack");
+
+        yield break;
     }
 
-    private void DoArcProjectile()
+    private IEnumerator DoArcProjectile()
     {
-        if (!projectilePrefab) return;
+        if (!projectilePrefab) yield break;
 
         Transform origin = attackPoint ? attackPoint : transform;
         Rigidbody proj = Instantiate(projectilePrefab, origin.position, origin.rotation);
@@ -525,8 +618,11 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         else
             proj.linearVelocity = (end - start).normalized * projectileSpeed;
 
+
         //Tells Animator to play attack anim
-        animator.SetTrigger("Attack");
+        if (animator != null) animator.SetTrigger("Attack");
+
+        yield break;
     }
 
     // Target faces the enemy, waits for a short windup, then dashes forward in a straight line. Bonks into the player then retreats. Kinda funny.
@@ -540,7 +636,7 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(1f);
 
         //Tells Animator to play attack anim
-        animator.SetTrigger("Attack");
+        if (animator != null) animator.SetTrigger("Attack");
     }
 
     private static bool TryComputeBallisticVelocity(Vector3 start, Vector3 end, float apexExtraHeight, out Vector3 initialVelocity)
@@ -578,33 +674,156 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         if (useAttackDirector && _director) _director.EndAttack(this);
     }
 
-    public void TakeDamage(float amount, Vector3 hitPoint, Vector3 hitDirection, float impulseForce, GameObject instigator)
+    // --- Passive contact hurtbox implementation ---
+    // This uses the assigned `physicsCollider` and acts passively when `attackMode == Contact`.
+    // It ignores the attack director and CanAttack checks so that players take damage whenever they run into the physics collider.
+
+    private void TryDealContactDamage(GameObject other)
+    {
+        if (other == null) return;
+
+        // Prefer PlayerDamageReceiver (player API) if present in the hierarchy
+        PlayerDamageReceiver pdr = other.GetComponentInParent<PlayerDamageReceiver>();
+        if (pdr != null)
+        {
+            // Use player's invincibility-aware API
+            pdr.CheckInvincibleFrames(contactDamage);
+            _contactNextDamageTime[other] = Time.time + contactTickInterval;
+            return;
+        }
+
+        // Fall back to the generic IDamageable interface if available
+        IDamageable dmg = other.GetComponentInParent<IDamageable>();
+        if (dmg != null)
+        {
+            dmg.TakeDamage(contactDamage, transform.position, transform.forward, 0f, gameObject);
+            _contactNextDamageTime[other] = Time.time + contactTickInterval;
+            return;
+        }
+
+        // Nothing to damage on this collider
+    }
+
+    private void HandleContactEnter(GameObject other)
+    {
+        if (attackMode != AttackMode.Contact) return;
+        if (other == null) return;
+
+        // Apply immediate damage and start tick timer
+        TryDealContactDamage(other);
+    }
+
+    private void HandleContactStay(GameObject other)
+    {
+        if (attackMode != AttackMode.Contact) return;
+        if (other == null) return;
+
+        if (_contactNextDamageTime.TryGetValue(other, out float nextTime))
+        {
+            if (Time.time >= nextTime)
+                TryDealContactDamage(other);
+        }
+        else
+        {
+            // If no timer entry exists (e.g. missed enter), apply immediately
+            TryDealContactDamage(other);
+        }
+    }
+
+    private void HandleContactExit(GameObject other)
+    {
+        if (other == null) return;
+        if (_contactNextDamageTime.ContainsKey(other))
+            _contactNextDamageTime.Remove(other);
+    }
+
+    // Collision handlers: only respond when the contact involves the configured `physicsCollider`.
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (physicsCollider == null) return;
+
+        foreach (ContactPoint cp in collision.contacts)
+        {
+            if (cp.thisCollider == physicsCollider)
+            {
+                HandleContactEnter(cp.otherCollider.gameObject);
+                break;
+            }
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (physicsCollider == null) return;
+
+        foreach (ContactPoint cp in collision.contacts)
+        {
+            if (cp.thisCollider == physicsCollider)
+            {
+                HandleContactStay(cp.otherCollider.gameObject);
+                // don't break — multiple contacts might involve different other colliders
+            }
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (physicsCollider == null) return;
+
+        // CollisionExit may not provide contacts; use collision.gameObject as the other.
+        // It's acceptable to clear any tracking for that object.
+        HandleContactExit(collision.gameObject);
+    }
+
+    // If you happen to use trigger physics for the hurtbox (rare since physicsCollider is non-trigger),
+    // also support trigger callbacks but only when the other collider is the physicsCollider's partner.
+    // We can't directly inspect "this" trigger from the callback, so only use triggers if physicsCollider is a trigger.
+    private void OnTriggerEnter(Collider other)
+    {
+        if (physicsCollider == null) return;
+        if (!physicsCollider.isTrigger) return;
+
+        HandleContactEnter(other.gameObject);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (physicsCollider == null) return;
+        if (!physicsCollider.isTrigger) return;
+
+        HandleContactStay(other.gameObject);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (physicsCollider == null) return;
+        if (!physicsCollider.isTrigger) return;
+
+        HandleContactExit(other.gameObject);
+    }
+    // --- end passive contact hurtbox implementation ---
+
+    public void TakeDamage(float amount, GameObject instigator)
     {
         if (amount <= 0f) return;
+
+        // Guard against null instigator and only ignore damage if the instigator actually has the "Ground" tag.
+        if (instigator != null && instigator.CompareTag("Ground")) return;
 
         _health -= amount;
 
         if (controlLockSecondsOnHit > 0f)
             _controlLockUntil = Mathf.Max(_controlLockUntil, Time.time + controlLockSecondsOnHit);
 
-        if (impulseForce > 0f)
-        {
-            Vector3 dir = hitDirection.normalized;
-            if (dir.sqrMagnitude < 0.0001f) dir = Vector3.up;
-            _rb.AddForce(dir * impulseForce, ForceMode.Impulse);
-        }
+
+        StartCoroutine(ShowDamageTaken());
 
         if (_health <= 0f)
-            Die();
+            StartCoroutine(Die());
 
-        //Tells animator to play damaged animation
-        animator.SetTrigger("Damaged");
-    }
 
-    public void ApplySlip(float durationSeconds, float steerMultiplier)
-    {
-        _slipUntil = Mathf.Max(_slipUntil, Time.time + Mathf.Max(0f, durationSeconds));
-        _slipSteerMultiplier = Mathf.Clamp01(steerMultiplier);
+        if (hasAnimator)
+            animator.SetTrigger("Damaged");
     }
 
     private float GetSteerMultiplier()
@@ -616,17 +835,43 @@ public class CreatureDefs : MonoBehaviour, IDamageable
         return mult;
     }
 
-    private void Die()
+    private IEnumerator Die()
     {
+        //tutorial
+        if (TutorialManager.instance != null && !TutorialManager.instance.combat)
+        {
+            //completes billboard 11; kill a dog
+            if (TutorialManager.instance.currentBillboard == 10)
+            {
+                TutorialManager.instance.ProgressTutorial(11);
+                TutorialManager.instance.combat = true;
+            }
+        }
+
         //if (meleeHitbox) meleeHitbox.enabled = false;
         if (physicsCollider) physicsCollider.enabled = false;
 
-        //***TODO*** turn this into a coroutine to make the anim finish playing before destroying game object
-        //Tells Animator to play Death anim
-        animator.SetTrigger("Death");
+        if (dropItem != null)
+        {
+            int amount = 1;
+            InventoryManager.instance.invSO.AddItem(dropItem, amount);
+        }
 
+        //Tells Animator to play Death anim
+        if (animator != null)
+            animator.SetTrigger("Death");
+
+
+        if (isBossPenguinion)
+        {
+            boss = GameObject.FindFirstObjectByType<PengKingBoss>();
+            boss.UnregisterSpawnedMinion();
+        }
+            
 
         Destroy(gameObject);
+
+        return null;
     }
 
     private void TryFindTargetByTag(string tag)
@@ -653,6 +898,112 @@ public class CreatureDefs : MonoBehaviour, IDamageable
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, separationRadius);
+    }
+
+    public void ApplySlow(float duration)
+    {
+        _slowRemaining = Mathf.Max(_slowRemaining, duration);
+        _slowApplied = true;
+        if (_slowApplied)
+            StartCoroutine(SlowStatus(duration));
+    }
+
+    public void ApplyBurn(float duration)
+    {
+        _isBurning = true;
+        if (_isBurning)
+            StartCoroutine(BurnStatus());
+    }
+
+    public void ApplyRoot(float duration)
+    {
+        _slowRemaining = Mathf.Max(_slowRemaining, duration);
+        _slowApplied = true;
+        if (_slowApplied)
+            StartCoroutine(RootStatus());
+    }
+
+    //Apply burn damage every second
+    private IEnumerator BurnStatus()
+    {
+        while (_isBurning)
+        {
+            for (int i = 0; i < _burnTime; i++)
+            {
+                TakeDamage(_burnDps, null);
+                Debug.Log("Applying burn damage: " + _burnDps);
+                yield return new WaitForSeconds(1f);
+            }
+        }
+    }
+
+    private IEnumerator SlowStatus(float duration)
+    {
+        while (_slowApplied)
+        {
+            if (_slowRemaining > 0f)
+            {
+                _slowRemaining -= Time.deltaTime;
+                maxSpeed = 3f;
+            }
+            else
+            {
+                _slowApplied = false;
+                maxSpeed = maxSpeedReference;
+            }
+            yield return null;
+        }
+    }
+
+    private IEnumerator RootStatus()
+    {
+        while (_slowApplied)
+        {
+            if (_slowRemaining > 0f)
+            {
+                _slowRemaining -= Time.deltaTime;
+                maxSpeed = 0f;
+                minSpeed = 0f;
+                maxAcceleration = 0f;
+            }
+            else
+            {
+                _slowApplied = false;
+                maxSpeed = maxSpeedReference;
+                minSpeed = minSpeedReference;
+                maxAcceleration = maxAccelerationReference;
+            }
+            yield return null;
+        }
+    }
+
+    private IEnumerator ShowDamageTaken()
+    {
+        if (enemyBody != null && enemyDamaged != null)
+        {
+            enemyBody.material = enemyDamaged;
+        }
+        else if (enemyBody != null && enemyDamaged == null)
+        {
+            Debug.LogWarning("playerDamaged is not assigned; skipping hat material swap.");
+        }
+
+        // Wait for the configured invincibility duration (visual feedback time)
+        yield return new WaitForSeconds(1);
+
+        // Restore original materials
+        RestoreOriginalMaterials();
+    }
+
+    private void RestoreOriginalMaterials()
+    {
+        if (enemyBody != null)
+        {
+            if (_bodyOriginalMaterial != null)
+                enemyBody.material = _bodyOriginalMaterial;
+            else if (enemyDefault != null)
+                enemyBody.material = enemyDefault;
+        }
     }
 }
 
