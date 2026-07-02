@@ -180,6 +180,14 @@ public class PengKingBoss : MonoBehaviour
         }
     }
 
+    private void DeactivateArena()
+    {
+        if (arenaCollider != null)
+            arenaCollider.enabled = false;
+        if (arenaRenderer != null)
+            arenaRenderer.enabled = false;
+    }
+
     private void CheckForPlayerDeath()
     {
         if (playerDamageReceiver != null)
@@ -190,6 +198,7 @@ public class PengKingBoss : MonoBehaviour
                 Debug.Log("Player has died during the boss fight!");
 
                 DeactivateShield();
+                DeactivateArena();
 
                 pengKing.ResetHealth();
 

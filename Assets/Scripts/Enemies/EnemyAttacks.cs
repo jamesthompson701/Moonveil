@@ -63,20 +63,13 @@ public class EnemyAttacks : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         TryHit(other);
-        if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || other.CompareTag(targetTag) || other.CompareTag("Ground")))
-            SpawnPenguinion();
-        
-        else if (destroyOnHit)
+        if (destroyOnHit)
             Destroy(gameObject, destroyDelay);
     }
     private void OnCollisionEnter(Collision collision)
     {
         TryHit(collision.collider);
-        if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || CompareTag(targetTag) || CompareTag("Ground")))
-            SpawnPenguinion();
-        // destroys object if it hits the target or the ground tag
-
-        else if (destroyOnHit)
+        if (destroyOnHit)
             Destroy(gameObject, destroyDelay);
     }
 

@@ -113,6 +113,16 @@ namespace StarterAssets
         public float FlightAccelerationMax = 8.0f;
         [Tooltip("Time in seconds of continuous flight movement required to reach maximum additional speed")]
         public float FlightAccelerationTime = 5.0f;
+        [Tooltip("How quickly horizontal flight velocity moves toward its target, in m/s per second")]
+        public float FlightVelocityAcceleration = 24f;
+        [Tooltip("How quickly horizontal flight velocity slows when movement input is released")]
+        public float FlightVelocityDeceleration = 32f;
+        [Tooltip("Time required for the additional flight speed to disappear after movement stops")]
+        public float FlightBoostDecayTime = 0.5f;
+        [Tooltip("Maximum vertical flight speed")]
+        public float FlightVerticalSpeed = 8f;
+        [Tooltip("How quickly vertical flight speed changes")]
+        public float FlightVerticalAcceleration = 20f;
 
         // Internal reference to the toggle action
         private InputAction flightToggleAction;
@@ -139,7 +149,7 @@ namespace StarterAssets
         private float defaultMoveSpeed;
 
         // Flight acceleration runtime trackers
-        private float _flightAccelTimer = 0f;
+        private Vector3 _flightPlanarVelocity = Vector3.zero;
         private float _flightAdditionalSpeed = 0f;
 
         // timeout deltatime
@@ -349,8 +359,22 @@ namespace StarterAssets
 
             if (inFlightMode)
             {
+                Vector3 currentVelocity = _controller != null
+                    ? _controller.velocity
+                    : Vector3.zero;
+
+                _flightPlanarVelocity = new Vector3(
+                    currentVelocity.x,
+                    0f,
+                    currentVelocity.z
+                );
+
+                _flightAdditionalSpeed = 0f;
+
                 if (windCoroutine == null)
+                {
                     windCoroutine = StartCoroutine(GenerateWind());
+                }
             }
             else
             {
@@ -363,8 +387,9 @@ namespace StarterAssets
                 fastWind.SetActive(false);
 
                 // reset flight acceleration trackers when leaving flight
-                _flightAccelTimer = 0f;
                 _flightAdditionalSpeed = 0f;
+                _flightPlanarVelocity = Vector3.zero;
+                _verticalVelocity = 0f;
             }
         }
 
@@ -416,129 +441,239 @@ namespace StarterAssets
 
         private void Move()
         {
-            // set target speed based on move speed, sprint speed and if sprint is pressed
-            float targetSpeed;
-            if (inFlightMode)
             {
-                // base flight speed depending on sprint
-                float baseFlightSpeed = _input.sprint ? FlightSprintSpeed : FlightMoveSpeed;
-
-                // accumulate flight acceleration only while the player is providing movement input
-                if (_input.move != Vector2.zero)
+                if (inFlightMode)
                 {
-                    _flightAccelTimer += Time.deltaTime;
-                    _flightAccelTimer = Mathf.Clamp(_flightAccelTimer, 0f, FlightAccelerationTime);
+                    MoveFlight();
+                    return;
+                }
+
+                float targetSpeed = _input.sprint
+                    ? SprintSpeed
+                    : MoveSpeed;
+
+                // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
+
+                // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
+                // if there is no input, set the target speed to 0
+                if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+
+                // a reference to the players current horizontal velocity
+                float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
+
+                float speedOffset = 0.1f;
+                float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+
+                // accelerate or decelerate to target speed
+                if (currentHorizontalSpeed < targetSpeed - speedOffset ||
+                    currentHorizontalSpeed > targetSpeed + speedOffset)
+                {
+                    // creates curved result rather than a linear one giving a more organic speed change
+                    // note T in Lerp is clamped, so we don't need to clamp our speed
+                    _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
+                        Time.deltaTime * SpeedChangeRate);
                 }
                 else
                 {
-                    // reset accumulation when stopping movement while in flight
-                    _flightAccelTimer = 0f;
+                    _speed = targetSpeed;
                 }
 
-                float accelRatio = (FlightAccelerationTime > 0f) ? (_flightAccelTimer / FlightAccelerationTime) : 1f;
-                _flightAdditionalSpeed = Mathf.Lerp(0f, FlightAccelerationMax, accelRatio);
+                _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
+                if (_animationBlend < 0.01f) _animationBlend = 0f;
 
-                targetSpeed = baseFlightSpeed + _flightAdditionalSpeed;
+                // normalise input direction
+                Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+
+                // Check if the player is in a combat area
+                // Un-Comment the If Else to reinstate different camera styles
+                //if (attackManager.inCombatArea)
+                // {
+                // In combat area, restrict rotation and allow strafing
+                if (_input.move != Vector2.zero)
+                {
+                    // Keep the character facing the same direction as the camera
+                    _targetRotation = _mainCamera.transform.eulerAngles.y;
+                    transform.rotation = Quaternion.Euler(0.0f, _targetRotation, 0.0f);
+                }
+
+                Vector3 targetDirection = Quaternion.Euler(0.0f, _mainCamera.transform.eulerAngles.y, 0.0f) * new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+
+                motion = targetDirection * (_speed * Time.deltaTime) +
+                                     new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime;
+                // move the player
+                _controller.Move(motion);
+                // }
+                // else
+                // {
+                //    // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
+                //    // if there is a move input rotate player when the player is moving
+                //    if (_input.move != Vector2.zero)
+                //    {
+                //        _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
+                //                          _mainCamera.transform.eulerAngles.y;
+                //        float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
+                //            RotationSmoothTime);
+                //
+                //        // rotate to face input direction relative to camera position
+                //        transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+                //    }
+                //
+                //    Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+                //
+                //    // move the player
+                //    _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+                //                     new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+                // }
+
+                // update animator if using character
+                if (_hasAnimator)
+                {
+                    _animator.SetFloat(_animIDSpeed, _animationBlend);
+                    _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+                    if (inputMagnitude < 0.1f)
+                    {
+                        _animator.SetFloat("MoveX", 0);
+                        _animator.SetFloat("MoveY", 0);
+                    }
+                    else
+                    {
+
+                        _animator.SetFloat("MoveX", _input.move.x, 0.1f, Time.deltaTime);
+                        _animator.SetFloat("MoveY", _input.move.y, 0.1f, Time.deltaTime);
+                    }
+
+
+                }
             }
-            else
+        }
+
+        private void MoveFlight()
+        {
+            Vector2 moveInput = _input.move;
+
+            bool hasMoveInput = moveInput.sqrMagnitude > 0.0001f;
+
+            float inputMagnitude = _input.analogMovement
+                ? Mathf.Clamp01(moveInput.magnitude)
+                : hasMoveInput ? 1f : 0f;
+
+            // Build the bonus at a rate that reaches FlightAccelerationMax
+            // after FlightAccelerationTime seconds.
+            float boostBuildRate = FlightAccelerationTime > 0f
+                ? FlightAccelerationMax / FlightAccelerationTime
+                : FlightAccelerationMax;
+
+            float boostDecayRate = FlightBoostDecayTime > 0f
+                ? FlightAccelerationMax / FlightBoostDecayTime
+                : FlightAccelerationMax;
+
+            float targetAdditionalSpeed = hasMoveInput
+                ? FlightAccelerationMax
+                : 0f;
+
+            float currentBoostChangeRate = hasMoveInput
+                ? boostBuildRate
+                : boostDecayRate;
+
+            _flightAdditionalSpeed = Mathf.MoveTowards(
+                _flightAdditionalSpeed,
+                targetAdditionalSpeed,
+                currentBoostChangeRate * Time.deltaTime
+            );
+
+            float baseFlightSpeed = _input.sprint
+                ? FlightSprintSpeed
+                : FlightMoveSpeed;
+
+            float targetSpeed = hasMoveInput
+                ? (baseFlightSpeed + _flightAdditionalSpeed) * inputMagnitude
+                : 0f;
+
+            Vector3 localInputDirection = new Vector3(
+                moveInput.x,
+                0f,
+                moveInput.y
+            ).normalized;
+
+            Vector3 targetDirection =
+                Quaternion.Euler(
+                    0f,
+                    _mainCamera.transform.eulerAngles.y,
+                    0f
+                ) * localInputDirection;
+
+            Vector3 targetPlanarVelocity = targetDirection * targetSpeed;
+
+            float velocityChangeRate = hasMoveInput
+                ? FlightVelocityAcceleration
+                : FlightVelocityDeceleration;
+
+            // Smooth the velocity vector rather than repeatedly using
+            // CharacterController.velocity as the starting value.
+            _flightPlanarVelocity = Vector3.MoveTowards(
+                _flightPlanarVelocity,
+                targetPlanarVelocity,
+                velocityChangeRate * Time.deltaTime
+            );
+
+            if (hasMoveInput)
             {
-                targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
-            }
-
-            // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
-
-            // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-            // if there is no input, set the target speed to 0
-            if (_input.move == Vector2.zero) targetSpeed = 0.0f;
-
-            // a reference to the players current horizontal velocity
-            float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
-
-            float speedOffset = 0.1f;
-            float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
-
-            // accelerate or decelerate to target speed
-            if (currentHorizontalSpeed < targetSpeed - speedOffset ||
-                currentHorizontalSpeed > targetSpeed + speedOffset)
-            {
-                // creates curved result rather than a linear one giving a more organic speed change
-                // note T in Lerp is clamped, so we don't need to clamp our speed
-                _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
-                    Time.deltaTime * SpeedChangeRate);
-
-                // round speed to 3 decimal places
-                _speed = Mathf.Round(_speed * 1000f) / 1000f;
-            }
-            else
-            {
-                _speed = targetSpeed;
-            }
-
-            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
-            if (_animationBlend < 0.01f) _animationBlend = 0f;
-
-            // normalise input direction
-            Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
-
-            // Check if the player is in a combat area
-            // Un-Comment the If Else to reinstate different camera styles
-            //if (attackManager.inCombatArea)
-            // {
-            // In combat area, restrict rotation and allow strafing
-            if (_input.move != Vector2.zero)
-            {
-                // Keep the character facing the same direction as the camera
                 _targetRotation = _mainCamera.transform.eulerAngles.y;
-                transform.rotation = Quaternion.Euler(0.0f, _targetRotation, 0.0f);
+
+                transform.rotation = Quaternion.Euler(
+                    0f,
+                    _targetRotation,
+                    0f
+                );
             }
 
-            Vector3 targetDirection = Quaternion.Euler(0.0f, _mainCamera.transform.eulerAngles.y, 0.0f) * new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+            motion =
+                _flightPlanarVelocity * Time.deltaTime +
+                Vector3.up * (_verticalVelocity * Time.deltaTime);
 
-            motion = targetDirection * (_speed * Time.deltaTime) +
-                                 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime;
-            // move the player
             _controller.Move(motion);
-            // }
-            // else
-            // {
-            //    // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-            //    // if there is a move input rotate player when the player is moving
-            //    if (_input.move != Vector2.zero)
-            //    {
-            //        _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-            //                          _mainCamera.transform.eulerAngles.y;
-            //        float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
-            //            RotationSmoothTime);
-            //
-            //        // rotate to face input direction relative to camera position
-            //        transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
-            //    }
-            //
-            //    Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-            //
-            //    // move the player
-            //    _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-            //                     new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-            // }
 
-            // update animator if using character
+            float actualHorizontalSpeed = _flightPlanarVelocity.magnitude;
+
+            _speed = actualHorizontalSpeed;
+
+            _animationBlend = Mathf.MoveTowards(
+                _animationBlend,
+                actualHorizontalSpeed,
+                FlightVelocityAcceleration * Time.deltaTime
+            );
+
+            if (_animationBlend < 0.01f)
+            {
+                _animationBlend = 0f;
+            }
+
             if (_hasAnimator)
             {
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
                 _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+
                 if (inputMagnitude < 0.1f)
                 {
-                    _animator.SetFloat("MoveX", 0);
-                    _animator.SetFloat("MoveY", 0);
+                    _animator.SetFloat("MoveX", 0f);
+                    _animator.SetFloat("MoveY", 0f);
                 }
                 else
                 {
+                    _animator.SetFloat(
+                        "MoveX",
+                        moveInput.x,
+                        0.1f,
+                        Time.deltaTime
+                    );
 
-                    _animator.SetFloat("MoveX", _input.move.x, 0.1f, Time.deltaTime);
-                    _animator.SetFloat("MoveY", _input.move.y, 0.1f, Time.deltaTime);
+                    _animator.SetFloat(
+                        "MoveY",
+                        moveInput.y,
+                        0.1f,
+                        Time.deltaTime
+                    );
                 }
-
-
             }
         }
 
@@ -624,25 +759,26 @@ namespace StarterAssets
         // Flight mode: poll ascend/descend input and set vertical velocity. Gravity and jump are skipped while inFlightMode.
         private void FlightUpdate()
         {
-            // stop accumulated gravity while in flight
-            _verticalVelocity = 0f;
+            float verticalInput = 0f;
 
-            float verticalSpeed = 0f;
-
-            // ascend input moves up
             if (ascend != null && ascend.enabled && ascend.IsPressed())
             {
-                verticalSpeed += FlightMoveSpeed / 2;
+                verticalInput += 1f;
             }
 
-            // descend input moves down
             if (descend != null && descend.enabled && descend.IsPressed())
             {
-                verticalSpeed -= FlightMoveSpeed / 2;
+                verticalInput -= 1f;
             }
 
-            // set the vertical velocity used by Move()
-            _verticalVelocity = verticalSpeed;
+            float targetVerticalVelocity =
+                verticalInput * FlightVerticalSpeed;
+
+            _verticalVelocity = Mathf.MoveTowards(
+                _verticalVelocity,
+                targetVerticalVelocity,
+                FlightVerticalAcceleration * Time.deltaTime
+            );
         }
 
         private IEnumerator GenerateWind()
