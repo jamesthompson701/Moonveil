@@ -211,6 +211,14 @@ public class SpellManager2 : MonoBehaviour
 
         if (!inCombatArea) infiniteManaRegen = true;
         else infiniteManaRegen = false;
+
+        if (FishingManager.Instance != null && FishingManager.Instance.inFishingMode)
+        {
+            ChooseSpell();
+            UpdateGroundTargetPreview();
+            UpdateChargedUI();
+            return;
+        }
     }
 
     // Called by creatures to indicate an enemy has gained or lost aggro.
@@ -274,6 +282,7 @@ public class SpellManager2 : MonoBehaviour
                 if (attackChoice < 0) attackChoice = 4;
             }
         }
+        HUD.instance.UpdateSpellSelection(attackChoice);
     }
 
     void Timer()

@@ -1,16 +1,15 @@
+using StarterAssets;
 using UnityEngine;
+using System.Collections.Generic;
 
-public class BlackoutBrewSO : MonoBehaviour
+[CreateAssetMenu(fileName = "BlackoutBrew", menuName = "Scriptable Objects/ItemEffects/BlackoutBrew")]
+public class BlackoutBrewSO : ItemEffectSO
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    public override void UseItem()
     {
-        
+        TimeManager.instance.Sleep();
+        TimeManager.instance.isBlackout = true;
+        TimeManager.instance.blackoutTimer = 5f;
     }
 }

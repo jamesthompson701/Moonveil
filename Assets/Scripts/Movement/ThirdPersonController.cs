@@ -275,6 +275,9 @@ namespace StarterAssets
                 {
                     isWindForceActive = false;
                     windForceTimer = 0f;
+                    MoveSpeed = DefaultMoveSpeed;
+                    SprintSpeed = DefaultSprintSpeed;
+                    FlightMoveSpeed = DefaultFlightMoveSpeed;
 
                 }
             }
