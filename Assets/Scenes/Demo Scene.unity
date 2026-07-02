@@ -32096,6 +32096,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1013382469}
   - component: {fileID: 1013382468}
+  - component: {fileID: 1013382470}
   m_Layer: 0
   m_Name: Environment Manager
   m_TagString: Untagged
@@ -32137,6 +32138,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1013382470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013382467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c31d993256bd0b048882a589dbabd83e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerrainTreeFinder
+  treeCollider: {fileID: 4991077757369842797, guid: dbe223abceceb9648a8bcf9da897b00b, type: 3}
+  terrain: {fileID: 1597663063}
 --- !u!1 &1014377499
 GameObject:
   m_ObjectHideFlags: 0
