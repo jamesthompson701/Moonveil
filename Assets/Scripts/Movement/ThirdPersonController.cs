@@ -108,6 +108,12 @@ namespace StarterAssets
         [Tooltip("Input action name for toggling flight mode")]
         public string FlightToggleActionName = "ToggleFlight";
 
+        [Header("Flight Acceleration")]
+        [Tooltip("Maximum additional horizontal speed gained while continuously moving in flight (added to the base flight speed)")]
+        public float FlightAccelerationMax = 8.0f;
+        [Tooltip("Time in seconds of continuous flight movement required to reach maximum additional speed")]
+        public float FlightAccelerationTime = 5.0f;
+
         // Internal reference to the toggle action
         private InputAction flightToggleAction;
 
@@ -131,6 +137,10 @@ namespace StarterAssets
         private float _terminalVelocity = 53.0f;
         public Vector3 motion;
         private float defaultMoveSpeed;
+
+        // Flight acceleration runtime trackers
+        private float _flightAccelTimer = 0f;
+        private float _flightAdditionalSpeed = 0f;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -351,6 +361,10 @@ namespace StarterAssets
                 }
                 slowWind.SetActive(false);
                 fastWind.SetActive(false);
+
+                // reset flight acceleration trackers when leaving flight
+                _flightAccelTimer = 0f;
+                _flightAdditionalSpeed = 0f;
             }
         }
 
@@ -406,7 +420,25 @@ namespace StarterAssets
             float targetSpeed;
             if (inFlightMode)
             {
-                targetSpeed = _input.sprint ? FlightSprintSpeed : FlightMoveSpeed;
+                // base flight speed depending on sprint
+                float baseFlightSpeed = _input.sprint ? FlightSprintSpeed : FlightMoveSpeed;
+
+                // accumulate flight acceleration only while the player is providing movement input
+                if (_input.move != Vector2.zero)
+                {
+                    _flightAccelTimer += Time.deltaTime;
+                    _flightAccelTimer = Mathf.Clamp(_flightAccelTimer, 0f, FlightAccelerationTime);
+                }
+                else
+                {
+                    // reset accumulation when stopping movement while in flight
+                    _flightAccelTimer = 0f;
+                }
+
+                float accelRatio = (FlightAccelerationTime > 0f) ? (_flightAccelTimer / FlightAccelerationTime) : 1f;
+                _flightAdditionalSpeed = Mathf.Lerp(0f, FlightAccelerationMax, accelRatio);
+
+                targetSpeed = baseFlightSpeed + _flightAdditionalSpeed;
             }
             else
             {
@@ -451,7 +483,7 @@ namespace StarterAssets
             // Check if the player is in a combat area
             // Un-Comment the If Else to reinstate different camera styles
             //if (attackManager.inCombatArea)
-            //{
+            // {
             // In combat area, restrict rotation and allow strafing
             if (_input.move != Vector2.zero)
             {
@@ -466,9 +498,9 @@ namespace StarterAssets
                                  new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime;
             // move the player
             _controller.Move(motion);
-            //}
-            //else
-            //{
+            // }
+            // else
+            // {
             //    // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             //    // if there is a move input rotate player when the player is moving
             //    if (_input.move != Vector2.zero)
@@ -487,7 +519,7 @@ namespace StarterAssets
             //    // move the player
             //    _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
             //                     new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-            //}
+            // }
 
             // update animator if using character
             if (_hasAnimator)
