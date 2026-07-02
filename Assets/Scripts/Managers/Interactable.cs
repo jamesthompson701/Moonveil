@@ -51,11 +51,6 @@ public class Interactable : MonoBehaviour
             Debug.Log("Dock clicked");
             Debug.LogError("Dock is missing FishingArea component!");
         }
-        else if (gameObject.CompareTag("Crafting"))
-        {
-            SpellManager2.Instance.inMenu = true;
-            CanvasManager.Instance.OpenMenu(3);
-        }
         else if (gameObject.CompareTag("FastTravel"))
         {
             SpellManager2.Instance.inMenu = true;
@@ -107,7 +102,5 @@ public class Interactable : MonoBehaviour
         }
         
     }
-
-    // Optional: A method to reset the color
 
 }
