@@ -14,7 +14,7 @@ public class EarthAttackSpell : SO_Spells
     {
         if (SpellPrefab == null) return;
 
-        Transform originT = ctx.attackCastOrigin != null ? ctx.attackCastOrigin : ctx.caster.transform;
+        Transform originT = ctx.castOrigin != null ? ctx.castOrigin : ctx.caster.transform; //James changed this
 
         if (ctx.inCombatArea)
         {
@@ -66,7 +66,7 @@ public class EarthAttackSpell : SO_Spells
         {
             // Farm: simple place in front
             Vector3 dir = originT.forward.normalized;
-            Vector3 pos = originT.position + dir * ctx.farmSpawnOffset;
+            Vector3 pos = originT.position + dir * ctx.spawnOffset; //James changed this
             Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
 
             Rigidbody clone = Spawn(SpellPrefab, pos, rot);

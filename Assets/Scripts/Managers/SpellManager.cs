@@ -104,8 +104,10 @@ public class SpellManager : MonoBehaviour
             {
                 caster = player,
 
-                attackCastOrigin = attackCastOrigin,     
-                farmCastOrigin = farmOriginT,      
+
+                //James changed this
+                castOrigin = attackCastOrigin,     
+                //farmCastOrigin = farmOriginT,      
 
                 aimCamera = aimCamera,
                 aimMask = aimMask,
@@ -113,8 +115,9 @@ public class SpellManager : MonoBehaviour
 
                 inCombatArea = false,
 
-                combatSpawnOffset = spawnOffset,
-                farmSpawnOffset = farmSpawnOffset,
+                //James changed this
+                spawnOffset = spawnOffset,
+                //farmSpawnOffset = farmSpawnOffset,
 
                 hasHit = false,
                 hitCollider = null,
@@ -148,15 +151,16 @@ public class SpellManager : MonoBehaviour
 
         SpellCastContext ctx = new SpellCastContext
         {
+            //James changed this
             caster = player,
-            attackCastOrigin = attackCastOrigin,
-            farmCastOrigin = farmCastOrigin,
+            castOrigin = attackCastOrigin,
+            //castOrigin = farmCastOrigin,
             aimCamera = aimCamera,
             aimMask = aimMask,
             aimDistance = aimDistance,
             inCombatArea = inCombatArea,
-            combatSpawnOffset = spawnOffset,
-            farmSpawnOffset = farmSpawnOffset,
+            spawnOffset = spawnOffset,
+            //farmSpawnOffset = farmSpawnOffset,
             aimPoint = aimPoint,
             aimNormal = aimNormal,
             hasHit = hasHit,

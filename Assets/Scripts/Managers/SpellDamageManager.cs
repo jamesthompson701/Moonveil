@@ -80,7 +80,8 @@ public class SpellDamageManager : MonoBehaviour
         CreatureDefs creature = target.GetComponentInParent<CreatureDefs>();
         if (creature != null)
         {
-            creature.TakeDamage(damage, target.ClosestPoint(transform.position), (target.transform.position - transform.position).normalized, force, gameObject);
+            //James changed this
+            //creature.TakeDamage(damage, target.ClosestPoint(transform.position), (target.transform.position - transform.position).normalized, force, gameObject);
         }
     }
 
