@@ -12,12 +12,12 @@ public abstract class SO_FarmSpellBase : SO_Spells
 
     public override void CastSpell(SpellCastContext ctx)
     {
-        Transform originT = ctx.farmCastOrigin != null ? ctx.farmCastOrigin : ctx.caster.transform;
+        Transform originT = ctx.castOrigin != null ? ctx.castOrigin : ctx.caster.transform; //James changed this
 
         Vector3 forward = ctx.cameraPlanarForward;
         if (forward.sqrMagnitude < 0.0001f) forward = Vector3.forward;
 
-        Vector3 spawnPos = originT.position + forward * ctx.farmSpawnOffset;
+        Vector3 spawnPos = originT.position + forward * ctx.spawnOffset; //James changed this
         spawnPos.y += heightOffset;
 
         Quaternion spawnRot = Quaternion.LookRotation(forward, Vector3.up);

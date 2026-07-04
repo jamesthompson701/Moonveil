@@ -11,7 +11,7 @@ public class ProjectileSpells : SO_Spells
     {
         if (SpellPrefab == null) return;
 
-        Transform originT = ctx.attackCastOrigin != null ? ctx.attackCastOrigin : ctx.caster.transform;
+        Transform originT = ctx.castOrigin != null ? ctx.castOrigin : ctx.caster.transform; //James changed this
         Vector3 origin = originT.position;
 
         Vector3 dir;
@@ -24,14 +24,14 @@ public class ProjectileSpells : SO_Spells
             dir = (ctx.aimPoint - origin).normalized;
             usedSpeed = Speed;
             usedLifetime = Lifetime;
-            usedOffset = ctx.combatSpawnOffset;
+            usedOffset = ctx.spawnOffset; //James changed this
         }
         else
         {
             dir = originT.forward.normalized;
             usedSpeed = FarmSpeed;
             usedLifetime = FarmLifetime;
-            usedOffset = ctx.farmSpawnOffset;
+            usedOffset = ctx.spawnOffset; //James changed this
         }
 
         Vector3 spawnPos = origin + dir * usedOffset;
