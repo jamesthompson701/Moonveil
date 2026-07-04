@@ -247,7 +247,7 @@ public class MineRock : MonoBehaviour
 
         onCooldown = false;
 
-        PlayFX(readyFX);
+        PlayFX(readyFX); // need to make a thing that checks for if its off cooldown and put this there.
     }
 
     IEnumerator SinkRock()
@@ -273,7 +273,9 @@ public class MineRock : MonoBehaviour
     void PlayFX(ParticleSystem[] effects)
     {
         if (effects == null)
+        {
             return;
+        }
 
         foreach (ParticleSystem fx in effects)
         {
@@ -287,7 +289,9 @@ public class MineRock : MonoBehaviour
     void StopFX(ParticleSystem[] effects)
     {
         if (effects == null)
+        {
             return;
+        }
 
         foreach (ParticleSystem fx in effects)
         {

@@ -2,10 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Master enemy script. Drives physics-based movement, spacing, targeting, and attack pacing.
-/// Attach to the Enemy root object (the one with the Rigidbody).
-/// </summary>
 [RequireComponent(typeof(Rigidbody))]
 public class CreatureDefs : MonoBehaviour
 {
@@ -198,6 +194,25 @@ public class CreatureDefs : MonoBehaviour
     // Expose health as a normalized percent (0..1) for external controllers (boss, UI, etc.)
     public float HealthPercent => Mathf.Clamp01(_health / maxHealth);
 
+    // --- New: health floor for bosses (prevent health dropping below a threshold while weakpoints active) ---
+    private float _healthFloorPercent = 0f; // 0..1. 0 means no floor.
+
+    /// <summary>
+    /// Set a minimum allowed health percent. Damage will not reduce health below this percentage of maxHealth.
+    /// </summary>
+    public void SetHealthFloorPercent(float percent)
+    {
+        _healthFloorPercent = Mathf.Clamp01(percent);
+    }
+
+    /// <summary>
+    /// Clear any health floor previously set.
+    /// </summary>
+    public void ClearHealthFloorPercent()
+    {
+        _healthFloorPercent = 0f;
+    }
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -205,11 +220,6 @@ public class CreatureDefs : MonoBehaviour
         _rb.interpolation = RigidbodyInterpolation.Interpolate;
         _health = maxHealth;
         _spawnPos = transform.position;
-
-        /*
-        playerInventory = PlayerInventory.instance;
-        invSO = playerInventory.invSO;
-        */
 
         _orbitSign = (Random.value < 0.5f) ? -1 : 1;
 
@@ -235,6 +245,7 @@ public class CreatureDefs : MonoBehaviour
     public void ResetHealth()
     {
         _health = maxHealth;
+        ClearHealthFloorPercent();
     }
 
     private void FixedUpdate()
@@ -815,7 +826,17 @@ public class CreatureDefs : MonoBehaviour
             amount = amount * 2;
         }
         
-        _health -= amount;
+        // Respect health floor (prevent health dropping below the floor while weakpoints / shield active)
+        float minHealth = _healthFloorPercent * maxHealth;
+        if (_health <= minHealth)
+            return; // already at floor, ignore damage
+
+        // Limit damage so health does not go below the floor
+        float allowedDamage = Mathf.Min(amount, _health - minHealth);
+        if (allowedDamage <= 0f)
+            return;
+
+        _health -= allowedDamage;
 
         if (controlLockSecondsOnHit > 0f)
             _controlLockUntil = Mathf.Max(_controlLockUntil, Time.time + controlLockSecondsOnHit);
@@ -870,7 +891,9 @@ public class CreatureDefs : MonoBehaviour
         if (isBossPenguinion)
         {
             boss = GameObject.FindFirstObjectByType<PengKingBoss>();
-            boss.UnregisterSpawnedMinion();
+
+            if (boss != null)
+                boss.UnregisterSpawnedMinion();
         }
             
 

@@ -24,6 +24,9 @@ public class PengKingBoss : MonoBehaviour
 
     public PlayerDamageReceiver playerDamageReceiver;
 
+    private readonly float[] healthThresholds = new float[] { 0.75f, 0.5f, 0.25f };
+    private int _nextThresholdIndex = 0;
+
     public void Awake()
     {
         DeactivateShield();
@@ -37,19 +40,20 @@ public class PengKingBoss : MonoBehaviour
 
     public void CheckBossHealth()
     {
+        if (pengKing == null) return;
+
         float currentHealth = pengKing.HealthPercent;
-        switch (currentHealth)
+
+        // Trigger the next threshold in sequence, only if there are no active weakpoints
+        if (_nextThresholdIndex < healthThresholds.Length &&
+            currentHealth <= healthThresholds[_nextThresholdIndex] &&
+            activeWeakpointsCount == 0)
         {
-            case <= 0.75f when activeWeakpointsCount == 0:
-                ActivateShieldAndRandomWeakpoints();
-                break;
-            case <= 0.5f when activeWeakpointsCount == 0:
-                ActivateShieldAndRandomWeakpoints();
-                break;
-            case <= 0.25f when activeWeakpointsCount == 0:
-                ActivateShieldAndRandomWeakpoints();
-                break;
+            float threshold = healthThresholds[_nextThresholdIndex];
+            ActivateShieldAndRandomWeakpoints(threshold);
+            _nextThresholdIndex++;
         }
+
         if (currentHealth <= 0)
         {
             isBossDead = true;
@@ -78,6 +82,18 @@ public class PengKingBoss : MonoBehaviour
         if (shieldRenderer != null)
             shieldRenderer.enabled = false;
 
+        // Remove invulnerability when the shield goes down
+        if (pengKing != null)
+        {
+            pengKing.ClearHealthFloorPercent();
+            // Make sure the boss can attack again when shield is down
+            pengKing.SetCanAttack(true, abortCurrentAttack: false);
+        }
+
+        // Keep phase state consistent
+        destroyedWeakpointsCount = 0;
+        activeWeakpointsCount = 0;
+
         if (isBossDead || !fightStarted)
         {
             if (arenaCollider != null)
@@ -89,7 +105,7 @@ public class PengKingBoss : MonoBehaviour
     }
 
 
-    public void ActivateShieldAndRandomWeakpoints()
+    public void ActivateShieldAndRandomWeakpoints(float floorThreshold = 0f)
     {
         if (shieldCollider != null)
             shieldCollider.enabled = true;
@@ -131,6 +147,12 @@ public class PengKingBoss : MonoBehaviour
         // Reset destroyed count for the new wave and set active count
         destroyedWeakpointsCount = 0;
         activeWeakpointsCount = toActivate;
+
+        // Set the boss health floor so it cannot drop below this threshold while wave is active
+        if (pengKing != null && floorThreshold > 0f)
+        {
+            pengKing.SetHealthFloorPercent(floorThreshold);
+        }
     }
 
     // --- API for spawn tracking ---
@@ -158,6 +180,14 @@ public class PengKingBoss : MonoBehaviour
         }
     }
 
+    private void DeactivateArena()
+    {
+        if (arenaCollider != null)
+            arenaCollider.enabled = false;
+        if (arenaRenderer != null)
+            arenaRenderer.enabled = false;
+    }
+
     private void CheckForPlayerDeath()
     {
         if (playerDamageReceiver != null)
@@ -168,6 +198,7 @@ public class PengKingBoss : MonoBehaviour
                 Debug.Log("Player has died during the boss fight!");
 
                 DeactivateShield();
+                DeactivateArena();
 
                 pengKing.ResetHealth();
 

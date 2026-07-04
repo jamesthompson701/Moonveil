@@ -30,6 +30,7 @@ public class FishingManager : MonoBehaviour
 
     [Header("Element UI")]
     public Image requiredElementImage;
+    public Sprite blankSprite;
     public Sprite fireSprite;
     public Sprite earthSprite;
     public Sprite waterSprite;
@@ -54,6 +55,19 @@ public class FishingManager : MonoBehaviour
     [Header("Bubble Phase")]
     public GameObject bubbleObject;
     public GameObject elementZones;
+
+    // SFX and VFX names need to be changed. e.g. bubblePhaseFX, this will probably need to be more granular than mining and wont be able to use many if any lists
+    [Header("SFX")]
+    private AudioSource audioSource; 
+    public AudioClip raiseSound;
+    public AudioClip successSound;
+    public AudioClip sinkSound;
+
+    [Header("VFX")]
+    public ParticleSystem[] raiseFX;
+    public ParticleSystem[] successFX;
+    public ParticleSystem[] failFX;
+    public ParticleSystem[] readyFX;
 
     private List<FishingFish> currentCapturedFish = new List<FishingFish>();
 
