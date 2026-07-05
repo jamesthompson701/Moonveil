@@ -9828,31 +9828,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: abb057436cb96ec4db22be2d8035a726, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.9699707
+      value: -12.286377
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: abb057436cb96ec4db22be2d8035a726, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.51
+      value: 2.3100002
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: abb057436cb96ec4db22be2d8035a726, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -94.30005
+      value: -91.55383
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: abb057436cb96ec4db22be2d8035a726, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5936899
+      value: 0.63001144
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: abb057436cb96ec4db22be2d8035a726, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.59368986
+      value: 0.63001144
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: abb057436cb96ec4db22be2d8035a726, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.3840994
+      value: 0.32106948
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: abb057436cb96ec4db22be2d8035a726, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.3840994
+      value: -0.32106948
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: abb057436cb96ec4db22be2d8035a726, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9864,7 +9864,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: abb057436cb96ec4db22be2d8035a726, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -65.803
+      value: -54.009
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: abb057436cb96ec4db22be2d8035a726, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -13237,42 +13237,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0517d0f09b858421189227f380fd0e2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishingManager
-  mainCamera: {fileID: 1882793647}
-  fishingCamera: {fileID: 0}
-  player: {fileID: 1677809325087806448}
-  fishingRodPrefab: {fileID: -7491454401108787118, guid: e12decdfec8792542ae95753a67176d4, type: 3}
-  rodParent: {fileID: 0}
-  miniGameUI: {fileID: 1386901151}
+  currentPhase: 0
   biomeUIs:
-  - biome: 0
-    fishingCamera: {fileID: 0}
-    fishingCanvas: {fileID: 684808137}
-    miniGameUI: {fileID: 1386901151}
-    promptText: {fileID: 1858721467}
-    fishingVisuals: {fileID: 0}
-    rod: {fileID: 0}
-  - biome: 1
-    fishingCamera: {fileID: 0}
-    fishingCanvas: {fileID: 1782708220}
-    miniGameUI: {fileID: 1167722527}
-    promptText: {fileID: 1800933912}
-    fishingVisuals: {fileID: 0}
-    rod: {fileID: 0}
-  - biome: 2
-    fishingCamera: {fileID: 0}
-    fishingCanvas: {fileID: 1979336849}
-    miniGameUI: {fileID: 1811550207}
-    promptText: {fileID: 1825459633}
-    fishingVisuals: {fileID: 0}
-    rod: {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  player: {fileID: 1677809325087806448}
+  cameraAnchor: {fileID: 0}
   startFishingPrompt: {fileID: 61568661}
-  startFishingInput: Fire2
-  castInput: Fire1
-  reelInput: Jump
-  postCastDelay: 1
+  requiredElementImage: {fileID: 0}
+  blankSprite: {fileID: 0}
+  fireSprite: {fileID: 0}
+  earthSprite: {fileID: 0}
+  waterSprite: {fileID: 0}
+  airSprite: {fileID: 0}
   currentArea: {fileID: 0}
-  currentRod: {fileID: 0}
   inFishingMode: 0
+  captureCircle: {fileID: 0}
+  bubbleObject: {fileID: 0}
+  elementZones: {fileID: 0}
+  raiseSound: {fileID: 0}
+  successSound: {fileID: 0}
+  sinkSound: {fileID: 0}
+  raiseFX: []
+  successFX: []
+  failFX: []
+  readyFX: []
 --- !u!1001 &470551244
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19875,11 +19865,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 680038747}
   m_Mesh: {fileID: 3036672301982283439, guid: 81422671c1cf56e4aab47a60ec9f8b7c, type: 3}
---- !u!223 &684808137 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 288084592498464725, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
-  m_PrefabInstance: {fileID: 1974277211}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &689565393
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22001,24 +21986,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!1 &764700192
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c56efb3d2d1c8a74f8dcd55fc8890bd0, type: 3}
-  m_PrefabInstance: {fileID: 818439156}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 818439157}
-  - component: {fileID: 818439159}
-  - component: {fileID: 818439158}
-  m_Layer: 0
-  m_Name: Lmoreno_Treestump_01
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1001 &766029984
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24628,78 +24595,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c56efb3d2d1c8a74f8dcd55fc8890bd0, type: 3}
---- !u!4 &818439157
+--- !u!4 &818439157 stripped
 Transform:
-  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c56efb3d2d1c8a74f8dcd55fc8890bd0, type: 3}
   m_PrefabInstance: {fileID: 818439156}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 764700192}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.57646716, y: -0.57646716, z: 0.40949446, w: 0.40949428}
-  m_LocalPosition: {x: 53.356445, y: 0.008183479, z: 37.59839}
-  m_LocalScale: {x: 0.130888, y: 0.130888, z: 0.130888}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 900380678}
-  m_LocalEulerAnglesHint: {x: 0, y: -109.224, z: 90}
---- !u!23 &818439158
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: c56efb3d2d1c8a74f8dcd55fc8890bd0, type: 3}
-  m_PrefabInstance: {fileID: 818439156}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 764700192}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &818439159
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: -5754084199372789682, guid: c56efb3d2d1c8a74f8dcd55fc8890bd0, type: 3}
-  m_PrefabInstance: {fileID: 818439156}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 764700192}
-  m_Mesh: {fileID: 717886694159632327, guid: c56efb3d2d1c8a74f8dcd55fc8890bd0, type: 3}
 --- !u!1 &820960274
 GameObject:
   m_ObjectHideFlags: 0
@@ -36830,17 +36730,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 600107896c73b43458535b79aedc7b7d, type: 3}
---- !u!114 &1167722527 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8044672911224937250, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
-  m_PrefabInstance: {fileID: 953599310}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fba04ddae7d6a43c4bce363f3eb5aabe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FishingMiniGameUI
 --- !u!4 &1171894837 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 891126372701072223, guid: 9c612b938e9638b43a39578918b78b1e, type: 3}
@@ -43331,17 +43220,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2284076018216064113, guid: c34c443b1b9638944a593c223e8027e3, type: 3}
   m_PrefabInstance: {fileID: 1386596666}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1386901151 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8044672911224937250, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
-  m_PrefabInstance: {fileID: 1974277211}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fba04ddae7d6a43c4bce363f3eb5aabe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FishingMiniGameUI
 --- !u!1001 &1391306956
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47251,6 +47129,9 @@ MonoBehaviour:
   daylightCycleTime: 0
   worldLight: {fileID: 1950319899}
   sun: {fileID: 273712672}
+  blackout: {fileID: 0}
+  isBlackout: 0
+  blackoutTimer: 0
   night: {fileID: 2100000, guid: 1065b432639a84123a07ea43fe5ba4c9, type: 2}
   day: {fileID: 2100000, guid: 99a400087584f4263b1a8979d6007ad4, type: 2}
   tutorialDone: 1
@@ -47632,6 +47513,8 @@ MonoBehaviour:
   distanceWeight: 1
   fairnessWeight: 0.7
   randomWeight: 0.35
+  isSourSorceryActive: 0
+  sourSorceryTimer: 0
 --- !u!4 &1588735099
 Transform:
   m_ObjectHideFlags: 0
@@ -54309,11 +54192,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8906750831039749364, guid: 84da7e5defcebe143ac374ecbba501c2, type: 3}
   m_PrefabInstance: {fileID: 1779218307}
   m_PrefabAsset: {fileID: 0}
---- !u!223 &1782708220 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 288084592498464725, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
-  m_PrefabInstance: {fileID: 953599310}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1784539554
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55519,17 +55397,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cfe7269133bdcd498aca36104c4422e, type: 3}
---- !u!114 &1811550207 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8044672911224937250, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
-  m_PrefabInstance: {fileID: 400894776}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fba04ddae7d6a43c4bce363f3eb5aabe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FishingMiniGameUI
 --- !u!1001 &1812472500
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58356,11 +58223,6 @@ PrefabInstance:
 --- !u!1 &1882793646 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8944336655422409498, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
-  m_PrefabInstance: {fileID: 1882793645}
-  m_PrefabAsset: {fileID: 0}
---- !u!20 &1882793647 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 8944336655422409496, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
   m_PrefabInstance: {fileID: 1882793645}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1882793648
@@ -61521,11 +61383,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4603188895508139855, guid: 7cfe7269133bdcd498aca36104c4422e, type: 3}
   m_PrefabInstance: {fileID: 21455016}
-  m_PrefabAsset: {fileID: 0}
---- !u!223 &1979336849 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 288084592498464725, guid: d5b987bce715947f1aadf67cf13a3b09, type: 3}
-  m_PrefabInstance: {fileID: 400894776}
   m_PrefabAsset: {fileID: 0}
 --- !u!82 &1979336852
 AudioSource:
