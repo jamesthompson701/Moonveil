@@ -16,6 +16,16 @@ public class TutorialStep : MonoBehaviour
         Interact
     }
 
+    public enum ActivationMode
+    {
+        Immediate,
+        Proximity,
+        Interactable
+    }
+
+    [Header("Activation")]
+    public ActivationMode activationMode = ActivationMode.Immediate;
+
     [Header("Tutorial Event To Listen For")]
     public TutorialEventType requiredEvent;
 
@@ -26,25 +36,148 @@ public class TutorialStep : MonoBehaviour
     [Header("Next Step")]
     public GameObject nextTutorialStep;
 
+    [Header("Proximity Settings")]
+    public Transform player;
+    public Transform proximityTarget;
+    public float proximityDistance = 5f;
+
+    [Header("Interactable Settings")]
+    public Interactable interactableTarget;
+
+    [Header("Dialogue Behavior")]
+    public bool closeDialogueOnComplete = true;
+
+    private bool hasStarted;
     private bool hasCompleted;
+    private bool listeningForTutorialEvent;
+    private bool listeningForInteractableActivation;
+    private bool listeningForInteractableCompletion;
 
     private void OnEnable()
     {
-        SubscribeToEvent();
+        Debug.Log($"{name} TutorialStep OnEnable. Activation: {activationMode}, Start Conversation: {startConversation}");
+        hasStarted = false;
+        hasCompleted = false;
+        listeningForTutorialEvent = false;
+        listeningForInteractableActivation = false;
+        listeningForInteractableCompletion = false;
 
-        if (!string.IsNullOrEmpty(startConversation))
+        if (activationMode == ActivationMode.Immediate)
         {
-            DialogueManager.StartConversation(startConversation);
+            BeginStep();
+        }
+        else if (activationMode == ActivationMode.Interactable)
+        {
+            SubscribeToInteractableActivation();
+        }
+    }
+
+    private void Update()
+    {
+        if (hasStarted || hasCompleted) return;
+
+        if (activationMode != ActivationMode.Proximity) return;
+
+        if (player == null || proximityTarget == null) return;
+
+        float distance = Vector3.Distance(player.position, proximityTarget.position);
+
+        if (distance <= proximityDistance)
+        {
+            BeginStep();
         }
     }
 
     private void OnDisable()
     {
-        UnsubscribeFromEvent();
+        UnsubscribeFromTutorialEvent();
+        UnsubscribeFromInteractableActivation();
+        UnsubscribeFromInteractableCompletion();
     }
 
-    private void SubscribeToEvent()
+    private void BeginStep()
     {
+        if (hasStarted || hasCompleted) return;
+
+        hasStarted = true;
+
+        if (!string.IsNullOrEmpty(startConversation))
+        {
+            DialogueManager.StartConversation(startConversation);
+        }
+
+        SubscribeToTutorialEvent();
+    }
+
+    private void SubscribeToInteractableActivation()
+    {
+        if (listeningForInteractableActivation) return;
+
+        listeningForInteractableActivation = true;
+        Interactable.OnAnyInteract += OnInteractableUsedForActivation;
+    }
+
+    private void UnsubscribeFromInteractableActivation()
+    {
+        if (!listeningForInteractableActivation) return;
+
+        Interactable.OnAnyInteract -= OnInteractableUsedForActivation;
+        listeningForInteractableActivation = false;
+    }
+
+    private void SubscribeToInteractableCompletion()
+    {
+        if (listeningForInteractableCompletion) return;
+
+        listeningForInteractableCompletion = true;
+        Interactable.OnAnyInteract += OnInteractableUsedForCompletion;
+    }
+
+    private void UnsubscribeFromInteractableCompletion()
+    {
+        if (!listeningForInteractableCompletion) return;
+
+        Interactable.OnAnyInteract -= OnInteractableUsedForCompletion;
+        listeningForInteractableCompletion = false;
+    }
+
+    private void OnInteractableUsedForActivation(Interactable interactedObject)
+    {
+        if (hasStarted || hasCompleted) return;
+
+        if (interactableTarget != null && interactedObject != interactableTarget)
+        {
+            return;
+        }
+
+        UnsubscribeFromInteractableActivation();
+
+        BeginStep();
+
+        if (requiredEvent == TutorialEventType.Interact)
+        {
+            CompleteStep();
+        }
+    }
+
+    private void OnInteractableUsedForCompletion(Interactable interactedObject)
+    {
+        if (!hasStarted || hasCompleted) return;
+
+        if (interactableTarget != null && interactedObject != interactableTarget)
+        {
+            return;
+        }
+
+        CompleteStep();
+    }
+
+    private void SubscribeToTutorialEvent()
+    {
+        if (listeningForTutorialEvent) return;
+
+        listeningForTutorialEvent = true;
+
         switch (requiredEvent)
         {
             case TutorialEventType.MoveForward:
@@ -72,13 +205,22 @@ public class TutorialStep : MonoBehaviour
                 TutorialEvents.Look += CompleteStep;
                 break;
             case TutorialEventType.Interact:
-                TutorialEvents.Interact += CompleteStep;
+                if (interactableTarget != null)
+                {
+                    SubscribeToInteractableCompletion();
+                }
+                else
+                {
+                    TutorialEvents.Interact += CompleteStep;
+                }
                 break;
         }
     }
 
-    private void UnsubscribeFromEvent()
+    private void UnsubscribeFromTutorialEvent()
     {
+        if (!listeningForTutorialEvent) return;
+
         TutorialEvents.MoveForward -= CompleteStep;
         TutorialEvents.MoveBackward -= CompleteStep;
         TutorialEvents.MoveLeft -= CompleteStep;
@@ -88,6 +230,8 @@ public class TutorialStep : MonoBehaviour
         TutorialEvents.Fly -= CompleteStep;
         TutorialEvents.Look -= CompleteStep;
         TutorialEvents.Interact -= CompleteStep;
+
+        listeningForTutorialEvent = false;
     }
 
     private void CompleteStep()
@@ -95,19 +239,36 @@ public class TutorialStep : MonoBehaviour
         if (hasCompleted) return;
 
         hasCompleted = true;
-        DialogueManager.Instance.standardDialogueUI.OnContinueConversation();
-        UnsubscribeFromEvent();
+
+        GameObject next = nextTutorialStep;
+
+        UnsubscribeFromTutorialEvent();
+        UnsubscribeFromInteractableActivation();
+        UnsubscribeFromInteractableCompletion();
+
+        if (closeDialogueOnComplete && DialogueManager.IsConversationActive)
+        {
+            DialogueManager.StopConversation();
+        }
 
         if (!string.IsNullOrEmpty(completeConversation))
         {
             DialogueManager.StartConversation(completeConversation);
         }
 
-        if (nextTutorialStep != null)
-        {
-            nextTutorialStep.SetActive(true);
-        }
-
         gameObject.SetActive(false);
+
+        if (next != null)
+        {
+            next.SetActive(true);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (activationMode != ActivationMode.Proximity) return;
+        if (proximityTarget == null) return;
+
+        Gizmos.DrawWireSphere(proximityTarget.position, proximityDistance);
     }
 }

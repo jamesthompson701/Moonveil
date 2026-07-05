@@ -5,6 +5,8 @@ using UnityEngine.ProBuilder.MeshOperations;
 
 public class Interactable : MonoBehaviour
 {
+    public static event System.Action<Interactable> OnAnyInteract;
+
     private Renderer rend;
     private Color originalColor;
 
@@ -19,6 +21,8 @@ public class Interactable : MonoBehaviour
     // This method will be called by our ClickSelector
     public virtual void OnInteract()
     {
+        OnAnyInteract?.Invoke(this);
+        Debug.Log($"OnInteract called on {name}");
         if (gameObject.CompareTag("Soil"))                 
         {
             //reference to soil being clicked
