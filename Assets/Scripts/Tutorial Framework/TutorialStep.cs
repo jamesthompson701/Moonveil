@@ -13,7 +13,11 @@ public class TutorialStep : MonoBehaviour
         Sprint,
         Fly,
         Look,
-        Interact
+        Interact,
+        Till,
+        Plant,
+        Water,
+        Harvest
     }
 
     public enum ActivationMode
@@ -214,6 +218,18 @@ public class TutorialStep : MonoBehaviour
                     TutorialEvents.Interact += CompleteStep;
                 }
                 break;
+            case TutorialEventType.Till:
+                TutorialEvents.Till += CompleteStep;
+                break;
+            case TutorialEventType.Plant:
+                TutorialEvents.Plant += CompleteStep;
+                break;
+            case TutorialEventType.Water:
+                TutorialEvents.Water += CompleteStep;
+                break;
+            case TutorialEventType.Harvest:
+                TutorialEvents.Harvest += CompleteStep;
+                break;
         }
     }
 
@@ -230,6 +246,10 @@ public class TutorialStep : MonoBehaviour
         TutorialEvents.Fly -= CompleteStep;
         TutorialEvents.Look -= CompleteStep;
         TutorialEvents.Interact -= CompleteStep;
+        TutorialEvents.Till -= CompleteStep;
+        TutorialEvents.Plant -= CompleteStep;
+        TutorialEvents.Water -= CompleteStep;
+        TutorialEvents.Harvest -= CompleteStep;
 
         listeningForTutorialEvent = false;
     }

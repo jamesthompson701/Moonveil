@@ -53,18 +53,6 @@ public class PlantObject : MonoBehaviour
             currentStage = 0;
             currentPlant = Instantiate(plant.GetPrefabByStage(currentStage), transform);
             isSet = true;
-
-            //tutorial
-            if (TutorialManager.instance != null && !TutorialManager.instance.planting)
-            {
-                //completes billboard 3: plant seeds
-                if (TutorialManager.instance.currentBillboard == 2)
-                {
-                    TutorialManager.instance.ProgressTutorial(3);
-                    TutorialManager.instance.planting = true;
-                }
-
-            }
         }
 
         //increment the dry timer while dry
@@ -83,13 +71,6 @@ public class PlantObject : MonoBehaviour
         {
             growthTime = growthTime - deltaTime;
             Unwither();
-
-            //grow twice as fast before the tutorial is complete
-            if (!TutorialManager.instance.harvesting)
-            {
-                growthTime = growthTime - (deltaTime * 100);
-            }
-
 
         }
         else if (growthTime <= 0)
@@ -161,22 +142,6 @@ public class PlantObject : MonoBehaviour
     //add the correct items to the player's inventory and then unregisters and destroys the plant
     public void Harvest()
     {
-        //tutorial
-        if (TutorialManager.instance != null && !TutorialManager.instance.harvesting)
-        {
-            //completes billboard 5: harvest crops
-            if(TutorialManager.instance.currentBillboard == 4)
-            {
-                Debug.Log("Harvasted :" + plant.plantName);
-                if (plant.plantName == "Wool Of Bat")
-                {
-                    TutorialManager.instance.ProgressTutorial(5);
-                    TutorialManager.instance.harvesting = true;
-                }
-            }
-
-        }
-
         InventoryManager.instance.invSO.AddItem(plant.fruit, 1);
 
         Debug.Log("Harvested");

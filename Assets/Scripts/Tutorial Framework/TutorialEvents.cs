@@ -11,6 +11,10 @@ public static class TutorialEvents
     public static event Action Fly;
     public static event Action Look;
     public static event Action Interact;
+    public static event Action Till;
+    public static event Action Plant;
+    public static event Action Water;
+    public static event Action Harvest;
 
     public static void TriggerMoveForward() => MoveForward?.Invoke();
     public static void TriggerMoveBackward() => MoveBackward?.Invoke();
@@ -21,4 +25,8 @@ public static class TutorialEvents
     public static void TriggerFly() => Fly?.Invoke();
     public static void TriggerLook() => Look?.Invoke();
     public static void TriggerInteract() => Interact?.Invoke();
+    public static void TriggerTill() => Till?.Invoke();
+    public static void TriggerPlant() => Plant?.Invoke();
+    public static void TriggerWater() => Water?.Invoke();
+    public static void TriggerHarvest() => Harvest?.Invoke();
 }
