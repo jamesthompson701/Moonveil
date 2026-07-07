@@ -27,12 +27,20 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
     private bool hasFlown;
     private bool hasLooked;
     private bool hasInteracted;
+    private bool tilled;
+    private bool planted;
+    private bool watered;
+    private bool harvested;
 
     private void Update()
     {
         CheckMovementInput();
         CheckButtonInput();
         CheckMouseLookInput();
+        CheckIfTilled();
+        CheckIfPlanted();
+        CheckIfWatered();
+        CheckIfHarvested();
     }
 
     private void CheckMovementInput()
@@ -101,6 +109,40 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
         {
             hasLooked = true;
             TutorialEvents.TriggerLook();
+        }
+    }
+
+    private void CheckIfTilled()
+    {
+        if (!tilled && TimeManager.instance.tilledDone == true)
+        {
+            tilled = true;
+            TutorialEvents.TriggerTill();
+            Debug.Log("tilled complete");
+        }
+    }
+    private void CheckIfPlanted()
+    {
+        if (!planted && TimeManager.instance.plantDone == true)
+        {
+            planted = true;
+            TutorialEvents.TriggerPlant();
+        }
+    }
+    private void CheckIfWatered()
+    {
+        if (!watered && TimeManager.instance.waterDone == true)
+        {
+            watered = true;
+            TutorialEvents.TriggerWater();
+        }
+    }
+    private void CheckIfHarvested()
+    {
+        if (!harvested && TimeManager.instance.harvestDone == true)
+        {
+            harvested = true;
+            TutorialEvents.TriggerHarvest();
         }
     }
 
