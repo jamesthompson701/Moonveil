@@ -78,7 +78,6 @@ public class TutorialStep : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log($"{name} TutorialStep OnEnable. Activation: {activationMode}, Start Conversation: {startConversation}");
         hasStarted = false;
         hasCompleted = false;
         listeningForTutorialEvent = false;
