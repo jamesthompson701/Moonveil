@@ -607,9 +607,18 @@ namespace StarterAssets
 
             Vector3 targetPlanarVelocity = targetDirection * targetSpeed;
 
-            float velocityChangeRate = hasMoveInput
-                ? FlightVelocityAcceleration
-                : FlightVelocityDeceleration;
+            // Increase deceleration when input is released so player stops faster and does not slide into walls.
+            float velocityChangeRate;
+            if (hasMoveInput)
+            {
+                velocityChangeRate = FlightVelocityAcceleration;
+            }
+            else
+            {
+                // Apply a stronger deceleration multiplier when coasting to a stop.
+                const float stopDecelerationMultiplier = 3.5f;
+                velocityChangeRate = FlightVelocityDeceleration * stopDecelerationMultiplier;
+            }
 
             // Smooth the velocity vector rather than repeatedly using
             // CharacterController.velocity as the starting value.
@@ -618,6 +627,12 @@ namespace StarterAssets
                 targetPlanarVelocity,
                 velocityChangeRate * Time.deltaTime
             );
+
+            // Snap very small residual velocity to zero to avoid minor drift that can cause collisions with walls.
+            if (!hasMoveInput && _flightPlanarVelocity.sqrMagnitude <= 0.02f * 0.02f)
+            {
+                _flightPlanarVelocity = Vector3.zero;
+            }
 
             if (hasMoveInput)
             {
