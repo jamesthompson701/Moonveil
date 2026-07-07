@@ -31,6 +31,8 @@ public class MineRock : MonoBehaviour
     private Vector3 buriedPosition;
     private Vector3 raisedPosition;
 
+    [SerializeField] float raiseDistance = 5f;
+
     [Header("SFX")]
     private AudioSource audioSource;
     public AudioClip raiseSound;
@@ -47,7 +49,7 @@ public class MineRock : MonoBehaviour
     {
         buriedPosition = transform.position;
 
-        raisedPosition = buriedPosition + Vector3.up * 5f;
+        raisedPosition = buriedPosition + transform.up * raiseDistance;
 
         audioSource = GetComponent<AudioSource>();
 
