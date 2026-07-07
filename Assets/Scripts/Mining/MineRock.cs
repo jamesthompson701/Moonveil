@@ -8,20 +8,12 @@ public enum MineralType
 
 public class MineRock : MonoBehaviour
 {
-    /*[Header("Gem Visual")]
-    public Renderer[] gemRenderers;
-
-    public Material fireMaterial;
-    public Material waterMaterial;
-    public Material airMaterial;*/
-
     [Header("Gem Models")]
     public GameObject fireGems;
     public GameObject waterGems;
     public GameObject airGems;
 
     [Header("Reward")]
-    //public ItemSO rewardGem;
     public ItemSO fireReward;
     public ItemSO waterReward;
     public ItemSO airReward;
@@ -63,24 +55,12 @@ public class MineRock : MonoBehaviour
 
         transform.position = buriedPosition;
 
-        //SetGemVisible(false);
         HideAllGems();
 
-        PlayFX(readyFX);
+        ShowReadyFX();
 
         //Debug.Log(name + " gem count = " + gemRenderers.Length);
     }
-
-    /*void SetGemMaterial(Material mat)
-    {
-        if (gemRenderers == null)
-            return;
-
-        foreach (Renderer r in gemRenderers)
-        {
-            r.material = mat;
-        }
-    }*/
 
     void ShowGemType(MineralType type)
     {
@@ -88,19 +68,6 @@ public class MineRock : MonoBehaviour
         waterGems.SetActive(type == MineralType.Water);
         airGems.SetActive(type == MineralType.Air);
     }
-
-    /*void SetGemVisible(bool visible)
-    {
-        if (gemRenderers == null)
-        {
-            return;
-        }
-
-        foreach (Renderer r in gemRenderers)
-        {
-            r.enabled = visible;
-        }
-    }*/
 
     public void Interact()
     {
@@ -146,11 +113,10 @@ public class MineRock : MonoBehaviour
     {
         //Debug.Log(name + " buried: " + buriedPosition);
 
-        StopFX(readyFX);
+        HideReadyFX();
 
         raised = true;
 
-        //SetGemVisible(true);
         ShowGemType(requiredType);
 
         transform.position = raisedPosition;
@@ -158,27 +124,6 @@ public class MineRock : MonoBehaviour
         PlayFX(raiseFX);
 
         requiredType = (MineralType)Random.Range(0, 3);
-
-        /*switch (requiredType)
-        {
-            case MineralType.Fire:
-                {
-                    SetGemMaterial(fireMaterial);
-                    break;
-                }
-
-            case MineralType.Water:
-                {
-                    SetGemMaterial(waterMaterial);
-                    break;
-                }
-
-            case MineralType.Air:
-                {
-                    SetGemMaterial(airMaterial);
-                    break;
-                }
-        }*/
 
         ShowGemType(requiredType);
 
@@ -222,7 +167,6 @@ public class MineRock : MonoBehaviour
 
         PlayFX(successFX);
 
-        //InventoryManager.instance.invSO.AddItem(rewardGem, 1);
         switch(requiredType)
         {
             case MineralType.Fire:
@@ -275,7 +219,6 @@ public class MineRock : MonoBehaviour
         raised = false;
         onCooldown = true;
 
-        //SetGemVisible(false);
         HideAllGems();
 
         if (audioSource && sinkSound)
@@ -290,7 +233,10 @@ public class MineRock : MonoBehaviour
 
         onCooldown = false;
 
-        PlayFX(readyFX); // need to make a thing that checks for if its off cooldown and put this there.
+        PlayFX(readyFX);
+        ShowReadyFX();
+
+        onCooldown = false;
     }
 
     IEnumerator SinkRock()
@@ -313,21 +259,6 @@ public class MineRock : MonoBehaviour
         transform.position = buriedPosition;
     }
 
-    /*void PlayFX(ParticleSystem[] effects)
-    {
-        if (effects == null)
-        {
-            return;
-        }
-
-        foreach (ParticleSystem fx in effects)
-        {
-            if (fx != null)
-            {
-                fx.Play();
-            }
-        }
-    }*/
     void PlayFX(ParticleSystem[] effects)
     {
         if (effects == null)
@@ -338,26 +269,14 @@ public class MineRock : MonoBehaviour
             if (fx == null)
                 continue;
 
+            fx.gameObject.SetActive(true);
+
+            fx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             fx.Clear();
-            fx.Play(true);
+            fx.Simulate(0f, true, true);
+            fx.Play();
         }
     }
-
-    /*void StopFX(ParticleSystem[] effects)
-    {
-        if (effects == null)
-        {
-            return;
-        }
-
-        foreach (ParticleSystem fx in effects)
-        {
-            if (fx != null)
-            {
-                fx.Stop();
-            }
-        }
-    }*/
 
     void StopFX(ParticleSystem[] effects)
     {
@@ -370,6 +289,25 @@ public class MineRock : MonoBehaviour
                 continue;
 
             fx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+    }
+
+    //damn sparkle
+    void ShowReadyFX()
+    {
+        foreach (ParticleSystem fx in readyFX)
+        {
+            if (fx != null)
+                fx.gameObject.SetActive(true);
+        }
+    }
+
+    void HideReadyFX()
+    {
+        foreach (ParticleSystem fx in readyFX)
+        {
+            if (fx != null)
+                fx.gameObject.SetActive(false);
         }
     }
 }
