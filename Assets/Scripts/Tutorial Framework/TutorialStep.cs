@@ -47,6 +47,7 @@ public class TutorialStep : MonoBehaviour
     [Header("Dialogue Behavior")]
     public bool closeDialogueOnComplete = true;
 
+    private static TutorialStep activeInstruction;
     private bool hasStarted;
     private bool hasCompleted;
     private bool listeningForTutorialEvent;
@@ -99,14 +100,23 @@ public class TutorialStep : MonoBehaviour
     {
         if (hasStarted || hasCompleted) return;
 
+        if (activeInstruction != null && activeInstruction != this)
+        {
+            return;
+        }
+
+        activeInstruction = this;
         hasStarted = true;
 
         if (!string.IsNullOrEmpty(startConversation))
         {
             DialogueManager.StartConversation(startConversation);
+            Invoke(nameof(SubscribeToTutorialEvent), 0.5f);
         }
-
-        SubscribeToTutorialEvent();
+        else
+        {
+            SubscribeToTutorialEvent();
+        }
     }
 
     private void SubscribeToInteractableActivation()
@@ -254,6 +264,11 @@ public class TutorialStep : MonoBehaviour
         if (!string.IsNullOrEmpty(completeConversation))
         {
             DialogueManager.StartConversation(completeConversation);
+        }
+
+        if (activeInstruction == this)
+        {
+            activeInstruction = null;
         }
 
         gameObject.SetActive(false);

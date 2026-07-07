@@ -40,6 +40,20 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
         float horizontal = Input.GetAxisRaw(horizontalAxis);
         float vertical = Input.GetAxisRaw(verticalAxis);
 
+        float resetThreshold = movementThreshold * 0.5f;
+
+        if (Mathf.Abs(vertical) < resetThreshold)
+        {
+            hasMovedForward = false;
+            hasMovedBackward = false;
+        }
+
+        if (Mathf.Abs(horizontal) < resetThreshold)
+        {
+            hasMovedLeft = false;
+            hasMovedRight = false;
+        }
+
         if (!hasMovedForward && vertical > movementThreshold)
         {
             hasMovedForward = true;
@@ -85,7 +99,7 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
             TutorialEvents.TriggerFly();
         }
 
-        if (!hasInteracted && Input.GetButtonDown(interactButton))
+        if (!hasInteracted && Input.GetMouseButtonDown(1))
         {
             hasInteracted = true;
             TutorialEvents.TriggerInteract();
