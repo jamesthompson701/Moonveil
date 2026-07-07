@@ -11,9 +11,10 @@ public class ShakeableSpawner : MonoBehaviour
     //how many seeds are currently available to spawn
     private int currentSeeds;
 
-    private void Start()
+    private void Awake()
     {
-        GetComponent<TerrainCollider>().enabled = false;
+        Debug.Log("Tree awake called");
+        //GetComponent<TerrainCollider>().enabled = false;
         currentSeeds = 3;
     }
 
@@ -23,6 +24,7 @@ public class ShakeableSpawner : MonoBehaviour
         Debug.Log("[Trigger] " + other.tag);
         if (other.CompareTag("HarvestSpell") || other.CompareTag("AirAttack"))
         {
+            Debug.Log("Activated Harvest Check, current seeds in tree is : " + currentSeeds);
             if (currentSeeds > 0)
             {
                 Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
