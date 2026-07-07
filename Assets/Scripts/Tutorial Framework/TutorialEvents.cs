@@ -1,5 +1,24 @@
 using System;
 
+/*
+HOW TO ADD A NEW TUTORIAL EVENT
+
+1. Add the event below:
+    public static event Action MyEvent;
+
+2. Add a trigger:
+    public static void TriggerMyEvent()
+    {
+        MyEvent?.Invoke();
+    }
+
+3. Add MyEvent to TutorialStep's enum.
+
+4. Subscribe/Unsubscribe inside TutorialStep.
+
+5. Call TutorialEvents.TriggerMyEvent()
+   from your gameplay script when the action occurs.
+*/
 public static class TutorialEvents
 {
     public static event Action MoveForward;

@@ -1,5 +1,16 @@
 using UnityEngine;
 
+/*
+This script is ONLY for generic player inputs
+(move, jump, sprint, look, interact, etc.)
+
+If your tutorial event happens because gameplay succeeded
+(harvesting, fishing, crafting, quest complete, etc.)
+DO NOT ADD IT HERE.
+
+Instead, call TutorialEvents.TriggerYourEvent()
+from the gameplay script that already knows it happened.
+*/
 public class TutorialInputEventBroadcaster : MonoBehaviour
 {
     [Header("Movement Axis Names")]

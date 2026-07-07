@@ -1,6 +1,28 @@
 using UnityEngine;
 using PixelCrushers.DialogueSystem;
 
+/*
+=========================
+HOW TO ADD A NEW EVENT
+=========================
+
+1. Add it to TutorialEventType.
+
+2. In SubscribeToTutorialEvent():
+
+    case TutorialEventType.MyEvent:
+        TutorialEvents.MyEvent += CompleteStep;
+        break;
+
+3. In UnsubscribeFromTutorialEvent():
+
+    TutorialEvents.MyEvent -= CompleteStep;
+
+4. Trigger it from either:
+   - TutorialInputEventBroadcaster (for player input)
+   - Your gameplay script (for game events)
+
+*/
 public class TutorialStep : MonoBehaviour
 {
     public enum TutorialEventType
@@ -153,6 +175,8 @@ public class TutorialStep : MonoBehaviour
 
     private void OnInteractableUsedForActivation(Interactable interactedObject)
     {
+        if (Time.timeScale == 0f) return;
+
         if (hasStarted || hasCompleted) return;
 
         if (interactableTarget != null && interactedObject != interactableTarget)
@@ -172,6 +196,8 @@ public class TutorialStep : MonoBehaviour
 
     private void OnInteractableUsedForCompletion(Interactable interactedObject)
     {
+        if (Time.timeScale == 0f) return;
+
         if (!hasStarted || hasCompleted) return;
 
         if (interactableTarget != null && interactedObject != interactableTarget)
@@ -246,6 +272,8 @@ public class TutorialStep : MonoBehaviour
 
     private void CompleteStep()
     {
+        if (Time.timeScale == 0f) return;
+
         if (hasCompleted) return;
 
         hasCompleted = true;
