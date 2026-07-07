@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5759385391689303101}
   - component: {fileID: 159934641046901730}
   - component: {fileID: 5637286600809990493}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Oak_Tree_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1987626141396757798}
   - component: {fileID: 4358330267301051598}
-  m_Layer: 0
+  - component: {fileID: 5058106573259132245}
+  - component: {fileID: 4609882281217454697}
+  m_Layer: 11
   m_Name: Oak_Tree_Unity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,6 +165,43 @@ LODGroup:
     renderers:
     - renderer: {fileID: 159934641046901730}
   m_Enabled: 1
+--- !u!114 &5058106573259132245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4991077757369842797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 223b31e5d57006445975dc82dab0e0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShakeableSpawner
+  seed: {fileID: 3634057373309006770, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
+  shakenParticle: {fileID: 8072256080154519084, guid: 45f24b31888e0c44295f968255a7cc7e, type: 3}
+--- !u!136 &4609882281217454697
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4991077757369842797}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 5.5401335
+  m_Direction: 1
+  m_Center: {x: 0, y: 2.2700667, z: 0}
 --- !u!1 &6138767963886848269
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,7 +214,7 @@ GameObject:
   - component: {fileID: 2299635350874738363}
   - component: {fileID: 7809185393932051896}
   - component: {fileID: 9139469400176744328}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Oak_Tree_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +315,7 @@ GameObject:
   - component: {fileID: 5622858528935114962}
   - component: {fileID: 8860544186170855220}
   - component: {fileID: 8077382596985971476}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Oak_Tree_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
