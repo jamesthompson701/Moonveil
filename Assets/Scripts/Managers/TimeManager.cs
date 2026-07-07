@@ -54,7 +54,11 @@ public class TimeManager : MonoBehaviour
     private float currentBlend;
 
     //tutorial
-    public bool tutorialDone;
+    public bool tilledDone;
+    public bool plantDone;
+    public bool waterDone;
+    public bool harvestDone;
+    public bool plantingTutorialComplete;
 
     private void Awake()
     {
@@ -102,6 +106,93 @@ public class TimeManager : MonoBehaviour
 
     public void Update()
     {
+        //TUTORIAL STUFF START
+        foreach (SoilObject soil in soilObjects)
+        {
+            if(soil.tilled)
+            {
+                tilledDone = true;
+                TutorialEvents.TriggerTill();
+            }
+            if(soil.isWet)
+            {
+                waterDone = true;
+                TutorialEvents.TriggerWater();
+            }
+        }
+        if (plantObjects.Count > 0)
+        {
+            plantDone = true;
+            TutorialEvents.TriggerPlant();
+        }
+        foreach (InventoryItem item in InventoryManager.instance.invSO.InventoryItems)
+        {
+            switch (item.item.itemID)
+            {
+                case 0:
+                    if (!harvestDone)
+                    {
+                        TutorialEvents.TriggerHarvest();
+                        harvestDone = true;
+                    }
+                    break;
+                case 2:
+                    if (!harvestDone)
+                    {
+                        TutorialEvents.TriggerHarvest();
+                        harvestDone = true;
+                    }
+                    break;
+                case 4:
+                    if (!harvestDone)
+                    {
+                        TutorialEvents.TriggerHarvest();
+                        harvestDone = true;
+                    }
+                    break;
+                case 6:
+                    if (!harvestDone)
+                    {
+                        TutorialEvents.TriggerHarvest();
+                        harvestDone = true;
+                    }
+                    break;
+                case 7:
+                    if (!harvestDone)
+                    {
+                        TutorialEvents.TriggerHarvest();
+                        harvestDone = true;
+                    }
+                    break;
+                case 12:
+                    if (!harvestDone)
+                    {
+                        TutorialEvents.TriggerHarvest();
+                        harvestDone = true;
+                    }
+                    break;
+                case 13:
+                    if (!harvestDone)
+                    {
+                        TutorialEvents.TriggerHarvest();
+                        harvestDone = true;
+                    }
+                    break;
+                case 14:
+                    if (!harvestDone)
+                    {
+                        TutorialEvents.TriggerHarvest();
+                        harvestDone = true;
+                    }
+                    break;
+            }
+        }
+        if (tilledDone && plantDone && waterDone && harvestDone)
+        {
+            plantingTutorialComplete = true;
+        }
+        //TUTORIAL STUFF END
+
         time = Time.deltaTime;
         daylightCycleTime = daylightCycleTime + time;
 
@@ -177,33 +268,6 @@ public class TimeManager : MonoBehaviour
         foreach (SoilObject soilObject in soilObjects)
         {
             soilObject.CheckSoil(time);
-
-        }
-
-
-        //if tutorial hasn't been completed, then check if all the soil has been tilled
-        //if they're all tilled, progress the tutorial
-        if (!tutorialDone)
-        {
-            int untilled = 0;
-
-            foreach (SoilObject soilObject in soilObjects)
-            {
-                if (!soilObject.tilled)
-                {
-                    untilled++;
-                }
-            }
-            if (untilled == 0)
-            {
-                if (TutorialManager.instance.currentBillboard == 0)
-                {
-                    TutorialManager.instance.ProgressTutorial(1);
-                    tutorialDone = true;
-                }
-
-            }
-
         }
 
     }

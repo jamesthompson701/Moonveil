@@ -2956,7 +2956,6 @@ Transform:
   - {fileID: 1102690581}
   - {fileID: 658077937}
   - {fileID: 1554757733}
-  - {fileID: 116935693}
   m_Father: {fileID: 1832152925}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &68276820
@@ -4346,7 +4345,7 @@ GameObject:
   - component: {fileID: 98899204}
   - component: {fileID: 98899205}
   m_Layer: 0
-  m_Name: 'Step: Enter Garden'
+  m_Name: 'Step: Till'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4380,10 +4379,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
   activationMode: 1
-  requiredEvent: 0
-  startConversation: Gardening Tutorial
+  requiredEvent: 9
+  startConversation: Till
   completeConversation: 
-  nextTutorialStep: {fileID: 0}
+  nextTutorialStep: {fileID: 1102690580}
   player: {fileID: 6315828877817887305}
   proximityTarget: {fileID: 98899204}
   proximityDistance: 9
@@ -5033,37 +5032,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 116020222}
   m_Mesh: {fileID: 8245426573784773463, guid: 99cfcf743d414ec42922cf34532fa0f3, type: 3}
---- !u!1 &116935692
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 116935693}
-  m_Layer: 0
-  m_Name: 'Step: Harvest'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &116935693
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 116935692}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 67953988}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &117777995
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20813,89 +20781,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 166311502613455428, guid: f3101702b1764604680e7f5fcbefd94a, type: 3}
   m_PrefabInstance: {fileID: 1307135264}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &539960151
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 539960153}
-  - component: {fileID: 539960152}
-  m_Layer: 0
-  m_Name: Tutorial Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &539960152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 539960151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3be8a1fa8168974b883357da44b5961, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TutorialManager
-  billboard0: {fileID: 0}
-  point0: {fileID: 0}
-  billboard1: {fileID: 0}
-  point1: {fileID: 0}
-  billboard2: {fileID: 0}
-  point2: {fileID: 0}
-  billboard3: {fileID: 0}
-  point3: {fileID: 0}
-  billboard4: {fileID: 0}
-  point4: {fileID: 0}
-  billboard5: {fileID: 0}
-  point5: {fileID: 0}
-  billboard6: {fileID: 0}
-  point6: {fileID: 0}
-  billboard7: {fileID: 0}
-  point7: {fileID: 0}
-  billboard8: {fileID: 0}
-  point8: {fileID: 0}
-  billboard9: {fileID: 0}
-  point9: {fileID: 0}
-  billboard10: {fileID: 0}
-  point10: {fileID: 0}
-  billboard11: {fileID: 0}
-  point11: {fileID: 0}
-  billboard12: {fileID: 0}
-  point12: {fileID: 0}
-  billboard13: {fileID: 0}
-  arrow: {fileID: 0}
-  currentBillboard: -1
-  planting: 0
-  watering: 0
-  harvesting: 0
-  fishing: 0
-  fastTravel: 0
-  mining: 0
-  crafting: 0
-  fireIsland: 0
-  combat: 0
-  skipTutorial: 0
---- !u!4 &539960153
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 539960151}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &543097706
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25242,13 +25127,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 658077937}
+  - component: {fileID: 658077938}
   m_Layer: 0
-  m_Name: 'Step: Plant seed'
+  m_Name: 'Step: Water'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &658077937
 Transform:
   m_ObjectHideFlags: 0
@@ -25264,6 +25150,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 67953988}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &658077938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658077936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04de2f562c17141cc92a9a23d12872a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  activationMode: 0
+  requiredEvent: 11
+  startConversation: Water
+  completeConversation: 
+  nextTutorialStep: {fileID: 1554757732}
+  player: {fileID: 0}
+  proximityTarget: {fileID: 0}
+  proximityDistance: 5
+  interactableTarget: {fileID: 0}
+  closeDialogueOnComplete: 1
 --- !u!1001 &662667866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45541,13 +45449,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1102690581}
+  - component: {fileID: 1102690582}
   m_Layer: 0
-  m_Name: 'Step: Till soil'
+  m_Name: 'Step: Plant'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1102690581
 Transform:
   m_ObjectHideFlags: 0
@@ -45563,6 +45472,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 67953988}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1102690582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102690580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04de2f562c17141cc92a9a23d12872a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  activationMode: 0
+  requiredEvent: 10
+  startConversation: Plant
+  completeConversation: 
+  nextTutorialStep: {fileID: 658077936}
+  player: {fileID: 0}
+  proximityTarget: {fileID: 0}
+  proximityDistance: 5
+  interactableTarget: {fileID: 0}
+  closeDialogueOnComplete: 1
 --- !u!1001 &1108424356
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60613,13 +60544,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1554757733}
+  - component: {fileID: 1554757734}
   m_Layer: 0
-  m_Name: 'Step: Water plant'
+  m_Name: 'Step: Harvest'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1554757733
 Transform:
   m_ObjectHideFlags: 0
@@ -60635,6 +60567,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 67953988}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1554757734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554757732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04de2f562c17141cc92a9a23d12872a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  activationMode: 0
+  requiredEvent: 12
+  startConversation: Harvest
+  completeConversation: 
+  nextTutorialStep: {fileID: 0}
+  player: {fileID: 0}
+  proximityTarget: {fileID: 0}
+  proximityDistance: 5
+  interactableTarget: {fileID: 0}
+  closeDialogueOnComplete: 1
 --- !u!4 &1555057739 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4218334115134490241, guid: 7de89671ee344d84ea8829b62f6a1e42, type: 3}
@@ -61610,7 +61564,10 @@ MonoBehaviour:
   blackoutTimer: 0
   night: {fileID: 2100000, guid: 1065b432639a84123a07ea43fe5ba4c9, type: 2}
   day: {fileID: 2100000, guid: 99a400087584f4263b1a8979d6007ad4, type: 2}
-  tutorialDone: 1
+  tilledDone: 0
+  plantDone: 0
+  waterDone: 0
+  harvestDone: 0
 --- !u!4 &1577339879
 Transform:
   m_ObjectHideFlags: 0
@@ -80959,7 +80916,7 @@ MonoBehaviour:
     onExecute:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 539960152}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
           m_MethodName: ProgressTutorial
           m_Mode: 3
@@ -80975,7 +80932,7 @@ MonoBehaviour:
     onExecute:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 539960152}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: TutorialManager, Assembly-CSharp
           m_MethodName: ProgressTutorial
           m_Mode: 3
@@ -84206,7 +84163,6 @@ SceneRoots:
   - {fileID: 319848693}
   - {fileID: 2128112538}
   - {fileID: 2064744241}
-  - {fileID: 539960153}
   - {fileID: 428375331}
   - {fileID: 431423805}
   - {fileID: 1307135264}
