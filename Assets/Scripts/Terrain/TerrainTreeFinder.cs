@@ -16,6 +16,9 @@ public class TerrainTreeFinder : MonoBehaviour
         // 2. Loop through every tree instance on the terrain
         foreach (TreeInstance tree in terrainData.treeInstances)
         {
+            GameObject treeObject = terrainData.treePrototypes[tree.prototypeIndex].prefab;
+            treeObject.transform.Find("TreeCollider" + treeObject.name);
+
             // 3. Scale the normalized (0-1) position by the actual size of the terrain
             Vector3 scaledPos = Vector3.Scale(tree.position, terrainData.size);
 
@@ -27,5 +30,10 @@ public class TerrainTreeFinder : MonoBehaviour
 
             Instantiate(treeCollider, worldTreePos, Quaternion.identity);
         }
+
+        //foreach (TreePrototype TreeProto in terrainData.treePrototypes)
+        //{
+        //    Debug.Log("Tree name is: " + TreeProto.prefab.name);
+        //}
     }
 }
