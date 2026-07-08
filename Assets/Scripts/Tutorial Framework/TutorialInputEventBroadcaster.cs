@@ -1,5 +1,16 @@
 using UnityEngine;
 
+/*
+This script is ONLY for generic player inputs
+(move, jump, sprint, look, interact, etc.)
+
+If your tutorial event happens because gameplay succeeded
+(harvesting, fishing, crafting, quest complete, etc.)
+DO NOT ADD IT HERE.
+
+Instead, call TutorialEvents.TriggerYourEvent()
+from the gameplay script that already knows it happened.
+*/
 public class TutorialInputEventBroadcaster : MonoBehaviour
 {
     [Header("Movement Axis Names")]
@@ -48,6 +59,20 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
         float horizontal = Input.GetAxisRaw(horizontalAxis);
         float vertical = Input.GetAxisRaw(verticalAxis);
 
+        float resetThreshold = movementThreshold * 0.5f;
+
+        if (Mathf.Abs(vertical) < resetThreshold)
+        {
+            hasMovedForward = false;
+            hasMovedBackward = false;
+        }
+
+        if (Mathf.Abs(horizontal) < resetThreshold)
+        {
+            hasMovedLeft = false;
+            hasMovedRight = false;
+        }
+
         if (!hasMovedForward && vertical > movementThreshold)
         {
             hasMovedForward = true;
@@ -75,27 +100,23 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
 
     private void CheckButtonInput()
     {
-        if (!hasJumped && Input.GetButtonDown(jumpButton))
+        if (Input.GetButtonDown(jumpButton))
         {
-            hasJumped = true;
             TutorialEvents.TriggerJump();
         }
 
-        if (!hasSprinted && Input.GetButtonDown(sprintButton))
+        if (Input.GetButtonDown(sprintButton))
         {
-            hasSprinted = true;
             TutorialEvents.TriggerSprint();
         }
 
-        if (!hasFlown && Input.GetButtonDown(flyButton))
+        if (Input.GetButtonDown(flyButton))
         {
-            hasFlown = true;
             TutorialEvents.TriggerFly();
         }
 
-        if (!hasInteracted && Input.GetButtonDown(interactButton))
+        if (Input.GetMouseButtonDown(1))
         {
-            hasInteracted = true;
             TutorialEvents.TriggerInteract();
         }
     }
@@ -104,6 +125,11 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
     {
         float mouseX = Mathf.Abs(Input.GetAxisRaw(mouseXAxis));
         float mouseY = Mathf.Abs(Input.GetAxisRaw(mouseYAxis));
+
+        if (mouseX < mouseLookThreshold * 0.5f && mouseY < mouseLookThreshold * 0.5f)
+        {
+            hasLooked = false;
+        }
 
         if (!hasLooked && (mouseX > mouseLookThreshold || mouseY > mouseLookThreshold))
         {
@@ -148,20 +174,13 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
 
     // These public methods let teammates trigger tutorial events from their own systems
     // without needing to touch the event code directly.
-
     public void ManuallyTriggerInteract()
     {
-        if (hasInteracted) return;
-
-        hasInteracted = true;
         TutorialEvents.TriggerInteract();
     }
 
     public void ManuallyTriggerFly()
     {
-        if (hasFlown) return;
-
-        hasFlown = true;
         TutorialEvents.TriggerFly();
     }
 }

@@ -1,6 +1,28 @@
 using UnityEngine;
 using PixelCrushers.DialogueSystem;
 
+/*
+=========================
+HOW TO ADD A NEW EVENT
+=========================
+
+1. Add it to TutorialEventType.
+
+2. In SubscribeToTutorialEvent():
+
+    case TutorialEventType.MyEvent:
+        TutorialEvents.MyEvent += CompleteStep;
+        break;
+
+3. In UnsubscribeFromTutorialEvent():
+
+    TutorialEvents.MyEvent -= CompleteStep;
+
+4. Trigger it from either:
+   - TutorialInputEventBroadcaster (for player input)
+   - Your gameplay script (for game events)
+
+*/
 public class TutorialStep : MonoBehaviour
 {
     public enum TutorialEventType
@@ -51,6 +73,7 @@ public class TutorialStep : MonoBehaviour
     [Header("Dialogue Behavior")]
     public bool closeDialogueOnComplete = true;
 
+    private static TutorialStep activeInstruction;
     private bool hasStarted;
     private bool hasCompleted;
     private bool listeningForTutorialEvent;
@@ -59,7 +82,6 @@ public class TutorialStep : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log($"{name} TutorialStep OnEnable. Activation: {activationMode}, Start Conversation: {startConversation}");
         hasStarted = false;
         hasCompleted = false;
         listeningForTutorialEvent = false;
@@ -103,14 +125,23 @@ public class TutorialStep : MonoBehaviour
     {
         if (hasStarted || hasCompleted) return;
 
+        if (activeInstruction != null && activeInstruction != this)
+        {
+            return;
+        }
+
+        activeInstruction = this;
         hasStarted = true;
 
         if (!string.IsNullOrEmpty(startConversation))
         {
             DialogueManager.StartConversation(startConversation);
+            Invoke(nameof(SubscribeToTutorialEvent), 0.5f);
         }
-
-        SubscribeToTutorialEvent();
+        else
+        {
+            SubscribeToTutorialEvent();
+        }
     }
 
     private void SubscribeToInteractableActivation()
@@ -147,6 +178,8 @@ public class TutorialStep : MonoBehaviour
 
     private void OnInteractableUsedForActivation(Interactable interactedObject)
     {
+        if (Time.timeScale == 0f) return;
+
         if (hasStarted || hasCompleted) return;
 
         if (interactableTarget != null && interactedObject != interactableTarget)
@@ -166,6 +199,8 @@ public class TutorialStep : MonoBehaviour
 
     private void OnInteractableUsedForCompletion(Interactable interactedObject)
     {
+        if (Time.timeScale == 0f) return;
+
         if (!hasStarted || hasCompleted) return;
 
         if (interactableTarget != null && interactedObject != interactableTarget)
@@ -256,6 +291,8 @@ public class TutorialStep : MonoBehaviour
 
     private void CompleteStep()
     {
+        if (Time.timeScale == 0f) return;
+
         if (hasCompleted) return;
 
         hasCompleted = true;
@@ -274,6 +311,11 @@ public class TutorialStep : MonoBehaviour
         if (!string.IsNullOrEmpty(completeConversation))
         {
             DialogueManager.StartConversation(completeConversation);
+        }
+
+        if (activeInstruction == this)
+        {
+            activeInstruction = null;
         }
 
         gameObject.SetActive(false);
