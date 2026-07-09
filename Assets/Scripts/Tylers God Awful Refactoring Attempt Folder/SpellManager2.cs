@@ -511,7 +511,24 @@ public class SpellManager2 : MonoBehaviour
             _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, spell.Lifetime)));
 
             spell.CastSpell2(farmCtx);
+            switch ((int)spell.spellType)
+            {
+                case 0:
+                    TutorialEvents.TriggerFireSpell();
+                break;
 
+                case 1:
+                    TutorialEvents.TriggerEarthSpell();
+                break;
+
+                case 2:
+                    TutorialEvents.TriggerWaterSpell();
+                break;
+
+                case 3:
+                    TutorialEvents.TriggerAirSpell();
+                break;
+            }
             return;
         }
 
@@ -566,6 +583,24 @@ public class SpellManager2 : MonoBehaviour
         _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, spell.Lifetime)));
 
         spell.CastSpell2(ctx);
+        switch ((int)spell.spellType)
+        {
+            case 0:
+                TutorialEvents.TriggerFireSpell();
+            break;
+
+            case 1:
+                TutorialEvents.TriggerEarthSpell();
+            break;
+
+            case 2:
+                TutorialEvents.TriggerWaterSpell();
+            break;
+
+            case 3:
+                TutorialEvents.TriggerAirSpell();
+            break;
+        }
 
         // clears mana text popup for clarity
         if (HUD.instance.manaText.activeInHierarchy)

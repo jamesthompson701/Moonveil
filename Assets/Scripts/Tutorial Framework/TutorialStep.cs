@@ -40,6 +40,10 @@ public class TutorialStep : MonoBehaviour
         Plant,
         Water,
         Harvest
+        FireSpell,
+        EarthSpell,
+        WaterSpell,
+        AirSpell
     }
 
     public enum ActivationMode
@@ -299,6 +303,21 @@ public class TutorialStep : MonoBehaviour
             case TutorialEventType.Harvest:
                 TutorialEvents.Harvest += CompleteStep;
                 break;
+            case TutorialEventType.FireSpell:
+                TutorialEvents.FireSpell += CompleteStep;
+                break;
+
+            case TutorialEventType.EarthSpell:
+                TutorialEvents.EarthSpell += CompleteStep;
+                break;
+
+            case TutorialEventType.WaterSpell:
+                TutorialEvents.WaterSpell += CompleteStep;
+                break;
+
+            case TutorialEventType.AirSpell:
+                TutorialEvents.AirSpell += CompleteStep;
+                break;
         }
     }
 
@@ -319,6 +338,10 @@ public class TutorialStep : MonoBehaviour
         TutorialEvents.Plant -= CompleteStep;
         TutorialEvents.Water -= CompleteStep;
         TutorialEvents.Harvest -= CompleteStep;
+        TutorialEvents.FireSpell -= CompleteStep;
+        TutorialEvents.EarthSpell -= CompleteStep;
+        TutorialEvents.WaterSpell -= CompleteStep;
+        TutorialEvents.AirSpell -= CompleteStep;
 
         listeningForTutorialEvent = false;
     }
