@@ -21475,6 +21475,61 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15bdb6c11d3fc9543836c737a891af1c, type: 3}
+--- !u!1 &537421898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 537421899}
+  - component: {fileID: 537421900}
+  m_Layer: 0
+  m_Name: Earth
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &537421899
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537421898}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 855982054}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &537421900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537421898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04de2f562c17141cc92a9a23d12872a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  activationMode: 0
+  requiredEvent: 14
+  startConversation: 
+  completeConversation: 
+  nextTutorialStep: {fileID: 786348832}
+  tutorialPopup: {fileID: 0}
+  player: {fileID: 0}
+  proximityTarget: {fileID: 0}
+  proximityDistance: 5
+  interactableTarget: {fileID: 0}
+  closeDialogueOnComplete: 1
 --- !u!1001 &537705723
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29860,7 +29915,7 @@ MonoBehaviour:
   requiredEvent: 7
   startConversation: Look
   completeConversation: 
-  nextTutorialStep: {fileID: 2094774413}
+  nextTutorialStep: {fileID: 1961492493}
   tutorialPopup: {fileID: 0}
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
@@ -31120,6 +31175,61 @@ Transform:
   - {fileID: 33233132}
   m_Father: {fileID: 1583437553}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &786348832
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 786348833}
+  - component: {fileID: 786348834}
+  m_Layer: 0
+  m_Name: Water
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &786348833
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786348832}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 855982054}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &786348834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786348832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04de2f562c17141cc92a9a23d12872a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  activationMode: 0
+  requiredEvent: 15
+  startConversation: 
+  completeConversation: 
+  nextTutorialStep: {fileID: 1882920505}
+  tutorialPopup: {fileID: 0}
+  player: {fileID: 0}
+  proximityTarget: {fileID: 0}
+  proximityDistance: 5
+  interactableTarget: {fileID: 0}
+  closeDialogueOnComplete: 1
 --- !u!4 &788861704 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4657556593964357414, guid: 16846d224d8f1aa44ae92c342462be14, type: 3}
@@ -35790,6 +35900,10 @@ Transform:
   - {fileID: 1916260980}
   - {fileID: 1516260258}
   - {fileID: 752824128}
+  - {fileID: 1961492494}
+  - {fileID: 537421899}
+  - {fileID: 786348833}
+  - {fileID: 1882920506}
   - {fileID: 2094774414}
   m_Father: {fileID: 1832152925}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -78774,6 +78888,61 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 8944336655422409496, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
   m_PrefabInstance: {fileID: 1882793645}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1882920505
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1882920506}
+  - component: {fileID: 1882920507}
+  m_Layer: 0
+  m_Name: Wind
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1882920506
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1882920505}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 855982054}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1882920507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1882920505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04de2f562c17141cc92a9a23d12872a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  activationMode: 0
+  requiredEvent: 16
+  startConversation: 
+  completeConversation: 
+  nextTutorialStep: {fileID: 2094774413}
+  tutorialPopup: {fileID: 0}
+  player: {fileID: 0}
+  proximityTarget: {fileID: 0}
+  proximityDistance: 5
+  interactableTarget: {fileID: 0}
+  closeDialogueOnComplete: 1
 --- !u!1001 &1885070556
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -81555,6 +81724,61 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4657556593964357414, guid: 071ecb5f58bca8c41b2e4f55d0c22570, type: 3}
   m_PrefabInstance: {fileID: 1959086990}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1961492493
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1961492494}
+  - component: {fileID: 1961492495}
+  m_Layer: 0
+  m_Name: Fire
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1961492494
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961492493}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 855982054}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1961492495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961492493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04de2f562c17141cc92a9a23d12872a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  activationMode: 0
+  requiredEvent: 13
+  startConversation: 
+  completeConversation: 
+  nextTutorialStep: {fileID: 537421898}
+  tutorialPopup: {fileID: 0}
+  player: {fileID: 0}
+  proximityTarget: {fileID: 0}
+  proximityDistance: 5
+  interactableTarget: {fileID: 0}
+  closeDialogueOnComplete: 1
 --- !u!1001 &1962195255
 PrefabInstance:
   m_ObjectHideFlags: 0
