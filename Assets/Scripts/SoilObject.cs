@@ -14,10 +14,6 @@ public class SoilObject : MonoBehaviour
     private GameObject plantObj;
     private PlantObject plantScript;
 
-    //weed to generate and weed that has been generated
-    public GameObject weedObj;
-    private GameObject weed;
-
     //colors
     public Material wetSoil;
     public Material drySoil;
@@ -42,16 +38,6 @@ public class SoilObject : MonoBehaviour
     {
         //Register myself with the time manager
         TimeManager.instance.RegisterSoil(this);
-            //randomly generate a weed
-            int randomNum = Random.Range(3, 8);
-            if (randomNum == 7)
-            {
-                soilContent = SoilContent.weed;
-            }
-            if (soilContent == SoilContent.weed)
-            {
-                weed = Instantiate(weedObj, gameObject.transform.position, gameObject.transform.rotation);
-            }
         wetnessDuration = 120;
     }
 
@@ -160,15 +146,6 @@ public class SoilObject : MonoBehaviour
                 waterTimer = 0;
             }
 
-        }
-
-        //fire spell destroys weeds also
-        if (other.CompareTag("FireSpell") && soilContent == SoilContent.weed)
-        {
-            Destroy(other.gameObject);
-            Destroy(weed);
-            soilContent = SoilContent.empty;
-            Instantiate(fire, transform);
         }
 
     }

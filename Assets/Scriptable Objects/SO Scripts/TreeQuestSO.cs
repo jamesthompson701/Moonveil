@@ -25,5 +25,6 @@ public class TreeQuestSO : ScriptableObject
         WorkbenchUI.instance.UnlockRecipe(questReward);
         HUD.instance.UnlockPopup("YOU UNLOCKED " + questReward.output.name);
         CanvasManager.Instance.FlashCloseMenu(3);
+        TutorialEvents.TriggerCompleteQuest();
     }
 }
