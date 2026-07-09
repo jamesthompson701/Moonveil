@@ -34,6 +34,7 @@ public static class TutorialEvents
     public static event Action Plant;
     public static event Action Water;
     public static event Action Harvest;
+    public static event Action HitBush;
 
     public static void TriggerMoveForward() => MoveForward?.Invoke();
     public static void TriggerMoveBackward() => MoveBackward?.Invoke();
@@ -48,4 +49,5 @@ public static class TutorialEvents
     public static void TriggerPlant() => Plant?.Invoke();
     public static void TriggerWater() => Water?.Invoke();
     public static void TriggerHarvest() => Harvest?.Invoke();
+    public static void TriggerHitBush() => HitBush?.Invoke();
 }

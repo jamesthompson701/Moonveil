@@ -133,7 +133,7 @@ public class SoilObject : MonoBehaviour
         //unwater it if it is watered
         if (other.CompareTag("FireSpell") && plantScript != null)
         {
-            if(!isWet)
+            if(!isWet && !plantScript.Harvestable())
             {
                 Debug.Log("FireSpelled");
                 Destroy(other.gameObject);
