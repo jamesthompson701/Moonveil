@@ -39,7 +39,7 @@ public class TutorialStep : MonoBehaviour
         Till,
         Plant,
         Water,
-        Harvest
+        Harvest,
         FireSpell,
         EarthSpell,
         WaterSpell,
