@@ -24659,6 +24659,39 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01636016a2a12af41b7fd2036ecc0c69, type: 3}
+--- !u!1 &642434147
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 642434148}
+  m_Layer: 0
+  m_Name: Combat Tutorial
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &642434148
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642434147}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1248783856}
+  - {fileID: 850200358}
+  m_Father: {fileID: 1832152925}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &642653228 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 979455454864579613, guid: 7ef2d24d4e3d1fe4ea4e89684dd35d9c, type: 3}
@@ -32302,6 +32335,79 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c612b938e9638b43a39578918b78b1e, type: 3}
+--- !u!1001 &836003226
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3759362837618422138, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: maxSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3759362837618422138, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: minSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3759362837618422138, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: roamMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3759362837618422138, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: drawGizmos
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705294641964212808, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 737.81067
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705294641964212808, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.8884182
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705294641964212808, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 450.5142
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705294641964212808, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9602467
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705294641964212808, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705294641964212808, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.27915314
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705294641964212808, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705294641964212808, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705294641964212808, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 32.419
+      objectReference: {fileID: 0}
+    - target: {fileID: 5705294641964212808, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6884222217625323323, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
+      propertyPath: m_Name
+      value: Enemy Melee
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b2192b681a2292743acbd7c311fec4db, type: 3}
 --- !u!1001 &836392951
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33394,6 +33500,61 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9117910689456215534, guid: 51abb40acca227642af328b26ae0055e, type: 3}
   m_PrefabInstance: {fileID: 849828672}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &850200357
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 850200358}
+  - component: {fileID: 850200359}
+  m_Layer: 0
+  m_Name: Tutorial Step Enemy Drops
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &850200358
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850200357}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 737.16, y: 0, z: 452.22}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 642434148}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &850200359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850200357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04de2f562c17141cc92a9a23d12872a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  activationMode: 2
+  requiredEvent: 0
+  startConversation: Good Job! When you defeat monsters they drop materials that
+    can be used in potions.
+  completeConversation: 
+  nextTutorialStep: {fileID: 0}
+  player: {fileID: 0}
+  proximityTarget: {fileID: 0}
+  proximityDistance: 5
+  interactableTarget: {fileID: 0}
+  closeDialogueOnComplete: 1
 --- !u!1001 &850412217
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -50164,6 +50325,62 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8906750831039749364, guid: 84da7e5defcebe143ac374ecbba501c2, type: 3}
   m_PrefabInstance: {fileID: 1245517978}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1248783855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1248783856}
+  - component: {fileID: 1248783857}
+  m_Layer: 0
+  m_Name: Tutorial Step Enemy Detection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1248783856
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248783855}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 737.79, y: 3.64, z: 450.458}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 642434148}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1248783857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248783855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04de2f562c17141cc92a9a23d12872a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  activationMode: 1
+  requiredEvent: 0
+  startConversation: Careful! It appears a Fire Fox managed to get on the Island.
+    If you get to close it will attack. When under attack your spells will change
+    to more aggressive variants. Use these to remove this invasive creature.
+  completeConversation: 
+  nextTutorialStep: {fileID: 850200357}
+  player: {fileID: 6315828877817887305}
+  proximityTarget: {fileID: 6315828877817887305}
+  proximityDistance: 20
+  interactableTarget: {fileID: 0}
+  closeDialogueOnComplete: 1
 --- !u!1001 &1252658874
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54980,7 +55197,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1380622397
 Transform:
   m_ObjectHideFlags: 0
@@ -72286,6 +72503,7 @@ Transform:
   m_Children:
   - {fileID: 855982054}
   - {fileID: 67953988}
+  - {fileID: 642434148}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1832379151
@@ -83354,6 +83572,22 @@ PrefabInstance:
       propertyPath: FlightMoveSpeed
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 5583989196395046802, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: FlightVerticalSpeed
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583989196395046802, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: FlightBoostDecayTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583989196395046802, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: FlightAccelerationMax
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5583989196395046802, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
+      propertyPath: FlightVelocityDeceleration
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5645205454241313286, guid: 28cb822e17d34994bb48f16dde298986, type: 3}
       propertyPath: lengthInSec
       value: 2
@@ -83544,3 +83778,4 @@ SceneRoots:
   - {fileID: 1133961255}
   - {fileID: 318314596}
   - {fileID: 1832152925}
+  - {fileID: 836003226}
