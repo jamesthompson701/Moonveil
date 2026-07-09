@@ -73,6 +73,10 @@ public class TutorialStep : MonoBehaviour
     [Header("Dialogue Behavior")]
     public bool closeDialogueOnComplete = true;
 
+    [Header("Timed Dialogue")]
+    public bool autoCloseStartConversation = false;
+    public float autoCloseStartConversationDelay = 3f;
+
     private static TutorialStep activeInstruction;
     private bool hasStarted;
     private bool hasCompleted;
@@ -119,6 +123,7 @@ public class TutorialStep : MonoBehaviour
         UnsubscribeFromTutorialEvent();
         UnsubscribeFromInteractableActivation();
         UnsubscribeFromInteractableCompletion();
+        CancelInvoke(nameof(AutoCloseDialogue));
     }
 
     private void BeginStep()
@@ -136,6 +141,12 @@ public class TutorialStep : MonoBehaviour
         if (!string.IsNullOrEmpty(startConversation))
         {
             DialogueManager.StartConversation(startConversation);
+
+                if (autoCloseStartConversation)
+                {
+                    Invoke(nameof(AutoCloseDialogue), autoCloseStartConversationDelay);
+                }
+
             Invoke(nameof(SubscribeToTutorialEvent), 0.5f);
         }
         else
@@ -335,5 +346,12 @@ public class TutorialStep : MonoBehaviour
         if (proximityTarget == null) return;
 
         Gizmos.DrawWireSphere(proximityTarget.position, proximityDistance);
+    }
+    private void AutoCloseDialogue()
+    {
+        if (DialogueManager.IsConversationActive)
+        {
+            DialogueManager.StopConversation();
+        }
     }
 }
