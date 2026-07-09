@@ -46,7 +46,8 @@ public class TutorialStep : MonoBehaviour
     {
         Immediate,
         Proximity,
-        Interactable
+        Interactable,
+        QuestCompletion
     }
 
     [Header("Activation")]
@@ -78,6 +79,7 @@ public class TutorialStep : MonoBehaviour
     private bool hasCompleted;
     private bool listeningForTutorialEvent;
     private bool listeningForInteractableActivation;
+    private bool listeningForQuestActivation;
     private bool listeningForInteractableCompletion;
 
     private void OnEnable()
@@ -95,6 +97,10 @@ public class TutorialStep : MonoBehaviour
         else if (activationMode == ActivationMode.Interactable)
         {
             SubscribeToInteractableActivation();
+        }
+        else if (activationMode == ActivationMode.QuestCompletion)
+        {
+            SubscribeToQuestActivation();
         }
     }
 
@@ -119,6 +125,7 @@ public class TutorialStep : MonoBehaviour
         UnsubscribeFromTutorialEvent();
         UnsubscribeFromInteractableActivation();
         UnsubscribeFromInteractableCompletion();
+        UnsubscribeFromQuestActivation();
     }
 
     private void BeginStep()
@@ -158,6 +165,23 @@ public class TutorialStep : MonoBehaviour
 
         Interactable.OnAnyInteract -= OnInteractableUsedForActivation;
         listeningForInteractableActivation = false;
+    }
+
+    private void SubscribeToQuestActivation()
+    {
+        if (listeningForQuestActivation) return;
+        Debug.Log("Listening for complete quest event");
+        listeningForQuestActivation = true;
+        TutorialEvents.CompleteQuest += BeginStep;
+        TutorialEvents.CompleteQuest += UnsubscribeFromQuestActivation;
+    }
+
+    private void UnsubscribeFromQuestActivation()
+    {
+        if (!listeningForQuestActivation) return;
+
+        TutorialEvents.CompleteQuest -= BeginStep;
+        listeningForQuestActivation = false;
     }
 
     private void SubscribeToInteractableCompletion()
@@ -302,6 +326,7 @@ public class TutorialStep : MonoBehaviour
         UnsubscribeFromTutorialEvent();
         UnsubscribeFromInteractableActivation();
         UnsubscribeFromInteractableCompletion();
+        UnsubscribeFromQuestActivation();
 
         if (closeDialogueOnComplete && DialogueManager.IsConversationActive)
         {

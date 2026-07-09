@@ -42,6 +42,7 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
     private bool planted;
     private bool watered;
     private bool harvested;
+    private bool questCompleted;
 
     private void Update()
     {
@@ -171,6 +172,7 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
             TutorialEvents.TriggerHarvest();
         }
     }
+
 
     // These public methods let teammates trigger tutorial events from their own systems
     // without needing to touch the event code directly.
