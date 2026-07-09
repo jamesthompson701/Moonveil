@@ -63,6 +63,10 @@ public class TutorialStep : MonoBehaviour
     [Header("Next Step")]
     public GameObject nextTutorialStep;
 
+    // added for minigame pop-up canvases
+    [Header("Tutorial Popup")]
+    public GameObject tutorialPopup;
+
     [Header("Proximity Settings")]
     public Transform player;
     public Transform proximityTarget;
@@ -139,6 +143,12 @@ public class TutorialStep : MonoBehaviour
 
         activeInstruction = this;
         hasStarted = true;
+
+        // for added tutorial canvas functionality
+        if (tutorialPopup != null)
+        {
+            tutorialPopup.SetActive(true);
+        }
 
         if (!string.IsNullOrEmpty(startConversation))
         {
@@ -341,6 +351,11 @@ public class TutorialStep : MonoBehaviour
         if (activeInstruction == this)
         {
             activeInstruction = null;
+        }
+        // last bit of tutorial addition
+        if (tutorialPopup != null)
+        {
+            tutorialPopup.SetActive(false);
         }
 
         gameObject.SetActive(false);
