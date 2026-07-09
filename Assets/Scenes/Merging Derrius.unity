@@ -10426,6 +10426,7 @@ MonoBehaviour:
   startConversation: Step Back
   completeConversation: 
   nextTutorialStep: {fileID: 1334642493}
+  tutorialPopup: {fileID: 0}
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
@@ -28682,6 +28683,7 @@ MonoBehaviour:
   startConversation: Look
   completeConversation: 
   nextTutorialStep: {fileID: 0}
+  tutorialPopup: {fileID: 0}
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
@@ -54107,6 +54109,7 @@ MonoBehaviour:
   startConversation: Step Right
   completeConversation: 
   nextTutorialStep: {fileID: 2086430648}
+  tutorialPopup: {fileID: 0}
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
@@ -55923,6 +55926,7 @@ MonoBehaviour:
   startConversation: Step Forward
   completeConversation: 
   nextTutorialStep: {fileID: 293528775}
+  tutorialPopup: {fileID: 0}
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
@@ -59598,6 +59602,7 @@ MonoBehaviour:
   startConversation: Sprint
   completeConversation: 
   nextTutorialStep: {fileID: 752824127}
+  tutorialPopup: {fileID: 0}
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
@@ -61987,7 +61992,11 @@ MonoBehaviour:
   blackoutTimer: 0
   night: {fileID: 2100000, guid: 1065b432639a84123a07ea43fe5ba4c9, type: 2}
   day: {fileID: 2100000, guid: 99a400087584f4263b1a8979d6007ad4, type: 2}
-  tutorialDone: 1
+  tilledDone: 0
+  plantDone: 0
+  waterDone: 0
+  harvestDone: 0
+  plantingTutorialComplete: 0
 --- !u!4 &1577339879
 Transform:
   m_ObjectHideFlags: 0
@@ -76932,6 +76941,7 @@ MonoBehaviour:
   startConversation: Jump
   completeConversation: 
   nextTutorialStep: {fileID: 1516260257}
+  tutorialPopup: {fileID: 0}
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
@@ -82215,6 +82225,7 @@ MonoBehaviour:
   startConversation: Step Left
   completeConversation: 
   nextTutorialStep: {fileID: 1916260979}
+  tutorialPopup: {fileID: 0}
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
@@ -84961,8 +84972,8 @@ SceneRoots:
   - {fileID: 573999877}
   - {fileID: 868216528}
   - {fileID: 1547116900}
-  - {fileID: 1891592161}
   - {fileID: 189659639}
+  - {fileID: 1891592161}
   - {fileID: 1547879775}
   - {fileID: 1253708208}
   - {fileID: 1500129854}
