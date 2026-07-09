@@ -35,7 +35,11 @@ public class TutorialStep : MonoBehaviour
         Sprint,
         Fly,
         Look,
-        Interact
+        Interact,
+        FireSpell,
+        EarthSpell,
+        WaterSpell,
+        AirSpell
     }
 
     public enum ActivationMode
@@ -249,6 +253,21 @@ public class TutorialStep : MonoBehaviour
                     TutorialEvents.Interact += CompleteStep;
                 }
                 break;
+            case TutorialEventType.FireSpell:
+                TutorialEvents.FireSpell += CompleteStep;
+                break;
+
+            case TutorialEventType.EarthSpell:
+                TutorialEvents.EarthSpell += CompleteStep;
+                break;
+
+            case TutorialEventType.WaterSpell:
+                TutorialEvents.WaterSpell += CompleteStep;
+                break;
+
+            case TutorialEventType.AirSpell:
+                TutorialEvents.AirSpell += CompleteStep;
+                break;
         }
     }
 
@@ -265,6 +284,10 @@ public class TutorialStep : MonoBehaviour
         TutorialEvents.Fly -= CompleteStep;
         TutorialEvents.Look -= CompleteStep;
         TutorialEvents.Interact -= CompleteStep;
+        TutorialEvents.FireSpell -= CompleteStep;
+        TutorialEvents.EarthSpell -= CompleteStep;
+        TutorialEvents.WaterSpell -= CompleteStep;
+        TutorialEvents.AirSpell -= CompleteStep;
 
         listeningForTutorialEvent = false;
     }

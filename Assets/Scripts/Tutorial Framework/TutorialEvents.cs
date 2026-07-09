@@ -30,6 +30,10 @@ public static class TutorialEvents
     public static event Action Fly;
     public static event Action Look;
     public static event Action Interact;
+    public static event Action FireSpell; 
+    public static event Action EarthSpell; 
+    public static event Action WaterSpell; 
+    public static event Action AirSpell;
 
     public static void TriggerMoveForward() => MoveForward?.Invoke();
     public static void TriggerMoveBackward() => MoveBackward?.Invoke();
@@ -40,4 +44,25 @@ public static class TutorialEvents
     public static void TriggerFly() => Fly?.Invoke();
     public static void TriggerLook() => Look?.Invoke();
     public static void TriggerInteract() => Interact?.Invoke();
+
+    public static void TriggerFireSpell()
+    {
+        FireSpell?.Invoke();
+    }
+
+    public static void TriggerEarthSpell()
+    {
+        EarthSpell?.Invoke();
+    }
+
+    public static void TriggerWaterSpell()
+    {
+        WaterSpell?.Invoke();
+    }
+
+    public static void TriggerAirSpell()
+    {
+        AirSpell?.Invoke();
+    }
+
 }
