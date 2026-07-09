@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.AdaptivePerformance;
 using System.Collections;
-using UnityEditorInternal;
+//using UnityEditorInternal;
 using TMPro;
 using UnityEngine.UI;
 
