@@ -36,6 +36,7 @@ public static class TutorialEvents
     public static event Action Water;
     public static event Action Harvest;
     public static event Action CompleteQuest;
+    public static event Action HitBush;
 
     public static void TriggerMoveForward() => MoveForward?.Invoke();
     public static void TriggerMoveBackward() => MoveBackward?.Invoke();
@@ -56,4 +57,5 @@ public static class TutorialEvents
         Debug.Log("Complete Quest Event");
         CompleteQuest?.Invoke();
     }
+    public static void TriggerHitBush() => HitBush?.Invoke();
 }

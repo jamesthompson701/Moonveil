@@ -39,7 +39,8 @@ public class TutorialStep : MonoBehaviour
         Till,
         Plant,
         Water,
-        Harvest
+        Harvest,
+        HitBush
     }
 
     public enum ActivationMode
@@ -289,6 +290,9 @@ public class TutorialStep : MonoBehaviour
             case TutorialEventType.Harvest:
                 TutorialEvents.Harvest += CompleteStep;
                 break;
+            case TutorialEventType.HitBush:
+                TutorialEvents.HitBush += CompleteStep;
+                break;
         }
     }
 
@@ -309,6 +313,7 @@ public class TutorialStep : MonoBehaviour
         TutorialEvents.Plant -= CompleteStep;
         TutorialEvents.Water -= CompleteStep;
         TutorialEvents.Harvest -= CompleteStep;
+        TutorialEvents.HitBush -= CompleteStep;
 
         listeningForTutorialEvent = false;
     }
