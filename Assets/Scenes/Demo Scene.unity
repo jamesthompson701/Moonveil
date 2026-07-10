@@ -4231,7 +4231,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &105822601
 Transform:
   m_ObjectHideFlags: 0
@@ -4269,6 +4269,9 @@ MonoBehaviour:
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  autoCloseStartConversation: 0
+  autoCloseStartConversationDelay: 3
+  completeStepOnAutoClose: 0
 --- !u!1001 &106241565
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10485,6 +10488,9 @@ MonoBehaviour:
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  autoCloseStartConversation: 0
+  autoCloseStartConversationDelay: 3
+  completeStepOnAutoClose: 0
 --- !u!1001 &296936475
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11237,6 +11243,9 @@ MonoBehaviour:
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  autoCloseStartConversation: 0
+  autoCloseStartConversationDelay: 3
+  completeStepOnAutoClose: 0
 --- !u!4 &316846837 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2154067754139245277, guid: dbecebf571d557a41ba52c0145a20f48, type: 3}
@@ -26131,6 +26140,9 @@ MonoBehaviour:
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  autoCloseStartConversation: 0
+  autoCloseStartConversationDelay: 3
+  completeStepOnAutoClose: 0
 --- !u!1 &687790238
 GameObject:
   m_ObjectHideFlags: 0
@@ -28849,6 +28861,9 @@ MonoBehaviour:
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  autoCloseStartConversation: 0
+  autoCloseStartConversationDelay: 3
+  completeStepOnAutoClose: 0
 --- !u!1001 &753295942
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34584,6 +34599,7 @@ Transform:
   - {fileID: 1792552993}
   - {fileID: 316515951}
   - {fileID: 684122889}
+  - {fileID: 1169608705}
   m_Father: {fileID: 1832152925}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &856995321
@@ -48393,6 +48409,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5207519002154953312, guid: efa4578078adb594daf96f0bb2368fa6, type: 3}
   m_PrefabInstance: {fileID: 1169175182}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1169608704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1169608705}
+  - component: {fileID: 1169608706}
+  m_Layer: 0
+  m_Name: Test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1169608705
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169608704}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 855982054}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1169608706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169608704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04de2f562c17141cc92a9a23d12872a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
+  activationMode: 0
+  requiredEvent: 0
+  startConversation: Step Forward
+  completeConversation: 
+  nextTutorialStep: {fileID: 0}
+  player: {fileID: 0}
+  proximityTarget: {fileID: 0}
+  proximityDistance: 5
+  interactableTarget: {fileID: 0}
+  closeDialogueOnComplete: 1
+  autoCloseStartConversation: 1
+  autoCloseStartConversationDelay: 3
+  completeStepOnAutoClose: 0
 --- !u!1001 &1170246501
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54278,6 +54351,9 @@ MonoBehaviour:
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  autoCloseStartConversation: 0
+  autoCloseStartConversationDelay: 3
+  completeStepOnAutoClose: 0
 --- !u!1 &1335692878
 GameObject:
   m_ObjectHideFlags: 0
@@ -56094,6 +56170,9 @@ MonoBehaviour:
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  autoCloseStartConversation: 0
+  autoCloseStartConversationDelay: 3
+  completeStepOnAutoClose: 0
 --- !u!4 &1382111019 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3002719193309341603, guid: f35907b40250cb3419d85ab73c8d4d6f, type: 3}
@@ -59769,6 +59848,9 @@ MonoBehaviour:
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  autoCloseStartConversation: 0
+  autoCloseStartConversationDelay: 3
+  completeStepOnAutoClose: 0
 --- !u!1001 &1519785284
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72220,6 +72302,9 @@ MonoBehaviour:
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  autoCloseStartConversation: 0
+  autoCloseStartConversationDelay: 3
+  completeStepOnAutoClose: 0
 --- !u!1 &1792822105
 GameObject:
   m_ObjectHideFlags: 0
@@ -77157,6 +77242,9 @@ MonoBehaviour:
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  autoCloseStartConversation: 0
+  autoCloseStartConversationDelay: 3
+  completeStepOnAutoClose: 0
 --- !u!1001 &1916731440
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -82440,6 +82528,9 @@ MonoBehaviour:
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  autoCloseStartConversation: 0
+  autoCloseStartConversationDelay: 3
+  completeStepOnAutoClose: 0
 --- !u!4 &2088928860 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5104739530346466524, guid: 0990af7cf6b31d84f94c97bb71a551cc, type: 3}

@@ -76,6 +76,7 @@ public class TutorialStep : MonoBehaviour
     [Header("Timed Dialogue")]
     public bool autoCloseStartConversation = false;
     public float autoCloseStartConversationDelay = 3f;
+    public bool completeStepOnAutoClose = false;
 
     private static TutorialStep activeInstruction;
     private bool hasStarted;
@@ -352,6 +353,11 @@ public class TutorialStep : MonoBehaviour
         if (DialogueManager.IsConversationActive)
         {
             DialogueManager.StopConversation();
+        }
+
+        if (completeStepOnAutoClose)
+        {
+            CompleteStep();
         }
     }
 }
