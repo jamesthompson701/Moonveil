@@ -36,6 +36,10 @@ public static class TutorialEvents
     public static event Action Water;
     public static event Action Harvest;
     public static event Action CompleteQuest;
+    public static event Action FireSpell;
+    public static event Action EarthSpell;
+    public static event Action WaterSpell;
+    public static event Action AirSpell;
     public static event Action HitBush;
 
     public static void TriggerMoveForward() => MoveForward?.Invoke();
@@ -51,11 +55,15 @@ public static class TutorialEvents
     public static void TriggerPlant() => Plant?.Invoke();
     public static void TriggerWater() => Water?.Invoke();
     public static void TriggerHarvest() => Harvest?.Invoke();
+    public static void TriggerFireSpell() => FireSpell?.Invoke();
+    public static void TriggerEarthSpell() => EarthSpell?.Invoke();
+    public static void TriggerWaterSpell() => WaterSpell?.Invoke();
+    public static void TriggerAirSpell() => AirSpell?.Invoke();
+    public static void TriggerHitBush() => HitBush?.Invoke();
 
     public static void TriggerCompleteQuest()
     {
         Debug.Log("Complete Quest Event");
         CompleteQuest?.Invoke();
     }
-    public static void TriggerHitBush() => HitBush?.Invoke();
 }
