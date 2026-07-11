@@ -110,6 +110,13 @@ public class CanvasManager : MonoBehaviour
         
         if (pause)
         {
+            // FishingManager handles Escape while fishing.
+            // Do not also open the normal pause menu.
+            if (FishingManager.Instance != null &&
+                FishingManager.Instance.inFishingMode)
+            {
+                return;
+            }
             SpellManager2.Instance.inMenu = true;
             if (currentCanvas != 0)
             {

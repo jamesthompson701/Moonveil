@@ -94,7 +94,7 @@ public class FishingManager : MonoBehaviour
         {
             FailFishing();
             
-            CanvasManager.Instance.CloseMiniGame(activeBiomeUI.fishingCanvas.gameObject);
+            //CanvasManager.Instance.CloseMiniGame(activeBiomeUI.fishingCanvas.gameObject);
         }
     }
 
@@ -189,6 +189,7 @@ public class FishingManager : MonoBehaviour
         bubbleObject.SetActive(false);
 
         //Debug.Log("Fishing Started");
+        ClearRequiredElementUI();
     }
 
     public void StartCapturePhase()
@@ -199,11 +200,13 @@ public class FishingManager : MonoBehaviour
         bubbleObject.SetActive(false);
 
         currentCapturedFish.Clear();
+        ClearRequiredElementUI();
     }
 
     public void StartBubblePhase(List<FishingFish> capturedFish)
     {
-        currentCapturedFish = capturedFish;
+        currentCapturedFish.Clear();
+        currentCapturedFish.AddRange(capturedFish);
 
         currentPhase = FishingPhase.Bubble;
 
@@ -214,8 +217,19 @@ public class FishingManager : MonoBehaviour
 
         FishingBubble bubble = bubbleObject.GetComponent<FishingBubble>();
 
-        bubble.BeginBubblePhase();
+        if (bubble != null)
+        {
+            if (currentCapturedFish.Count >= 5)
+            {
+                bubble.moveSpeed = 5f;
+            }
+            else
+            {
+                bubble.moveSpeed = 3f;
+            }
 
+            bubble.BeginBubblePhase();
+        }
         //Debug.Log("Bubble phase started");
     }
 
@@ -287,7 +301,7 @@ public class FishingManager : MonoBehaviour
         {
             activeBiomeUI.fishingCanvas.gameObject.SetActive(false);
         }
-
+        ClearRequiredElementUI();
         //Debug.Log("Fishing Ended");
     }
 
@@ -304,6 +318,8 @@ public class FishingManager : MonoBehaviour
                 InventoryManager.instance.AddFish(fish.fishData, 1);
             }
         }
+        ClearRequiredElementUI();
+        currentCapturedFish.Clear();
         ExitFishingMode();
     }
 
@@ -315,7 +331,8 @@ public class FishingManager : MonoBehaviour
         {
             fish.ResetFish();
         }
-
+        ClearRequiredElementUI();
+        currentCapturedFish.Clear();
         ExitFishingMode();
     }
 
@@ -333,29 +350,46 @@ public class FishingManager : MonoBehaviour
     }
 
     public void SetRequiredElementUI(ElementType element)
-{
-    if(requiredElementImage == null)
     {
-        return;
+        if(requiredElementImage == null)
+        {
+            return;
+        }
+
+        switch(element)
+        {
+            case ElementType.Fire:
+                requiredElementImage.sprite = fireSprite;
+                break;
+
+            case ElementType.Earth:
+                requiredElementImage.sprite = earthSprite;
+                break;
+
+            case ElementType.Water:
+                requiredElementImage.sprite = waterSprite;
+                break;
+
+            case ElementType.Air:
+                requiredElementImage.sprite = airSprite;
+                break;
+        }
+
     }
 
-    switch(element)
+    private void ClearRequiredElementUI()
     {
-        case ElementType.Fire:
-            requiredElementImage.sprite = fireSprite;
-            break;
-
-        case ElementType.Earth:
-            requiredElementImage.sprite = earthSprite;
-            break;
-
-        case ElementType.Water:
-            requiredElementImage.sprite = waterSprite;
-            break;
-
-        case ElementType.Air:
-            requiredElementImage.sprite = airSprite;
-            break;
+        if (requiredElementImage != null)
+        {
+            requiredElementImage.sprite = blankSprite;
+        }
     }
-}
+
+    public void ShowFishingPrompt(string message)
+    {
+        if (startFishingPrompt == null) return;
+
+        startFishingPrompt.text = message;
+        startFishingPrompt.gameObject.SetActive(true);
+    }
 }
