@@ -147,7 +147,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1023, y: -23}
+  m_AnchoredPosition: {x: -1023, y: -26.9}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3149505978692398010
@@ -178,9 +178,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Once exposed, the stone will reveal elemental crystals. <b>Match the color</b>
-    of the crystals to the corresponding elemental spell and cast it at the stone
-    to extract the gem.
+  m_text: Most potions provide effects that last for a short time, while <b>Flasks</b>
+    produce an immediate effect before being consumed.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -324,7 +323,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 353, y: -41}
+  m_AnchoredPosition: {x: 353, y: -80}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4576608836764876949
@@ -355,8 +354,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <b>Mining stones</b> are found throughout the mine and are marked by a
-    <b>sparkle</b>. Use the <b>Ground Spell</b> to raise a stone from the ground.
+  m_text: Use the <b>Fire Spell</b> to ignite your cauldron and begin brewing. Potion
+    recipes are unlocked through <b>quests</b>.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -531,7 +530,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fe358b0294e934d84a45b4560b25437d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d444f09bb03f3483fa66821c7177024c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -553,9 +552,9 @@ GameObject:
   - component: {fileID: 5609046345484872314}
   - component: {fileID: 298837642141669969}
   - component: {fileID: 7372909023853556987}
-  - component: {fileID: 115459365957468771}
+  - component: {fileID: 5128561444655610359}
   m_Layer: 5
-  m_Name: MiningTutorialPopup
+  m_Name: BrewingTutorialPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -649,7 +648,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &115459365957468771
+--- !u!114 &5128561444655610359
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -727,7 +726,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c5015854f568a4595a66f43460de3448, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 08cb1095812604d44952ef475a06fcc7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -921,7 +920,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 353, y: -38}
+  m_AnchoredPosition: {x: 353, y: 18}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7013351918329284268
@@ -952,7 +951,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Gems can be used to brew <b>potions</b>.
+  m_text: Open your <b>Inventory</b> [<b>I</b>] and <b>left click</b> a potion or
+    other consumable to use it.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1089,7 +1089,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9db889d1df162493c94cc1718c348605, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 601c5cb950faf4a35b4ad4fc43f26f0e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1295,7 +1295,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 115459365957468771}
+      - m_Target: {fileID: 5128561444655610359}
         m_TargetAssemblyTypeName: TutorialPopup, Assembly-CSharp
         m_MethodName: CloseTutorial
         m_Mode: 1
@@ -1509,7 +1509,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5a4d0fa03daf945999d1d98f8277cfd5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 44bfae122646046fca827c48e598a184, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

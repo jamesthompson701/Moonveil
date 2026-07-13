@@ -147,7 +147,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1023, y: -23}
+  m_AnchoredPosition: {x: -1023, y: -19}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3149505978692398010
@@ -178,9 +178,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Keep the bubble <b>centered on your screen</b> using <b>WASD</b> and the
-    <b>mouse</b>. As the bubble passes through elemental zones, <b>match the equipped
-    spell</b> to the current element to keep the fish on the line.
+  m_text: 'Use the <b>Water Spell</b> to water your crops. Different plants require
+    different amounts of water, and dry plants will stop growing until watered again.
+    Some plants also only grow during certain <b>times of day</b>.
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -324,7 +326,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 353, y: -41}
+  m_AnchoredPosition: {x: 353, y: -59}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4576608836764876949
@@ -355,9 +357,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Use the <b>Water Spell</b> near the edge of a <b>Fishing Dock</b> to begin
-    fishing. Guide fish into the <b>capture area</b>, then press <b>Left Click</b>
-    to start the bubble phase.
+  m_text: Use the <b>Ground Spell</b> to till soil before planting. Open your <b>Inventory</b>
+    [<b>I</b>], select a seed, then <b>right click</b> tilled soil to plant it.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -532,7 +533,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 433c3c7e655f848eda1aa463a724797a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a31442d3a93b945ce91708042bbba7f1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -556,12 +557,12 @@ GameObject:
   - component: {fileID: 7372909023853556987}
   - component: {fileID: 5128561444655610359}
   m_Layer: 5
-  m_Name: FishingTutorialPopup
+  m_Name: GardeningTutorialPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2416272852818901982
 RectTransform:
   m_ObjectHideFlags: 0
@@ -728,7 +729,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 271f7bff2eafe4f428d00a9c798be7ea, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0ba6e4f9458db483ca03973a3d3e15de, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -922,7 +923,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 353, y: 22}
+  m_AnchoredPosition: {x: 353, y: 72}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7013351918329284268
@@ -953,8 +954,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: After holding the fish long enough, you'll <b>catch it</b>. Fish are used
-    to brew <b>potions</b> and will <b>respawn after three minutes</b> once caught.
+  m_text: 'Plants grow through <b>three stages</b> before they can be harvested.
+    Once fully grown, use the <b>Air Spell</b> to harvest them, then till the soil
+    again before planting something new.
+
+    Use the <b>Fire Spell</b> to remove
+    unwanted crops at any time.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1091,7 +1096,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c4df290a2cf6644d98e48912fdcc2330, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ed303fb95117a49879523cc8950832f2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1511,7 +1516,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8062d922ebf5f4505bceb78776e2c8b2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a895f8ac17b484ab5ae4669f01cde0bc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
