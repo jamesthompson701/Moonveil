@@ -7,11 +7,8 @@ using StarterAssets;
 /// handles cooldowns and resource management for each spell
 /// attach to the player and allows them to cast spells based on input and spell definitions.
 /// </summary>
-
 public class SpellManager2 : MonoBehaviour
 {
-
-    //TODO
 
     //Singleton
     public static SpellManager2 Instance;
@@ -28,7 +25,6 @@ public class SpellManager2 : MonoBehaviour
     public SO_SpellDefs2[] farmSpellsTier4 = new SO_SpellDefs2[4];
 
     InputAction specialAttackAction;
-    InputAction attackAction;
 
     [Header("Resource Management")]
     [Tooltip("Maximum resource for each element type (fire, earth, water, air). Adjust as needed.")]
@@ -38,14 +34,6 @@ public class SpellManager2 : MonoBehaviour
     [Min(0f)] public float earthMana;
     [Min(0f)] public float waterMana;
     [Min(0f)] public float airMana;
-
-    [Header("Basic Attack")]
-    [SerializeField] private GameObject basicAttackPrefab;
-    [Min(0f)][SerializeField] private float basicAttackCooldown = 0.25f;
-    [Min(0f)][SerializeField] private float basicAttackLifetime = 1.0f;
-    [Min(0f)][SerializeField] private float basicAttackSpeed = 0f;
-    private float _nextBasicAttackTime;
-    [Min(0f)][SerializeField] private float avgSpeed = 15f;
 
     [Header("References")]
     public GameObject player;
@@ -120,7 +108,6 @@ public class SpellManager2 : MonoBehaviour
             }
 
             inCombatArea = true;
-            if (attackAction != null) attackAction.Enable();
         }
     }
 
@@ -129,7 +116,6 @@ public class SpellManager2 : MonoBehaviour
         if (other.CompareTag("CombatArea"))
         {
             inCombatArea = false;
-            if (attackAction != null) attackAction.Disable();
         }
     }
 
@@ -142,15 +128,6 @@ public class SpellManager2 : MonoBehaviour
             specialAttackAction.canceled += Attack;
             if (!specialAttackAction.enabled) specialAttackAction.Enable();
         }
-
-        attackAction = InputSystem.actions.FindAction("BasicAttack");
-        if (attackAction != null)
-        {
-            attackAction.performed += TryBasicAttack;
-            if (!attackAction.enabled) attackAction.Enable();
-        }
-
-        
     }
 
     private void OnDisable()
@@ -161,18 +138,11 @@ public class SpellManager2 : MonoBehaviour
             specialAttackAction.canceled -= Attack;
             if (specialAttackAction.enabled) specialAttackAction.Disable();
         }
-
-        if (attackAction != null)
-        {
-            attackAction.performed -= TryBasicAttack;
-            if (attackAction.enabled) attackAction.Disable();
-        }
     }
 
     private void Awake()
     {
         specialAttackAction = InputSystem.actions.FindAction("SpecialAttack");
-        attackAction = InputSystem.actions.FindAction("BasicAttack");
         // Initialize element resource pools
         fireMana = maxElementResource;
         earthMana = maxElementResource;
@@ -182,8 +152,6 @@ public class SpellManager2 : MonoBehaviour
         _defaultRechargeRate = rechargeRate; // Store the default recharge rate
 
         if (aimCamera == null) aimCamera = Camera.main;
-        // Find the action here but subscribe in OnEnable/OnDisable for lifecycle correctness
-       //attackAction = InputSystem.actions.FindAction("Attack");
         timer = 0;
         if (player == null)
             player = gameObject;
@@ -271,13 +239,11 @@ public class SpellManager2 : MonoBehaviour
             // Check the Y axis value for up/down motion
             if (scrollDelta.y < 0)
             {
-                Debug.Log("Scrolling Up!");
                 attackChoice++;
                 if (attackChoice > 4) attackChoice = 0;
             }
             else if (scrollDelta.y > 0)
             {
-                Debug.Log("Scrolling Down!");
                 attackChoice--;
                 if (attackChoice < 0) attackChoice = 4;
             }
@@ -297,120 +263,6 @@ public class SpellManager2 : MonoBehaviour
         else
         {
             timer = 0;
-        }
-        //Debug.Log("timer is: " + timer);
-    }
-    // calls basic attack on attack action
-    public void TryBasicAttack(InputAction.CallbackContext context)
-    {
-        Debug.Log("Trying Basic Attack");
-        if (basicAttackPrefab == null)
-            return;
-
-        // Prevent basic attack if midCast is true
-        if (midCast)
-        {
-            Debug.Log("Cannot basic attack while midCast is true");
-            return;
-        }
-
-        // Block basic attacks while in flight
-        if (ThirdPersonController.Instance != null && ThirdPersonController.Instance.inFlightMode)
-        {
-            Debug.Log("Cannot basic attack while in flight");
-            return;
-        }
-
-        // block while in menus
-        if (inMenu)
-        {
-            Debug.Log("Cannot basic attack while in menu");
-            return;
-        }
-
-        // block during fishing
-        if (FishingManager.Instance.inFishingMode)
-        {
-            Debug.Log("Cannot basic attack while fishing");
-            return;
-        }
-
-        /*// block during mining
-        if (MiningManager.Instance.isMining)
-        {
-            Debug.Log("Cannot basic attack while mining");
-            return;
-        }*/
-
-        // Block while not in combat area
-        if (!inCombatArea)
-        {
-            Debug.Log("Cannot basic attack outside of combat area");
-            return;
-        }
-
-        
-
-        float now = Time.time;
-        if (now < _nextBasicAttackTime)
-            return;
-        _nextBasicAttackTime = now + basicAttackCooldown;
-        AlignPlayerToCamera();
-
-        //THIS IS TEMP basic way to stop shooting when interacting with something. In future want to just call clickselectors function
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, ClickSelector.Instance.raycastDistance))
-        {
-            Debug.Log("Raycast hit: " + hit.collider.name);
-            Interactable interactable = hit.collider.GetComponent<Interactable>();
-            if (interactable == null)
-            {
-                interactable = hit.collider.GetComponentInParent<Interactable>();
-            }
-            if (interactable != null)
-            {
-                Debug.Log("Can not basic attack while interacting");
-                return;
-            }
-        }
-
-        Debug.Log("Basic Attack Cast");
-
-        // Mark controller as casting so flight can't be toggled during this action
-        if (ThirdPersonController.Instance != null)
-        {
-            if (_clearCastingCoroutine != null) StopCoroutine(_clearCastingCoroutine);
-            ThirdPersonController.Instance.isCasting = true;
-        }
-
-        // Set midCast to true and start coroutine to clear it after attack duration
-        midCast = true;
-        if (_clearCastingCoroutine != null) StopCoroutine(_clearCastingCoroutine);
-        _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, basicAttackLifetime)));
-
-        //Triggers the spellcast animation
-        _animator.SetTrigger("Spellcast");
-
-        Transform origin = projectilCastOrigin != null ? projectilCastOrigin : player.transform;
-
-        Vector3 spawnPos = origin.position + origin.forward * spawnOffset;
-        Quaternion spawnRot = Quaternion.LookRotation(GetAimForward(), Vector3.up);
-
-        GameObject spawned = Instantiate(basicAttackPrefab, spawnPos, spawnRot);
-
-        float speed = basicAttackSpeed > 0f ? basicAttackSpeed : avgSpeed;
-        ApplyInitialVelocity(spawned, spawnRot * Vector3.forward, speed);
-
-        if (basicAttackLifetime > 0f)
-            Destroy(spawned, basicAttackLifetime);
-    }
-
-    private void ApplyInitialVelocity(GameObject obj, Vector3 direction, float speed)
-    {
-        if (obj.TryGetComponent<Rigidbody>(out var rb))
-        {
-            rb.linearVelocity = direction * speed;
         }
     }
 
@@ -438,13 +290,6 @@ public class SpellManager2 : MonoBehaviour
             Debug.Log("Cannot cast spells while in fishing");
             return;
         }
-
-        /*// block while mining
-        if (MiningManager.Instance.isMining)
-        {
-            Debug.Log("Cannot cast spells while mining");
-            return;
-        }*/
 
         // Block casting if player is currently in flight
         if (ThirdPersonController.Instance != null && ThirdPersonController.Instance.inFlightMode)
@@ -599,7 +444,7 @@ public class SpellManager2 : MonoBehaviour
             timerOn = false;
             timer = 0f;
 
-            // note: do not clear isCasting or midCast here � Cast() (or TryBasicAttack) will clear based on prefab lifetime
+            // note: do not clear isCasting or midCast here — Cast() will clear based on prefab lifetime
 
             return;
         }
@@ -666,7 +511,24 @@ public class SpellManager2 : MonoBehaviour
             _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, spell.Lifetime)));
 
             spell.CastSpell2(farmCtx);
+            switch ((int)spell.spellType)
+            {
+                case 0:
+                    TutorialEvents.TriggerFireSpell();
+                break;
 
+                case 1:
+                    TutorialEvents.TriggerEarthSpell();
+                break;
+
+                case 2:
+                    TutorialEvents.TriggerWaterSpell();
+                break;
+
+                case 3:
+                    TutorialEvents.TriggerAirSpell();
+                break;
+            }
             return;
         }
 
@@ -699,7 +561,7 @@ public class SpellManager2 : MonoBehaviour
             hasHit = hasHit,
             hitCollider = hitCol
         };
-        
+
 
         cost = tierResourceCosts[currentTier - 1];
         if (!SpendMana(cost, elementIdx))
@@ -721,6 +583,24 @@ public class SpellManager2 : MonoBehaviour
         _clearCastingCoroutine = StartCoroutine(ClearCastingAfter(Mathf.Max(0.01f, spell.Lifetime)));
 
         spell.CastSpell2(ctx);
+        switch ((int)spell.spellType)
+        {
+            case 0:
+                TutorialEvents.TriggerFireSpell();
+            break;
+
+            case 1:
+                TutorialEvents.TriggerEarthSpell();
+            break;
+
+            case 2:
+                TutorialEvents.TriggerWaterSpell();
+            break;
+
+            case 3:
+                TutorialEvents.TriggerAirSpell();
+            break;
+        }
 
         // clears mana text popup for clarity
         if (HUD.instance.manaText.activeInHierarchy)
@@ -777,8 +657,6 @@ public class SpellManager2 : MonoBehaviour
         else tier = 4;
 
         HUD.instance.UpdatedSpellCharge(tier);
-
-
     }
     private void UpdateGroundTargetPreview()
     {

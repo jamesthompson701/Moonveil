@@ -53,6 +53,10 @@ public class WorldTree : MonoBehaviour
             SetupQuest();
             //levelText.transform.position = new Vector3(-738, 6, -533);
             isSet = true;
+            for (int i = 0; i < curQuest.questItems.Count; i++)
+            {
+                Debug.Log("Current Quest items list: " + curQuest.questItems[i].name);
+            }
         }
     }
 

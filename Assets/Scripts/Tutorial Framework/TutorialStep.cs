@@ -40,6 +40,10 @@ public class TutorialStep : MonoBehaviour
         Plant,
         Water,
         Harvest,
+        FireSpell,
+        EarthSpell,
+        WaterSpell,
+        AirSpell,
         HitBush
     }
 
@@ -63,6 +67,10 @@ public class TutorialStep : MonoBehaviour
 
     [Header("Next Step")]
     public GameObject nextTutorialStep;
+
+    // added for minigame pop-up canvases
+    [Header("Tutorial Popup")]
+    public GameObject tutorialPopup;
 
     [Header("Proximity Settings")]
     public Transform player;
@@ -140,6 +148,12 @@ public class TutorialStep : MonoBehaviour
 
         activeInstruction = this;
         hasStarted = true;
+
+        // for added tutorial canvas functionality
+        if (tutorialPopup != null)
+        {
+            tutorialPopup.SetActive(true);
+        }
 
         if (!string.IsNullOrEmpty(startConversation))
         {
@@ -290,6 +304,21 @@ public class TutorialStep : MonoBehaviour
             case TutorialEventType.Harvest:
                 TutorialEvents.Harvest += CompleteStep;
                 break;
+            case TutorialEventType.FireSpell:
+                TutorialEvents.FireSpell += CompleteStep;
+                break;
+
+            case TutorialEventType.EarthSpell:
+                TutorialEvents.EarthSpell += CompleteStep;
+                break;
+
+            case TutorialEventType.WaterSpell:
+                TutorialEvents.WaterSpell += CompleteStep;
+                break;
+
+            case TutorialEventType.AirSpell:
+                TutorialEvents.AirSpell += CompleteStep;
+                break;
             case TutorialEventType.HitBush:
                 TutorialEvents.HitBush += CompleteStep;
                 break;
@@ -313,6 +342,10 @@ public class TutorialStep : MonoBehaviour
         TutorialEvents.Plant -= CompleteStep;
         TutorialEvents.Water -= CompleteStep;
         TutorialEvents.Harvest -= CompleteStep;
+        TutorialEvents.FireSpell -= CompleteStep;
+        TutorialEvents.EarthSpell -= CompleteStep;
+        TutorialEvents.WaterSpell -= CompleteStep;
+        TutorialEvents.AirSpell -= CompleteStep;
         TutorialEvents.HitBush -= CompleteStep;
 
         listeningForTutorialEvent = false;
@@ -346,6 +379,11 @@ public class TutorialStep : MonoBehaviour
         if (activeInstruction == this)
         {
             activeInstruction = null;
+        }
+        // last bit of tutorial addition
+        if (tutorialPopup != null)
+        {
+            tutorialPopup.SetActive(false);
         }
 
         gameObject.SetActive(false);
