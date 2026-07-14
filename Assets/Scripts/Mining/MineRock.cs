@@ -120,8 +120,6 @@ public class MineRock : MonoBehaviour
 
         HideReadyFX();
 
-        //pushCollider.enabled = true;
-
         raised = true;
 
         transform.position = raisedPosition;
@@ -148,8 +146,8 @@ public class MineRock : MonoBehaviour
         pushCollider.enabled = true;
 
         //time then becomes false, dont really have any easy way to know when its fully extended to turn it off.
-        pushCollider.enabled = false;
-        
+        //pushCollider.enabled = false;
+
         //Debug.Log(name + " raised: " + raisedPosition);
     }
 
