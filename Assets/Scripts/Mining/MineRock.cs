@@ -33,6 +33,9 @@ public class MineRock : MonoBehaviour
 
     [SerializeField] float raiseDistance = 5f;
 
+    [Header("Push")]
+    public Collider pushCollider;
+
     [Header("SFX")]
     private AudioSource audioSource;
     public AudioClip raiseSound;
@@ -58,6 +61,8 @@ public class MineRock : MonoBehaviour
         HideAllGems();
 
         ShowReadyFX();
+
+        pushCollider.enabled = false;
 
         //Debug.Log(name + " gem count = " + gemRenderers.Length);
     }
@@ -115,9 +120,9 @@ public class MineRock : MonoBehaviour
 
         HideReadyFX();
 
-        raised = true;
+        //pushCollider.enabled = true;
 
-        ShowGemType(requiredType);
+        raised = true;
 
         transform.position = raisedPosition;
 
@@ -140,6 +145,11 @@ public class MineRock : MonoBehaviour
 
         activeTimerRoutine = StartCoroutine(ActiveTimer());
 
+        pushCollider.enabled = true;
+
+        //time then becomes false, dont really have any easy way to know when its fully extended to turn it off.
+        pushCollider.enabled = false;
+        
         //Debug.Log(name + " raised: " + raisedPosition);
     }
 
@@ -228,6 +238,8 @@ public class MineRock : MonoBehaviour
         }
 
         yield return StartCoroutine(SinkRock());
+
+        pushCollider.enabled = false;
 
         yield return new WaitForSeconds(respawnTime);
 

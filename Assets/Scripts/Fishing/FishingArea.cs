@@ -41,6 +41,8 @@ public FishingBiome biome;
     // water spell to enter fishing
     private void OnTriggerEnter(Collider other)
     {
+        //testing for why the dock itself can enter fishing
+        Debug.Log("Water Spell Can Hit");
         if (other.CompareTag("WateringSpell"))
         {
             Debug.Log("Water Spell Hit");
