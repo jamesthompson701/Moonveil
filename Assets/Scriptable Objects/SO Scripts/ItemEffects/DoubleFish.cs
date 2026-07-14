@@ -8,8 +8,8 @@ public class DoubleFish : ItemEffectSO
 
     public override void UseItem()
     {
-        InventoryManager.instance.invSO.dropMultiplier = dropMultiplier;
-        InventoryManager.instance.multiplierBuffTime = buffLength;
-        InventoryManager.instance.isMultiplierBuffActive = true;
+        InventoryManager.instance.invSO.fishMultiplier = dropMultiplier;
+        InventoryManager.instance.fishBuffTime = buffLength;
+        InventoryManager.instance.isFishBuffActive = true;
     }
 }
