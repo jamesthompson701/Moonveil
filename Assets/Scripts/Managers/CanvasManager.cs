@@ -12,7 +12,6 @@ public class CanvasManager : MonoBehaviour
 
     // TRACKS CURRENT ACTIVE CANVAS; 0 = HUD/NONE ACTIVE ; 999 = MINIGAMES
     int currentCanvas = 0;
-    bool miniGame = false;
 
     [Header("DO NOT MOVE THINGS you can add though")]
     [SerializeField] private GameObject[] menus;
@@ -39,6 +38,11 @@ public class CanvasManager : MonoBehaviour
 
     public PauseScreenshotToBook screenshotToBook;
 
+    private void Start()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 
     private void Awake()
     {
@@ -54,8 +58,12 @@ public class CanvasManager : MonoBehaviour
 
         starterAssets = FindFirstObjectByType<StarterAssetsInputs>();
 
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Confined;
+        Debug.Log(Equals(Cursor.lockState, CursorLockMode.Confined));
         Cursor.visible = false;
+        Debug.Log(Equals(Cursor.visible));
+        Cursor.lockState = CursorLockMode.Locked;
+        Debug.Log(Equals(Cursor.lockState, CursorLockMode.Locked));
 
         //Making canvas manager a singleton
         if (Instance != null && Instance != this)
@@ -223,7 +231,6 @@ public class CanvasManager : MonoBehaviour
     {
         SpellManager2.Instance.inMenu = false;
         canvas.SetActive(false);
-        miniGame = true;
         currentCanvas = 0;
 
         menus[0].GetComponent<Canvas>().enabled = true;

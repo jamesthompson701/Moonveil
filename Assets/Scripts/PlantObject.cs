@@ -17,7 +17,6 @@ public class PlantObject : MonoBehaviour
 
     //harvestability and withered status
     private bool isHarvestable;
-    private bool withered;
 
     //plant object & soil
     private GameObject currentPlant;
@@ -134,12 +133,10 @@ public class PlantObject : MonoBehaviour
         //someday this'll be something like "plantObject texure = plant.witheredTexture"
         //for now just make it yellow
         currentPlant.GetComponentInChildren<MeshRenderer>().material = plant.withered;
-        withered = true;
     }
     public void Unwither()
     {
         currentPlant.GetComponentInChildren<MeshRenderer>().material = plant.healthy;
-        withered = false;
     }
 
     //add the correct items to the player's inventory and then unregisters and destroys the plant

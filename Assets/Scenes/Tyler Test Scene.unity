@@ -4315,17 +4315,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04de2f562c17141cc92a9a23d12872a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
-  activationMode: 0
+  activationMode: 1
   requiredEvent: 9
   startConversation: Till
   completeConversation: 
   nextTutorialStep: {fileID: 1102690580}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 6315828877817887305}
   proximityTarget: {fileID: 98899204}
   proximityDistance: 9
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 2096646444843005618, guid: 562188c28f905e843af56db0575ea2ef, type: 3}
 --- !u!4 &100780993 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2154067754139245277, guid: dbecebf571d557a41ba52c0145a20f48, type: 3}
@@ -5021,6 +5023,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5128561444655610359, guid: 71360d340746e4897a4bd4dbc97a50ab, type: 3}
+      propertyPath: popup
+      value: 
+      objectReference: {fileID: 7801072}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6044,6 +6050,7 @@ MonoBehaviour:
   dispenserItem: {fileID: 0}
   dispenseAmount: 0
   destroyOnDispense: 0
+  eventToSend: 
 --- !u!114 &140003377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10007,8 +10014,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1185285100}
+  m_Children: []
   m_Father: {fileID: 306281786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &259416524
@@ -10029,11 +10035,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 1380622396}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1 &261838826
 GameObject:
   m_ObjectHideFlags: 0
@@ -10322,8 +10330,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 273961804}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 796.48, y: 5.63, z: 585.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10345,13 +10353,15 @@ MonoBehaviour:
   requiredEvent: 8
   startConversation: FishingTutorial
   completeConversation: 
-  nextTutorialStep: {fileID: 0}
+  nextTutorialStep: {fileID: 846096307}
   tutorialPopup: {fileID: 7801072}
+  isRepeatable: 1
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 1467669929}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1 &274552245
 GameObject:
   m_ObjectHideFlags: 0
@@ -10904,11 +10914,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 1334642493}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1001 &296936475
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11190,11 +11202,13 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 259416523}
+  - {fileID: 1185285100}
   - {fileID: 43251515}
   - {fileID: 1903502535}
   - {fileID: 846096308}
   - {fileID: 324926667}
   - {fileID: 404437397}
+  - {fileID: 1462172797}
   - {fileID: 896944448}
   m_Father: {fileID: 164575236}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12200,11 +12214,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 0}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!4 &327180328 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3002719193309341603, guid: f35907b40250cb3419d85ab73c8d4d6f, type: 3}
@@ -12316,7 +12332,9 @@ MonoBehaviour:
   - {fileID: 1272100403}
   - {fileID: 1320673085}
   - {fileID: 1436598296}
-  escCloseableCanvases: []
+  escCloseableCanvases:
+  - {fileID: 7801072}
+  - {fileID: 633665377}
   input: {fileID: -944628639613478452, guid: 4419d82f33d36e848b3ed5af4c8da37e, type: 3}
   screenshotToBook: {fileID: 328191352}
 --- !u!4 &328191351
@@ -12567,6 +12585,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mining_Main
       objectReference: {fileID: 0}
+    - target: {fileID: 1816637168553108239, guid: a1c3a87a842af465ca938da15dd70652, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2959741186414773515, guid: a1c3a87a842af465ca938da15dd70652, type: 3}
       propertyPath: m_LocalPosition.x
       value: 842.58
@@ -12617,7 +12639,7 @@ PrefabInstance:
       objectReference: {fileID: 6315828877817887305}
     - target: {fileID: 7254430513566438620, guid: a1c3a87a842af465ca938da15dd70652, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7254430513566438620, guid: a1c3a87a842af465ca938da15dd70652, type: 3}
       propertyPath: activationMode
@@ -15061,8 +15083,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1462172797}
+  m_Children: []
   m_Father: {fileID: 306281786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &404437398
@@ -15083,11 +15104,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 0}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1 &405161916
 GameObject:
   m_ObjectHideFlags: 0
@@ -17069,6 +17092,7 @@ MonoBehaviour:
   dispenserItem: {fileID: 0}
   dispenseAmount: 0
   destroyOnDispense: 0
+  eventToSend: 
 --- !u!4 &446271616 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 891126372701072223, guid: 9c612b938e9638b43a39578918b78b1e, type: 3}
@@ -18057,6 +18081,7 @@ MonoBehaviour:
   dispenserItem: {fileID: 0}
   dispenseAmount: 0
   destroyOnDispense: 0
+  eventToSend: 
 --- !u!1 &484350414
 GameObject:
   m_ObjectHideFlags: 0
@@ -20919,11 +20944,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 786348832}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1001 &537705723
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24017,13 +24044,15 @@ MonoBehaviour:
   requiredEvent: 8
   startConversation: MiningTutorial
   completeConversation: 
-  nextTutorialStep: {fileID: 0}
+  nextTutorialStep: {fileID: 324926666}
   tutorialPopup: {fileID: 633665377}
+  isRepeatable: 1
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 984761449}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 880048968}
 --- !u!1001 &611798441
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25309,11 +25338,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 0}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 6315828877817887305}
   proximityTarget: {fileID: 140003372}
   proximityDistance: 17.7
   interactableTarget: {fileID: 140003376}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1 &652096133
 GameObject:
   m_ObjectHideFlags: 0
@@ -25401,11 +25432,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 1554757732}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1001 &662667866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28969,14 +29002,14 @@ MonoBehaviour:
   CameraSide: 1
   CameraDistance: 3.5
   AvoidObstacles:
-    Enabled: 0
+    Enabled: 1
     CollisionFilter:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 1089
     IgnoreTag: 
     CameraRadius: 0.2
-    DampingIntoCollision: 0
-    DampingFromCollision: 0.5
+    DampingIntoCollision: 4
+    DampingFromCollision: 4
 --- !u!1001 &749565429
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29106,11 +29139,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 1185285099}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1001 &753295942
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30414,11 +30449,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 1882920505}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!4 &788861704 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4657556593964357414, guid: 16846d224d8f1aa44ae92c342462be14, type: 3}
@@ -33709,11 +33746,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 0}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1001 &846107265
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37029,7 +37068,7 @@ Transform:
   m_GameObject: {fileID: 880048968}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 848.2, y: 8.77, z: 566.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -37053,11 +37092,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 610605754}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 1
   player: {fileID: 6315828877817887305}
   proximityTarget: {fileID: 984761451}
-  proximityDistance: 22
-  interactableTarget: {fileID: 984761449}
+  proximityDistance: 18.7
+  interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 2096646444843005618, guid: 562188c28f905e843af56db0575ea2ef, type: 3}
 --- !u!1001 &881594672
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38003,11 +38044,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 0}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1 &900380677
 GameObject:
   m_ObjectHideFlags: 0
@@ -38272,7 +38315,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0.29}
-  m_LocalScale: {x: 1.2121, y: 1.2121, z: -0.01}
+  m_LocalScale: {x: 1.2121, y: 1.2121, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 318314597}
@@ -41099,11 +41142,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 0}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 6315828877817887305}
   proximityTarget: {fileID: 140003372}
   proximityDistance: 17.7
   interactableTarget: {fileID: 140003376}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1001 &984433188
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45712,7 +45757,7 @@ PrefabInstance:
       objectReference: {fileID: 1695654373}
     - target: {fileID: 7430483975808452213, guid: 938457811cb4f39479777151f59f1281, type: 3}
       propertyPath: m_VersionIndex
-      value: 2834
+      value: 2837
       objectReference: {fileID: 0}
     - target: {fileID: 7430483975808452213, guid: 938457811cb4f39479777151f59f1281, type: 3}
       propertyPath: m_Tangents.Array.data[24].y
@@ -46653,11 +46698,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 658077936}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1001 &1108424356
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47370,6 +47417,7 @@ MonoBehaviour:
   dispenserItem: {fileID: 0}
   dispenseAmount: 0
   destroyOnDispense: 0
+  eventToSend: 
 --- !u!1001 &1123224720
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48625,16 +48673,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
   activationMode: 0
-  requiredEvent: 0
+  requiredEvent: 8
   startConversation: World Tree Bridge
   completeConversation: 
   nextTutorialStep: {fileID: 981541220}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 6315828877817887305}
   proximityTarget: {fileID: 1152881856}
   proximityDistance: 17.7
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!4 &1154505982 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5656288875319828478, guid: 8de1699b05066be4998c5ecb839395fa, type: 3}
@@ -49054,11 +49104,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 0}
   tutorialPopup: {fileID: 7801072}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 1467669929}
   closeDialogueOnComplete: 0
+  weeniePrefab: {fileID: 0}
 --- !u!1001 &1167673787
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49570,7 +49622,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 259416523}
+  m_Father: {fileID: 306281786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1185285101
 MonoBehaviour:
@@ -49590,11 +49642,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 98899203}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!4 &1186146626 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2154067754139245277, guid: dbecebf571d557a41ba52c0145a20f48, type: 3}
@@ -55063,11 +55117,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 2086430648}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1 &1335692878
 GameObject:
   m_ObjectHideFlags: 0
@@ -56045,6 +56101,7 @@ MonoBehaviour:
   dispenserItem: {fileID: 0}
   dispenseAmount: 0
   destroyOnDispense: 0
+  eventToSend: 
 --- !u!1 &1368014756
 GameObject:
   m_ObjectHideFlags: 0
@@ -56821,11 +56878,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 293528775}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!4 &1382111019 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3002719193309341603, guid: f35907b40250cb3419d85ab73c8d4d6f, type: 3}
@@ -59111,12 +59170,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1462172796}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 404437397}
+  m_Father: {fileID: 306281786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1462172798
 MonoBehaviour:
@@ -59136,11 +59195,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 0}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!4 &1465024895 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5824585382873104730, guid: 0756e554b47bda247a9b9f7f04e1461c, type: 3}
@@ -59309,6 +59370,7 @@ MonoBehaviour:
   dispenserItem: {fileID: 0}
   dispenseAmount: 0
   destroyOnDispense: 0
+  eventToSend: 
 --- !u!114 &1467669930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59316,7 +59378,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 691255451}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04de2f562c17141cc92a9a23d12872a9, type: 3}
   m_Name: 
@@ -59327,11 +59389,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 691255450}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 6315828877817887305}
   proximityTarget: {fileID: 691255449}
   proximityDistance: 22
   interactableTarget: {fileID: 1467669929}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!4 &1471784680 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 891126372701072223, guid: 9c612b938e9638b43a39578918b78b1e, type: 3}
@@ -60403,11 +60467,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 752824127}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1001 &1519785284
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -61002,7 +61068,7 @@ Transform:
   m_GameObject: {fileID: 1530486913}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 796.48, y: 5.63, z: 585.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -61026,11 +61092,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 273961804}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 1
   player: {fileID: 6315828877817887305}
   proximityTarget: {fileID: 691255449}
   proximityDistance: 22
-  interactableTarget: {fileID: 1467669929}
+  interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 2096646444843005618, guid: 562188c28f905e843af56db0575ea2ef, type: 3}
 --- !u!4 &1532545045 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7543335622018023710, guid: 01636016a2a12af41b7fd2036ecc0c69, type: 3}
@@ -62095,11 +62163,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 1903502534}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!4 &1555057739 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4218334115134490241, guid: 7de89671ee344d84ea8829b62f6a1e42, type: 3}
@@ -68115,6 +68185,7 @@ MonoBehaviour:
   dispenserItem: {fileID: 0}
   dispenseAmount: 0
   destroyOnDispense: 0
+  eventToSend: 
 --- !u!136 &1673549742
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -70080,6 +70151,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4657556593964357414, guid: 16846d224d8f1aa44ae92c342462be14, type: 3}
   m_PrefabInstance: {fileID: 1734556627}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1739205673
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -7809128168121538386, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2985393548613341799, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3634057373309006770, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
+      propertyPath: m_Name
+      value: WoolOfBat Seed
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117718607814240520, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 709.52704
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117718607814240520, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 13.489
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117718607814240520, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 619.463
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117718607814240520, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117718607814240520, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117718607814240520, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117718607814240520, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117718607814240520, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117718607814240520, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117718607814240520, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: af2c7227eda6397489da6b8e6ae8422d, type: 3}
 --- !u!4 &1739758878 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2154067754139245277, guid: dbecebf571d557a41ba52c0145a20f48, type: 3}
@@ -74466,7 +74602,7 @@ TerrainCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 2
   m_TerrainData: {fileID: 15600000, guid: 8bd1b1fb9467c4e47b07fe7fcbd5e8cd, type: 2}
@@ -76468,11 +76604,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 2094774413}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1001 &1885070556
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -77244,11 +77382,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 0}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1001 &1904031393
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -77847,11 +77987,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 1516260257}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1001 &1916731440
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79303,11 +79445,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 537421898}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1001 &1962195255
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -82967,11 +83111,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 1916260979}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!4 &2088928860 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5104739530346466524, guid: 0990af7cf6b31d84f94c97bb71a551cc, type: 3}
@@ -83288,11 +83434,13 @@ MonoBehaviour:
   completeConversation: 
   nextTutorialStep: {fileID: 0}
   tutorialPopup: {fileID: 0}
+  isRepeatable: 0
   player: {fileID: 0}
   proximityTarget: {fileID: 0}
   proximityDistance: 5
   interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
+  weeniePrefab: {fileID: 0}
 --- !u!1001 &2095909767
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -85920,3 +86068,4 @@ SceneRoots:
   - {fileID: 318314596}
   - {fileID: 1832152925}
   - {fileID: 164575236}
+  - {fileID: 1739205673}

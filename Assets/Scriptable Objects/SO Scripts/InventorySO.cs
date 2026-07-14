@@ -9,7 +9,6 @@ public class InventorySO : ScriptableObject
     public int maxItems;
     public int dropMultiplier;
     public event Action<ItemSO, int, bool> GetInventoryItem;
-    public event Action<int> AddInventoryItem;
 
     public void AddItem(ItemSO newItem, int newAmount)
     {
