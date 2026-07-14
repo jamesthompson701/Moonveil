@@ -43,7 +43,7 @@ public class TutorialStep : MonoBehaviour
         FireSpell,
         EarthSpell,
         WaterSpell,
-        AirSpell
+        AirSpell,
         HitBush
     }
 
