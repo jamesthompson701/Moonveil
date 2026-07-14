@@ -55,32 +55,15 @@ public static class TutorialEvents
     public static void TriggerPlant() => Plant?.Invoke();
     public static void TriggerWater() => Water?.Invoke();
     public static void TriggerHarvest() => Harvest?.Invoke();
+    public static void TriggerFireSpell() => FireSpell?.Invoke();
+    public static void TriggerEarthSpell() => EarthSpell?.Invoke();
+    public static void TriggerWaterSpell() => WaterSpell?.Invoke();
+    public static void TriggerAirSpell() => AirSpell?.Invoke();
+    public static void TriggerHitBush() => HitBush?.Invoke();
 
     public static void TriggerCompleteQuest()
     {
         Debug.Log("Complete Quest Event");
         CompleteQuest?.Invoke();
     }
-
-    public static void TriggerFireSpell()
-    {
-        FireSpell?.Invoke();
-    }
-
-    public static void TriggerEarthSpell()
-    {
-        EarthSpell?.Invoke();
-    }
-
-    public static void TriggerWaterSpell()
-    {
-        WaterSpell?.Invoke();
-    }
-
-    public static void TriggerAirSpell()
-    {
-        AirSpell?.Invoke();
-    }
-
-    public static void TriggerHitBush() => HitBush?.Invoke();
 }

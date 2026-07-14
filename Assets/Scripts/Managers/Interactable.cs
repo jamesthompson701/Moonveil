@@ -18,6 +18,8 @@ public class Interactable : MonoBehaviour
     public int dispenseAmount;
     public bool destroyOnDispense;
 
+    public string eventToSend;
+
     // This method will be called by our ClickSelector
     public virtual void OnInteract()
     {

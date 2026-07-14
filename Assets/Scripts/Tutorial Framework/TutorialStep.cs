@@ -71,6 +71,7 @@ public class TutorialStep : MonoBehaviour
     // added for minigame pop-up canvases
     [Header("Tutorial Popup")]
     public GameObject tutorialPopup;
+    public bool isRepeatable = false;
 
     [Header("Proximity Settings")]
     public Transform player;
@@ -90,6 +91,8 @@ public class TutorialStep : MonoBehaviour
     private bool listeningForInteractableActivation;
     private bool listeningForQuestActivation;
     private bool listeningForInteractableCompletion;
+
+    public GameObject weeniePrefab;
 
     private void OnEnable()
     {
@@ -111,6 +114,9 @@ public class TutorialStep : MonoBehaviour
         {
             SubscribeToQuestActivation();
         }
+
+        if (!weeniePrefab) return;
+        else Instantiate(weeniePrefab, transform).transform.rotation = transform.rotation;
     }
 
     private void Update()
@@ -386,7 +392,7 @@ public class TutorialStep : MonoBehaviour
             tutorialPopup.SetActive(false);
         }
 
-        gameObject.SetActive(false);
+        if (!isRepeatable) gameObject.SetActive(false);
 
         if (next != null)
         {

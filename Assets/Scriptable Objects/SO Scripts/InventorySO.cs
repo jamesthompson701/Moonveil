@@ -12,7 +12,6 @@ public class InventorySO : ScriptableObject
     public int combatMultiplier;
     public int miningMultiplier;
     public event Action<ItemSO, int, bool> GetInventoryItem;
-    public event Action<int> AddInventoryItem;
 
     public void AddItem(ItemSO newItem, int newAmount)
     {
