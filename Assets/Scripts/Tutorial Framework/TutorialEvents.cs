@@ -40,6 +40,7 @@ public static class TutorialEvents
     public static event Action EarthSpell; 
     public static event Action WaterSpell; 
     public static event Action AirSpell;
+    public static event Action HitBush;
 
     public static void TriggerMoveForward() => MoveForward?.Invoke();
     public static void TriggerMoveBackward() => MoveBackward?.Invoke();
@@ -81,4 +82,5 @@ public static class TutorialEvents
         AirSpell?.Invoke();
     }
 
+    public static void TriggerHitBush() => HitBush?.Invoke();
 }

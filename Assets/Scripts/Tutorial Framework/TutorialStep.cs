@@ -44,6 +44,7 @@ public class TutorialStep : MonoBehaviour
         EarthSpell,
         WaterSpell,
         AirSpell
+        HitBush
     }
 
     public enum ActivationMode
@@ -318,6 +319,9 @@ public class TutorialStep : MonoBehaviour
             case TutorialEventType.AirSpell:
                 TutorialEvents.AirSpell += CompleteStep;
                 break;
+            case TutorialEventType.HitBush:
+                TutorialEvents.HitBush += CompleteStep;
+                break;
         }
     }
 
@@ -342,6 +346,7 @@ public class TutorialStep : MonoBehaviour
         TutorialEvents.EarthSpell -= CompleteStep;
         TutorialEvents.WaterSpell -= CompleteStep;
         TutorialEvents.AirSpell -= CompleteStep;
+        TutorialEvents.HitBush -= CompleteStep;
 
         listeningForTutorialEvent = false;
     }

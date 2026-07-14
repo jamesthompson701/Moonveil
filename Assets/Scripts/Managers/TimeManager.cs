@@ -59,6 +59,7 @@ public class TimeManager : MonoBehaviour
     public bool waterDone;
     public bool harvestDone;
     public bool plantingTutorialComplete;
+    public bool hitBushDone;
 
     private void Awake()
     {
@@ -125,71 +126,131 @@ public class TimeManager : MonoBehaviour
             plantDone = true;
             TutorialEvents.TriggerPlant();
         }
-        foreach (InventoryItem item in InventoryManager.instance.invSO.InventoryItems)
+        if (!harvestDone || !hitBushDone)
         {
-            switch (item.item.itemID)
+            foreach (InventoryItem item in InventoryManager.instance.invSO.InventoryItems)
             {
-                case 0:
-                    if (!harvestDone)
-                    {
-                        TutorialEvents.TriggerHarvest();
-                        harvestDone = true;
-                    }
-                    break;
-                case 2:
-                    if (!harvestDone)
-                    {
-                        TutorialEvents.TriggerHarvest();
-                        harvestDone = true;
-                    }
-                    break;
-                case 4:
-                    if (!harvestDone)
-                    {
-                        TutorialEvents.TriggerHarvest();
-                        harvestDone = true;
-                    }
-                    break;
-                case 6:
-                    if (!harvestDone)
-                    {
-                        TutorialEvents.TriggerHarvest();
-                        harvestDone = true;
-                    }
-                    break;
-                case 7:
-                    if (!harvestDone)
-                    {
-                        TutorialEvents.TriggerHarvest();
-                        harvestDone = true;
-                    }
-                    break;
-                case 12:
-                    if (!harvestDone)
-                    {
-                        TutorialEvents.TriggerHarvest();
-                        harvestDone = true;
-                    }
-                    break;
-                case 13:
-                    if (!harvestDone)
-                    {
-                        TutorialEvents.TriggerHarvest();
-                        harvestDone = true;
-                    }
-                    break;
-                case 14:
-                    if (!harvestDone)
-                    {
-                        TutorialEvents.TriggerHarvest();
-                        harvestDone = true;
-                    }
-                    break;
+                switch (item.item.itemID)
+                {
+                    case 0:
+                        if (!harvestDone)
+                        {
+                            TutorialEvents.TriggerHarvest();
+                            harvestDone = true;
+                        }
+                        break;
+                    case 1:
+                        if (!hitBushDone)
+                        {
+                            TutorialEvents.TriggerHitBush();
+                            hitBushDone = true;
+                        }
+                        break;
+                    case 2:
+                        if (!harvestDone)
+                        {
+                            TutorialEvents.TriggerHarvest();
+                            harvestDone = true;
+                        }
+                        break;
+                    case 3:
+                        if (!hitBushDone)
+                        {
+                            TutorialEvents.TriggerHitBush();
+                            hitBushDone = true;
+                        }
+                        break;
+                    case 4:
+                        if (!harvestDone)
+                        {
+                            TutorialEvents.TriggerHarvest();
+                            harvestDone = true;
+                        }
+                        break;
+                    case 5:
+                        if (!hitBushDone)
+                        {
+                            TutorialEvents.TriggerHitBush();
+                            hitBushDone = true;
+                        }
+                        break;
+                    case 6:
+                        if (!harvestDone)
+                        {
+                            TutorialEvents.TriggerHarvest();
+                            harvestDone = true;
+                        }
+                        break;
+                    case 7:
+                        if (!harvestDone)
+                        {
+                            TutorialEvents.TriggerHarvest();
+                            harvestDone = true;
+                        }
+                        break;
+                    case 12:
+                        if (!harvestDone)
+                        {
+                            TutorialEvents.TriggerHarvest();
+                            harvestDone = true;
+                        }
+                        break;
+                    case 13:
+                        if (!harvestDone)
+                        {
+                            TutorialEvents.TriggerHarvest();
+                            harvestDone = true;
+                        }
+                        break;
+                    case 14:
+                        if (!harvestDone)
+                        {
+                            TutorialEvents.TriggerHarvest();
+                            harvestDone = true;
+                        }
+                        break;
+                    case 23:
+                        if (!hitBushDone)
+                        {
+                            TutorialEvents.TriggerHitBush();
+                            hitBushDone = true;
+                        }
+                        break;
+                    case 24:
+                        if (!hitBushDone)
+                        {
+                            TutorialEvents.TriggerHitBush();
+                            hitBushDone = true;
+                        }
+                        break;
+                    case 25:
+                        if (!hitBushDone)
+                        {
+                            TutorialEvents.TriggerHitBush();
+                            hitBushDone = true;
+                        }
+                        break;
+                    case 26:
+                        if (!hitBushDone)
+                        {
+                            TutorialEvents.TriggerHitBush();
+                            hitBushDone = true;
+                        }
+                        break;
+                    case 27:
+                        if (!hitBushDone)
+                        {
+                            TutorialEvents.TriggerHitBush();
+                            hitBushDone = true;
+                        }
+                        break;
+
+                }
             }
-        }
-        if (tilledDone && plantDone && waterDone && harvestDone)
-        {
-            plantingTutorialComplete = true;
+            if (tilledDone && plantDone && waterDone && harvestDone)
+            {
+                plantingTutorialComplete = true;
+            }
         }
         //TUTORIAL STUFF END
 
