@@ -70,6 +70,8 @@ public class FishingManager : MonoBehaviour
     public ParticleSystem[] readyFX;
 
     private List<FishingFish> currentCapturedFish = new List<FishingFish>();
+    private Coroutine fishingPromptCoroutine;
+
 
     void Awake()
     {
@@ -327,10 +329,10 @@ public class FishingManager : MonoBehaviour
     {
         //Debug.Log("Fishing Failed");
 
-        foreach(FishingFish fish in currentCapturedFish)
+        /*foreach(FishingFish fish in currentCapturedFish)
         {
             fish.ResetFish();
-        }
+        }*/
         ClearRequiredElementUI();
         currentCapturedFish.Clear();
         ExitFishingMode();
@@ -391,5 +393,25 @@ public class FishingManager : MonoBehaviour
 
         startFishingPrompt.text = message;
         startFishingPrompt.gameObject.SetActive(true);
+
+        // Restart the timer if the prompt is shown again.
+        if (fishingPromptCoroutine != null)
+        {
+            StopCoroutine(fishingPromptCoroutine);
+        }
+
+        fishingPromptCoroutine = StartCoroutine(HideFishingPromptAfterDelay());
+    }
+
+    private IEnumerator HideFishingPromptAfterDelay()
+    {
+        yield return new WaitForSeconds(8f);
+
+        if (startFishingPrompt != null)
+        {
+            startFishingPrompt.gameObject.SetActive(false);
+        }
+
+        fishingPromptCoroutine = null;
     }
 }
