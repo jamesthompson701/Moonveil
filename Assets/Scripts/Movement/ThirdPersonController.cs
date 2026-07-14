@@ -19,6 +19,8 @@ namespace StarterAssets
 #endif
     public class ThirdPersonController : MonoBehaviour
     {
+        public bool isFlightUnlocked = false;
+
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
@@ -259,6 +261,11 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
+            /*if (!isFlightUnlocked)
+            {
+                flightLocked = true;
+            }*/
+
             if (inFlightMode)
             {
                 // While in flight mode, disable jump & gravity and allow vertical control via ascend/descend inputs.
@@ -348,6 +355,14 @@ namespace StarterAssets
             if (isCasting)
             {
                 Debug.Log("Cannot toggle flight while casting.");
+                return;
+            }
+
+            // Prevent flight before it's unlocked
+            if (!isFlightUnlocked)
+            {
+                Debug.Log("Flight has not been unlocked");
+                AudioManager.PlayOneShot(eEffects.cantFly, transform, 100);
                 return;
             }
 
