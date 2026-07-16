@@ -17,6 +17,55 @@ public class FishingManager : MonoBehaviour
     public static FishingManager Instance;
     public FishingBiomeUI[] biomeUIs;
     private FishingBiomeUI activeBiomeUI;
+
+    // old way the multiple biomes were handled
+    /* [Header("UI Prompt")]
+    [Header("Biome UI")]
+    public FishingBiomeUI[] biomeUIs;
+    private FishingBiomeUI activeBiomeUI;
+
+    [System.Serializable]
+    public class FishingBiomeUI
+    {
+        public FishingBiome biome;
+        public Camera fishingCamera;
+        public Canvas fishingCanvas;
+        public FishingMiniGameUI miniGameUI;
+        public TMP_Text promptText;
+
+         public GameObject fishingVisuals;
+         public FishingRod rod;
+    }*/
+
+    // what the new version should need for each biome, what they each specifically need, rest can stay global. UI, camera, bubble phase (location), capture phase, sounds, vfx, and maybe the icons?
+    /*    [System.Serializable]
+    public class FishingBiomeUI
+    {
+        Header("Player")]
+        public Transform cameraAnchor;
+
+        [Header("Capture Phase")]
+        public GameObject captureCircle;
+
+        [Header("Bubble Phase")]
+        public GameObject bubbleObject;
+        public GameObject elementZones;
+
+        // SFX and VFX names need to be changed. e.g. bubblePhaseFX, this will probably need to be more granular than mining and wont be able to use many if any lists
+        [Header("SFX")]
+        private AudioSource audioSource; 
+        public AudioClip raiseSound;
+        public AudioClip successSound;
+        public AudioClip sinkSound;
+
+        [Header("VFX")]
+        public ParticleSystem[] raiseFX;
+        public ParticleSystem[] successFX;
+        public ParticleSystem[] failFX;
+        public ParticleSystem[] readyFX;
+
+        private List<FishingFish> currentCapturedFish = new List<FishingFish>();
+    }*/
     
 
     [Header("Player")]
