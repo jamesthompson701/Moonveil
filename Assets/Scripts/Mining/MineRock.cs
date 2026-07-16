@@ -34,7 +34,8 @@ public class MineRock : MonoBehaviour
     [SerializeField] float raiseDistance = 5f;
 
     [Header("Push")]
-    public Collider pushCollider;
+    public Collider[] pushColliders;
+    [SerializeField] private float pushDuration = 0.5f;
 
     [Header("SFX")]
     private AudioSource audioSource;
@@ -62,7 +63,13 @@ public class MineRock : MonoBehaviour
 
         ShowReadyFX();
 
-        pushCollider.enabled = false;
+        foreach (Collider col in pushColliders)
+        {
+            if (col != null)
+            {
+                col.enabled = false;
+            }
+        }
 
         //Debug.Log(name + " gem count = " + gemRenderers.Length);
     }
@@ -143,12 +150,15 @@ public class MineRock : MonoBehaviour
 
         activeTimerRoutine = StartCoroutine(ActiveTimer());
 
-        pushCollider.enabled = true;
+        foreach (Collider col in pushColliders)
+        {
+            if (col != null)
+            {
+                col.enabled = true;
+            }
+        }
 
-        //time then becomes false, dont really have any easy way to know when its fully extended to turn it off.
-        //pushCollider.enabled = false;
-
-        //Debug.Log(name + " raised: " + raisedPosition);
+        StartCoroutine(DisablePushCollider());
     }
 
     void CheckSpell(MineralType spellType)
@@ -237,7 +247,13 @@ public class MineRock : MonoBehaviour
 
         yield return StartCoroutine(SinkRock());
 
-        pushCollider.enabled = false;
+        foreach (Collider col in pushColliders)
+        {
+            if (col != null)
+            {
+                col.enabled = false;
+            }
+        }
 
         yield return new WaitForSeconds(respawnTime);
 
@@ -245,8 +261,6 @@ public class MineRock : MonoBehaviour
 
         PlayFX(readyFX);
         ShowReadyFX();
-
-        onCooldown = false;
     }
 
     IEnumerator SinkRock()
@@ -267,6 +281,19 @@ public class MineRock : MonoBehaviour
         }
 
         transform.position = buriedPosition;
+    }
+
+    IEnumerator DisablePushCollider()
+    {
+        yield return new WaitForSeconds(pushDuration);
+
+        foreach (Collider col in pushColliders)
+        {
+            if (col != null)
+            {
+                col.enabled = false;
+            }
+        }
     }
 
     void PlayFX(ParticleSystem[] effects)
