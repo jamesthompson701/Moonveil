@@ -52,6 +52,8 @@ public class SoilObject : MonoBehaviour
         //if the soil is tilled or untilled, update it accordingly
         if (!tilled)
         {
+            waterTimer = 0;
+            isWet = false;
             mySoilObj.GetComponent<MeshRenderer>().material = untilledSoil;
         }
         else
@@ -66,7 +68,11 @@ public class SoilObject : MonoBehaviour
                     waterTimer = wetnessDuration;
                 }
 
-                waterTimer = waterTimer - deltaTime;
+                if (!plantScript.Withered())
+                {
+                    waterTimer = waterTimer - deltaTime;
+                }
+
                 mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
 
                 //if its wetness time is up, make it dry
@@ -88,18 +94,6 @@ public class SoilObject : MonoBehaviour
             isWet = true;
             waterTimer = wetnessDuration;
             mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
-
-            //tutorial
-            if (TutorialManager.instance != null && !TutorialManager.instance.watering)
-            {
-                //completes billboard 4: water soil
-                if (TutorialManager.instance.currentBillboard == 3)
-                {
-                    TutorialManager.instance.ProgressTutorial(4);
-                    TutorialManager.instance.watering = true;
-                }
-
-            }
         }
 
         if (other.CompareTag("WateringSpellSmall") && tilled)

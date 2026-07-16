@@ -43,7 +43,7 @@ public class PlantObject : MonoBehaviour
     }
 
     //checkplant
-    // light refers to the time of day; 1 = morning, 2 = evening, 3 = night
+    // light refers to the time of day; 1 = morning, 2 = night
     public void CheckPlant(float deltaTime, int _light)
     {
         if (!isSet)
@@ -55,8 +55,8 @@ public class PlantObject : MonoBehaviour
             isSet = true;
         }
 
-        //increment the dry timer while dry
-        if(!soilScript.Wet())
+        //wither plant while dry or if it's the wrong time
+        if(!soilScript.Wet() || plant.lightPreference != _light)
         {
             if (!isHarvestable)
             {
@@ -97,6 +97,7 @@ public class PlantObject : MonoBehaviour
                     isHarvestable = true;
                     Destroy(myCanvas);
                     Debug.Log("Harvestable!");
+                    Unwither();
                 }
 
                 //destroy the current object and make a new one at the new growth stage
@@ -126,6 +127,12 @@ public class PlantObject : MonoBehaviour
     public bool Harvestable()
     {
         return isHarvestable;
+    }
+
+    //returns true if the plant is withered a.k.a. dry or the time is wrong
+    public bool Withered()
+    {
+        return withered;
     }
 
     //change texture to be withered or make it fresh again
