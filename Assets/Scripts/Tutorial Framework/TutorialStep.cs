@@ -116,7 +116,7 @@ public class TutorialStep : MonoBehaviour
         }
 
         if (!weeniePrefab) return;
-        else Instantiate(weeniePrefab, transform).transform.rotation = transform.rotation;
+        else weeniePrefab.SetActive(true);
     }
 
     private void Update()
@@ -357,7 +357,7 @@ public class TutorialStep : MonoBehaviour
         listeningForTutorialEvent = false;
     }
 
-    private void CompleteStep()
+    public void CompleteStep()
     {
         if (Time.timeScale == 0f) return;
 
@@ -386,13 +386,20 @@ public class TutorialStep : MonoBehaviour
         {
             activeInstruction = null;
         }
+
         // last bit of tutorial addition
         if (tutorialPopup != null)
         {
             tutorialPopup.SetActive(false);
         }
 
-        if (!isRepeatable) gameObject.SetActive(false);
+        if (weeniePrefab != null)
+        {
+            Destroy(weeniePrefab);
+        }
+
+        if (!isRepeatable) 
+            Destroy(gameObject);
 
         if (next != null)
         {
@@ -405,6 +412,7 @@ public class TutorialStep : MonoBehaviour
         if (activationMode != ActivationMode.Proximity) return;
         if (proximityTarget == null) return;
 
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(proximityTarget.position, proximityDistance);
     }
 }
