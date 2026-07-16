@@ -211,6 +211,7 @@ GameObject:
   - component: {fileID: 998372171574854}
   - component: {fileID: 7848375988069748528}
   - component: {fileID: 5239620164865819745}
+  - component: {fileID: 1670636836595471311}
   m_Layer: 0
   m_Name: HurtBox Large
   m_TagString: Untagged
@@ -309,8 +310,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.63562, y: 5.9103684, z: 3.9730225}
-  m_Center: {x: -0.30316162, y: 0.14200997, z: 0.006958008}
+  m_Size: {x: 3.9343262, y: 6.147118, z: 3.9730225}
+  m_Center: {x: -0.28253174, y: 0.2603848, z: 0.006958008}
 --- !u!114 &5239620164865819745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,6 +325,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiningPushZone
   pushForce: 50
+--- !u!114 &1670636836595471311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5598452079778337779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ebb8dcd618b403d9d508704fd112dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HazardZone
+  instantKill: 0
+  damagePerTick: 15
+  tickInterval: 1
 --- !u!1 &6257823483715023155
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,6 +503,7 @@ GameObject:
   - component: {fileID: 7338073723645378873}
   - component: {fileID: 2692039748201680852}
   - component: {fileID: 383150746063710984}
+  - component: {fileID: 2786138975861798412}
   m_Layer: 0
   m_Name: HurtBox small
   m_TagString: Untagged
@@ -585,8 +602,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.2167969, y: 6.0330534, z: 1.9598999}
-  m_Center: {x: -0.2874756, y: 0.20335245, z: 0.040496826}
+  m_Size: {x: 1.6242065, y: 6.228532, z: 1.5635986}
+  m_Center: {x: -0.1933899, y: 0.30109167, z: 0.030090332}
 --- !u!114 &383150746063710984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -600,6 +617,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiningPushZone
   pushForce: 75
+--- !u!114 &2786138975861798412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8033206761998375322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ebb8dcd618b403d9d508704fd112dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HazardZone
+  instantKill: 0
+  damagePerTick: 50
+  tickInterval: 1
 --- !u!1001 &181392901148361231
 PrefabInstance:
   m_ObjectHideFlags: 0

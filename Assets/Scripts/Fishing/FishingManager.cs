@@ -7,7 +7,6 @@ using System.Collections;
 
 public class FishingManager : MonoBehaviour
 {
-
     public enum FishingPhase
     {
         None, Capture, Bubble
