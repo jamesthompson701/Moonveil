@@ -8,8 +8,12 @@ public class DoubleFish : ItemEffectSO
 
     public override void UseItem()
     {
+        sfx = GameObject.FindWithTag("ItemSFX").GetComponent<ItemSFXManager>();
+
         InventoryManager.instance.invSO.fishMultiplier = dropMultiplier;
         InventoryManager.instance.fishBuffTime = buffLength;
         InventoryManager.instance.isFishBuffActive = true;
+
+        sfx.PlayOneShotForItem(eEffects.potion);
     }
 }

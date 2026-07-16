@@ -12,9 +12,13 @@ public class MoonJumpPotionSO : ItemEffectSO
 
     public override void UseItem()
     {
+        sfx = GameObject.FindWithTag("ItemSFX").GetComponent<ItemSFXManager>();
+
         ThirdPersonController.Instance.moonJumpTimer = buffLength;
         ThirdPersonController.Instance.isMoonJumpActive = true;
         ThirdPersonController.Instance.JumpHeight = newJumpHeight;
         ThirdPersonController.Instance.Gravity = newGravity;
+
+        sfx.PlayOneShotForItem(eEffects.potion);
     }
 }

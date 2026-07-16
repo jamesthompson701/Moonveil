@@ -358,6 +358,7 @@ namespace StarterAssets
             if (isCasting)
             {
                 Debug.Log("Cannot toggle flight while casting.");
+                AudioManager.PlayOneShot(eEffects.cantFly, transform, 100);
                 return;
             }
 
@@ -373,6 +374,7 @@ namespace StarterAssets
             if (flightLocked)
             {
                 Debug.Log("Cannot toggle flight right now (locked by combat).");
+                AudioManager.PlayOneShot(eEffects.cantFly, transform, 100);
                 return;
             }
 

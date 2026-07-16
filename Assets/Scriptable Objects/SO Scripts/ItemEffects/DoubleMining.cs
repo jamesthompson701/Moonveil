@@ -8,8 +8,12 @@ public class DoubleMining : ItemEffectSO
 
     public override void UseItem()
     {
+        sfx = GameObject.FindWithTag("ItemSFX").GetComponent<ItemSFXManager>();
+
         InventoryManager.instance.invSO.miningMultiplier = dropMultiplier;
         InventoryManager.instance.miningBuffTime = buffLength;
         InventoryManager.instance.isMiningBuffActive = true;
+
+        sfx.PlayOneShotForItem(eEffects.potion);
     }
 }

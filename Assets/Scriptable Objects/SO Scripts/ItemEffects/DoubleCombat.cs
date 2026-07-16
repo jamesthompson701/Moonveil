@@ -8,8 +8,12 @@ public class DoubleCombat : ItemEffectSO
 
     public override void UseItem()
     {
+        sfx = GameObject.FindWithTag("ItemSFX").GetComponent<ItemSFXManager>();
+
         InventoryManager.instance.invSO.combatMultiplier = dropMultiplier;
         InventoryManager.instance.combatBuffTime = buffLength;
         InventoryManager.instance.isCombatBuffActive = true;
+
+        sfx.PlayOneShotForItem(eEffects.potion);
     }
 }

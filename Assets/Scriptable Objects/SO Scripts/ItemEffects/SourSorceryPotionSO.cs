@@ -10,9 +10,12 @@ public class SourSorceryPotionSO : ItemEffectSO
 
     public override void UseItem()
     {
+        sfx = GameObject.FindWithTag("ItemSFX").GetComponent<ItemSFXManager>();
+
         EnemyAttackDirector.Instance.sourSorceryTimer = buffLength;
         EnemyAttackDirector.Instance.isSourSorceryActive = true;
 
+        sfx.PlayOneShotForItem(eEffects.potion);
     }
 
 }

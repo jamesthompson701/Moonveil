@@ -14,11 +14,15 @@ public class WindForcePotionSO : ItemEffectSO
 
     public override void UseItem()
     {
+        sfx = GameObject.FindWithTag("ItemSFX").GetComponent<ItemSFXManager>();
+
         ThirdPersonController.Instance.windForceTimer = buffLength;
         ThirdPersonController.Instance.isWindForceActive = true;
         ThirdPersonController.Instance.MoveSpeed = newMoveSpeed;
         ThirdPersonController.Instance.SprintSpeed = newSprintSpeed;
         ThirdPersonController.Instance.FlightMoveSpeed = newFlightMoveSpeed;
         ThirdPersonController.Instance.FlightVelocityDeceleration = newFlightDeceleration;
+
+        sfx.PlayOneShotForItem(eEffects.potion);
     }
 }
