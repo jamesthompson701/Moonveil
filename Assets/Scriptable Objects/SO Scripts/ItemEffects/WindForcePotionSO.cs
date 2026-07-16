@@ -9,6 +9,7 @@ public class WindForcePotionSO : ItemEffectSO
     public float newMoveSpeed;
     public float newSprintSpeed;
     public float newFlightMoveSpeed;
+    public float newFlightDeceleration;
     public float buffLength;
 
     public override void UseItem()
@@ -18,5 +19,6 @@ public class WindForcePotionSO : ItemEffectSO
         ThirdPersonController.Instance.MoveSpeed = newMoveSpeed;
         ThirdPersonController.Instance.SprintSpeed = newSprintSpeed;
         ThirdPersonController.Instance.FlightMoveSpeed = newFlightMoveSpeed;
+        ThirdPersonController.Instance.FlightVelocityDeceleration = newFlightDeceleration;
     }
 }
