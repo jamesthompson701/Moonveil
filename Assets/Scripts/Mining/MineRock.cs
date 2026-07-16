@@ -37,6 +37,9 @@ public class MineRock : MonoBehaviour
     public Collider[] pushColliders;
     [SerializeField] private float pushDuration = 0.5f;
 
+    [Header("Tutorial")]
+    [SerializeField] private bool destroyOnSuccess = false;
+
     [Header("SFX")]
     private AudioSource audioSource;
     public AudioClip raiseSound;
@@ -206,6 +209,12 @@ public class MineRock : MonoBehaviour
             Debug.Log("successSound played");
         }
 
+        if (destroyOnSuccess)
+        {
+            StartCoroutine(DestroyAfterSuccess());
+            return;
+        }
+
         StartCoroutine(CooldownRoutine());
     }
 
@@ -294,6 +303,12 @@ public class MineRock : MonoBehaviour
                 col.enabled = false;
             }
         }
+    }
+
+    IEnumerator DestroyAfterSuccess()
+    {
+        yield return new WaitForSeconds(1f);
+        Destroy(gameObject);
     }
 
     void PlayFX(ParticleSystem[] effects)
