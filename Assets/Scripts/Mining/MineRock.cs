@@ -65,7 +65,7 @@ public class MineRock : MonoBehaviour
 
         ShowReadyFX();
 
-        tutorialEvent = FindAnyObjectByType<TutorialInputEventBroadcaster>();
+        tutorialEvent = tutorialEvent != null ? tutorialEvent : FindFirstObjectByType<TutorialInputEventBroadcaster>();
 
         foreach (Collider col in pushColliders)
         {
