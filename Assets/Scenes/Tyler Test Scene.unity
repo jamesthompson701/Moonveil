@@ -9455,7 +9455,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6673794559002551721, guid: 8b4a25c96c095854d8cd6d3425d9d5bc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 516191671}
   m_SourcePrefab: {fileID: 100100000, guid: 8b4a25c96c095854d8cd6d3425d9d5bc, type: 3}
 --- !u!1001 &217040219
 PrefabInstance:
@@ -21148,6 +21151,25 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16846d224d8f1aa44ae92c342462be14, type: 3}
+--- !u!1 &516191669 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6673794559002551721, guid: 8b4a25c96c095854d8cd6d3425d9d5bc, type: 3}
+  m_PrefabInstance: {fileID: 216977175}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &516191671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516191669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b9fef7f69eecb468bf8a503dacfc84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Rotater
+  spinSpeed: 100
+  isVertical: 0
 --- !u!1001 &517302448
 PrefabInstance:
   m_ObjectHideFlags: 0
