@@ -181,6 +181,8 @@ public class CreatureDefs : MonoBehaviour
     [SerializeField] private bool _canSlow;
     [SerializeField] private bool _canRoot;
 
+    public TutorialInputEventBroadcaster tutorialEvent;
+
     public Renderer enemyBody;
     public Material enemyDamaged;
     public Material enemyDefault;
@@ -215,6 +217,8 @@ public class CreatureDefs : MonoBehaviour
 
     private void Awake()
     {
+        tutorialEvent = FindAnyObjectByType<TutorialInputEventBroadcaster>();
+
         _rb = GetComponent<Rigidbody>();
         _rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         _rb.interpolation = RigidbodyInterpolation.Interpolate;
@@ -894,6 +898,12 @@ public class CreatureDefs : MonoBehaviour
 
             if (boss != null)
                 boss.UnregisterSpawnedMinion();
+        }
+
+        if (!tutorialEvent.afterCombatQuestComplete)
+        {
+            tutorialEvent.afterCombatQuestComplete = true;
+            tutorialEvent.afterCombatQuest.SetActive(true);
         }
             
 
