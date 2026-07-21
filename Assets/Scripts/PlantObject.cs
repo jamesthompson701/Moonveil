@@ -33,6 +33,10 @@ public class PlantObject : MonoBehaviour
     //bool to toggle if it's been setup
     private bool isSet;
 
+    //is plant withered
+
+    private bool withered;
+
     void Start()
     {
         //add to time manager

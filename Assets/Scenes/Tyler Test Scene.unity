@@ -13902,14 +13902,18 @@ PrefabInstance:
       propertyPath: tutorialPopup
       value: 
       objectReference: {fileID: 633665377}
+    - target: {fileID: 7146210953835324319, guid: a1c3a87a842af465ca938da15dd70652, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8261120234651389818, guid: a1c3a87a842af465ca938da15dd70652, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 1880211495744859850, guid: a1c3a87a842af465ca938da15dd70652, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 2809856942183266857, guid: a1c3a87a842af465ca938da15dd70652, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 865252297623663610, guid: a1c3a87a842af465ca938da15dd70652, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: a1c3a87a842af465ca938da15dd70652, type: 3}
@@ -28496,34 +28500,13 @@ PrefabInstance:
     - {fileID: 1808245803548237767, guid: a002c9ee95f7e4417b341ccda010d981, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8798629825578351598, guid: a002c9ee95f7e4417b341ccda010d981, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1467669929}
-    - targetCorrespondingSourceObject: {fileID: 7101774246473812984, guid: a002c9ee95f7e4417b341ccda010d981, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1166857164}
-    - targetCorrespondingSourceObject: {fileID: 2255168389449895705, guid: a002c9ee95f7e4417b341ccda010d981, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 2712481360088475946, guid: a002c9ee95f7e4417b341ccda010d981, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 1168961790609204344, guid: a002c9ee95f7e4417b341ccda010d981, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 3594647391789287925, guid: a002c9ee95f7e4417b341ccda010d981, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: a002c9ee95f7e4417b341ccda010d981, type: 3}
---- !u!4 &691255449 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3844373572163089287, guid: a002c9ee95f7e4417b341ccda010d981, type: 3}
-  m_PrefabInstance: {fileID: 691255448}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &691255450 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7101774246473812984, guid: a002c9ee95f7e4417b341ccda010d981, type: 3}
-  m_PrefabInstance: {fileID: 691255448}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &691255451 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8798629825578351598, guid: a002c9ee95f7e4417b341ccda010d981, type: 3}
-  m_PrefabInstance: {fileID: 691255448}
-  m_PrefabAsset: {fileID: 0}
 --- !u!20 &691255452 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 4113083811609709221, guid: a002c9ee95f7e4417b341ccda010d981, type: 3}
@@ -39713,9 +39696,9 @@ MonoBehaviour:
   tutorialPopup: {fileID: 0}
   isRepeatable: 0
   player: {fileID: 6315828877817887305}
-  proximityTarget: {fileID: 984761451}
+  proximityTarget: {fileID: 0}
   proximityDistance: 18.7
-  interactableTarget: {fileID: 984761449}
+  interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
   weeniePrefab: {fileID: 1523486423}
   timeToDialogueComplete: 0
@@ -44259,22 +44242,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2731011700215049951, guid: e52010d701886ff45acb15f0683a55f1, type: 3}
   m_PrefabInstance: {fileID: 1812472500}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &984761449 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 286351939306237691, guid: a1c3a87a842af465ca938da15dd70652, type: 3}
-  m_PrefabInstance: {fileID: 337015208}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20dc610626fa5644d87a924f1d64a0f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Interactable
---- !u!4 &984761451 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 611211935379148625, guid: a1c3a87a842af465ca938da15dd70652, type: 3}
-  m_PrefabInstance: {fileID: 337015208}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &984813824
 PrefabInstance:
@@ -52447,32 +52414,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5656288875319828478, guid: 8de1699b05066be4998c5ecb839395fa, type: 3}
   m_PrefabInstance: {fileID: 1166723450}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1166857164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 691255450}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04de2f562c17141cc92a9a23d12872a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TutorialStep
-  activationMode: 2
-  requiredEvent: 0
-  startConversation: FishingTutorial
-  completeConversation: 
-  nextTutorialStep: {fileID: 0}
-  tutorialPopup: {fileID: 0}
-  isRepeatable: 0
-  player: {fileID: 0}
-  proximityTarget: {fileID: 0}
-  proximityDistance: 5
-  interactableTarget: {fileID: 1467669929}
-  closeDialogueOnComplete: 0
-  weeniePrefab: {fileID: 0}
-  timeToDialogueComplete: 0
 --- !u!1001 &1167673787
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -63625,24 +63566,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f35907b40250cb3419d85ab73c8d4d6f, type: 3}
---- !u!114 &1467669929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 691255451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20dc610626fa5644d87a924f1d64a0f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Interactable
-  dispenserItem: {fileID: 0}
-  dispenseAmount: 0
-  destroyOnDispense: 0
-  eventToSend: 
-  isSign: 1
-  popup: {fileID: 1908830708}
 --- !u!1 &1471223296
 GameObject:
   m_ObjectHideFlags: 0
@@ -65449,9 +65372,9 @@ MonoBehaviour:
   tutorialPopup: {fileID: 0}
   isRepeatable: 0
   player: {fileID: 6315828877817887305}
-  proximityTarget: {fileID: 691255449}
+  proximityTarget: {fileID: 0}
   proximityDistance: 22
-  interactableTarget: {fileID: 1467669929}
+  interactableTarget: {fileID: 0}
   closeDialogueOnComplete: 1
   weeniePrefab: {fileID: 276114258}
   timeToDialogueComplete: 0
@@ -83061,17 +82984,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8778306456480713531, guid: e72f007c1a9154e54a190fe10172f528, type: 3}
   m_PrefabInstance: {fileID: 830624914}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1908830708 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8674512285192368854, guid: e72f007c1a9154e54a190fe10172f528, type: 3}
-  m_PrefabInstance: {fileID: 830624914}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1908830707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9114bae06e2ba4d7f8c9fe5d472998a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TutorialPopup
 --- !u!1 &1909412373
 GameObject:
   m_ObjectHideFlags: 0
