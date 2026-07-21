@@ -2,16 +2,25 @@ using UnityEngine;
 
 public class AudioZone : MonoBehaviour
 {
-    [Header("Select Music for this Terrain Area")]
-    [SerializeField] private eMusic terrainMusic;
+    [Header("Zone Music Configuration")]
+    [Tooltip("Select which music track belongs to this specific terrain collider.")]
+    [SerializeField] private eMusic zoneMusic;
 
     private void OnTriggerEnter(Collider other)
     {
-        // Check if the player entered the trigger zone
         if (other.CompareTag("Player"))
         {
-            // Call your static method directly via the Singleton Instance
-            AudioManager.ChangeTrack(terrainMusic);
+            // Tell the manager the player entered this specific zone
+            AudioManager.UpdateZoneMusic(zoneMusic, true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            // Tell the manager the player left this specific zone
+            AudioManager.UpdateZoneMusic(zoneMusic, false);
         }
     }
 }
