@@ -19,6 +19,8 @@ namespace StarterAssets
 #endif
     public class ThirdPersonController : MonoBehaviour
     {
+        public bool isFlightUnlocked = false;
+
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
@@ -117,6 +119,7 @@ namespace StarterAssets
         public float FlightVelocityAcceleration = 24f;
         [Tooltip("How quickly horizontal flight velocity slows when movement input is released")]
         public float FlightVelocityDeceleration = 32f;
+        private float DefaultFlightVelocityDeceleration;
         [Tooltip("Time required for the additional flight speed to disappear after movement stops")]
         public float FlightBoostDecayTime = 0.5f;
         [Tooltip("Maximum vertical flight speed")]
@@ -209,6 +212,7 @@ namespace StarterAssets
             DefaultJumpHeight = JumpHeight;
             DefaultGravity = Gravity;
             DefaultFlightMoveSpeed = FlightMoveSpeed;
+            DefaultFlightVelocityDeceleration = FlightVelocityDeceleration;
 
             // get a reference to our main camera
             if (_mainCamera == null)
@@ -259,6 +263,11 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
+            /*if (!isFlightUnlocked)
+            {
+                flightLocked = true;
+            }*/
+
             if (inFlightMode)
             {
                 // While in flight mode, disable jump & gravity and allow vertical control via ascend/descend inputs.
@@ -298,6 +307,7 @@ namespace StarterAssets
                     MoveSpeed = DefaultMoveSpeed;
                     SprintSpeed = DefaultSprintSpeed;
                     FlightMoveSpeed = DefaultFlightMoveSpeed;
+                    FlightVelocityDeceleration = DefaultFlightVelocityDeceleration;
 
                 }
             }
@@ -348,6 +358,15 @@ namespace StarterAssets
             if (isCasting)
             {
                 Debug.Log("Cannot toggle flight while casting.");
+                AudioManager.PlayOneShot(eEffects.cantFly, transform, 100);
+                return;
+            }
+
+            // Prevent flight before it's unlocked
+            if (!isFlightUnlocked)
+            {
+                Debug.Log("Flight has not been unlocked");
+                AudioManager.PlayOneShot(eEffects.cantFly, transform, 100);
                 return;
             }
 
@@ -355,6 +374,7 @@ namespace StarterAssets
             if (flightLocked)
             {
                 Debug.Log("Cannot toggle flight right now (locked by combat).");
+                AudioManager.PlayOneShot(eEffects.cantFly, transform, 100);
                 return;
             }
 
@@ -607,9 +627,18 @@ namespace StarterAssets
 
             Vector3 targetPlanarVelocity = targetDirection * targetSpeed;
 
-            float velocityChangeRate = hasMoveInput
-                ? FlightVelocityAcceleration
-                : FlightVelocityDeceleration;
+            // Increase deceleration when input is released so player stops faster and does not slide into walls.
+            float velocityChangeRate;
+            if (hasMoveInput)
+            {
+                velocityChangeRate = FlightVelocityAcceleration;
+            }
+            else
+            {
+                // Apply a stronger deceleration multiplier when coasting to a stop.
+                const float stopDecelerationMultiplier = 3.5f;
+                velocityChangeRate = FlightVelocityDeceleration * stopDecelerationMultiplier;
+            }
 
             // Smooth the velocity vector rather than repeatedly using
             // CharacterController.velocity as the starting value.
@@ -618,6 +647,12 @@ namespace StarterAssets
                 targetPlanarVelocity,
                 velocityChangeRate * Time.deltaTime
             );
+
+            // Snap very small residual velocity to zero to avoid minor drift that can cause collisions with walls.
+            if (!hasMoveInput && _flightPlanarVelocity.sqrMagnitude <= 0.02f * 0.02f)
+            {
+                _flightPlanarVelocity = Vector3.zero;
+            }
 
             if (hasMoveInput)
             {

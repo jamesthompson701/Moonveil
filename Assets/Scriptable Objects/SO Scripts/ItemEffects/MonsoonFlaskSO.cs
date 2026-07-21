@@ -9,8 +9,13 @@ public class MonsoonFlaskSO : ItemEffectSO
     
     public override void UseItem()
     {
+        sfx = GameObject.FindWithTag("ItemSFX").GetComponent<ItemSFXManager>();
+
         Transform playerTransform = ThirdPersonController.Instance.transform;
         Activate(playerTransform);
+
+        sfx.PlayOneShotForItem(eEffects.potion);
+        sfx.PlayOneShotForItem(eEffects.farmWater);
     }
 
     private void Activate(Transform playerTransform)

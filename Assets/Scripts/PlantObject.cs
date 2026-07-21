@@ -17,7 +17,6 @@ public class PlantObject : MonoBehaviour
 
     //harvestability and withered status
     private bool isHarvestable;
-    private bool withered;
 
     //plant object & soil
     private GameObject currentPlant;
@@ -34,6 +33,10 @@ public class PlantObject : MonoBehaviour
     //bool to toggle if it's been setup
     private bool isSet;
 
+    //is plant withered
+
+    private bool withered;
+
     void Start()
     {
         //add to time manager
@@ -43,7 +46,7 @@ public class PlantObject : MonoBehaviour
     }
 
     //checkplant
-    // light refers to the time of day; 1 = morning, 2 = evening, 3 = night
+    // light refers to the time of day; 1 = morning, 2 = night
     public void CheckPlant(float deltaTime, int _light)
     {
         if (!isSet)
@@ -55,8 +58,8 @@ public class PlantObject : MonoBehaviour
             isSet = true;
         }
 
-        //increment the dry timer while dry
-        if(!soilScript.Wet())
+        //wither plant while dry or if it's the wrong time
+        if(!soilScript.Wet() || plant.lightPreference != _light)
         {
             if (!isHarvestable)
             {
@@ -97,6 +100,7 @@ public class PlantObject : MonoBehaviour
                     isHarvestable = true;
                     Destroy(myCanvas);
                     Debug.Log("Harvestable!");
+                    Unwither();
                 }
 
                 //destroy the current object and make a new one at the new growth stage
@@ -128,18 +132,22 @@ public class PlantObject : MonoBehaviour
         return isHarvestable;
     }
 
+    //returns true if the plant is withered a.k.a. dry or the time is wrong
+    public bool Withered()
+    {
+        return withered;
+    }
+
     //change texture to be withered or make it fresh again
     public void Wither()
     {
         //someday this'll be something like "plantObject texure = plant.witheredTexture"
         //for now just make it yellow
         currentPlant.GetComponentInChildren<MeshRenderer>().material = plant.withered;
-        withered = true;
     }
     public void Unwither()
     {
         currentPlant.GetComponentInChildren<MeshRenderer>().material = plant.healthy;
-        withered = false;
     }
 
     //add the correct items to the player's inventory and then unregisters and destroys the plant

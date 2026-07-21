@@ -25,7 +25,6 @@ public class HUD : MonoBehaviour
     public ItemSO unlockItem;
 
     //fill bars
-    float maxFill = 1;
     public Image healthBar;
 
     //health bottle sprites
@@ -200,11 +199,27 @@ public class HUD : MonoBehaviour
 
     public void SetActive(int index)
     {
+        // Defensive checks to avoid null refs and index out of range exceptions
+        if (highlight == null || highlight.Length == 0)
+        {
+            Debug.LogWarning("HUD.SetActive called but 'highlight' is null or empty.");
+            return;
+        }
+
+        if (index < 0 || index >= highlight.Length)
+        {
+            Debug.LogWarningFormat("HUD.SetActive index out of range: {0} (length {1})", index, highlight.Length);
+            return;
+        }
+
         for (int i = 0; i < highlight.Length; i++)
         {
-            highlight[i].SetActive(false);
+            if (highlight[i] != null)
+                highlight[i].SetActive(false);
         }
-        highlight[index].SetActive(true);
+
+        if (highlight[index] != null)
+            highlight[index].SetActive(true);
     }
 
     public void InstantiatePopup(ItemSO _item, int _amount, bool isNew)

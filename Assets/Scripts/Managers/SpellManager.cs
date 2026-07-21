@@ -30,9 +30,6 @@ public class SpellManager : MonoBehaviour
     public int avgSpeed = 15;
     public int fastSpeed = 25;
 
-    [Header("Farm Spell Settings")]
-    [SerializeField] private float farmSpawnOffset = 1.2f;
-
     private bool attackTriggered = false;
     public bool inCombatArea = false;
 

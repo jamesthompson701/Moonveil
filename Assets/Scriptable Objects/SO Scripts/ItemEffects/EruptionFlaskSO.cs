@@ -9,8 +9,14 @@ public class EruptionFlaskSO : ItemEffectSO
 
     public override void UseItem()
     {
+        sfx = GameObject.FindWithTag("ItemSFX").GetComponent<ItemSFXManager>();
+
         Transform playerTransform = ThirdPersonController.Instance.transform;
         Activate(playerTransform);
+
+        sfx.PlayOneShotForItem(eEffects.potion);
+        sfx.PlayOneShotForItem(eEffects.farmFire);
+        sfx.PlayOneShotForItem(eEffects.farmEarth);
     }
 
     private void Activate(Transform playerTransform)

@@ -12,7 +12,6 @@ public class CanvasManager : MonoBehaviour
 
     // TRACKS CURRENT ACTIVE CANVAS; 0 = HUD/NONE ACTIVE ; 999 = MINIGAMES
     int currentCanvas = 0;
-    bool miniGame = false;
 
     [Header("DO NOT MOVE THINGS you can add though")]
     [SerializeField] private GameObject[] menus;
@@ -25,20 +24,19 @@ public class CanvasManager : MonoBehaviour
 
 
     // GETS THE KEYBINDS
-    StarterAssetsInputs starterAssets;
+    public StarterAssetsInputs starterAssets;
     public InputActionAsset input;
     InputAction inventoryAction;
     InputAction pauseAction;
     InputAction selectionAction;
 
     // CONTROLS WHAT KEYBINDS DO
-    InputActionMap playerMap;
-    InputActionMap UIMap;
+    public InputActionMap playerMap;
+    public InputActionMap UIMap;
 
     public static CanvasManager Instance;
 
     public PauseScreenshotToBook screenshotToBook;
-
 
     private void Awake()
     {
@@ -54,8 +52,8 @@ public class CanvasManager : MonoBehaviour
 
         starterAssets = FindFirstObjectByType<StarterAssetsInputs>();
 
-        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
 
         //Making canvas manager a singleton
         if (Instance != null && Instance != this)
@@ -110,6 +108,13 @@ public class CanvasManager : MonoBehaviour
         
         if (pause)
         {
+            // FishingManager handles Escape while fishing.
+            // Do not also open the normal pause menu.
+            if (FishingManager.Instance != null &&
+                FishingManager.Instance.inFishingMode)
+            {
+                return;
+            }
             SpellManager2.Instance.inMenu = true;
             if (currentCanvas != 0)
             {
@@ -223,7 +228,6 @@ public class CanvasManager : MonoBehaviour
     {
         SpellManager2.Instance.inMenu = false;
         canvas.SetActive(false);
-        miniGame = true;
         currentCanvas = 0;
 
         menus[0].GetComponent<Canvas>().enabled = true;

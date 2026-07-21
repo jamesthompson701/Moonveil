@@ -39,7 +39,12 @@ public class TutorialStep : MonoBehaviour
         Till,
         Plant,
         Water,
-        Harvest
+        Harvest,
+        FireSpell,
+        EarthSpell,
+        WaterSpell,
+        AirSpell,
+        HitBush
     }
 
     public enum ActivationMode
@@ -63,6 +68,11 @@ public class TutorialStep : MonoBehaviour
     [Header("Next Step")]
     public GameObject nextTutorialStep;
 
+    // added for minigame pop-up canvases
+    [Header("Tutorial Popup")]
+    public GameObject tutorialPopup;
+    public bool isRepeatable = false;
+
     [Header("Proximity Settings")]
     public Transform player;
     public Transform proximityTarget;
@@ -81,6 +91,14 @@ public class TutorialStep : MonoBehaviour
     private bool listeningForInteractableActivation;
     private bool listeningForQuestActivation;
     private bool listeningForInteractableCompletion;
+
+    public GameObject weeniePrefab;
+
+    [Tooltip("Seconds after the tutorial step begins before Interact can complete it.")]
+    [Min(0f)]
+    public float timeToDialogueComplete = 2f;
+
+    private float interactAllowedAt;
 
     private void OnEnable()
     {
@@ -102,6 +120,9 @@ public class TutorialStep : MonoBehaviour
         {
             SubscribeToQuestActivation();
         }
+
+        if (!weeniePrefab) return;
+        else weeniePrefab.SetActive(true);
     }
 
     private void Update()
@@ -122,6 +143,8 @@ public class TutorialStep : MonoBehaviour
 
     private void OnDisable()
     {
+        CancelInvoke();
+
         UnsubscribeFromTutorialEvent();
         UnsubscribeFromInteractableActivation();
         UnsubscribeFromInteractableCompletion();
@@ -139,6 +162,15 @@ public class TutorialStep : MonoBehaviour
 
         activeInstruction = this;
         hasStarted = true;
+
+        interactAllowedAt =
+            Time.unscaledTime + timeToDialogueComplete;
+
+        // for added tutorial canvas functionality
+        if (tutorialPopup != null)
+        {
+            tutorialPopup.SetActive(true);
+        }
 
         if (!string.IsNullOrEmpty(startConversation))
         {
@@ -274,7 +306,7 @@ public class TutorialStep : MonoBehaviour
                 }
                 else
                 {
-                    TutorialEvents.Interact += CompleteStep;
+                    TutorialEvents.Interact += OnTutorialInteract;
                 }
                 break;
             case TutorialEventType.Till:
@@ -288,6 +320,24 @@ public class TutorialStep : MonoBehaviour
                 break;
             case TutorialEventType.Harvest:
                 TutorialEvents.Harvest += CompleteStep;
+                break;
+            case TutorialEventType.FireSpell:
+                TutorialEvents.FireSpell += CompleteStep;
+                break;
+
+            case TutorialEventType.EarthSpell:
+                TutorialEvents.EarthSpell += CompleteStep;
+                break;
+
+            case TutorialEventType.WaterSpell:
+                TutorialEvents.WaterSpell += CompleteStep;
+                break;
+
+            case TutorialEventType.AirSpell:
+                TutorialEvents.AirSpell += CompleteStep;
+                break;
+            case TutorialEventType.HitBush:
+                TutorialEvents.HitBush += CompleteStep;
                 break;
         }
     }
@@ -304,16 +354,21 @@ public class TutorialStep : MonoBehaviour
         TutorialEvents.Sprint -= CompleteStep;
         TutorialEvents.Fly -= CompleteStep;
         TutorialEvents.Look -= CompleteStep;
-        TutorialEvents.Interact -= CompleteStep;
+        TutorialEvents.Interact -= OnTutorialInteract;
         TutorialEvents.Till -= CompleteStep;
         TutorialEvents.Plant -= CompleteStep;
         TutorialEvents.Water -= CompleteStep;
         TutorialEvents.Harvest -= CompleteStep;
+        TutorialEvents.FireSpell -= CompleteStep;
+        TutorialEvents.EarthSpell -= CompleteStep;
+        TutorialEvents.WaterSpell -= CompleteStep;
+        TutorialEvents.AirSpell -= CompleteStep;
+        TutorialEvents.HitBush -= CompleteStep;
 
         listeningForTutorialEvent = false;
     }
 
-    private void CompleteStep()
+    public void CompleteStep()
     {
         if (Time.timeScale == 0f) return;
 
@@ -343,7 +398,19 @@ public class TutorialStep : MonoBehaviour
             activeInstruction = null;
         }
 
-        gameObject.SetActive(false);
+        // last bit of tutorial addition
+        if (tutorialPopup != null)
+        {
+            tutorialPopup.SetActive(false);
+        }
+
+        if (weeniePrefab != null)
+        {
+            Destroy(weeniePrefab);
+        }
+
+        if (!isRepeatable) 
+            Destroy(gameObject);
 
         if (next != null)
         {
@@ -356,6 +423,21 @@ public class TutorialStep : MonoBehaviour
         if (activationMode != ActivationMode.Proximity) return;
         if (proximityTarget == null) return;
 
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(proximityTarget.position, proximityDistance);
+    }
+
+    private void OnTutorialInteract()
+    {
+        if (Time.timeScale == 0f) return;
+
+        if (!hasStarted || hasCompleted) return;
+
+        if (Time.unscaledTime < interactAllowedAt)
+        {
+            return;
+        }
+
+        CompleteStep();
     }
 }

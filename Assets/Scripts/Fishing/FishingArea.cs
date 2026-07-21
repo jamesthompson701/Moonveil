@@ -41,10 +41,39 @@ public FishingBiome biome;
     // water spell to enter fishing
     private void OnTriggerEnter(Collider other)
     {
+        //testing for why the dock itself can enter fishing
+        Debug.Log("Water Spell Can Hit");
         if (other.CompareTag("WateringSpell"))
         {
             Debug.Log("Water Spell Hit");
+
+            if (!HasAvailableFish())
+            {
+                FishingManager.Instance.ShowFishingPrompt("No fish are available right now.");
+                return;
+            }
+
             FishingManager.Instance.EnterFishingMode(this);
         }
+    }
+
+    public bool HasAvailableFish()
+    {
+        if (fishContainer == null)
+        {
+            return false;
+        }
+
+        FishingFish[] fish = fishContainer.GetComponentsInChildren<FishingFish>(true);
+
+        foreach (FishingFish availableFish in fish)
+        {
+            if (availableFish.gameObject.activeSelf)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

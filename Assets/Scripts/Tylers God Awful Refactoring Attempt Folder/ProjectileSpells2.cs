@@ -2,134 +2,160 @@ using UnityEngine;
 
 /// <summary>
 /// Projectile spell with type-based effects (fire, water, air, earth).
-/// spawns the projectile object and launches it forward then destroys it after time or contact with anything but the player
+/// Supports three spawn modes:
+///  - Fired: instant projectile fired in the camera/player look direction and NOT parented (doesn't follow player).
+///  - SpawnFixedToCaster: spawns on the caster, follows the caster's position but keeps the rotation fixed to the cast rotation.
+///  - SpawnFollowCaster: spawns on the caster and rotates with the caster.
 /// </summary>
-
 [CreateAssetMenu(fileName = "ProjectileSpells2", menuName = "Scriptable Objects/ProjectileSpells2")]
 public class ProjectileSpells2 : SO_SpellDefs2
 {
-    // If true, spawned projectile will update its rotation to match the caster's look direction while active.
+    public enum ProjectileSpawnMode
+    {
+        Fired = 0,
+        SpawnFixedToCaster = 1,
+        SpawnFollowCaster = 2
+    }
+
+    [Tooltip("Controls which of the three projectile behaviours to use.")]
+    public ProjectileSpawnMode SpawnMode = ProjectileSpawnMode.Fired;
+
+    // If true, spawned projectile will update its rotation to match the caster's look direction while active (used only if you add that behaviour).
     public bool RotateWithCaster = true;
 
     public override void CastSpell2(SpellCastContext ctx)
     {
-        // REQUIRE spawn anchor: prefab must spawn at the castOrigin.
-        if (ctx.castOrigin == null)
-        {
-            Debug.LogWarning("ProjectileSpells2.CastSpell2: castOrigin is null — spawn aborted.");
-            return;
-        }
-        if (Speed == 0)
-        {
-            ctx.castOrigin = SpellManager2.Instance.stationaryCastOrigin;
-        }
+        // Resolve origins and fallbacks robustly
         Transform originT = ctx.castOrigin;
+        if (originT == null)
+            originT = SpellManager2.Instance?.projectilCastOrigin ?? ctx.caster?.transform ?? SpellManager2.Instance?.player?.transform;
 
-        // Choose the transform to derive yaw (horizontal) axes from.
-        // When RotateWithCaster is enabled we want offsets (especially horizontalOffset) to be relative to the caster's yaw,
-        // not the camera/castOrigin, which prevents camera facing left/right from shifting the spawn laterally.
-        Transform basisForYaw = (RotateWithCaster && ctx.caster != null) ? ctx.caster.transform : originT;
-
-        // Compute yaw-only forward and right vectors from the chosen basis.
-        Vector3 yawForward = Vector3.ProjectOnPlane(basisForYaw.forward, Vector3.up);
-        if (yawForward.sqrMagnitude < 0.0001f)
+        if (originT == null)
         {
-            yawForward = Vector3.ProjectOnPlane(basisForYaw.TransformDirection(Vector3.forward), Vector3.up);
-            if (yawForward.sqrMagnitude < 0.0001f)
-            {
-                yawForward = Vector3.forward;
-            }
-        }
-        yawForward.Normalize();
-        Quaternion yawRotation = Quaternion.LookRotation(yawForward, Vector3.up);
-        Vector3 yawRight = yawRotation * Vector3.right;
-
-        // Use yaw-only forward for offset computation to avoid pitch/roll affecting spawn position.
-        Vector3 forwardForOffset = yawForward;
-
-        // Base origin is exactly the cast origin position, then apply configured offsets from SO_SpellDefs2
-        Vector3 origin = originT.position + (forwardForOffset * forwardOffset) + (Vector3.up * upwardOffset) + (yawRight * horizontalOffset);
-
-        // Decide firing direction.
-        // If RotateWithCaster is true, use caster yaw-only forward (so spawn & initial facing ignore camera pitch).
-        // If false, use cast origin horizontal forward (so aim/placement follows castOrigin's planar forward).
-        Vector3 dir;
-        if (RotateWithCaster)
-        {
-            dir = yawForward;
-        }
-        else
-        {
-            Vector3 horizontalForward = Vector3.ProjectOnPlane(originT.forward, Vector3.up);
-            if (horizontalForward.sqrMagnitude < 0.0001f)
-            {
-                horizontalForward = Vector3.ProjectOnPlane(originT.TransformDirection(Vector3.forward), Vector3.up);
-            }
-            dir = horizontalForward.normalized;
+            Debug.LogWarning("ProjectileSpells2.CastSpell2: no valid cast origin or caster found — spawn aborted.");
+            return;
         }
 
         float usedSpeed = Speed;
         float usedLifetime = Lifetime;
         float usedOffset = ctx.spawnOffset;
 
-        Vector3 spawnPos = origin + dir * usedOffset;
-
-        // Create a yaw-only rotation for the projectile so it isn't pitched by the camera.
-        float yaw = Mathf.Atan2(yawForward.x, yawForward.z) * Mathf.Rad2Deg;
-        Quaternion rot = Quaternion.Euler(0f, yaw, 0f);
-
-        Rigidbody clone = SpawnProjectile(SpellPrefab, spawnPos, rot);
-
-        if (usedSpeed == 0)
+        // Common: compute a yaw-based forward from the caster or origin for positional offsets where appropriate.
+        Transform basisForYaw = (RotateWithCaster && ctx.caster != null) ? ctx.caster.transform : originT;
+        Vector3 yawForward = Vector3.ProjectOnPlane(basisForYaw.forward, Vector3.up);
+        if (yawForward.sqrMagnitude < 0.0001f)
         {
-            // Make the projectile follow the player's movement and spawn centered around the player
-            if (ctx.caster != null)
-                clone.transform.SetParent(ctx.caster.transform);
-
-            // Force the projectile to keep matching the caster's look direction while active
-            if (RotateWithCaster && ctx.caster != null)
-            {
-                var follower = clone.gameObject.AddComponent<FollowCasterRotation>();
-                follower.Caster = ctx.caster.transform;
-            }
+            yawForward = Vector3.ProjectOnPlane(basisForYaw.TransformDirection(Vector3.forward), Vector3.up);
+            if (yawForward.sqrMagnitude < 0.0001f)
+                yawForward = Vector3.forward;
         }
-        else
+        yawForward.Normalize();
+
+        Rigidbody clone = null;
+        Vector3 spawnPos = originT.position + yawForward * forwardOffset + Vector3.up * upwardOffset + (Quaternion.LookRotation(yawForward) * Vector3.right) * horizontalOffset;
+        Quaternion rot = Quaternion.identity;
+
+        switch (SpawnMode)
         {
-            SetVelocity(clone, dir * usedSpeed);
+            case ProjectileSpawnMode.Fired:
+                {
+                    // Fired: full 3D camera/caster look direction (preserve pitch). Not parented so movement of player won't change projectile position.
+                    Vector3 fireDir = ctx.aimCamera != null ? ctx.aimCamera.transform.forward : (ctx.caster != null ? ctx.caster.transform.forward : yawForward);
+                    if (fireDir.sqrMagnitude < 0.0001f) fireDir = yawForward;
+                    fireDir.Normalize();
+
+                    spawnPos = originT.position + fireDir * usedOffset; // offset along aim direction
+                    rot = Quaternion.LookRotation(fireDir, Vector3.up);
+
+                    clone = SpawnProjectile(SpellPrefab, spawnPos, rot);
+
+                    // Apply velocity (if speed == 0 then projectile will be stationary; still not parented)
+                    if (usedSpeed != 0f)
+                        SetVelocity(clone, fireDir * usedSpeed);
+
+                    break;
+                }
+            case ProjectileSpawnMode.SpawnFixedToCaster:
+                {
+                    // Spawn on the caster and keep the projectile facing the direction they cast in.
+                    // Position follows caster, rotation remains fixed in world-space to the cast rotation.
+                    Vector3 castFacing = ctx.aimCamera != null ? ctx.aimCamera.transform.forward : (ctx.caster != null ? ctx.caster.transform.forward : yawForward);
+                    if (castFacing.sqrMagnitude < 0.0001f) castFacing = yawForward;
+                    castFacing.Normalize();
+
+                    spawnPos = (ctx.caster != null ? ctx.caster.transform.position : originT.position) + castFacing * forwardOffset + Vector3.up * upwardOffset;
+                    rot = Quaternion.LookRotation(castFacing, Vector3.up);
+
+                    clone = SpawnProjectile(SpellPrefab, spawnPos, rot);
+
+                    // Parent for position following but preserve world rotation via helper component
+                    if (ctx.caster != null)
+                    {
+                        clone.transform.SetParent(ctx.caster.transform, true);
+                        var keepRot = clone.gameObject.AddComponent<KeepWorldRotationOnParent>();
+                        keepRot.FixedWorldRotation = rot;
+                    }
+
+                    // Ensure stationary behaviour (0 speed)
+                    if (usedSpeed != 0f)
+                        SetVelocity(clone, Vector3.zero);
+
+                    break;
+                }
+            case ProjectileSpawnMode.SpawnFollowCaster:
+                {
+                    // Spawn on caster and rotate with them. If usedSpeed > 0 this behaves like a projectile attached to the caster.
+                    spawnPos = (ctx.caster != null ? ctx.caster.transform.position : originT.position) + yawForward * forwardOffset + Vector3.up * upwardOffset;
+                    rot = (ctx.caster != null) ? ctx.caster.transform.rotation : Quaternion.LookRotation(yawForward, Vector3.up);
+
+                    clone = SpawnProjectile(SpellPrefab, spawnPos, rot);
+
+                    if (ctx.caster != null)
+                    {
+                        clone.transform.SetParent(ctx.caster.transform, true);
+                    }
+
+                    // If RotateWithCaster is true and you want yaw-only locking, we could add the old helper; otherwise parent provides full rotation following.
+                    if (usedSpeed != 0f)
+                    {
+                        // If speed > 0 treat as a projectile launched from the caster's facing (but still parented if desired)
+                        SetVelocity(clone, clone.transform.forward * usedSpeed);
+                    }
+
+                    break;
+                }
+        }
+
+        if (clone == null)
+        {
+            Debug.LogWarning("ProjectileSpells2.CastSpell2: spawn failed (clone is null)");
+            return;
         }
 
         if (clone.TryGetComponent<SpellDamageManager2>(out var dmg))
         {
             // Pass spell type and effects
-            dmg.InitProjectile2(damage, spellType); 
+            dmg.InitProjectile2(damage, spellType);
         }
+
         playSpellAudio();
 
+        // schedule destroy
         Destroy(clone.gameObject, usedLifetime);
     }
 }
 
 /// <summary>
-/// Small helper component added to spawned projectiles when RotateWithCaster is enabled.
-/// Keeps the projectile's forward direction aligned with the caster's horizontal (yaw) direction each frame,
-/// while blocking pitch (X rotation).
-/// Prevents the projectile from spawning at a different pitch based on the caster's look direction at cast time, and keeps it aligned with the caster if they look around while the projectile is active.
+/// Keeps a spawned projectile's world rotation fixed even when the object is parented to a moving/rotating caster.
+/// Useful for 'SpawnFixedToCaster' behaviour: projectile follows position but keeps the rotation it had at spawn.
 /// </summary>
-public class FollowCasterRotation : MonoBehaviour
+public class KeepWorldRotationOnParent : MonoBehaviour
 {
-    public Transform Caster;
+    [HideInInspector]
+    public Quaternion FixedWorldRotation = Quaternion.identity;
 
-    void Update()
+    void LateUpdate()
     {
-        if (Caster == null) return;
-
-        // Compute caster yaw (rotation around up).
-        Vector3 casterForward = Vector3.ProjectOnPlane(Caster.forward, Vector3.up);
-        if (casterForward.sqrMagnitude < 0.0001f) return; // no meaningful horizontal direction
-
-        float casterYaw = Mathf.Atan2(casterForward.x, casterForward.z) * Mathf.Rad2Deg;
-
-        // Block pitch: set rotation to yaw-only (X = 0), Z = 0 to avoid roll.
-        transform.rotation = Quaternion.Euler(0f, casterYaw, 0f);
+        transform.rotation = FixedWorldRotation;
     }
 }

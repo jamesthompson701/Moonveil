@@ -16,8 +16,13 @@ public class CottonSporePotionSO : ItemEffectSO
     
     public override void UseItem()
     {
+        sfx = GameObject.FindWithTag("ItemSFX").GetComponent<ItemSFXManager>();
+
         Transform playerTransform = ThirdPersonController.Instance.transform;
         Activate(playerTransform);
+
+        sfx.PlayOneShotForItem(eEffects.potion);
+        sfx.PlayOneShotForItem(eEffects.farmAir);
     }
 
     private void Activate(Transform playerTransform)

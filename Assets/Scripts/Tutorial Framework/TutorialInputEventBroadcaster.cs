@@ -43,6 +43,14 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
     private bool watered;
     private bool harvested;
     private bool questCompleted;
+    private bool hitBush;
+
+    public GameObject afterMiningQuest;
+    public bool afterMiningQuestActivated = false;
+
+    public GameObject afterCombatQuest;
+    public bool afterCombatQuestComplete = false;
+
 
     private void Update()
     {
@@ -53,6 +61,7 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
         CheckIfPlanted();
         CheckIfWatered();
         CheckIfHarvested();
+        CheckIfHitBush();
     }
 
     private void CheckMovementInput()
@@ -144,8 +153,7 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
         if (!tilled && TimeManager.instance.tilledDone == true)
         {
             tilled = true;
-            TutorialEvents.TriggerTill();
-            Debug.Log("tilled complete");
+            //TutorialEvents.TriggerTill();
         }
     }
     private void CheckIfPlanted()
@@ -167,6 +175,14 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
     private void CheckIfHarvested()
     {
         if (!harvested && TimeManager.instance.harvestDone == true)
+        {
+            harvested = true;
+            TutorialEvents.TriggerHarvest();
+        }
+    }
+    private void CheckIfHitBush()
+    {
+        if (!hitBush && TimeManager.instance.hitBushDone == true)
         {
             harvested = true;
             TutorialEvents.TriggerHarvest();
