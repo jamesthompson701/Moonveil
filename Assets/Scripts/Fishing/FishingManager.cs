@@ -120,6 +120,9 @@ public class FishingManager : MonoBehaviour
     private List<FishingFish> currentCapturedFish = new List<FishingFish>();
     private Coroutine fishingPromptCoroutine;
 
+    public GameObject nextQuest1;
+    private bool nextQuest1Activated = false;
+
 
     void Awake()
     {
@@ -368,6 +371,13 @@ public class FishingManager : MonoBehaviour
                 InventoryManager.instance.AddFish(fish.fishData, 1);
             }
         }
+
+        if (!nextQuest1Activated)
+        {
+            nextQuest1.SetActive(true);
+            nextQuest1Activated = true;
+        }
+
         ClearRequiredElementUI();
         currentCapturedFish.Clear();
         ExitFishingMode();

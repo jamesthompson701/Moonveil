@@ -52,6 +52,8 @@ public class MineRock : MonoBehaviour
     public ParticleSystem[] failFX;
     public ParticleSystem[] readyFX;
 
+    TutorialInputEventBroadcaster tutorialEvent;
+
     void Start()
     {
         buriedPosition = transform.position;
@@ -65,6 +67,8 @@ public class MineRock : MonoBehaviour
         HideAllGems();
 
         ShowReadyFX();
+
+        tutorialEvent = tutorialEvent != null ? tutorialEvent : FindFirstObjectByType<TutorialInputEventBroadcaster>();
 
         foreach (Collider col in pushColliders)
         {
@@ -201,6 +205,12 @@ public class MineRock : MonoBehaviour
             case MineralType.Air:
                 InventoryManager.instance.invSO.AddItem(airReward,1);
                 break;
+        }
+
+        if (!tutorialEvent.afterMiningQuestActivated)
+        {
+            tutorialEvent.afterMiningQuestActivated = true;
+            tutorialEvent.afterMiningQuest.SetActive(true);
         }
 
         if (audioSource && successSound)

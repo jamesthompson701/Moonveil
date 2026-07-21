@@ -24,25 +24,19 @@ public class CanvasManager : MonoBehaviour
 
 
     // GETS THE KEYBINDS
-    StarterAssetsInputs starterAssets;
+    public StarterAssetsInputs starterAssets;
     public InputActionAsset input;
     InputAction inventoryAction;
     InputAction pauseAction;
     InputAction selectionAction;
 
     // CONTROLS WHAT KEYBINDS DO
-    InputActionMap playerMap;
-    InputActionMap UIMap;
+    public InputActionMap playerMap;
+    public InputActionMap UIMap;
 
     public static CanvasManager Instance;
 
     public PauseScreenshotToBook screenshotToBook;
-
-    private void Start()
-    {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-    }
 
     private void Awake()
     {
@@ -58,12 +52,8 @@ public class CanvasManager : MonoBehaviour
 
         starterAssets = FindFirstObjectByType<StarterAssetsInputs>();
 
-        Cursor.lockState = CursorLockMode.Confined;
-        Debug.Log(Equals(Cursor.lockState, CursorLockMode.Confined));
         Cursor.visible = false;
-        Debug.Log(Equals(Cursor.visible));
         Cursor.lockState = CursorLockMode.Locked;
-        Debug.Log(Equals(Cursor.lockState, CursorLockMode.Locked));
 
         //Making canvas manager a singleton
         if (Instance != null && Instance != this)

@@ -94,6 +94,12 @@ public class TutorialStep : MonoBehaviour
 
     public GameObject weeniePrefab;
 
+    [Tooltip("Seconds after the tutorial step begins before Interact can complete it.")]
+    [Min(0f)]
+    public float timeToDialogueComplete = 2f;
+
+    private float interactAllowedAt;
+
     private void OnEnable()
     {
         hasStarted = false;
@@ -116,7 +122,7 @@ public class TutorialStep : MonoBehaviour
         }
 
         if (!weeniePrefab) return;
-        else Instantiate(weeniePrefab, transform).transform.rotation = transform.rotation;
+        else weeniePrefab.SetActive(true);
     }
 
     private void Update()
@@ -137,6 +143,8 @@ public class TutorialStep : MonoBehaviour
 
     private void OnDisable()
     {
+        CancelInvoke();
+
         UnsubscribeFromTutorialEvent();
         UnsubscribeFromInteractableActivation();
         UnsubscribeFromInteractableCompletion();
@@ -154,6 +162,9 @@ public class TutorialStep : MonoBehaviour
 
         activeInstruction = this;
         hasStarted = true;
+
+        interactAllowedAt =
+            Time.unscaledTime + timeToDialogueComplete;
 
         // for added tutorial canvas functionality
         if (tutorialPopup != null)
@@ -295,7 +306,7 @@ public class TutorialStep : MonoBehaviour
                 }
                 else
                 {
-                    TutorialEvents.Interact += CompleteStep;
+                    TutorialEvents.Interact += OnTutorialInteract;
                 }
                 break;
             case TutorialEventType.Till:
@@ -343,7 +354,7 @@ public class TutorialStep : MonoBehaviour
         TutorialEvents.Sprint -= CompleteStep;
         TutorialEvents.Fly -= CompleteStep;
         TutorialEvents.Look -= CompleteStep;
-        TutorialEvents.Interact -= CompleteStep;
+        TutorialEvents.Interact -= OnTutorialInteract;
         TutorialEvents.Till -= CompleteStep;
         TutorialEvents.Plant -= CompleteStep;
         TutorialEvents.Water -= CompleteStep;
@@ -357,7 +368,7 @@ public class TutorialStep : MonoBehaviour
         listeningForTutorialEvent = false;
     }
 
-    private void CompleteStep()
+    public void CompleteStep()
     {
         if (Time.timeScale == 0f) return;
 
@@ -386,13 +397,20 @@ public class TutorialStep : MonoBehaviour
         {
             activeInstruction = null;
         }
+
         // last bit of tutorial addition
         if (tutorialPopup != null)
         {
             tutorialPopup.SetActive(false);
         }
 
-        if (!isRepeatable) gameObject.SetActive(false);
+        if (weeniePrefab != null)
+        {
+            Destroy(weeniePrefab);
+        }
+
+        if (!isRepeatable) 
+            Destroy(gameObject);
 
         if (next != null)
         {
@@ -405,6 +423,21 @@ public class TutorialStep : MonoBehaviour
         if (activationMode != ActivationMode.Proximity) return;
         if (proximityTarget == null) return;
 
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(proximityTarget.position, proximityDistance);
+    }
+
+    private void OnTutorialInteract()
+    {
+        if (Time.timeScale == 0f) return;
+
+        if (!hasStarted || hasCompleted) return;
+
+        if (Time.unscaledTime < interactAllowedAt)
+        {
+            return;
+        }
+
+        CompleteStep();
     }
 }

@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using System.Collections.Generic;
 using UnityEngine.AdaptivePerformance;
 using JetBrains.Annotations;
+using StarterAssets;
 
 public class WorldTree : MonoBehaviour
 {
@@ -40,6 +41,13 @@ public class WorldTree : MonoBehaviour
     public GameObject questItemWidget;
     public GameObject itemsMenu;
     public List<GameObject> listOfWidgets = new List<GameObject>();
+
+    // quest objects to enable if needed
+    public GameObject quest1;
+    public GameObject quest2;
+    public GameObject quest3;
+
+    public ThirdPersonController playerFlight;
 
     public void OnInteract()
     {
@@ -175,14 +183,18 @@ public class WorldTree : MonoBehaviour
         levelText.text = "" + treeLevel;
         if (treeLevel == 1)
         {
+            playerFlight.flightLocked = false;
+            quest1.SetActive(true);
             treeBase.SetActive(true);
         }
         if (treeLevel == 2)
         {
+            quest2.SetActive(true);
             treeMid.SetActive(true);
         }
         if (treeLevel == 3)
         {
+            quest3.SetActive(true);
             treeTop.SetActive(true);
         }
 
