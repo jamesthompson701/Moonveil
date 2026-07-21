@@ -119,6 +119,7 @@ namespace StarterAssets
         public float FlightVelocityAcceleration = 24f;
         [Tooltip("How quickly horizontal flight velocity slows when movement input is released")]
         public float FlightVelocityDeceleration = 32f;
+        private float DefaultFlightVelocityDeceleration;
         [Tooltip("Time required for the additional flight speed to disappear after movement stops")]
         public float FlightBoostDecayTime = 0.5f;
         [Tooltip("Maximum vertical flight speed")]
@@ -211,6 +212,7 @@ namespace StarterAssets
             DefaultJumpHeight = JumpHeight;
             DefaultGravity = Gravity;
             DefaultFlightMoveSpeed = FlightMoveSpeed;
+            DefaultFlightVelocityDeceleration = FlightVelocityDeceleration;
 
             // get a reference to our main camera
             if (_mainCamera == null)
@@ -305,6 +307,7 @@ namespace StarterAssets
                     MoveSpeed = DefaultMoveSpeed;
                     SprintSpeed = DefaultSprintSpeed;
                     FlightMoveSpeed = DefaultFlightMoveSpeed;
+                    FlightVelocityDeceleration = DefaultFlightVelocityDeceleration;
 
                 }
             }
@@ -355,6 +358,7 @@ namespace StarterAssets
             if (isCasting)
             {
                 Debug.Log("Cannot toggle flight while casting.");
+                AudioManager.PlayOneShot(eEffects.cantFly, transform, 100);
                 return;
             }
 
@@ -370,6 +374,7 @@ namespace StarterAssets
             if (flightLocked)
             {
                 Debug.Log("Cannot toggle flight right now (locked by combat).");
+                AudioManager.PlayOneShot(eEffects.cantFly, transform, 100);
                 return;
             }
 
