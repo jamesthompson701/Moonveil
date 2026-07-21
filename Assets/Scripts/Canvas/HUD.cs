@@ -30,10 +30,9 @@ public class HUD : MonoBehaviour
     //health bottle sprites
     public Image healthBottle;
 
-    public Sprite maxHealth;
-    public Sprite highHealth;
-    public Sprite mediumHealth;
-    public Sprite lowHealth;
+    public GameObject insignia;
+    public GameObject halfCracks;
+    public GameObject lowCracks;
 
     public GameObject manaText;
     bool textActive = false;
@@ -42,6 +41,8 @@ public class HUD : MonoBehaviour
     public Image clockWheel;
     public Sprite daySundial;
     public Sprite nightSundial;
+    public GameObject dayHandSundial;
+    public GameObject nightHandSundial;
 
     public GameObject itemDisplay;
     public Image displayImage;
@@ -138,19 +139,29 @@ public class HUD : MonoBehaviour
 
         if (playerHealthRef.currentHealth >= playerHealthRef.maxHealth)
         {
-            healthBottle.sprite = maxHealth;
-        }
-        else if (playerHealthRef.currentHealth > playerHealthRef.maxHealth * 0.75)
-        {
-            healthBottle.sprite = highHealth;
-        }
-        else if (playerHealthRef.currentHealth > playerHealthRef.maxHealth * 0.25)
-        {
-            healthBottle.sprite = mediumHealth;
+            insignia.SetActive(true);
         }
         else
         {
-            healthBottle.sprite = lowHealth;
+            insignia.SetActive(false);
+        }
+
+        if (playerHealthRef.currentHealth < playerHealthRef.maxHealth * 0.5)
+        {
+            halfCracks.SetActive(true);
+        }
+        else
+        {
+            halfCracks.SetActive(false);
+        }
+
+        if (playerHealthRef.currentHealth < playerHealthRef.maxHealth * 0.25)
+        {
+            lowCracks.SetActive(true);
+        }
+        else
+        {
+            lowCracks.SetActive(false);
         }
     }
 
@@ -190,10 +201,14 @@ public class HUD : MonoBehaviour
         if (TimeManager.instance.timeOfDay == 1)
         {
             clockWheel.sprite = daySundial;
+            dayHandSundial.SetActive(true);
+            nightHandSundial.SetActive(false);
         }
         if (TimeManager.instance.timeOfDay == 2)
         {
             clockWheel.sprite = nightSundial;
+            dayHandSundial.SetActive(false);
+            nightHandSundial.SetActive(true);
         }
     }
 
