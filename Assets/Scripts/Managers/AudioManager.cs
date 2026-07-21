@@ -8,7 +8,7 @@ using UnityEngine.Audio;
 public enum eMixers { music, effects }
 public enum eEffects { farmFire, combatFire, farmEarth, combatEarth, farmWater, combatWater, farmAir, combatAir, harvest, footstep, jump, till, castHook, bubblePop, playerHurt, flying, cantFly, potion, upgrade,}
 
-public enum eMusic { mainIslandDay, fireIslandDay, fireIslandCombat}
+public enum eMusic { mainIsland, fireIsland, waterIsland, waterIslandBossBattle}
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
@@ -47,10 +47,19 @@ public class AudioManager : MonoBehaviour
     {
         Instance.Effects.PlayOneShot(Instance.effectsSounds[(int)_effect]);
     }
-
-    public static void ChangeTrack(eMusic _music)
+     public static void ChangeTrack(eMusic _music)
     {
+        // 1. Convert the enum to the array index
+        AudioClip targetTrack = Instance.bgmTracks[(int)_music];
+
+        // 2. Prevent restarting the track if it's already playing
+        if (Instance.BGM.clip == targetTrack && Instance.BGM.isPlaying)
+            return;
+
+        // 3. Swap the track and play it normally
         Instance.BGM.Stop();
-        Instance.BGM.PlayOneShot(Instance.bgmTracks[(int)_music]);
+        Instance.BGM.clip = targetTrack;
+        Instance.BGM.Play();
     }
+
 }

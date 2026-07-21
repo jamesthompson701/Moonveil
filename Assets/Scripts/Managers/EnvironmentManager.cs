@@ -28,22 +28,23 @@ public class EnvironmentManager : MonoBehaviour
 
     public void Travel(eFastTravel destination)
     {
-        Debug.Log("Teleport player to " +  destination + " at these cords: " + fastTravelShrines[(int)destination].transform.position);
+        Debug.Log("Teleport player to " + destination + " at these cords: " + fastTravelShrines[(int)destination].transform.position);
         characterController.enabled = false;
         player.transform.position = fastTravelShrines[(int)destination].transform.Find("TP Point").position;
         characterController.enabled = true;
 
-        if (destination == eFastTravel.home)
+        /*if (destination == eFastTravel.home)
         {
             player.GetComponent<SpellManager2>().inCombatArea = false;
-            AudioManager.ChangeTrack(eMusic.mainIslandDay);
+            AudioManager.ChangeTrack(eMusic.mainIsland);
         }
 
         if(destination == eFastTravel.fireTown)
         {
             player.GetComponent<SpellManager2>().inCombatArea = true;
-            AudioManager.ChangeTrack(eMusic.fireIslandDay);
+            AudioManager.ChangeTrack(eMusic.fireIsland);
         }
-    }
+    }*/
 
+    }
 }
