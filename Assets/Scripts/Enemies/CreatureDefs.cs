@@ -217,7 +217,7 @@ public class CreatureDefs : MonoBehaviour
 
     private void Awake()
     {
-        tutorialEvent = FindAnyObjectByType<TutorialInputEventBroadcaster>();
+        tutorialEvent = tutorialEvent != null ? tutorialEvent : FindFirstObjectByType<TutorialInputEventBroadcaster>();
 
         _rb = GetComponent<Rigidbody>();
         _rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
