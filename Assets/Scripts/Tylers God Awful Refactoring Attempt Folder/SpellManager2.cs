@@ -88,6 +88,12 @@ public class SpellManager2 : MonoBehaviour
 
     public bool midCast = false;
 
+    //references to HUD upgrade graphics
+    public GameObject waterUpgradeUI;
+    public GameObject earthUpgradeUI;
+    public GameObject fireUpgradeUI;
+    public GameObject airUpgradeUI;
+
     // SpellManager2 will set inCombatArea = true while any creature is aggroed.
     private int _engagedEnemyCount = 0;
 
@@ -178,6 +184,23 @@ public class SpellManager2 : MonoBehaviour
         ChooseSpell();
         UpdateGroundTargetPreview();
         UpdateChargedUI();
+
+        if (waterTierUnlocked[1])
+        {
+            waterUpgradeUI.SetActive(true);
+        }
+        if (earthTierUnlocked[1])
+        {
+            earthUpgradeUI.SetActive(true);
+        }
+        if (fireTierUnlocked[1])
+        {
+            fireUpgradeUI.SetActive(true);
+        }
+        if (airTierUnlocked[1])
+        {
+            airUpgradeUI.SetActive(true);
+        }
 
         if (!inCombatArea) infiniteManaRegen = true;
         else infiniteManaRegen = false;

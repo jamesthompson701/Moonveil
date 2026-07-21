@@ -39,6 +39,7 @@ public class TimeManager : MonoBehaviour
     // world light
     public GameObject worldLight;
     public Light sun;
+    public GameObject clockHand;
 
     //blackout screen
     public Image blackout;
@@ -286,6 +287,8 @@ public class TimeManager : MonoBehaviour
                     sun.intensity = sun.intensity + 0.01f;
                 }
                 worldLight.transform.Rotate(0.6f * Time.deltaTime, 0, 0);
+                clockHand.transform.Rotate(0, 0, -1.2f * Time.deltaTime);
+
                 if(currentBlend > 0)
                 {
                     currentBlend = currentBlend - 0.01f;
@@ -298,6 +301,8 @@ public class TimeManager : MonoBehaviour
                     sun.intensity = sun.intensity - 0.01f;
                 }
                 worldLight.transform.Rotate(0.6f * Time.deltaTime, 0, 0);
+                clockHand.transform.Rotate(0, 0, -1.2f * Time.deltaTime);
+
                 if (currentBlend < 1)
                 {
                     currentBlend = currentBlend + 0.01f;
@@ -311,12 +316,14 @@ public class TimeManager : MonoBehaviour
         {
             timeOfDay = 2;
             worldLight.transform.eulerAngles = new Vector3(180, 180, 0);
+            clockHand.transform.eulerAngles = new Vector3(0, 0, 0);
         }
         if (daylightCycleTime > 600)
         {
             daylightCycleTime = 1;
             timeOfDay = 1;
             worldLight.transform.eulerAngles = new Vector3(0,180,0);
+            clockHand.transform.eulerAngles = new Vector3(0, 0, 0);
         }
 
         //check each plant in the list
