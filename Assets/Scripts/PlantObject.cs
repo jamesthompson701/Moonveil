@@ -143,7 +143,7 @@ public class PlantObject : MonoBehaviour
     public void Harvest()
     {
         InventoryManager.instance.invSO.AddItem(plant.fruit, 1);
-
+        TutorialEvents.TriggerHarvest();
         Debug.Log("Harvested");
         Destroy(currentPlant);
         TimeManager.instance.UnregisterPlant(this);
