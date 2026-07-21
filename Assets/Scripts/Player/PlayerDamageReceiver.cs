@@ -107,6 +107,10 @@ public class PlayerDamageReceiver : MonoBehaviour
         // Implement death logic (e.g., respawn, game over screen)
         EnvironmentManager.Instance.Travel(eFastTravel.home);
         currentHealth = maxHealth; // Reset health for respawn
+
+        // BlackoutBrew blackout effect
+        TimeManager.instance.isBlackout = true;
+        TimeManager.instance.blackoutTimer = 3f;
     }
 
     private IEnumerator ShowDamageTaken()
