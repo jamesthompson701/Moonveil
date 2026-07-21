@@ -96,6 +96,7 @@ namespace StarterAssets
 
         [Tooltip("Determines if the player is in flight mode or not")]
         public bool inFlightMode = false;
+        private bool _lastFlightState; // Tracks if the player was flying last frame
 
 
         [Tooltip("When true, prevents the player from toggling flight (set by combat manager)")]
@@ -465,6 +466,17 @@ namespace StarterAssets
         private void Move()
         {
             {
+                // --- FLIGHT AUDIO TRIGGER LOGIC ---
+                // Check if the flight state changed since the last frame
+                if (inFlightMode != _lastFlightState)
+                {
+                    // Tell AudioManager about the new flight state (Only runs ONCE per transition)
+                    AudioManager.SetFlightState(inFlightMode);
+
+                    // Save the current state for the next frame's comparison
+                    _lastFlightState = inFlightMode;
+                }
+
                 if (inFlightMode)
                 {
                     MoveFlight();

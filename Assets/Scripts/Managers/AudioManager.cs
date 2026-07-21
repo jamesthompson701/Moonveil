@@ -10,7 +10,7 @@ using UnityEngine.Audio;
 public enum eMixers { music, effects }
 public enum eEffects { farmFire, combatFire, farmEarth, combatEarth, farmWater, combatWater, farmAir, combatAir, harvest, footstep, jump, till, castHook, bubblePop, playerHurt, flying, cantFly, potion, upgrade,}
 
-public enum eMusic { mainIsland, fireIsland, waterIsland, waterIslandBossBattle}
+public enum eMusic { mainIsland, fireIsland, waterIsland, waterIslandBossBattle, flightMusic }
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
@@ -36,8 +36,11 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        // Save the default Inspector volume of your BGM source
+        // 1. Save the default Inspector volume of your BGM source
         originalBgmVolume = BGM.volume;
+
+        // 2. Play the absolute default music immediately on game start
+        ExecuteTrackChange(absoluteDefaultMusic);
     }
 
     private void Awake()
@@ -148,5 +151,40 @@ public class AudioManager : MonoBehaviour
         }
 
         activeFadeRoutine = StartCoroutine(FadeTrackRoutine(targetTrack));
+    }
+
+    public static void SetFlightState(bool inFlightMode)
+    {
+        // Change this enum value to match your exact flight music enum name
+        eMusic flightTrack = eMusic.flightMusic;
+
+        if (inFlightMode)
+        {
+            // If flying, force flight music to the very front of the history stack
+            if (!Instance.activeZoneHistory.Contains(flightTrack))
+            {
+                Instance.activeZoneHistory.Insert(0, flightTrack);
+            }
+            else
+            {
+                // If it's already in the list, move it to the front
+                Instance.activeZoneHistory.Remove(flightTrack);
+                Instance.activeZoneHistory.Insert(0, flightTrack);
+            }
+        }
+        else
+        {
+            // If landed, remove flight music from the history stack completely
+            Instance.activeZoneHistory.Remove(flightTrack);
+        }
+
+        // Determine what track should play now based on the remaining history stack
+        eMusic trackToPlay = Instance.absoluteDefaultMusic;
+        if (Instance.activeZoneHistory.Count > 0)
+        {
+            trackToPlay = Instance.activeZoneHistory[0];
+        }
+
+        Instance.ExecuteTrackChange(trackToPlay);
     }
 }
