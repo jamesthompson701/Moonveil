@@ -11,13 +11,10 @@ public class Weakpoints : MonoBehaviour
 {
     public PengKingBoss pengKing;
 
-    [Header("Gem Visual")]
-    public Renderer[] gemRenderers;
-
-    public Material fireMaterial;
-    public Material waterMaterial;
-    public Material airMaterial;
-    public Material earthMaterial;
+    public GameObject fireWeakpoint;
+    public GameObject waterWeakpoint;
+    public GameObject airWeakpoint;
+    public GameObject earthWeakpoint;
 
     public enum ElementType
     {
@@ -37,16 +34,16 @@ public class Weakpoints : MonoBehaviour
         switch (elementType)
         {
             case ElementType.Earth:
-                SetGemMaterial(earthMaterial);
+                earthWeakpoint.SetActive(true);
                 break;
             case ElementType.Fire:
-                SetGemMaterial(fireMaterial);
+                fireWeakpoint.SetActive(true);
                 break;
             case ElementType.Air:
-                SetGemMaterial(airMaterial);
+                airWeakpoint.SetActive(true);
                 break;
             case ElementType.Water:
-                SetGemMaterial(waterMaterial);
+                waterWeakpoint.SetActive(true);
                 break;
         }
 
@@ -82,34 +79,24 @@ public class Weakpoints : MonoBehaviour
             other.CompareTag("WateringSpell") && elementType == ElementType.Water)
         {
             pengKing?.WeakpointDestroyed();
-            gameObject.SetActive(false);
-        }
-    }
 
-    void SetGemMaterial(Material mat)
-    {
-        if (mat == null)
-        {
-            Debug.LogWarning($"{nameof(SetGemMaterial)} called with null material on '{name}'.");
-            return;
-        }
-
-        if (gemRenderers == null || gemRenderers.Length == 0)
-        {
-            gemRenderers = GetComponentsInChildren<Renderer>();
-            if (gemRenderers == null || gemRenderers.Length == 0)
+            switch (elementType)
             {
-                Debug.LogWarning($"{nameof(Weakpoints)} on '{name}' found no Renderers to set.");
-                return;
+                case ElementType.Earth:
+                    earthWeakpoint.SetActive(false);
+                    break;
+                case ElementType.Fire:
+                    fireWeakpoint.SetActive(false);
+                    break;
+                case ElementType.Air:
+                    airWeakpoint.SetActive(false);
+                    break;
+                case ElementType.Water:
+                    waterWeakpoint.SetActive(false);
+                    break;
             }
-        }
 
-        foreach (Renderer r in gemRenderers)
-        {
-            if (r == null)
-                continue;
-
-            r.material = mat;
+            gameObject.SetActive(false);
         }
     }
 }

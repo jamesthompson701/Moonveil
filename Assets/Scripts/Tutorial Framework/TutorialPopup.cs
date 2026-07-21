@@ -20,10 +20,14 @@ public class TutorialPopup : MonoBehaviour
         Cursor.visible = true;
         
     }
-    private void OnDisable()
+    private void Update()
     {
         
-        
+        if (popup.activeSelf)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
     }
     public void OpenTutorial()
     {
@@ -36,11 +40,6 @@ public class TutorialPopup : MonoBehaviour
         CanvasManager.Instance.playerMap.Enable();
         CanvasManager.Instance.UIMap.Disable();
 
-        CanvasManager.Instance.starterAssets.cursorLocked = true;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        ClickSelector.Instance.enabled = true;
-
         Time.timeScale = 1f;
 
         if (previousQuest != null)
@@ -50,5 +49,10 @@ public class TutorialPopup : MonoBehaviour
             nextQuest.SetActive(true);
 
         popup.SetActive(false);
+
+        CanvasManager.Instance.starterAssets.cursorLocked = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        ClickSelector.Instance.enabled = true;
     }
 }

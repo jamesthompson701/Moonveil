@@ -160,6 +160,8 @@ public class CreatureDefs : MonoBehaviour
     [SerializeField] private bool canAttack = true;
     public bool CanAttack { get => canAttack; set => canAttack = value; }
     public bool isBossPenguinion = false;
+    [SerializeField] private bool isBoss = false;
+
 
     private const string DefaultPlayerTag = "PlayerHitPt";
 
@@ -270,13 +272,23 @@ public class CreatureDefs : MonoBehaviour
 
         if (_hasAggro && target)
         {
-            CombatMove(out desiredDir, out desiredSpeed);
-
             float sqrDist = HorizontalSqrDistance(transform.position, target.position);
             bool inRange = sqrDist <= attackRange * attackRange;
 
-            if (inRange && Time.time >= _nextAttackTime)
-                TryStartAttack(sqrDist);
+            if (isBoss && boss != null && boss.fightStarted)
+            {
+                CombatMove(out desiredDir, out desiredSpeed);
+
+                if (inRange && Time.time >= _nextAttackTime)
+                    TryStartAttack(sqrDist);
+            }
+            else
+            {
+                CombatMove(out desiredDir, out desiredSpeed);
+
+                if (inRange && Time.time >= _nextAttackTime)
+                    TryStartAttack(sqrDist);
+            }
         }
         else
         {
@@ -291,6 +303,12 @@ public class CreatureDefs : MonoBehaviour
     private void UpdateAggroState()
     {
         if (!target) { _hasAggro = false; return; }
+
+        if (isBoss && boss != null && !boss.fightStarted)
+        {
+            _hasAggro = false;
+            return;
+        }
 
         bool previousAggro = _hasAggro;
 
@@ -905,7 +923,8 @@ public class CreatureDefs : MonoBehaviour
             tutorialEvent.afterCombatQuestComplete = true;
             tutorialEvent.afterCombatQuest.SetActive(true);
         }
-            
+
+        SpellManager2.Instance.NotifyEnemyAggro(!_hasAggro);
 
         Destroy(gameObject);
 

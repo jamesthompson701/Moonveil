@@ -11,7 +11,11 @@ public class BossFightTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             if (PengKingBoss != null)
+            { 
                 PengKingBoss.ActivateShieldAndRandomWeakpoints();
+                Destroy(gameObject); // Destroy the trigger after activation
+            }
+
             else
                 Debug.LogWarning("BossFightTrigger: PengKingBoss reference not assigned.");
         }

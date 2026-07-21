@@ -37,6 +37,9 @@ public class MineRock : MonoBehaviour
     public Collider[] pushColliders;
     [SerializeField] private float pushDuration = 0.5f;
 
+    [Header("Tutorial")]
+    [SerializeField] private bool destroyOnSuccess = false;
+
     [Header("SFX")]
     private AudioSource audioSource;
     public AudioClip raiseSound;
@@ -137,32 +140,65 @@ public class MineRock : MonoBehaviour
 
         PlayFX(raiseFX);
 
-        requiredType = (MineralType)Random.Range(0, 3);
-
-        ShowGemType(requiredType);
-
-        if (audioSource && raiseSound)
+        if (destroyOnSuccess)
         {
-            audioSource.PlayOneShot(raiseSound);
-            Debug.Log("raiseSound played");
-        }
+            fireGems.SetActive(true);
+            waterGems.SetActive(true);
+            airGems.SetActive(true);
 
-        if (activeTimerRoutine != null)
-        {
-            StopCoroutine(activeTimerRoutine);
-        }
-
-        activeTimerRoutine = StartCoroutine(ActiveTimer());
-
-        foreach (Collider col in pushColliders)
-        {
-            if (col != null)
+            if (audioSource && raiseSound)
             {
-                col.enabled = true;
+                audioSource.PlayOneShot(raiseSound);
+                Debug.Log("raiseSound played");
             }
+
+            if (activeTimerRoutine != null)
+            {
+                StopCoroutine(activeTimerRoutine);
+            }
+
+            activeTimerRoutine = StartCoroutine(ActiveTimer());
+
+            foreach (Collider col in pushColliders)
+            {
+                if (col != null)
+                {
+                    col.enabled = true;
+                }
+            }
+
+            StartCoroutine(DisablePushCollider());
         }
 
-        StartCoroutine(DisablePushCollider());
+        else
+        {
+            requiredType = (MineralType)Random.Range(0, 3);
+
+            ShowGemType(requiredType);
+
+            if (audioSource && raiseSound)
+            {
+                audioSource.PlayOneShot(raiseSound);
+                Debug.Log("raiseSound played");
+            }
+
+            if (activeTimerRoutine != null)
+            {
+                StopCoroutine(activeTimerRoutine);
+            }
+
+            activeTimerRoutine = StartCoroutine(ActiveTimer());
+
+            foreach (Collider col in pushColliders)
+            {
+                if (col != null)
+                {
+                    col.enabled = true;
+                }
+            }
+
+            StartCoroutine(DisablePushCollider());
+        }
     }
 
     void CheckSpell(MineralType spellType)
@@ -171,6 +207,10 @@ public class MineRock : MonoBehaviour
             return;
 
         if (spellType == requiredType)
+        {
+            Success();
+        }
+        else if (destroyOnSuccess)
         {
             Success();
         }
@@ -189,19 +229,28 @@ public class MineRock : MonoBehaviour
 
         PlayFX(successFX);
 
-        switch(requiredType)
+        if (destroyOnSuccess)
         {
-            case MineralType.Fire:
-                InventoryManager.instance.invSO.AddItem(fireReward,1);
-                break;
+            InventoryManager.instance.invSO.AddItem(fireReward, 1);
+            InventoryManager.instance.invSO.AddItem(waterReward, 1);
+            InventoryManager.instance.invSO.AddItem(airReward, 1);
+        }
+        else
+        {
+            switch (requiredType)
+            {
+                case MineralType.Fire:
+                    InventoryManager.instance.invSO.AddItem(fireReward, 1);
+                    break;
 
-            case MineralType.Water:
-                InventoryManager.instance.invSO.AddItem(waterReward,1);
-                break;
+                case MineralType.Water:
+                    InventoryManager.instance.invSO.AddItem(waterReward, 1);
+                    break;
 
-            case MineralType.Air:
-                InventoryManager.instance.invSO.AddItem(airReward,1);
-                break;
+                case MineralType.Air:
+                    InventoryManager.instance.invSO.AddItem(airReward, 1);
+                    break;
+            }
         }
 
         if (!tutorialEvent.afterMiningQuestActivated)
@@ -214,6 +263,12 @@ public class MineRock : MonoBehaviour
         {
             audioSource.PlayOneShot(successSound);
             Debug.Log("successSound played");
+        }
+
+        if (destroyOnSuccess)
+        {
+            StartCoroutine(DestroyAfterSuccess());
+            return;
         }
 
         StartCoroutine(CooldownRoutine());
@@ -304,6 +359,12 @@ public class MineRock : MonoBehaviour
                 col.enabled = false;
             }
         }
+    }
+
+    IEnumerator DestroyAfterSuccess()
+    {
+        yield return new WaitForSeconds(1f);
+        Destroy(gameObject);
     }
 
     void PlayFX(ParticleSystem[] effects)
