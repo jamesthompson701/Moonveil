@@ -17847,9 +17847,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 683b7a233633d534c9af4a8b50ceea37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCBobbing
-  bobMin: 0
-  bobMax: 0
-  myTransform: {fileID: 0}
+  transformToAffect: {fileID: 0}
+  axisToAffect: 2
+  animationDuration: 0.25
+  canBeOverwritten: 0
+  playOnStart: 0
+  initialScale: 1
+  maximumScale: 1.3
+  resetToInitialScaleAfterAnimation: 1
+  reverseAnimationCurveAfterPlayeing: 0
+  squashAndStretchCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  looping: 0
+  loopingDelay: 1
 --- !u!54 &448933886
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -22437,9 +22469,9 @@ MonoBehaviour:
   - 1
   effectsSounds:
   - {fileID: 8300000, guid: 84c314790d2c73e46af437683a230384, type: 3}
-  - {fileID: 8300000, guid: 703720f65e7beae48b04c5d8797542a9, type: 3}
+  - {fileID: 8300000, guid: 7780818b4a168264388c7e7ac45610f5, type: 3}
   - {fileID: 8300000, guid: 6934e64c45529554ba42e44ae4347353, type: 3}
-  - {fileID: 8300000, guid: 3afac413704c89b4ebca4f772c7e43c3, type: 3}
+  - {fileID: 8300000, guid: d17ace21edee70f4b98cc998d9e3599a, type: 3}
   - {fileID: 8300000, guid: b108b9b1c74f4e043bd55bf20231e6ef, type: 3}
   - {fileID: 8300000, guid: 67389a1edee42134a90e54f857e7152d, type: 3}
   - {fileID: 8300000, guid: b6209866aa3eedf45adb5a0afc99fc0e, type: 3}
