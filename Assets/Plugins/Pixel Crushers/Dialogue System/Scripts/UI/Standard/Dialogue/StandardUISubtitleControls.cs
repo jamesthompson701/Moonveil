@@ -257,34 +257,34 @@ namespace PixelCrushers.DialogueSystem
             if (subtitle.speakerInfo.transform != null)
             {
                 m_dialogueActorCache.TryGetValue(subtitle.speakerInfo.transform, out dialogueActor);
+                Debug.Log("Issue here 1");
             }
-
             // Check if we have a forced override:
             if (m_forcedOverridePanel != null) return m_forcedOverridePanel;
-
             // Check [panel=#] tag:
             var overrideIndex = subtitle.formattedText.subtitlePanelNumber;
             if (0 <= overrideIndex && overrideIndex < m_builtinPanels.Count)
             {
                 var overridePanel = m_builtinPanels[overrideIndex];
                 overridePanel.actorOverridingPanel = subtitle.speakerInfo.transform;
+                Debug.Log("Issue here 3");
                 return overridePanel;
             }
-
             // Check actor ID override:
             if (m_actorIdOverridePanel.ContainsKey(subtitle.speakerInfo.id))
             {
                 var overridePanel = m_actorIdOverridePanel[subtitle.speakerInfo.id];
                 overridePanel.actorOverridingPanel = subtitle.speakerInfo.transform;
+                Debug.Log("Issue here 4");
                 return overridePanel;
             }
-
             // Get actor's panel:
             var speakerTransform = subtitle.speakerInfo.transform;
             var panel = GetActorTransformPanel(speakerTransform, subtitle.speakerInfo.isNPC ? m_defaultNPCPanel : m_defaultPCPanel, out dialogueActor);
             if (subtitle.speakerInfo.transform != null && dialogueActor != null)
             {
                 m_dialogueActorCache[subtitle.speakerInfo.transform] = dialogueActor;
+                Debug.Log("issue here 5");
             }
             return panel;
         }

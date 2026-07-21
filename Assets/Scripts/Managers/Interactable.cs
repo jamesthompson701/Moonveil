@@ -7,9 +7,6 @@ public class Interactable : MonoBehaviour
 {
     public static event System.Action<Interactable> OnAnyInteract;
 
-    private Renderer rend;
-    private Color originalColor;
-
     //reference to soil script
     private SoilObject soil;
 
@@ -18,9 +15,20 @@ public class Interactable : MonoBehaviour
     public int dispenseAmount;
     public bool destroyOnDispense;
 
+    public string eventToSend;
+
+    public bool isSign = false;
+    public TutorialPopup popup;
+
     // This method will be called by our ClickSelector
     public virtual void OnInteract()
     {
+        if (Time.timeScale == 0)
+        {
+            Debug.Log("Menu is open, ignoring interaction");
+            return;
+        }
+
         OnAnyInteract?.Invoke(this);
         Debug.Log($"OnInteract called on {name}");
         if (gameObject.CompareTag("Soil"))                 
@@ -86,6 +94,10 @@ public class Interactable : MonoBehaviour
         else if (gameObject.CompareTag("Bed"))
         {
             TimeManager.instance.Sleep();
+        }
+        else if (isSign)
+        {
+            popup.OpenTutorial();
         }
         else
         {

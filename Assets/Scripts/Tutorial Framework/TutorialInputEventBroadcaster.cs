@@ -45,6 +45,12 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
     private bool questCompleted;
     private bool hitBush;
 
+    public GameObject afterMiningQuest;
+    public bool afterMiningQuestActivated = false;
+
+    public GameObject afterCombatQuest;
+    public bool afterCombatQuestComplete = false;
+
 
     private void Update()
     {

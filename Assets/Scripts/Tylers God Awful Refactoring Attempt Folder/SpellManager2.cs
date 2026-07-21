@@ -166,6 +166,8 @@ public class SpellManager2 : MonoBehaviour
         {
             Instance = this;
         }
+
+        attackChoice = 1;
     }
 
     private void Update()

@@ -104,7 +104,7 @@ public class EnemyAttacks : MonoBehaviour
     {
         if (!isPenguinToss) return;
         PengKingBoss boss = Object.FindFirstObjectByType<PengKingBoss>();
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < boss.maxSpawnedMinions; i++)
         {
             Instantiate(penguinionPrefab, transform.position + Vector3.up * 0.5f, Quaternion.identity);
             boss.RegisterSpawnedMinion();

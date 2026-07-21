@@ -20,7 +20,7 @@ public class PengKingBoss : MonoBehaviour
     [Tooltip("Number of active spawned minions created by the boss.")]
     public int spawnedMinionsCount = 0;
     [Tooltip("Maximum allowed spawned minions before the boss stops attacking.")]
-    public int maxSpawnedMinions = 6;
+    public int maxSpawnedMinions = 5;
 
     public PlayerDamageReceiver playerDamageReceiver;
 
