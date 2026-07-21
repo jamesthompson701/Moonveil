@@ -200,6 +200,8 @@ MonoBehaviour:
   projectileSpeed: 14
   chargeSpeed: 14
   arcApexHeight: 3
+  contactDamage: 10
+  contactTickInterval: 0.5
   separationRadius: 1.2
   separationStrength: 20
   maxSeparationNeighbors: 16
@@ -207,17 +209,19 @@ MonoBehaviour:
   directorRequestInterval: 0.15
   drawGizmos: 0
   dropItem: {fileID: 11400000, guid: decc5e8d934865e4096a5e2e668a4f53, type: 2}
-  playerInventory: {fileID: 0}
-  invSO: {fileID: 0}
   _health: 0
+  canAttack: 1
+  isBossPenguinion: 0
   _burnDps: 10
   _canBurn: 0
   _canSlow: 0
   _canRoot: 0
+  tutorialEvent: {fileID: 0}
   enemyBody: {fileID: 0}
   enemyDamaged: {fileID: 2100000, guid: 7c93df608510e1645afd917a3cb778ec, type: 2}
   enemyDefault: {fileID: 2100000, guid: 89ad272d65677324fb41e1ebb1cd9b62, type: 2}
   _bodyOriginalMaterial: {fileID: 0}
+  boss: {fileID: 0}
 --- !u!65 &8179868634205398757
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -257,6 +261,8 @@ MonoBehaviour:
   targetTag: Player
   destroyOnHit: 0
   destroyDelay: 3
+  isPenguinToss: 0
+  penguinionPrefab: {fileID: 0}
 --- !u!136 &6882333701873858578
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -290,7 +296,7 @@ Animator:
   m_GameObject: {fileID: 6884222217625323323}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 5e5586936c7d38a4a97d8bb227ffe7b2, type: 3}
-  m_Controller: {fileID: 9100000, guid: b44799ceecec24a408c71e0a14023eb6, type: 2}
+  m_Controller: {fileID: 9100000, guid: 23862fa5481d7a943aa8c9ace028decf, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
