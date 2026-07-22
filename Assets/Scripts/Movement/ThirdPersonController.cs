@@ -280,6 +280,7 @@ namespace StarterAssets
             }
 
             flightAnimation();
+            sprintAnimation();
             GroundedCheck();
             Move();
             Dodge();
@@ -966,14 +967,27 @@ namespace StarterAssets
 
         private void flightAnimation()
         {
-            isSpriting = _input.sprint;
 
-            broomModel.SetActive(isSpriting || inFlightMode);
+            broomModel.SetActive(inFlightMode);
 
             // update animator if using character
             if (_hasAnimator)
             {
-                _animator.SetBool("Flying", isSpriting || inFlightMode);
+                _animator.SetBool("Flying", inFlightMode);
+            }
+
+
+        }
+
+        private void sprintAnimation()
+        {
+            isSpriting = _input.sprint;
+
+
+            // update animator if using character
+            if (_hasAnimator)
+            {
+                _animator.SetBool("Sprinting", isSpriting);
             }
 
 
