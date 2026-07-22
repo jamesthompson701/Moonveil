@@ -65,30 +65,51 @@ public class SpawnManager : MonoBehaviour
         while (spawnedInstances.Count > targetSize) spawnedInstances.RemoveAt(spawnedInstances.Count - 1);
     }
 
-    // Spawns missing enemies for every configured spawn point (instantiates corresponding prefab by index)
     public void SpawnAllMissing()
     {
         EnsureSpawnedInstancesListSize();
 
         int maxIndex = Mathf.Min(enemyPrefabs != null ? enemyPrefabs.Count : 0, spawnPoints != null ? spawnPoints.Count : 0);
 
+        // Collect indices where we are missing an instance (dead slots)
+        List<int> deadIndices = new List<int>();
         for (int i = 0; i < maxIndex; i++)
         {
-            if (spawnPoints[i] == null) continue; // skip invalid spawn point
+            if (spawnPoints[i] == null) continue;
+            if (spawnedInstances[i] == null) deadIndices.Add(i);
+        }
 
-            // If there's no instance or instance was destroyed, spawn/respawn
-            if (spawnedInstances[i] == null)
-            {
-                SpawnAt(i);
-            }
-            else
-            {
-                // instance exists; optionally ensure it's active
-                if (!spawnedInstances[i].activeInHierarchy)
-                {
-                    spawnedInstances[i].SetActive(true);
-                }
-            }
+        if (deadIndices.Count == 0) return;
+
+        // Create a shuffled list of available spawn indices (same as deadIndices, but randomized)
+        List<int> availableSpawnIndices = new List<int>(deadIndices);
+
+        for (int i = availableSpawnIndices.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+            int tmp = availableSpawnIndices[i];
+            availableSpawnIndices[i] = availableSpawnIndices[j];
+            availableSpawnIndices[j] = tmp;
+        }
+
+        int spawnCount = Mathf.Min(deadIndices.Count, availableSpawnIndices.Count);
+
+        // For each dead prefab index, spawn that prefab at a random available spawn index (without replacement)
+        for (int k = 0; k < spawnCount; k++)
+        {
+            int prefabIndex = deadIndices[k];
+            int spawnIndex = availableSpawnIndices[k];
+
+            // Bounds and null checks
+            if (prefabIndex < 0 || prefabIndex >= enemyPrefabs.Count) continue;
+            if (spawnIndex < 0 || spawnIndex >= spawnPoints.Count) continue;
+
+            var prefab = enemyPrefabs[prefabIndex];
+            var spawnPoint = spawnPoints[spawnIndex];
+            if (prefab == null || spawnPoint == null) continue;
+
+            GameObject inst = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+            spawnedInstances[spawnIndex] = inst;
         }
     }
 
@@ -104,8 +125,6 @@ public class SpawnManager : MonoBehaviour
         spawnedInstances[index] = inst;
     }
 
-    // Optional API: let other systems notify manager that an enemy died (keeps list up-to-date immediately)
-    // This is robust even if enemies are Destroyed without calling this method (manager will detect nulls on spawn time)
     public void RegisterEnemyDeath(GameObject enemy)
     {
         if (enemy == null) return;

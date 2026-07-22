@@ -12,7 +12,7 @@ public class PengKingBoss : MonoBehaviour
     public int destroyedWeakpointsCount = 0;
     public int activeWeakpointsCount = 0;
     private bool isBossDead = false;
-    private bool fightStarted = false;
+    public bool fightStarted = false;
 
     public GameObject[] weakpoints; // Array to hold weakpoint GameObjects
 
@@ -100,13 +100,15 @@ public class PengKingBoss : MonoBehaviour
                 arenaCollider.enabled = false;
             if (arenaRenderer != null)
                 arenaRenderer.enabled = false;
-            fightStarted = true;
+            fightStarted = false;
         }
     }
 
 
     public void ActivateShieldAndRandomWeakpoints(float floorThreshold = 0f)
     {
+        fightStarted = true;
+
         if (shieldCollider != null)
             shieldCollider.enabled = true;
         if (shieldRenderer != null)

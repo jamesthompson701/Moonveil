@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -159,7 +159,10 @@ public class CreatureDefs : MonoBehaviour
     [Tooltip("When false, this creature will not start new attacks.")]
     [SerializeField] private bool canAttack = true;
     public bool CanAttack { get => canAttack; set => canAttack = value; }
+    public bool isPenguinion;
     public bool isBossPenguinion = false;
+    [SerializeField] private bool isBoss = false;
+
 
     private const string DefaultPlayerTag = "PlayerHitPt";
 
@@ -270,13 +273,23 @@ public class CreatureDefs : MonoBehaviour
 
         if (_hasAggro && target)
         {
-            CombatMove(out desiredDir, out desiredSpeed);
-
             float sqrDist = HorizontalSqrDistance(transform.position, target.position);
             bool inRange = sqrDist <= attackRange * attackRange;
 
-            if (inRange && Time.time >= _nextAttackTime)
-                TryStartAttack(sqrDist);
+            if (isBoss && boss != null && boss.fightStarted)
+            {
+                CombatMove(out desiredDir, out desiredSpeed);
+
+                if (inRange && Time.time >= _nextAttackTime)
+                    TryStartAttack(sqrDist);
+            }
+            else
+            {
+                CombatMove(out desiredDir, out desiredSpeed);
+
+                if (inRange && Time.time >= _nextAttackTime)
+                    TryStartAttack(sqrDist);
+            }
         }
         else
         {
@@ -291,6 +304,12 @@ public class CreatureDefs : MonoBehaviour
     private void UpdateAggroState()
     {
         if (!target) { _hasAggro = false; return; }
+
+        if (isBoss && boss != null && !boss.fightStarted)
+        {
+            _hasAggro = false;
+            return;
+        }
 
         bool previousAggro = _hasAggro;
 
@@ -411,6 +430,7 @@ public class CreatureDefs : MonoBehaviour
             return;
         }
 
+
         desiredDir = (dist > 0.001f) ? (toPointFlat / dist) : Vector3.zero;
         desiredSpeed = Mathf.Lerp(minSpeed, maxSpeed, 0.35f);
 
@@ -442,6 +462,11 @@ public class CreatureDefs : MonoBehaviour
 
         Vector3 accel = (desiredHoriz - currentHoriz) / Time.fixedDeltaTime;
         accel = Vector3.ClampMagnitude(accel, maxAcceleration * steerMultiplier);
+
+        if (isPenguinion)
+        {
+            transform.Rotate(Vector3.up, 25f * Time.fixedDeltaTime);
+        }
 
         _rb.AddForce(accel, ForceMode.Acceleration);
     }
@@ -776,7 +801,7 @@ public class CreatureDefs : MonoBehaviour
             if (cp.thisCollider == physicsCollider)
             {
                 HandleContactStay(cp.otherCollider.gameObject);
-                // don't break � multiple contacts might involve different other colliders
+                // don't break  multiple contacts might involve different other colliders
             }
         }
     }
@@ -825,11 +850,11 @@ public class CreatureDefs : MonoBehaviour
         // Guard against null instigator and only ignore damage if the instigator actually has the "Ground" tag.
         if (instigator != null && instigator.CompareTag("Ground")) return;
 
-        if(EnemyAttackDirector.Instance.isSourSorceryActive)
+        if (EnemyAttackDirector.Instance.isSourSorceryActive)
         {
             amount = amount * 2;
         }
-        
+
         // Respect health floor (prevent health dropping below the floor while weakpoints / shield active)
         float minHealth = _healthFloorPercent * maxHealth;
         if (_health <= minHealth)
@@ -905,7 +930,8 @@ public class CreatureDefs : MonoBehaviour
             tutorialEvent.afterCombatQuestComplete = true;
             tutorialEvent.afterCombatQuest.SetActive(true);
         }
-            
+
+        SpellManager2.Instance.NotifyEnemyAggro(!_hasAggro);
 
         Destroy(gameObject);
 
@@ -1044,4 +1070,3 @@ public class CreatureDefs : MonoBehaviour
         }
     }
 }
-
