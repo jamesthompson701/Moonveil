@@ -53,15 +53,6 @@ public class PengKingBoss : MonoBehaviour
             ActivateShieldAndRandomWeakpoints(threshold);
             _nextThresholdIndex++;
         }
-
-        if (currentHealth <= 0)
-        {
-            isBossDead = true;
-            // Boss is defeated, handle defeat logic here
-            Debug.Log("Peng King Boss defeated!");
-            DeactivateShield();
-            // You can add additional logic such as playing a death animation, dropping loot, etc.
-        }
     }
 
     public void WeakpointDestroyed()
@@ -182,7 +173,7 @@ public class PengKingBoss : MonoBehaviour
         }
     }
 
-    private void DeactivateArena()
+    public void DeactivateArena()
     {
         if (arenaCollider != null)
             arenaCollider.enabled = false;

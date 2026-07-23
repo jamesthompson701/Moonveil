@@ -112,7 +112,7 @@ public class InventoryManager : MonoBehaviour
 
     public void ResetInv()
     {
-        invSO.InventoryItems.Clear();
+        //invSO.InventoryItems.Clear();
         fish = 0;
         invSO.dropMultiplier = 1;
         isMultiplierBuffActive = false;

@@ -925,6 +925,13 @@ public class CreatureDefs : MonoBehaviour
                 boss.UnregisterSpawnedMinion();
         }
 
+        if (isBoss)
+        {
+            if (boss != null)
+                boss.DeactivateArena();
+            SpellManager2.Instance.NotifyEnemyAggro(!_hasAggro);
+        }
+
         if (!tutorialEvent.afterCombatQuestComplete)
         {
             tutorialEvent.afterCombatQuestComplete = true;
