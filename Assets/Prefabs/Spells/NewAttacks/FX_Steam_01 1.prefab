@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 199326340111179614}
   - component: {fileID: 8437345654165985134}
   - component: {fileID: 7119968269165604854}
+  - component: {fileID: -760933139989153425}
   m_Layer: 0
   m_Name: FX_Steam_01 1
   m_TagString: HarvestSpell
@@ -4914,5 +4915,28 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.5289941, y: 1.1265762, z: 2.2193854}
-  m_Center: {x: -0.022420406, y: 0.06328809, z: 1.128534}
+  m_Size: {x: 1.5289941, y: 1.1265762, z: 3.4127429}
+  m_Center: {x: -0.022420406, y: 0.06328809, z: 1.7252127}
+--- !u!114 &-760933139989153425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778205859624422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f4dce1634a0594489a7f939552c136a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpellDamageManager2
+  damage: 25
+  iceDamagePerSecond: 0
+  aoeDamage: 0
+  force: 20
+  _radius: 0
+  duration: 0
+  slowAmount: 0
+  isProjectile: 0
+  appliesRoot: 0
+  appliesKnockback: 1
+  appliesAOE: 0
