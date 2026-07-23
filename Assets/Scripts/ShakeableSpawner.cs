@@ -13,9 +13,9 @@ public class ShakeableSpawner : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("Tree awake called");
+        //Debug.Log("Tree awake called");
         //GetComponent<TerrainCollider>().enabled = false;
-        currentSeeds = 3;
+        currentSeeds = 2;
     }
 
 
@@ -27,8 +27,11 @@ public class ShakeableSpawner : MonoBehaviour
             Debug.Log("Activated Harvest Check, current seeds in tree is : " + currentSeeds);
             if (currentSeeds > 0)
             {
-                Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
-                GameObject newSeed = Instantiate(seed, spawnPos, transform.rotation);
+                Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+                float spawnRotationX = 90;
+                float spawnRotationY = 0;
+                float spawnRotationZ = 0;
+                GameObject newSeed = Instantiate(seed, spawnPos, Quaternion.Euler(spawnRotationX,spawnRotationY,spawnRotationZ));
                 Rigidbody newSeedRB = newSeed.GetComponent<Rigidbody>();
 
                 int randomNum1 = Random.Range(-4, 5);
@@ -36,7 +39,7 @@ public class ShakeableSpawner : MonoBehaviour
                 int randomNum3 = Random.Range(-4, 5);
                 newSeedRB.linearVelocity = new Vector3(randomNum1, randomNum2, randomNum3);
 
-                Instantiate(shakenParticle, spawnPos, transform.rotation);
+                Instantiate(shakenParticle, spawnPos, Quaternion.Euler(spawnRotationX, spawnRotationY, spawnRotationZ));
                 currentSeeds = currentSeeds - 1;
                 Invoke("ReplenishSeed", 60f);
             }

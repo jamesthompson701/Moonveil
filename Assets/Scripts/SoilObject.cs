@@ -68,10 +68,14 @@ public class SoilObject : MonoBehaviour
                     waterTimer = wetnessDuration;
                 }
 
-                if (!plantScript.Withered())
+                if (plantScript != null)
                 {
-                    waterTimer = waterTimer - deltaTime;
+                    if (!plantScript.Withered())
+                    {
+                        waterTimer = waterTimer - deltaTime;
+                    }
                 }
+
 
                 mySoilObj.GetComponent<MeshRenderer>().material = wetSoil;
 
