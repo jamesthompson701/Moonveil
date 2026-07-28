@@ -18,59 +18,8 @@ public class FishingManager : MonoBehaviour
     public FishingBiomeUI[] biomeUIs;
     private FishingBiomeUI activeBiomeUI;
 
-    // old way the multiple biomes were handled
-    /* [Header("UI Prompt")]
-    [Header("Biome UI")]
-    public FishingBiomeUI[] biomeUIs;
-    private FishingBiomeUI activeBiomeUI;
-
-    [System.Serializable]
-    public class FishingBiomeUI
-    {
-        public FishingBiome biome;
-        public Camera fishingCamera;
-        public Canvas fishingCanvas;
-        public FishingMiniGameUI miniGameUI;
-        public TMP_Text promptText;
-
-         public GameObject fishingVisuals;
-         public FishingRod rod;
-    }*/
-
-    // what the new version should need for each biome, what they each specifically need, rest can stay global. UI, camera, bubble phase (location), capture phase, sounds, vfx, and maybe the icons?
-    /*    [System.Serializable]
-    public class FishingBiomeUI
-    {
-        Header("Player")]
-        public Transform cameraAnchor;
-
-        [Header("Capture Phase")]
-        public GameObject captureCircle;
-
-        [Header("Bubble Phase")]
-        public GameObject bubbleObject;
-        public GameObject elementZones;
-
-        // SFX and VFX names need to be changed. e.g. bubblePhaseFX, this will probably need to be more granular than mining and wont be able to use many if any lists
-        [Header("SFX")]
-        private AudioSource audioSource; 
-        public AudioClip raiseSound;
-        public AudioClip successSound;
-        public AudioClip sinkSound;
-
-        [Header("VFX")]
-        public ParticleSystem[] raiseFX;
-        public ParticleSystem[] successFX;
-        public ParticleSystem[] failFX;
-        public ParticleSystem[] readyFX;
-
-        private List<FishingFish> currentCapturedFish = new List<FishingFish>();
-    }*/
-    
-
     [Header("Player")]
     public GameObject player;
-    public Transform cameraAnchor;
     private Camera playerCamera;
 
     [Header("UI")]
@@ -84,6 +33,9 @@ public class FishingManager : MonoBehaviour
     public Sprite waterSprite;
     public Sprite airSprite;
 
+    [Header("Progress")]
+    public Image catchProgressBar;
+
     [Header("Fishing Areas")]
     public FishingArea currentArea;
 
@@ -95,27 +47,6 @@ public class FishingManager : MonoBehaviour
     private SpellManager2 spellManager;
 
     private SkinnedMeshRenderer[] playerMeshes;
-
-    [Header("Capture Phase")]
-    public GameObject captureCircle;
-
-
-    [Header("Bubble Phase")]
-    public GameObject bubbleObject;
-    public GameObject elementZones;
-
-    // SFX and VFX names need to be changed. e.g. bubblePhaseFX, this will probably need to be more granular than mining and wont be able to use many if any lists
-    [Header("SFX")]
-    private AudioSource audioSource; 
-    public AudioClip raiseSound;
-    public AudioClip successSound;
-    public AudioClip sinkSound;
-
-    [Header("VFX")]
-    public ParticleSystem[] raiseFX;
-    public ParticleSystem[] successFX;
-    public ParticleSystem[] failFX;
-    public ParticleSystem[] readyFX;
 
     private List<FishingFish> currentCapturedFish = new List<FishingFish>();
     private Coroutine fishingPromptCoroutine;
@@ -164,17 +95,6 @@ public class FishingManager : MonoBehaviour
 
         currentArea = area;
 
-        // Start in capture phase
-        if (captureCircle != null)
-        {
-            captureCircle.SetActive(true);
-        }
-
-        if (bubbleObject != null)
-        {
-            bubbleObject.SetActive(false);
-        }
-
         activeBiomeUI = null;
 
         foreach (FishingBiomeUI ui in biomeUIs)
@@ -192,8 +112,19 @@ public class FishingManager : MonoBehaviour
             return;
         }
 
-        activeBiomeUI.fishingCamera.transform.position = cameraAnchor.position;
-        activeBiomeUI.fishingCamera.transform.rotation = cameraAnchor.rotation;
+        // Start in capture phase
+        if (activeBiomeUI.captureCircle != null)
+        {
+            activeBiomeUI.captureCircle.SetActive(true);
+        }
+
+        if (activeBiomeUI.bubbleObject != null)
+        {
+            activeBiomeUI.bubbleObject.SetActive(false);
+        }
+
+        activeBiomeUI.fishingCamera.transform.position = activeBiomeUI.cameraAnchor.position;
+        activeBiomeUI.fishingCamera.transform.rotation = activeBiomeUI.cameraAnchor.rotation;
         activeBiomeUI.fishingCamera.gameObject.SetActive(true);
         activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
 
@@ -238,19 +169,25 @@ public class FishingManager : MonoBehaviour
 
         currentPhase = FishingPhase.Capture;
 
-        captureCircle.SetActive(true);
-        bubbleObject.SetActive(false);
+        activeBiomeUI.captureCircle.SetActive(true);
+        activeBiomeUI.bubbleObject.SetActive(false);
 
         //Debug.Log("Fishing Started");
         ClearRequiredElementUI();
+
+        if (catchProgressBar != null)
+        {
+            catchProgressBar.fillAmount = 0f;
+            catchProgressBar.gameObject.SetActive(false);
+        }
     }
 
     public void StartCapturePhase()
     {
         currentPhase = FishingPhase.Capture;
 
-        captureCircle.SetActive(true);
-        bubbleObject.SetActive(false);
+        activeBiomeUI.captureCircle.SetActive(true);
+        activeBiomeUI.bubbleObject.SetActive(false);
 
         currentCapturedFish.Clear();
         ClearRequiredElementUI();
@@ -263,12 +200,18 @@ public class FishingManager : MonoBehaviour
 
         currentPhase = FishingPhase.Bubble;
 
-        captureCircle.SetActive(false);
+        activeBiomeUI.captureCircle.SetActive(false);
 
-        bubbleObject.SetActive(true);
-        elementZones.SetActive(true);
+        activeBiomeUI.bubbleObject.SetActive(true);
+        activeBiomeUI.elementZones.SetActive(true);
 
-        FishingBubble bubble = bubbleObject.GetComponent<FishingBubble>();
+        if (catchProgressBar != null)
+        {
+            catchProgressBar.fillAmount = 0f;
+            catchProgressBar.gameObject.SetActive(true);
+        }
+
+        FishingBubble bubble = activeBiomeUI.bubbleObject.GetComponent<FishingBubble>();
 
         if (bubble != null)
         {
@@ -292,14 +235,14 @@ public class FishingManager : MonoBehaviour
 
         currentPhase = FishingPhase.None;
 
-        captureCircle.SetActive(false);
-        bubbleObject.SetActive(false);
+        activeBiomeUI.captureCircle.SetActive(false);
+        activeBiomeUI.bubbleObject.SetActive(false);
         
         inFishingMode = false;
 
-        if(elementZones != null)
+        if(activeBiomeUI.elementZones != null)
         {
-            elementZones.SetActive(false);
+            activeBiomeUI.elementZones.SetActive(false);
         }
 
         // enable player stuff
@@ -355,6 +298,12 @@ public class FishingManager : MonoBehaviour
             activeBiomeUI.fishingCanvas.gameObject.SetActive(false);
         }
         ClearRequiredElementUI();
+
+        if (catchProgressBar != null)
+        {
+            catchProgressBar.fillAmount = 0f;
+            catchProgressBar.gameObject.SetActive(false);
+        }
         //Debug.Log("Fishing Ended");
     }
 
@@ -471,5 +420,13 @@ public class FishingManager : MonoBehaviour
         }
 
         fishingPromptCoroutine = null;
+    }
+
+    public void UpdateCatchProgress(float progress)
+    {
+        if (catchProgressBar != null)
+        {
+            catchProgressBar.fillAmount = progress;
+        }
     }
 }
