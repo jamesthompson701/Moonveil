@@ -28737,7 +28737,6 @@ GameObject:
   - component: {fileID: 3516868585673762650}
   - component: {fileID: 5280081100515107007}
   - component: {fileID: 7931943833146649611}
-  - component: {fileID: 7231393651667003162}
   - component: {fileID: 2280460673590856493}
   - component: {fileID: 5284953328447572874}
   m_Layer: 7
@@ -28830,6 +28829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e54e5a728a9234ab24fcf1460ed8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFlightUnlocked: 0
   MoveSpeed: 6
   SprintSpeed: 10
   RotationSmoothTime: 0.12
@@ -28866,12 +28866,24 @@ MonoBehaviour:
   CameraAngleOverride: 0
   LockCameraPosition: 0
   inFlightMode: 0
+  flightLocked: 0
   FlightMoveSpeed: 10
   FlightSprintSpeed: 15
   FlightToggleActionName: ToggleFlight
+  FlightAccelerationMax: 16
+  FlightAccelerationTime: 5
+  FlightVelocityAcceleration: 24
+  FlightVelocityDeceleration: 4
+  FlightBoostDecayTime: 1
+  FlightVerticalSpeed: 16
+  FlightVerticalAcceleration: 20
   slowWind: {fileID: 0}
   fastWind: {fileID: 0}
   motion: {x: 0, y: 0, z: 0}
+  isMoonJumpActive: 0
+  isWindForceActive: 0
+  moonJumpTimer: 0
+  windForceTimer: 0
   attackManager: {fileID: 0}
   dodgeDuration: 0.5
   dodgeSpeed: 15
@@ -29040,6 +29052,7 @@ MonoBehaviour:
   currentHealth: 100
   invincibilityDuration: 2
   playerBodyDefault: {fileID: 4427917826592542309}
+  audioSource: {fileID: 0}
   playerDamaged: {fileID: 2100000, guid: da384879e4c726647a0573e2f882173f, type: 2}
   PlayerDefault: {fileID: 2100000, guid: da7661084c27c3d4c975fb32c3c2ba3b, type: 2}
 --- !u!136 &7931943833146649611
@@ -29065,19 +29078,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.85, z: 0}
---- !u!114 &7231393651667003162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5002869462422043801}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 499a0ddf25b654b1ba56bc564a8da7f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FishingAreaDetector
-  manager: {fileID: 0}
 --- !u!114 &2280460673590856493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29136,11 +29136,6 @@ MonoBehaviour:
   earthMana: 0
   waterMana: 0
   airMana: 0
-  basicAttackPrefab: {fileID: 453167857830087865, guid: 1b473308aa2ed13488c92ea71660af9b, type: 3}
-  basicAttackCooldown: 0.5
-  basicAttackLifetime: 1
-  basicAttackSpeed: 40
-  avgSpeed: 15
   player: {fileID: 5002869462422043801}
   hitPt: {fileID: 7856353611472510464}
   projectilCastOrigin: {fileID: 4892596007022476178}
@@ -29172,6 +29167,10 @@ MonoBehaviour:
   infiniteManaRegen: 0
   inMenu: 0
   midCast: 0
+  waterUpgradeUI: {fileID: 0}
+  earthUpgradeUI: {fileID: 0}
+  fireUpgradeUI: {fileID: 0}
+  airUpgradeUI: {fileID: 0}
 --- !u!114 &5284953328447572874
 MonoBehaviour:
   m_ObjectHideFlags: 0
