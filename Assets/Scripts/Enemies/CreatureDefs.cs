@@ -360,7 +360,7 @@ public class CreatureDefs : MonoBehaviour
 
             // Update animation speed to zero
             animSmoothSpeed = 0f;
-            if (hasAnimator)
+            if (hasAnimator && !isBoss)
                 animator.SetFloat("Speed", 0f);
 
             return;
@@ -940,9 +940,10 @@ public class CreatureDefs : MonoBehaviour
 
         SpellManager2.Instance.NotifyEnemyAggro(!_hasAggro);
 
-        Destroy(gameObject);
+        if (animator == null)
+            Destroy(gameObject);
 
-        return null;
+        yield return null;
     }
 
     private void TryFindTargetByTag(string tag)
