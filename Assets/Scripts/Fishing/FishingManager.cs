@@ -34,7 +34,7 @@ public class FishingManager : MonoBehaviour
     public Sprite airSprite;
 
     [Header("Progress")]
-    public Image catchProgressBar;
+    public Slider catchProgressBar;
 
     [Header("Fishing Areas")]
     public FishingArea currentArea;
@@ -177,7 +177,7 @@ public class FishingManager : MonoBehaviour
 
         if (catchProgressBar != null)
         {
-            catchProgressBar.fillAmount = 0f;
+            catchProgressBar.value = 0f;
             catchProgressBar.gameObject.SetActive(false);
         }
     }
@@ -207,7 +207,7 @@ public class FishingManager : MonoBehaviour
 
         if (catchProgressBar != null)
         {
-            catchProgressBar.fillAmount = 0f;
+            catchProgressBar.value = 0f;
             catchProgressBar.gameObject.SetActive(true);
         }
 
@@ -301,7 +301,7 @@ public class FishingManager : MonoBehaviour
 
         if (catchProgressBar != null)
         {
-            catchProgressBar.fillAmount = 0f;
+            catchProgressBar.value = 0f;
             catchProgressBar.gameObject.SetActive(false);
         }
         //Debug.Log("Fishing Ended");
@@ -426,7 +426,7 @@ public class FishingManager : MonoBehaviour
     {
         if (catchProgressBar != null)
         {
-            catchProgressBar.fillAmount = progress;
+            catchProgressBar.value = progress;
         }
     }
 }
