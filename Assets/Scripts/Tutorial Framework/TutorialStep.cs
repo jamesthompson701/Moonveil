@@ -93,6 +93,7 @@ public class TutorialStep : MonoBehaviour
     private bool listeningForInteractableCompletion;
 
     public GameObject weeniePrefab;
+    public bool hasWeenie;
 
     [Tooltip("Seconds after the tutorial step begins before Interact can complete it.")]
     [Min(0f)]
@@ -120,9 +121,17 @@ public class TutorialStep : MonoBehaviour
         {
             SubscribeToQuestActivation();
         }
-
+        if(!hasWeenie)
+        {
+            TutorialArrow.instance.gameObject.SetActive(false);
+        }
         if (!weeniePrefab) return;
-        else weeniePrefab.SetActive(true);
+        else
+        {
+            TutorialArrow.instance.gameObject.SetActive(true);
+            weeniePrefab.SetActive(true);
+            TutorialArrow.instance.PointAt(weeniePrefab.transform);
+        }
     }
 
     private void Update()
