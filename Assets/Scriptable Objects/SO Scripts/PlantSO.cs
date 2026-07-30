@@ -32,9 +32,12 @@ public class PlantSO : ScriptableObject
     //prefab for the plant object
     public GameObject prefab;
 
-    //textures for healthy/withered
-    public Material withered;
-    public Material healthy;
+    //textures
+    public Material healthy1;
+    public Material dead1;
+    public Material healthy2;
+    public Material dead2;
+    public Material healthy3;
 
     //used for harvestability
     public int MaxStage { get { return plantPrefabs.Count - 1; } }

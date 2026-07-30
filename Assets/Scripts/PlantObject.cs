@@ -34,7 +34,6 @@ public class PlantObject : MonoBehaviour
     private bool isSet;
 
     //is plant withered
-
     private bool withered;
 
     void Start()
@@ -42,7 +41,6 @@ public class PlantObject : MonoBehaviour
         //add to time manager
         currentStage = 0;
         TimeManager.instance.RegisterPlant(this);
-
     }
 
     //checkplant
@@ -98,9 +96,9 @@ public class PlantObject : MonoBehaviour
                 if (currentStage == plant.MaxStage)
                 {
                     isHarvestable = true;
+                    Unwither();
                     Destroy(myCanvas);
                     Debug.Log("Harvestable!");
-                    Unwither();
                 }
 
                 //destroy the current object and make a new one at the new growth stage
@@ -122,9 +120,7 @@ public class PlantObject : MonoBehaviour
             waterTimer.text = " " + Mathf.Round(soilScript.waterTimer);
             waterTimerBar.fillAmount = soilScript.waterTimer / plant.droughtResistance;
         }
-
     }
-
 
     //returns true if the plant is at max growth a.k.a. harvestable
     public bool Harvestable()
@@ -141,13 +137,36 @@ public class PlantObject : MonoBehaviour
     //change texture to be withered or make it fresh again
     public void Wither()
     {
-        //someday this'll be something like "plantObject texure = plant.witheredTexture"
-        //for now just make it yellow
-        currentPlant.GetComponentInChildren<MeshRenderer>().material = plant.withered;
+        //change texture appropriately
+        if(currentStage == plant.MaxStage - 2)
+        {
+            currentPlant.GetComponent<MeshRenderer>().material = plant.dead1;
+            currentPlant.GetComponentInChildren<MeshRenderer>().material = plant.dead1;
+        }
+        if(currentStage == plant.MaxStage - 1)
+        {
+            currentPlant.GetComponent<MeshRenderer>().material = plant.dead2;
+            currentPlant.GetComponentInChildren<MeshRenderer>().material = plant.dead2;
+        }
     }
     public void Unwither()
     {
-        currentPlant.GetComponentInChildren<MeshRenderer>().material = plant.healthy;
+        //change texture appropriately
+        if (currentStage == plant.MaxStage - 2)
+        {
+            currentPlant.GetComponent<MeshRenderer>().material = plant.healthy1;
+            currentPlant.GetComponentInChildren<MeshRenderer>().material = plant.healthy1;
+        }
+        else if (currentStage == plant.MaxStage - 1)
+        {
+            currentPlant.GetComponent<MeshRenderer>().material = plant.healthy2;
+            currentPlant.GetComponentInChildren<MeshRenderer>().material = plant.healthy2;
+        }
+        else if (currentStage == plant.MaxStage || isHarvestable)
+        {
+            currentPlant.GetComponent<MeshRenderer>().material = plant.healthy3;
+            currentPlant.GetComponentInChildren<MeshRenderer>().material = plant.healthy3;
+        }
     }
 
     //add the correct items to the player's inventory and then unregisters and destroys the plant

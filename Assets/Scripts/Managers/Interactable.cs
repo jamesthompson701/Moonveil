@@ -49,7 +49,6 @@ public class Interactable : MonoBehaviour
                 {
                     Debug.Log("Not ready for planting, Tilled status: " + soil.tilled + ", Soil Content: " + soil.GetComponent<SoilObject>().soilContent);
                 }
-
             }
             else
             {
@@ -107,7 +106,6 @@ public class Interactable : MonoBehaviour
         //add an item to inventory when clicked, must be set in editor
         if (gameObject.CompareTag("Dispenser"))
         {
-
             InventoryManager.instance.invSO.AddItem(dispenserItem, 1);
 
             if (destroyOnDispense)
