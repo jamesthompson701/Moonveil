@@ -12,7 +12,7 @@ public class PlayerInventory: MonoBehaviour
     public ItemSO itemRef;
 
     //Item Description
-    public Image itemImage;
+    public GameObject itemImage;
     public TMP_Text itemName;
     public TMP_Text itemDescription;
     public InventoryItem selectedItem;
@@ -23,7 +23,8 @@ public class PlayerInventory: MonoBehaviour
     {
         DisplayInventory();
         SpellManager2.Instance.inMenu = true;
-        itemImage.sprite = null;
+        itemImage.SetActive(false);
+        itemImage.GetComponent<Image>().sprite = null;
         itemName.text = "";
         itemDescription.text = "";
     }
@@ -48,7 +49,8 @@ public class PlayerInventory: MonoBehaviour
 
     public void DisplayInfo(InventoryItem hoveredItem)
     {
-        itemImage.sprite = hoveredItem.item.itemSprite;
+        itemImage.SetActive(true);
+        itemImage.GetComponent<Image>().sprite = hoveredItem.item.itemSprite;
         itemName.text = hoveredItem.item.itemName;
         itemDescription.text = hoveredItem.item.itemDescription;
     }
