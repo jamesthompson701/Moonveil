@@ -6,10 +6,10 @@ using System.Collections.Generic;
 public class WorkbenchUI : MonoBehaviour
 {
     //all the item images and names
-    public Image itemImage1;
-    public Image itemImage2;
-    public Image itemImage3;
-    public Image outputImage;
+    public GameObject itemImage1;
+    public GameObject itemImage2;
+    public GameObject itemImage3;
+    public GameObject outputImage;
 
     public TMP_Text itemName1;
     public TMP_Text itemName2;
@@ -26,11 +26,6 @@ public class WorkbenchUI : MonoBehaviour
     //place to instantiate the recipes
     public GameObject recipeBox;
 
-    //Craft failed and succeeded text
-    public GameObject craftFailed;
-    public GameObject craftSuccess;
-
-
     public static WorkbenchUI instance;
 
     private void Awake()
@@ -45,11 +40,17 @@ public class WorkbenchUI : MonoBehaviour
     {
         CraftingManager.instance.curRecipe = _recipe;
 
+        //unhide everything
+        itemImage1.SetActive(true);
+        itemImage2.SetActive(true);
+        itemImage3.SetActive(true);
+        outputImage.SetActive(true);
+
         //update all the relevent graphics
-        itemImage1.sprite = CraftingManager.instance.curRecipe.ingr1.itemSprite;
-        itemImage2.sprite = CraftingManager.instance.curRecipe.ingr2.itemSprite;
-        itemImage3.sprite = CraftingManager.instance.curRecipe.ingr3.itemSprite;
-        outputImage.sprite = CraftingManager.instance.curRecipe.output.itemSprite;
+        itemImage1.GetComponent<Image>().sprite = CraftingManager.instance.curRecipe.ingr1.itemSprite;
+        itemImage2.GetComponent<Image>().sprite = CraftingManager.instance.curRecipe.ingr2.itemSprite;
+        itemImage3.GetComponent<Image>().sprite = CraftingManager.instance.curRecipe.ingr3.itemSprite;
+        outputImage.GetComponent<Image>().sprite = CraftingManager.instance.curRecipe.output.itemSprite;
 
         //update all the relevent text
         itemName1.text = CraftingManager.instance.curRecipe.ingr1.itemName;
@@ -61,14 +62,12 @@ public class WorkbenchUI : MonoBehaviour
 
     public void FailedCraft()
     {
-        Invoke("CraftFailedOn", 0f);
-        Invoke("CraftFailedOff", 1f);
+        AudioManager.PlayOneShot(eEffects.cantFly, PlayerCamera.instance.transform, 100);
     }
 
     public void SuccessfulCraft()
     {
-        Invoke("CraftSuccessOn", 0f);
-        Invoke("CraftSuccessOff", 1f);
+        AudioManager.PlayOneShot(eEffects.bubblePop, PlayerCamera.instance.transform, 100);
     }
 
     public void CraftClicked()
@@ -95,24 +94,5 @@ public class WorkbenchUI : MonoBehaviour
         w_Recipe.myImage.sprite = _recipe.output.itemSprite;
         w_Recipe.Refresh();
 
-    }
-
-    //chud invokeable functions
-    public void CraftFailedOn()
-    {
-            craftFailed.SetActive(true);
-    }
-    public void CraftFailedOff()
-    {
-        craftFailed.SetActive(false);
-    }
-
-    public void CraftSuccessOn()
-    {
-            craftSuccess.SetActive(true);
-    }
-    public void CraftSuccessOff()
-    {
-        craftSuccess.SetActive(false);
     }
 }
