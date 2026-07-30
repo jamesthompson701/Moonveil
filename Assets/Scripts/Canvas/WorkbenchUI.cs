@@ -26,11 +26,6 @@ public class WorkbenchUI : MonoBehaviour
     //place to instantiate the recipes
     public GameObject recipeBox;
 
-    //Craft failed and succeeded text
-    public GameObject craftFailed;
-    public GameObject craftSuccess;
-
-
     public static WorkbenchUI instance;
 
     private void Awake()
@@ -61,14 +56,12 @@ public class WorkbenchUI : MonoBehaviour
 
     public void FailedCraft()
     {
-        Invoke("CraftFailedOn", 0f);
-        Invoke("CraftFailedOff", 1f);
+        //AudioManager.Instance.PlayOneShot(effects,)
     }
 
     public void SuccessfulCraft()
     {
-        Invoke("CraftSuccessOn", 0f);
-        Invoke("CraftSuccessOff", 1f);
+
     }
 
     public void CraftClicked()
@@ -95,24 +88,5 @@ public class WorkbenchUI : MonoBehaviour
         w_Recipe.myImage.sprite = _recipe.output.itemSprite;
         w_Recipe.Refresh();
 
-    }
-
-    //chud invokeable functions
-    public void CraftFailedOn()
-    {
-            craftFailed.SetActive(true);
-    }
-    public void CraftFailedOff()
-    {
-        craftFailed.SetActive(false);
-    }
-
-    public void CraftSuccessOn()
-    {
-            craftSuccess.SetActive(true);
-    }
-    public void CraftSuccessOff()
-    {
-        craftSuccess.SetActive(false);
     }
 }
