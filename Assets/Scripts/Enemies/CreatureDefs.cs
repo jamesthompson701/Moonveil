@@ -361,7 +361,10 @@ public class CreatureDefs : MonoBehaviour
             // Update animation speed to zero
             animSmoothSpeed = 0f;
             if (hasAnimator && !isBoss)
-                animator.SetFloat("Speed", 0f);
+            {
+                //Debug.Log("speed set to: " + 0);
+                //animator.SetFloat("Speed", 0f);
+            }
 
             return;
         }
@@ -382,7 +385,7 @@ public class CreatureDefs : MonoBehaviour
         animSmoothSpeed = Mathf.Lerp(animSmoothSpeed, desiredSpeed, Time.deltaTime * steerMultiplier);
         if (animSmoothSpeed < 0.01f) animSmoothSpeed = 0f;
 
-        if (hasAnimator)
+        if (hasAnimator && !isBoss)
         {
             //Sets the speed paramater in the animator compontent to the speed of the creature  
             animator.SetFloat("Speed", animSmoothSpeed);
@@ -438,7 +441,7 @@ public class CreatureDefs : MonoBehaviour
         animSmoothSpeed = Mathf.Lerp(animSmoothSpeed, desiredSpeed, Time.deltaTime * GetSteerMultiplier());
         if (animSmoothSpeed < 0.01f) animSmoothSpeed = 0f;
 
-        if (hasAnimator)
+        if (hasAnimator && !isBoss)
         {
             //Sets the speed paramater in the animator compontent to the speed of the creature  
             animator.SetFloat("Speed", animSmoothSpeed);
