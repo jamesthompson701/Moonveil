@@ -47,7 +47,7 @@ public class PengKingBoss : MonoBehaviour
         // Trigger the next threshold in sequence, only if there are no active weakpoints
         if (_nextThresholdIndex < healthThresholds.Length &&
             currentHealth <= healthThresholds[_nextThresholdIndex] &&
-            activeWeakpointsCount == 0)
+            activeWeakpointsCount == 0 && currentHealth > 0)
         {
             float threshold = healthThresholds[_nextThresholdIndex];
             ActivateShieldAndRandomWeakpoints(threshold);
