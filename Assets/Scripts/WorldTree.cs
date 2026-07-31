@@ -33,10 +33,6 @@ public class WorldTree : MonoBehaviour
     public int treeLevel;
     public TMP_Text levelText;
 
-    public GameObject treeBase;
-    public GameObject treeMid;
-    public GameObject treeTop;
-
     //everything to do with the quest item widgets
     public GameObject questItemWidget;
     public GameObject itemsMenu;
@@ -47,7 +43,7 @@ public class WorldTree : MonoBehaviour
     public GameObject quest2;
     public GameObject quest3;
 
-    public ThirdPersonController playerFlight;
+    //public ThirdPersonController playerFlight;
 
     public void OnInteract()
     {
@@ -176,28 +172,27 @@ public class WorldTree : MonoBehaviour
         else
         {
             Destroy(levelUpReward);
-
         }
 
         //refresh the tree level
         levelText.text = "" + treeLevel;
         if (treeLevel == 1)
         {
-            playerFlight.flightLocked = false;
+            //playerFlight.flightLocked = false;
             quest1.SetActive(true);
-            treeBase.SetActive(true);
         }
         if (treeLevel == 2)
         {
             quest2.SetActive(true);
-            treeMid.SetActive(true);
         }
         if (treeLevel == 3)
         {
             quest3.SetActive(true);
-            treeTop.SetActive(true);
         }
-
+        if (treeLevel == quests.Count)
+        {
+            levelText.text = "MAX";
+        }
 
     }
 

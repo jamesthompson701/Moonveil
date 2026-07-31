@@ -12,8 +12,9 @@ public class ContactPickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !other.CompareTag("HarvestSpell") && !other.CompareTag("AirAttack"))
         {
+            Debug.Log("player TOUCHED");
             InventoryManager.instance.invSO.AddItem(item, 1);
             Destroy(this.gameObject);
             //this.gameObject.SetActive(false);

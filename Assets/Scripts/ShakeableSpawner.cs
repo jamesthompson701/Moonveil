@@ -15,10 +15,10 @@ public class ShakeableSpawner : MonoBehaviour
     {
         //Debug.Log("Tree awake called");
         //GetComponent<TerrainCollider>().enabled = false;
-        currentSeeds = 2;
+        currentSeeds = 1;
     }
 
-
+    
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("[Trigger] " + other.tag);
@@ -41,11 +41,12 @@ public class ShakeableSpawner : MonoBehaviour
 
                 Instantiate(shakenParticle, spawnPos, Quaternion.Euler(spawnRotationX, spawnRotationY, spawnRotationZ));
                 currentSeeds = currentSeeds - 1;
-                Invoke("ReplenishSeed", 60f);
+                Invoke("ReplenishSeed", 90f);
             }
         }
     }
-
+    
+    /*
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("[Collision] " + collision.gameObject.tag);
@@ -65,11 +66,11 @@ public class ShakeableSpawner : MonoBehaviour
 
                 Instantiate(shakenParticle, spawnPos, transform.rotation);
                 currentSeeds = currentSeeds - 1;
-                Invoke("ReplenishSeed", 60f);
+                Invoke("ReplenishSeed", 90f);
             }
         }
     }
-
+    */
     private void ReplenishSeed()
     {
         currentSeeds++;
