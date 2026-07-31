@@ -8,6 +8,9 @@ public class SpellUpgrade : ItemEffectSO
 
     public override void UseItem()
     {
+        sfx = GameObject.FindWithTag("ItemSFX").GetComponent<ItemSFXManager>();
+        sfx.PlayOneShotForItem(eEffects.upgrade);
+
         GameObject player;
         player = GameObject.FindWithTag("Player");
         switch(spellType)
