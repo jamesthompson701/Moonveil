@@ -85,7 +85,7 @@ public class PengKingBoss : MonoBehaviour
         destroyedWeakpointsCount = 0;
         activeWeakpointsCount = 0;
 
-        if (isBossDead || !fightStarted)
+        if (isBossDead)
         {
             if (arenaCollider != null)
                 arenaCollider.enabled = false;
