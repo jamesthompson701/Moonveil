@@ -5589,6 +5589,75 @@ Transform:
   - {fileID: 8778306728142060003}
   m_Father: {fileID: 1359219429860392722}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &818510837801678326
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8066447171582282537}
+  - component: {fileID: 2407230182722249862}
+  - component: {fileID: 4388071458807140232}
+  m_Layer: 0
+  m_Name: PlayerItemPickupContact
+  m_TagString: ItemPickupTag
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8066447171582282537
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818510837801678326}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.99964565, z: 0, w: 0.02661938}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7056844320115227360}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &2407230182722249862
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818510837801678326}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2.4089413
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.70447063, z: 0}
+--- !u!114 &4388071458807140232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818510837801678326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ddb01c371f917647bb9e9a2f7195b06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SunFollowsPlayer
+  player: {fileID: 5002869462422043801}
 --- !u!1 &820088088819415570
 GameObject:
   m_ObjectHideFlags: 0
@@ -28768,6 +28837,7 @@ Transform:
   - {fileID: 8845662720531438326}
   - {fileID: 7856353611472510464}
   - {fileID: 2691616966844831255}
+  - {fileID: 8066447171582282537}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -543.051, z: 0}
 --- !u!95 &2085132235871298504
@@ -29051,7 +29121,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 100
   invincibilityDuration: 2
-  playerBodyDefault: {fileID: 4427917826592542309}
+  playerBodyDefault: {fileID: 4053644031615283535}
   audioSource: {fileID: 0}
   playerDamaged: {fileID: 2100000, guid: da384879e4c726647a0573e2f882173f, type: 2}
   PlayerDefault: {fileID: 2100000, guid: da7661084c27c3d4c975fb32c3c2ba3b, type: 2}
@@ -29189,6 +29259,7 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+  renderers: []
 --- !u!1 &5025723057949393462
 GameObject:
   m_ObjectHideFlags: 0
@@ -48255,11 +48326,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f91129576d995e242a78bd7526a1a3dc, type: 3}
   m_PrefabInstance: {fileID: 3581054518368285492}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4427917826592542309 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f91129576d995e242a78bd7526a1a3dc, type: 3}
-  m_PrefabInstance: {fileID: 3581054518368285492}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3783030373756341278
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48424,6 +48490,11 @@ Transform:
 --- !u!4 &3677962506027920373 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 23a68b5e44644f244ae66ec68c9623e7, type: 3}
+  m_PrefabInstance: {fileID: 3783030373756341278}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4053644031615283535 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 23a68b5e44644f244ae66ec68c9623e7, type: 3}
   m_PrefabInstance: {fileID: 3783030373756341278}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5472260368928789399
