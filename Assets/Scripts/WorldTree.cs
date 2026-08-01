@@ -172,10 +172,16 @@ public class WorldTree : MonoBehaviour
         else
         {
             Destroy(levelUpReward);
+            Destroy(currentlySelectedImage);
         }
 
         //refresh the tree level
         levelText.text = "" + treeLevel;
+        if (treeLevel == quests.Count - 1)
+        {
+            levelText.text = "MAX";
+        }
+
         if (treeLevel == 1)
         {
             //playerFlight.flightLocked = false;
@@ -189,11 +195,6 @@ public class WorldTree : MonoBehaviour
         {
             quest3.SetActive(true);
         }
-        if (treeLevel == quests.Count)
-        {
-            levelText.text = "MAX";
-        }
-
     }
 
     public void GenerateQuestItemWidget(ItemSO _item)
