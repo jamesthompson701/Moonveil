@@ -347,9 +347,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   animator: {fileID: 0}
-  maxHealth: 100
-  minSpeed: 2
-  maxSpeed: 5
+  maxHealth: 80
+  minSpeed: 4
+  maxSpeed: 6
   maxAcceleration: 25
   turnSpeedDegPerSec: 720
   controlLockSecondsOnHit: 0.15
@@ -358,31 +358,31 @@ MonoBehaviour:
   roamRadius: 10
   roamArriveDistance: 1
   roamWaitSeconds: 0.25
-  aggroDistance: 14
-  deaggroDistance: 18
-  attackMode: 0
+  aggroDistance: 50
+  deaggroDistance: 80
+  attackMode: 3
   attackRange: 15
-  attackCooldownSeconds: 1.2
-  attackWindupSeconds: 1
+  attackCooldownSeconds: 0.5
+  attackWindupSeconds: 0.25
   meleeActiveSeconds: 0.2
   meleeHitbox: {fileID: 8143482868559019353}
   projectilePrefab: {fileID: 0}
   projectileSpeed: 40
-  chargeSpeed: 15
+  chargeSpeed: 20
   arcApexHeight: 3
   contactDamage: 10
   contactTickInterval: 0.5
   separationRadius: 1.2
   separationStrength: 20
   maxSeparationNeighbors: 16
-  useAttackDirector: 0
-  directorRequestInterval: 0.15
+  useAttackDirector: 1
+  directorRequestInterval: 0.25
   drawGizmos: 1
   dropItem: {fileID: 11400000, guid: e241c92f5872c0345b9f06c2f0a88dcc, type: 2}
   _health: 0
   canAttack: 1
   isPenguinion: 1
-  isBossPenguinion: 0
+  isBossPenguinion: 1
   isBoss: 0
   _burnDps: 10
   _canBurn: 0
@@ -427,7 +427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f810c10614bfb684a83a146b57ed9050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttacks
-  Damage: 10
+  Damage: 30
   IsMelee: 1
   damageCooldownSeconds: 0.35
   targetTag: Player

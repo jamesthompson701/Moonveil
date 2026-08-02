@@ -30,7 +30,7 @@ public class EnvironmentManager : MonoBehaviour
     {
         Debug.Log("Teleport player to " + destination + " at these cords: " + fastTravelShrines[(int)destination].transform.position);
         characterController.enabled = false;
-        player.transform.position = fastTravelShrines[(int)destination].transform.Find("TP Point").position;
+        player.transform.position = fastTravelShrines[(int)destination].transform.position;
         characterController.enabled = true;
 
         /*if (destination == eFastTravel.home)
@@ -44,6 +44,8 @@ public class EnvironmentManager : MonoBehaviour
             player.GetComponent<SpellManager2>().inCombatArea = true;
             AudioManager.ChangeTrack(eMusic.fireIsland);
         }
+
+        Find("TP Point")
     }*/
 
     }
