@@ -4,13 +4,17 @@ public class InteractibleMouseIcon : MonoBehaviour
 {
     public GameObject rightClickIcon;
 
-    void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("ItemPickupTag"))
+        if (other.CompareTag("Player"))
         {
             rightClickIcon.SetActive(true);
         }
-        else
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
         {
             rightClickIcon.SetActive(false);
         }
