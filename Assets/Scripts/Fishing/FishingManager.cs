@@ -372,11 +372,13 @@ public class FishingManager : MonoBehaviour
             }
         }
 
+        /*
         if (!nextQuest1Activated)
         {
             nextQuest1.SetActive(true);
             nextQuest1Activated = true;
         }
+        */
 
         ClearRequiredElementUI();
         currentCapturedFish.Clear();

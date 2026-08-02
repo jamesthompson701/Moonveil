@@ -252,12 +252,13 @@ public class MineRock : MonoBehaviour
                     break;
             }
         }
-
+        /*
         if (!tutorialEvent.afterMiningQuestActivated)
         {
             tutorialEvent.afterMiningQuestActivated = true;
             tutorialEvent.afterMiningQuest.SetActive(true);
         }
+        */
 
         if (audioSource && successSound)
         {

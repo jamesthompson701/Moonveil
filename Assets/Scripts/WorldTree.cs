@@ -139,7 +139,9 @@ public class WorldTree : MonoBehaviour
                                 levelText.text = "" + treeLevel;
 
                                 SetupQuest();
+                                /*
                                 TutorialEvents.TriggerCompleteQuest();
+                                */
                             }
                         }
                     }

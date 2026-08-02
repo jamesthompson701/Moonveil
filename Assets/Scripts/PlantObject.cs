@@ -68,14 +68,16 @@ public class PlantObject : MonoBehaviour
         //update growth time as long as the soil is wet, the light is appropriate, and it isn't harvestable
         if (growthTime > 0 && soilScript.isWet && plant.lightPreference == _light && !isHarvestable)
         {
+            /*
             if (!TimeManager.instance.plantingTutorialComplete)
             {
                 growthTime = growthTime - deltaTime * 100;
             }
             else
             {
-                growthTime = growthTime - deltaTime;
-            }
+            */
+
+            growthTime = growthTime - deltaTime;
             Unwither();
         }
         else if (growthTime <= 0)

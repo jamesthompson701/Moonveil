@@ -895,16 +895,6 @@ public class CreatureDefs : MonoBehaviour
 
     private IEnumerator Die()
     {
-        //tutorial
-        if (TutorialManager.instance != null && !TutorialManager.instance.combat)
-        {
-            //completes billboard 11; kill a dog
-            if (TutorialManager.instance.currentBillboard == 10)
-            {
-                TutorialManager.instance.ProgressTutorial(11);
-                TutorialManager.instance.combat = true;
-            }
-        }
 
         //if (meleeHitbox) meleeHitbox.enabled = false;
         if (physicsCollider) physicsCollider.enabled = false;
@@ -935,11 +925,13 @@ public class CreatureDefs : MonoBehaviour
             SpellManager2.Instance.NotifyEnemyAggro(!_hasAggro);
         }
 
+        /*
         if (!tutorialEvent.afterCombatQuestComplete)
         {
             tutorialEvent.afterCombatQuestComplete = true;
             tutorialEvent.afterCombatQuest.SetActive(true);
         }
+        */
 
         SpellManager2.Instance.NotifyEnemyAggro(!_hasAggro);
 

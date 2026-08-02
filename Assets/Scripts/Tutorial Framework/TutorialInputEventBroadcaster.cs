@@ -57,11 +57,13 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
         CheckMovementInput();
         CheckButtonInput();
         CheckMouseLookInput();
+        /*
         CheckIfTilled();
         CheckIfPlanted();
         CheckIfWatered();
         CheckIfHarvested();
         CheckIfHitBush();
+        */
     }
 
     private void CheckMovementInput()
@@ -148,6 +150,7 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
         }
     }
 
+    /*
     private void CheckIfTilled()
     {
         if (!tilled && TimeManager.instance.tilledDone == true)
@@ -188,6 +191,7 @@ public class TutorialInputEventBroadcaster : MonoBehaviour
             TutorialEvents.TriggerHarvest();
         }
     }
+    */
 
 
     // These public methods let teammates trigger tutorial events from their own systems
