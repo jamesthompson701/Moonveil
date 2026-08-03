@@ -183,7 +183,9 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
 #endif
-        private Animator _animator;
+        [SerializeField] private Animator _animator;
+        [SerializeField] private Animator _bookAnimator;
+        [SerializeField] private Animator _broomAnimator;
         private CharacterController _controller;
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
@@ -244,7 +246,8 @@ namespace StarterAssets
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
 
-            _hasAnimator = TryGetComponent(out _animator);
+            _hasAnimator = _animator != null && _bookAnimator != null;
+            //_hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
 #if ENABLE_INPUT_SYSTEM 
@@ -262,7 +265,7 @@ namespace StarterAssets
 
         private void Update()
         {
-            _hasAnimator = TryGetComponent(out _animator);
+            //_hasAnimator = TryGetComponent(out _animator);
 
             /*if (!isFlightUnlocked)
             {
@@ -440,6 +443,7 @@ namespace StarterAssets
             if (_hasAnimator)
             {
                 _animator.SetBool(_animIDGrounded, Grounded);
+                _bookAnimator.SetBool(_animIDGrounded, Grounded);
             }
         }
 
@@ -566,16 +570,22 @@ namespace StarterAssets
                 {
                     _animator.SetFloat(_animIDSpeed, _animationBlend);
                     _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+                    _bookAnimator.SetFloat(_animIDSpeed, _animationBlend);
+                    _bookAnimator.SetFloat(_animIDMotionSpeed, inputMagnitude);
                     if (inputMagnitude < 0.1f)
                     {
                         _animator.SetFloat("MoveX", 0);
                         _animator.SetFloat("MoveY", 0);
+                        _bookAnimator.SetFloat("MoveX", 0);
+                        _bookAnimator.SetFloat("MoveY", 0);
                     }
                     else
                     {
 
                         _animator.SetFloat("MoveX", _input.move.x, 0.1f, Time.deltaTime);
                         _animator.SetFloat("MoveY", _input.move.y, 0.1f, Time.deltaTime);
+                        _bookAnimator.SetFloat("MoveX", _input.move.x, 0.1f, Time.deltaTime);
+                        _bookAnimator.SetFloat("MoveY", _input.move.y, 0.1f, Time.deltaTime);
                     }
 
 
@@ -703,11 +713,15 @@ namespace StarterAssets
             {
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
                 _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+                _bookAnimator.SetFloat(_animIDSpeed, _animationBlend);
+                _bookAnimator.SetFloat(_animIDMotionSpeed, inputMagnitude);
 
                 if (inputMagnitude < 0.1f)
                 {
                     _animator.SetFloat("MoveX", 0f);
                     _animator.SetFloat("MoveY", 0f);
+                    _bookAnimator.SetFloat("MoveX", 0f);
+                    _bookAnimator.SetFloat("MoveY", 0f);
                 }
                 else
                 {
@@ -719,6 +733,20 @@ namespace StarterAssets
                     );
 
                     _animator.SetFloat(
+                        "MoveY",
+                        moveInput.y,
+                        0.1f,
+                        Time.deltaTime
+                    );
+
+                    _bookAnimator.SetFloat(
+                        "MoveX",
+                        moveInput.x,
+                        0.1f,
+                        Time.deltaTime
+                    );
+
+                    _bookAnimator.SetFloat(
                         "MoveY",
                         moveInput.y,
                         0.1f,
@@ -741,6 +769,8 @@ namespace StarterAssets
                 {
                     _animator.SetBool(_animIDJump, false);
                     _animator.SetBool(_animIDFreeFall, false);
+                    _bookAnimator.SetBool(_animIDJump, false);
+                    _bookAnimator.SetBool(_animIDFreeFall, false);
                 }
 
                 // stop our velocity dropping infinitely when grounded
@@ -768,6 +798,7 @@ namespace StarterAssets
                     if (_hasAnimator)
                     {
                         _animator.SetBool(_animIDJump, true);
+                        _bookAnimator.SetBool(_animIDJump, true);
                     }
                 }
 
@@ -793,6 +824,7 @@ namespace StarterAssets
                     if (_hasAnimator)
                     {
                         _animator.SetBool(_animIDFreeFall, true);
+                        _bookAnimator.SetBool(_animIDFreeFall, true);
                     }
                 }
 
@@ -974,6 +1006,8 @@ namespace StarterAssets
             if (_hasAnimator)
             {
                 _animator.SetBool("Flying", inFlightMode);
+                _bookAnimator.SetBool("Flying", inFlightMode);
+                _broomAnimator.SetBool("Flying", inFlightMode);
             }
 
 
@@ -988,6 +1022,7 @@ namespace StarterAssets
             if (_hasAnimator)
             {
                 _animator.SetBool("Sprinting", isSpriting);
+                _bookAnimator.SetBool("Sprinting", isSpriting);
             }
 
 

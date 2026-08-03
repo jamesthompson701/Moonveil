@@ -46,6 +46,7 @@ public class SpellManager2 : MonoBehaviour
     [SerializeField] private Camera aimCamera;
     [Tooltip("Reference to the player's animator")]
     [SerializeField] private Animator _animator;
+    [SerializeField] private Animator _bookAnimator;
     [Tooltip("Determines what type of spells are cast")]
     public bool inCombatArea = false;
     public bool timerOn = false;
@@ -353,6 +354,7 @@ public class SpellManager2 : MonoBehaviour
 
             // Triggers the spellcast animation
             _animator.SetTrigger("Spellcast");
+            _bookAnimator.SetTrigger("Spellcast");
 
             return;
         }

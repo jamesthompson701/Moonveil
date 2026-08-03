@@ -22,6 +22,9 @@ public class PlayerDamageReceiver : MonoBehaviour
     public Material playerDamaged;
     public Material PlayerDefault;
 
+    [SerializeField] private Animator _animator;
+    [SerializeField] private Animator _bookAnimator;
+
     // Internal caches
     private Material _bodyOriginalMaterial;
     private float _invincibilityTimer = 0f;
@@ -97,6 +100,9 @@ public class PlayerDamageReceiver : MonoBehaviour
         {
             Debug.LogWarning("PlayerDamageReceiver: Cannot play hurt audio because audioSource is null.");
         }
+
+        _animator.SetTrigger("Damage");
+        _bookAnimator.SetTrigger("Damage");
 
         StartCoroutine(ShowDamageTaken());
     }
