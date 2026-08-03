@@ -121,16 +121,10 @@ public class TutorialStep : MonoBehaviour
         {
             SubscribeToQuestActivation();
         }
-        if(!hasWeenie)
-        {
-            TutorialArrow.instance.gameObject.SetActive(false);
-        }
         if (!weeniePrefab) return;
         else
         {
-            TutorialArrow.instance.gameObject.SetActive(true);
             weeniePrefab.SetActive(true);
-            TutorialArrow.instance.PointAt(weeniePrefab.transform);
         }
     }
 

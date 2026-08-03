@@ -121,10 +121,10 @@ MonoBehaviour:
       type: 2
       typeString: CustomFieldType_Boolean
     portrait: {fileID: 0}
-    spritePortrait: {fileID: -884738422, guid: ff1f084410390cc4c86cfe6e26a7285d, type: 3}
+    spritePortrait: {fileID: 365113216, guid: 6053801d5c4345147808b39a2e18455d, type: 3}
     alternatePortraits: []
     spritePortraits:
-    - {fileID: 365113216, guid: 6053801d5c4345147808b39a2e18455d, type: 3}
+    - {fileID: -884738422, guid: ff1f084410390cc4c86cfe6e26a7285d, type: 3}
   - id: 6
     fields:
     - title: Name
@@ -144,10 +144,10 @@ MonoBehaviour:
       type: 2
       typeString: CustomFieldType_Boolean
     portrait: {fileID: 0}
-    spritePortrait: {fileID: 2007106581, guid: 20e7bcfe884d96b479366018b4bc5725, type: 3}
+    spritePortrait: {fileID: -2043932457, guid: 8927b8d7b6387e34cb83964aa3dd3da0, type: 3}
     alternatePortraits: []
     spritePortraits:
-    - {fileID: -2043932457, guid: 8927b8d7b6387e34cb83964aa3dd3da0, type: 3}
+    - {fileID: 2007106581, guid: 20e7bcfe884d96b479366018b4bc5725, type: 3}
   items:
   - id: 1
     fields:
@@ -5632,7 +5632,7 @@ MonoBehaviour:
       type: 5
       typeString: CustomFieldType_Actor
     - title: Conversant
-      value: 2
+      value: 5
       type: 5
       typeString: CustomFieldType_Actor
     overrideSettings:
@@ -5680,7 +5680,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 1
+        value: 5
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -5688,8 +5688,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Ahoy, witch! Have ye got a moment? I'll happily teach ye some recipes
-          if ye can bring me some things I be a-needin'.
+        value: 
         type: 0
         typeString: 
       - title: Sequence
@@ -5698,6 +5697,62 @@ MonoBehaviour:
         typeString: 
       conversationID: 38
       isRoot: 1
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 38
+        originDialogueID: 0
+        destinationConversationID: 38
+        destinationDialogueID: 1
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 38
+        y: 24
+        width: 160
+        height: 30
+    - id: 1
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 5
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: Ahoy, witch! Have ye got a moment? I'll happily teach ye some recipes
+          if ye can bring me some things I be a-needin'.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 38
+      isRoot: 0
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
@@ -5712,7 +5767,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 38
-        y: 24
+        y: 74
         width: 160
         height: 30
     entryGroups: []
@@ -5733,7 +5788,7 @@ MonoBehaviour:
       type: 5
       typeString: CustomFieldType_Actor
     - title: Conversant
-      value: 2
+      value: 6
       type: 5
       typeString: CustomFieldType_Actor
     overrideSettings:
@@ -5781,7 +5836,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 1
+        value: 6
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -5789,8 +5844,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: E- Excuse me, have you... Got some time to spare? I- I need some things
-          for my, uh, research. P- Perhaps you can help? I- I'll reward you handsomely!
+        value: 
         type: 0
         typeString: 
       - title: Sequence
@@ -5799,6 +5853,62 @@ MonoBehaviour:
         typeString: 
       conversationID: 39
       isRoot: 1
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 39
+        originDialogueID: 0
+        destinationConversationID: 39
+        destinationDialogueID: 1
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 30
+        width: 160
+        height: 30
+    - id: 1
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 6
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: E- Excuse me, have you... Got some time to spare? I- I need some things
+          for my, uh, research. P- Perhaps you can help? I- I'll reward you handsomely!
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 39
+      isRoot: 0
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
@@ -5813,7 +5923,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 160
-        y: 30
+        y: 80
         width: 160
         height: 30
     entryGroups: []
@@ -5834,7 +5944,7 @@ MonoBehaviour:
       type: 5
       typeString: CustomFieldType_Actor
     - title: Conversant
-      value: 2
+      value: 4
       type: 5
       typeString: CustomFieldType_Actor
     overrideSettings:
@@ -5882,7 +5992,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 1
+        value: 4
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -5890,9 +6000,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: I'm glad you could make it to town, Maeve. This is the World Tree,
-          and I its humble keeper. It can bestow valuable knowledge in exchange for
-          certain items.
+        value: 
         type: 0
         typeString: 
       - title: Sequence
@@ -5901,6 +6009,63 @@ MonoBehaviour:
         typeString: 
       conversationID: 40
       isRoot: 1
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 40
+        originDialogueID: 0
+        destinationConversationID: 40
+        destinationDialogueID: 1
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 30
+        width: 160
+        height: 30
+    - id: 1
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 4
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: I'm glad you could make it to town, Maeve. This is the World Tree,
+          and I its humble keeper. It can bestow valuable knowledge in exchange for
+          certain items.
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 40
+      isRoot: 0
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
@@ -5915,7 +6080,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 160
-        y: 30
+        y: 80
         width: 160
         height: 30
     entryGroups: []
