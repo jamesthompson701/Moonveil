@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 public class OptionsMenu : MonoBehaviour
 {
-    
+    [SerializeField] private GameObject creditsCanvas;
+
     [Header("Audio Sliders")]
     public Slider mainSlider;
     public Slider musicSlider;
@@ -16,6 +17,12 @@ public class OptionsMenu : MonoBehaviour
     public void OnBackClicked()
     {
         Instantiate(Resources.Load("Canvas/" + "TitleScreen") as GameObject);
+        DestroyCanvas();
+    }
+
+    public void OnCreditsClicked()
+    {
+        Instantiate(Resources.Load("Canvas/" + "Credits") as GameObject);
         DestroyCanvas();
     }
 
