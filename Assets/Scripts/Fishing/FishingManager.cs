@@ -185,6 +185,9 @@ public class FishingManager : MonoBehaviour
     {
         currentPhase = FishingPhase.Capture;
 
+        PlayFX(activeBiomeUI.captureFX);
+        PlaySound(activeBiomeUI.captureSound);
+
         activeBiomeUI.captureCircle.SetActive(true);
         activeBiomeUI.bubbleObject.SetActive(false);
 
@@ -198,6 +201,9 @@ public class FishingManager : MonoBehaviour
         currentCapturedFish.AddRange(capturedFish);
 
         currentPhase = FishingPhase.Bubble;
+
+        PlayFX(activeBiomeUI.bubbleFX);
+        PlaySound(activeBiomeUI.bubbleSound);
 
         activeBiomeUI.captureCircle.SetActive(false);
 
@@ -240,6 +246,11 @@ public class FishingManager : MonoBehaviour
         //Debug.Log("Exited Fishing");
 
         currentPhase = FishingPhase.None;
+
+        StopFX(activeBiomeUI.captureFX);
+        StopFX(activeBiomeUI.bubbleFX);
+        StopFX(activeBiomeUI.successFX);
+        StopFX(activeBiomeUI.failFX);
 
         activeBiomeUI.captureCircle.SetActive(false);
         activeBiomeUI.bubbleObject.SetActive(false);
@@ -315,6 +326,10 @@ public class FishingManager : MonoBehaviour
 
     public void SuccessFishing()
     {
+        PlayFX(activeBiomeUI.successFX);
+        PlaySound(activeBiomeUI.successSound);
+        StopFX(activeBiomeUI.bubbleFX);
+
         //Debug.Log("Fishing Success");
 
         foreach(FishingFish fish in currentCapturedFish)
@@ -340,6 +355,9 @@ public class FishingManager : MonoBehaviour
 
     public void FailFishing()
     {
+        PlayFX(activeBiomeUI.failFX);
+        PlaySound(activeBiomeUI.failSound);
+        StopFX(activeBiomeUI.bubbleFX);
         //Debug.Log("Fishing Failed");
 
         /*foreach(FishingFish fish in currentCapturedFish)
@@ -397,6 +415,37 @@ public class FishingManager : MonoBehaviour
         if (activeBiomeUI.requiredElementImage != null)
         {
             activeBiomeUI.requiredElementImage.sprite = blankSprite;
+        }
+    }
+
+    void PlayFX(ParticleSystem fx)
+    {
+        if (fx == null)
+            return;
+
+        fx.gameObject.SetActive(true);
+
+        fx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        fx.Clear();
+        fx.Simulate(0f, true, true);
+        fx.Play();
+    }
+
+    void StopFX(ParticleSystem fx)
+    {
+        if (fx == null)
+            return;
+
+        fx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        fx.gameObject.SetActive(false);
+    }
+
+
+    void PlaySound(AudioClip clip)
+    {
+        if (activeBiomeUI.audioSource != null && clip != null)
+        {
+            activeBiomeUI.audioSource.PlayOneShot(clip);
         }
     }
 
