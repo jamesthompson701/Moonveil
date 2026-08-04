@@ -52,6 +52,12 @@ public class MineRock : MonoBehaviour
     public ParticleSystem[] failFX;
     public ParticleSystem[] readyFX;
 
+    [Header("Fire Mine Bonus")]
+    public bool isFireMine = false;
+
+    [SerializeField, Range(0f, 1f)]
+    private float doubleDropChance = 0.25f;
+
     TutorialInputEventBroadcaster tutorialEvent;
 
     void Start()
@@ -225,7 +231,9 @@ public class MineRock : MonoBehaviour
 
     void Success()
     {
-        Debug.Log("Correct Element");
+        int rewardAmount = GetRewardAmount();
+
+        //Debug.Log("Correct Element");
 
         PlayFX(successFX);
 
@@ -240,15 +248,15 @@ public class MineRock : MonoBehaviour
             switch (requiredType)
             {
                 case MineralType.Fire:
-                    InventoryManager.instance.invSO.AddItem(fireReward, 1);
+                    InventoryManager.instance.invSO.AddItem(fireReward, rewardAmount);
                     break;
 
                 case MineralType.Water:
-                    InventoryManager.instance.invSO.AddItem(waterReward, 1);
+                    InventoryManager.instance.invSO.AddItem(waterReward, rewardAmount);
                     break;
 
                 case MineralType.Air:
-                    InventoryManager.instance.invSO.AddItem(airReward, 1);
+                    InventoryManager.instance.invSO.AddItem(airReward, rewardAmount);
                     break;
             }
         }
@@ -279,6 +287,16 @@ public class MineRock : MonoBehaviour
         PlayFX(failFX);
 
         StartCoroutine(CooldownRoutine());
+    }
+
+    int GetRewardAmount()
+    {
+        if (!isFireMine)
+        {
+            return 1;
+        }
+
+        return Random.value < doubleDropChance ? 2 : 1;
     }
 
     IEnumerator ActiveTimer()
