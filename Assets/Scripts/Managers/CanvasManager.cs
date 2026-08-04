@@ -156,57 +156,62 @@ public class CanvasManager : MonoBehaviour
 
     public void OpenMenu(int menu)
     {
-        if (!menus[menu].activeInHierarchy)
+        if (menus[menu] != null)
         {
-            CloseAllMenus();
+            if (!menus[menu].activeInHierarchy)
+            {
+                CloseAllMenus();
 
-            menus[menu].SetActive(true);
-            currentCanvas = menu;
-            SpellManager2.Instance.inMenu = true;
-            playerMap.Disable();
-            UIMap.Enable();
-            menus[0].GetComponent<Canvas>().enabled = false;
+                menus[menu].SetActive(true);
+                currentCanvas = menu;
+                SpellManager2.Instance.inMenu = true;
+                playerMap.Disable();
+                UIMap.Enable();
+                menus[0].GetComponent<Canvas>().enabled = false;
 
-            Time.timeScale = 0f;
+                Time.timeScale = 0f;
 
-            starterAssets.cursorLocked = false;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            ClickSelector.Instance.enabled = false;
+                starterAssets.cursorLocked = false;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                ClickSelector.Instance.enabled = false;
 
-            
+
+            }
+            else if (menus[menu].activeInHierarchy)
+            {
+                CloseAllMenus();
+            }
+
+            //Resets all actions
+            inventoryAction = input.FindAction("Inventory");
+            pauseAction = input.FindAction("Pause");
+            selectionAction = input.FindAction("Selection");
         }
-        else if (menus[menu].activeInHierarchy)
-        {
-            CloseAllMenus();
-        }
-
-        //Resets all actions
-        inventoryAction = input.FindAction("Inventory");
-        pauseAction = input.FindAction("Pause");
-        selectionAction = input.FindAction("Selection");
-
     }
 
     public void CloseAllMenus()
     {
         for (int i = 1; i < menus.Length; i++)
         {
-            SpellManager2.Instance.inMenu = false;
-            menus[i].SetActive(false);
-            currentCanvas = 0;
+            if (menus[i] != null)
+            {
+                SpellManager2.Instance.inMenu = false;
+                menus[i].SetActive(false);
+                currentCanvas = 0;
 
-            playerMap.Enable();
-            UIMap.Disable();
+                playerMap.Enable();
+                UIMap.Disable();
 
-            menus[0].GetComponent<Canvas>().enabled = true;
+                menus[0].GetComponent<Canvas>().enabled = true;
 
-            Time.timeScale = 1f;
+                Time.timeScale = 1f;
 
-            starterAssets.cursorLocked = true;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            ClickSelector.Instance.enabled = true;
+                starterAssets.cursorLocked = true;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                ClickSelector.Instance.enabled = true;
+            }
         }
     }
 
