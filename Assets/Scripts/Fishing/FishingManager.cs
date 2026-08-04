@@ -418,26 +418,38 @@ public class FishingManager : MonoBehaviour
         }
     }
 
-    void PlayFX(ParticleSystem fx)
+    void PlayFX(ParticleSystem[] effects)
     {
-        if (fx == null)
+        if (effects == null)
             return;
 
-        fx.gameObject.SetActive(true);
+        foreach (ParticleSystem fx in effects)
+        {
+            if (fx == null)
+                continue;
 
-        fx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-        fx.Clear();
-        fx.Simulate(0f, true, true);
-        fx.Play();
+            fx.gameObject.SetActive(true);
+
+            fx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            fx.Clear();
+            fx.Simulate(0f, true, true);
+            fx.Play();
+        }
     }
 
-    void StopFX(ParticleSystem fx)
+    void StopFX(ParticleSystem[] effects)
     {
-        if (fx == null)
+        if (effects == null)
             return;
 
-        fx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-        fx.gameObject.SetActive(false);
+        foreach (ParticleSystem fx in effects)
+        {
+            if (fx == null)
+                continue;
+
+            fx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            fx.gameObject.SetActive(false);
+        }
     }
 
 

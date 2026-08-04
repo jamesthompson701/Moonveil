@@ -35,8 +35,8 @@ public class FishingBiomeUI
 
 
     [Header("VFX")]
-    public ParticleSystem captureFX;
-    public ParticleSystem bubbleFX;
-    public ParticleSystem successFX;
-    public ParticleSystem failFX;
+    public ParticleSystem[] captureFX;
+    public ParticleSystem[] bubbleFX;
+    public ParticleSystem[] successFX;
+    public ParticleSystem[] failFX;
 }
