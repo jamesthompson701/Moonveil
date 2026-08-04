@@ -1,5 +1,7 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+
 
 [System.Serializable]
 public class FishingBiomeUI
@@ -13,6 +15,8 @@ public class FishingBiomeUI
 
     [Header("UI")]
     public Canvas fishingCanvas;
+    public Image requiredElementImage;
+    public Slider catchProgressBar;
 
     [Header("Capture")]
     public GameObject captureCircle;
@@ -23,12 +27,16 @@ public class FishingBiomeUI
 
     [Header("Audio")]
     public AudioSource audioSource;
-    public AudioClip raiseSound;
+
+    public AudioClip captureSound;
+    public AudioClip bubbleSound;
     public AudioClip successSound;
     public AudioClip failSound;
 
+
     [Header("VFX")]
-    public ParticleSystem raiseFX;
+    public ParticleSystem captureFX;
+    public ParticleSystem bubbleFX;
     public ParticleSystem successFX;
     public ParticleSystem failFX;
 }

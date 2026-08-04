@@ -26,15 +26,15 @@ public class FishingManager : MonoBehaviour
     public TMP_Text startFishingPrompt;
 
     [Header("Element UI")]
-    public Image requiredElementImage;
+    //public Image requiredElementImage;
     public Sprite blankSprite;
     public Sprite fireSprite;
     public Sprite earthSprite;
     public Sprite waterSprite;
     public Sprite airSprite;
 
-    [Header("Progress")]
-    public Slider catchProgressBar;
+    //[Header("Progress")]
+    //public Slider catchProgressBar;
 
     [Header("Fishing Areas")]
     public FishingArea currentArea;
@@ -123,8 +123,7 @@ public class FishingManager : MonoBehaviour
             activeBiomeUI.bubbleObject.SetActive(false);
         }
 
-        activeBiomeUI.fishingCamera.transform.position = activeBiomeUI.cameraAnchor.position;
-        activeBiomeUI.fishingCamera.transform.rotation = activeBiomeUI.cameraAnchor.rotation;
+        activeBiomeUI.cameraAnchor.gameObject.SetActive(true);
         activeBiomeUI.fishingCamera.gameObject.SetActive(true);
         activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
 
@@ -175,10 +174,10 @@ public class FishingManager : MonoBehaviour
         //Debug.Log("Fishing Started");
         ClearRequiredElementUI();
 
-        if (catchProgressBar != null)
+        if (activeBiomeUI.catchProgressBar != null)
         {
-            catchProgressBar.value = 0f;
-            catchProgressBar.gameObject.SetActive(false);
+            activeBiomeUI.catchProgressBar.value = 0f;
+            activeBiomeUI.catchProgressBar.gameObject.SetActive(false);
         }
     }
 
@@ -205,10 +204,17 @@ public class FishingManager : MonoBehaviour
         activeBiomeUI.bubbleObject.SetActive(true);
         activeBiomeUI.elementZones.SetActive(true);
 
-        if (catchProgressBar != null)
+        FishingCameraController controller = activeBiomeUI.fishingCamera.GetComponent<FishingCameraController>();
+
+        if (controller != null)
         {
-            catchProgressBar.value = 0f;
-            catchProgressBar.gameObject.SetActive(true);
+            controller.SmoothLookAt(activeBiomeUI.bubbleObject.transform);
+        }
+
+        if (activeBiomeUI.catchProgressBar != null)
+        {
+            activeBiomeUI.catchProgressBar.value = 0f;
+            activeBiomeUI.catchProgressBar.gameObject.SetActive(true);
         }
 
         FishingBubble bubble = activeBiomeUI.bubbleObject.GetComponent<FishingBubble>();
@@ -299,10 +305,10 @@ public class FishingManager : MonoBehaviour
         }
         ClearRequiredElementUI();
 
-        if (catchProgressBar != null)
+        if (activeBiomeUI.catchProgressBar != null)
         {
-            catchProgressBar.value = 0f;
-            catchProgressBar.gameObject.SetActive(false);
+            activeBiomeUI.catchProgressBar.value = 0f;
+            activeBiomeUI.catchProgressBar.gameObject.SetActive(false);
         }
         //Debug.Log("Fishing Ended");
     }
@@ -360,7 +366,7 @@ public class FishingManager : MonoBehaviour
 
     public void SetRequiredElementUI(ElementType element)
     {
-        if(requiredElementImage == null)
+        if(activeBiomeUI.requiredElementImage == null)
         {
             return;
         }
@@ -368,19 +374,19 @@ public class FishingManager : MonoBehaviour
         switch(element)
         {
             case ElementType.Fire:
-                requiredElementImage.sprite = fireSprite;
+                activeBiomeUI.requiredElementImage.sprite = fireSprite;
                 break;
 
             case ElementType.Earth:
-                requiredElementImage.sprite = earthSprite;
+                activeBiomeUI.requiredElementImage.sprite = earthSprite;
                 break;
 
             case ElementType.Water:
-                requiredElementImage.sprite = waterSprite;
+                activeBiomeUI.requiredElementImage.sprite = waterSprite;
                 break;
 
             case ElementType.Air:
-                requiredElementImage.sprite = airSprite;
+                activeBiomeUI.requiredElementImage.sprite = airSprite;
                 break;
         }
 
@@ -388,9 +394,9 @@ public class FishingManager : MonoBehaviour
 
     private void ClearRequiredElementUI()
     {
-        if (requiredElementImage != null)
+        if (activeBiomeUI.requiredElementImage != null)
         {
-            requiredElementImage.sprite = blankSprite;
+            activeBiomeUI.requiredElementImage.sprite = blankSprite;
         }
     }
 
@@ -424,9 +430,9 @@ public class FishingManager : MonoBehaviour
 
     public void UpdateCatchProgress(float progress)
     {
-        if (catchProgressBar != null)
+        if (activeBiomeUI.catchProgressBar != null)
         {
-            catchProgressBar.value = progress;
+            activeBiomeUI.catchProgressBar.value = progress;
         }
     }
 }
