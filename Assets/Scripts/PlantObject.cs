@@ -91,11 +91,15 @@ public class PlantObject : MonoBehaviour
                 growthTime = plant.cropTime;
 
                 //then increment, but not past the max
-                if (currentStage < 2)
+                if (currentStage < plant.MaxStage)
                 {
                     currentStage++;
+                    if(currentStage == plant.MaxStage)
+                    {
+                        currentStage = plant.MaxStage;
+                    }
                 }
-                else if (currentStage == 2)
+                if (currentStage == plant.MaxStage)
                 {
                     isHarvestable = true;
                     Unwither();
