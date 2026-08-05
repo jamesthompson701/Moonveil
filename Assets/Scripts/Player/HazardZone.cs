@@ -25,6 +25,7 @@ public class HazardZone : MonoBehaviour
         {
             return;
         }
+        Debug.Log("Player has entered the collider of the hazard: " + gameObject.name);
 
         // For single-hit hazards like stalactites
         if (instantHit)
