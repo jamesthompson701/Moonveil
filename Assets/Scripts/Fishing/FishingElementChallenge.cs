@@ -14,6 +14,14 @@ public class FishingElementChallenge : MonoBehaviour
     public float swapGraceTime = 1.2f;
     private float graceTimer;
 
+    public float Progress
+    {
+        get
+        {
+            return successTimer / winTime;
+        }
+    }
+
     private void OnEnable()
     {
         Debug.Log("FishingElementChallenge ENABLED");
@@ -60,12 +68,12 @@ public class FishingElementChallenge : MonoBehaviour
             }
         }
 
-        // why is this just in update? -> wasCorrectLastFrame = correct;
-
         if (graceTimer <= 0f)
         {
             FishingManager.Instance.FailFishing();
         }
+
+        FishingManager.Instance.UpdateCatchProgress(Progress);
     }
 
     private void OnTriggerEnter(Collider other)
