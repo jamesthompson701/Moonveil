@@ -6,6 +6,10 @@ public class FishingBubble : MonoBehaviour
     public float radius = 5f;
     public float moveSpeed = 3f;
 
+    public float startDelay = 2f;
+    private float delayTimer;
+    private bool canMove;
+
     public BoxCollider movementBounds;
 
     Vector3 targetPos;
@@ -15,12 +19,27 @@ public class FishingBubble : MonoBehaviour
     {
         startPos = transform.position;
 
+        canMove = false;
+        delayTimer = startDelay;
+
         PickNewTarget();
     }
 
     void Update()
     {
-        //movement
+        if (!canMove)
+        {
+            delayTimer -= Time.deltaTime;
+
+            if(delayTimer <= 0)
+            {
+                canMove = true;
+            }
+
+            return;
+        }
+
+
         transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
 
         if(Vector3.Distance(transform.position,targetPos) < .2f)
@@ -33,6 +52,9 @@ public class FishingBubble : MonoBehaviour
 
     public void BeginBubblePhase()
     {
+        canMove = false;
+        delayTimer = startDelay;
+
         if(movementBounds != null)
         {
             transform.position = movementBounds.bounds.center;
@@ -70,6 +92,8 @@ public class FishingBubble : MonoBehaviour
         {
             return;
         }
+
+        //Debug.Log("Bubble currently inside zone: " + zone.requiredElement);
 
         bool correct = CheckPlayerElement(zone.requiredElement);
 

@@ -18,6 +18,19 @@ public class FishingBiomeUI
     public Image requiredElementImage;
     public Slider catchProgressBar;
 
+    [Header("Net Visuals")]
+    public SpriteRenderer fireNet;
+    public SpriteRenderer waterNet;
+    public SpriteRenderer earthNet;
+    public SpriteRenderer airNet;
+
+   [Header("Net Colors")]
+    public Color activeColor = Color.white;
+    public Color inactiveColor = new Color(.4f, .4f, .4f, .25f);
+
+    [Header("Bubble Camera")]
+    public Transform bubbleCameraTarget;
+
     [Header("Capture")]
     public GameObject captureCircle;
 

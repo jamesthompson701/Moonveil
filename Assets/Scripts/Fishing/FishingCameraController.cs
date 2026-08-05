@@ -3,7 +3,7 @@ using UnityEngine;
 public class FishingCameraController : MonoBehaviour
 {
     public float rotateSpeed = 100f;
-    public float snapSpeed = 5f;
+    public float snapSpeed = 15f;
 
     float yaw;
     float pitch;
@@ -20,17 +20,13 @@ public class FishingCameraController : MonoBehaviour
     {
         if (isSnapping)
         {
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                targetRotation,
-                Time.deltaTime * snapSpeed
-            );
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * snapSpeed);
 
-            if (Quaternion.Angle(transform.rotation, targetRotation) < 0.1f)
+            if (Quaternion.Angle(transform.rotation, targetRotation) < 1f)
             {
                 transform.rotation = targetRotation;
                 isSnapping = false;
-                SetRotationValues();
+                //SetRotationValues();
             }
 
             return;
@@ -53,15 +49,23 @@ public class FishingCameraController : MonoBehaviour
 
         targetRotation = Quaternion.LookRotation(direction);
 
+        //Debug.Log("Snap Start | Current: " + transform.rotation.eulerAngles + " Target: " + targetRotation.eulerAngles);
+
         isSnapping = true;
     }
 
 
     private void SetRotationValues()
     {
-        Vector3 angles = transform.eulerAngles;
+        Vector3 angles = transform.localEulerAngles;
 
         yaw = angles.y;
+
         pitch = angles.x;
+
+        if (pitch > 180)
+        {
+            pitch -= 360;
+        }
     }
 }

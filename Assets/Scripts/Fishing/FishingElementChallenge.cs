@@ -12,6 +12,7 @@ public class FishingElementChallenge : MonoBehaviour
     private float successTimer;
 
     public float swapGraceTime = 1.2f;
+    public float startGraceTime = 4f;
     private float graceTimer;
 
     public float Progress
@@ -24,13 +25,13 @@ public class FishingElementChallenge : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("FishingElementChallenge ENABLED");
+        //Debug.Log("FishingElementChallenge ENABLED");
 
         completed = false;
         successTimer = 0f;
-        graceTimer = swapGraceTime;
+        graceTimer = startGraceTime;
         wasCorrectLastFrame = false;
-        currentRequired = ElementType.Water;
+        currentRequired = ElementType.Fire;
     }
 
     void Update()
@@ -47,6 +48,8 @@ public class FishingElementChallenge : MonoBehaviour
 
         bool correct = PlayerHasCorrectElement(currentRequired);
         //Debug.Log("Required: " + currentRequired + " | Choice: " + SpellManager2.Instance.attackChoice + " | Correct: " + correct);
+
+        //Debug.Log("Required: " + currentRequired + " | Choice: " + SpellManager2.Instance.attackChoice + " | Correct: " + correct + " | Grace: " + graceTimer);
 
         if (correct)
         {
@@ -79,9 +82,11 @@ public class FishingElementChallenge : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         ElementZone zone = other.GetComponent<ElementZone>();
+
         if (zone != null)
         {
             SetRequired(zone.element);
+            graceTimer = startGraceTime;
         }
     }
 

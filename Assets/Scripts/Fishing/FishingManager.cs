@@ -54,6 +54,9 @@ public class FishingManager : MonoBehaviour
     public GameObject nextQuest1;
     private bool nextQuest1Activated = false;
 
+    private ElementType currentElement;
+    private float fishingProgress;
+
 
     void Awake()
     {
@@ -108,7 +111,7 @@ public class FishingManager : MonoBehaviour
 
         if (activeBiomeUI == null)
         {
-            Debug.LogError("No FishingBiomeUI found for biome: " + area.biome);
+            //Debug.LogError("No FishingBiomeUI found for biome: " + area.biome);
             return;
         }
 
@@ -126,6 +129,8 @@ public class FishingManager : MonoBehaviour
         activeBiomeUI.cameraAnchor.gameObject.SetActive(true);
         activeBiomeUI.fishingCamera.gameObject.SetActive(true);
         activeBiomeUI.fishingCanvas.gameObject.SetActive(true);
+
+        //Debug.Log("Fishing Camera Rotation: " + activeBiomeUI.fishingCamera.transform.eulerAngles + " Position: " + activeBiomeUI.fishingCamera.transform.position);
 
         if(playerCamera != null)
         {
@@ -202,6 +207,8 @@ public class FishingManager : MonoBehaviour
 
         currentPhase = FishingPhase.Bubble;
 
+        fishingProgress = 0f;
+
         PlayFX(activeBiomeUI.bubbleFX);
         PlaySound(activeBiomeUI.bubbleSound);
 
@@ -212,9 +219,13 @@ public class FishingManager : MonoBehaviour
 
         FishingCameraController controller = activeBiomeUI.fishingCamera.GetComponent<FishingCameraController>();
 
+        activeBiomeUI.elementZones.SetActive(true);
+        ClearNets();
+
         if (controller != null)
         {
-            controller.SmoothLookAt(activeBiomeUI.bubbleObject.transform);
+            controller.SmoothLookAt(activeBiomeUI.bubbleCameraTarget);
+            //Debug.Log("After Bubble Snap Target: " + activeBiomeUI.bubbleCameraTarget.position);
         }
 
         if (activeBiomeUI.catchProgressBar != null)
@@ -321,6 +332,10 @@ public class FishingManager : MonoBehaviour
             activeBiomeUI.catchProgressBar.value = 0f;
             activeBiomeUI.catchProgressBar.gameObject.SetActive(false);
         }
+
+        ClearRequiredElementUI();
+        ClearNets();
+        fishingProgress = 0f;
         //Debug.Log("Fishing Ended");
     }
 
@@ -386,6 +401,8 @@ public class FishingManager : MonoBehaviour
 
     public void SetRequiredElementUI(ElementType element)
     {
+        currentElement = element;
+
         if(activeBiomeUI.requiredElementImage == null)
         {
             return;
@@ -410,6 +427,7 @@ public class FishingManager : MonoBehaviour
                 break;
         }
 
+        HighlightNet(element);
     }
 
     private void ClearRequiredElementUI()
@@ -491,11 +509,54 @@ public class FishingManager : MonoBehaviour
         fishingPromptCoroutine = null;
     }
 
+    void HighlightNet(ElementType active)
+    {
+        SetNet(activeBiomeUI.fireNet, active == ElementType.Fire, fishingProgress);
+        SetNet(activeBiomeUI.waterNet, active == ElementType.Water, fishingProgress);
+        SetNet(activeBiomeUI.earthNet, active == ElementType.Earth, fishingProgress);
+        SetNet(activeBiomeUI.airNet, active == ElementType.Air, fishingProgress);
+    }
+
+    void SetNet(SpriteRenderer sprite, bool active, float progress)
+    {
+        if (sprite == null)
+            return;
+
+        Color c;
+
+        if (active)
+        {
+            c = Color.white;
+
+            // minimum visible alpha + progress
+            c.a = Mathf.Lerp(0.35f, 1f, progress);
+        }
+        else
+        {
+            c = Color.gray;
+            c.a = 0.25f;
+        }
+
+        sprite.color = c;
+    }
+
+    void ClearNets()
+    {
+        SetNet(activeBiomeUI.fireNet, false, 0);
+        SetNet(activeBiomeUI.waterNet, false, 0);
+        SetNet(activeBiomeUI.earthNet, false, 0);
+        SetNet(activeBiomeUI.airNet, false, 0);
+    }
+
     public void UpdateCatchProgress(float progress)
     {
+        fishingProgress = progress;
+
         if (activeBiomeUI.catchProgressBar != null)
         {
             activeBiomeUI.catchProgressBar.value = progress;
         }
+
+        HighlightNet(currentElement);
     }
 }
