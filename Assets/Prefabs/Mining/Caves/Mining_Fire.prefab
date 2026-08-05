@@ -4982,7 +4982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4030054415272906258
 Transform:
   m_ObjectHideFlags: 0
@@ -56551,6 +56551,7 @@ MonoBehaviour:
   interactableTarget: {fileID: 4255627110944791787}
   closeDialogueOnComplete: 0
   weeniePrefab: {fileID: 0}
+  hasWeenie: 0
   timeToDialogueComplete: 2
 --- !u!1 &4771847057110125948
 GameObject:
@@ -85906,6 +85907,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4080679752701108943}
     m_Modifications:
+    - target: {fileID: -7003681724810406307, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: fallDistance
+      value: 84
+      objectReference: {fileID: 0}
+    - target: {fileID: -7003681724810406307, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: fallDuration
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 383150746063710984, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: instantPush
       value: 1
@@ -85920,15 +85929,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 44.52
+      value: 35.16
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.28
+      value: 81.3
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -49.71
+      value: -34.49
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalRotation.w
@@ -85962,6 +85971,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stalactite (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 5224857492553510720, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: m_Center.y
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 5238450210439114853, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -85969,6 +85982,10 @@ PrefabInstance:
     - target: {fileID: 5239620164865819745, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: instantPush
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9173436332130723578, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 85
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -86032,6 +86049,10 @@ PrefabInstance:
       propertyPath: isFireMine
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
       value: MiningStone (8)
@@ -86065,7 +86086,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7003681724810406307, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: fallDistance
-      value: 14
+      value: 58
+      objectReference: {fileID: 0}
+    - target: {fileID: -7003681724810406307, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: fallDuration
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 383150746063710984, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: instantPush
@@ -86081,15 +86106,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.48
+      value: 1.02
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.07
+      value: 56
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -46.84
+      value: -50.74
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalRotation.w
@@ -86123,6 +86148,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stalactite (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5224857492553510720, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: m_Center.y
+      value: 53
+      objectReference: {fileID: 0}
     - target: {fileID: 5238450210439114853, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -86133,7 +86162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9173436332130723578, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.91
+      value: 58.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -86196,6 +86225,10 @@ PrefabInstance:
     - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: isFireMine
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
@@ -86342,6 +86375,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4080679752701108943}
     m_Modifications:
+    - target: {fileID: -7003681724810406307, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: fallDistance
+      value: 69
+      objectReference: {fileID: 0}
+    - target: {fileID: -7003681724810406307, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: fallDuration
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 383150746063710984, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: instantPush
       value: 1
@@ -86360,7 +86401,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.873137
+      value: 67
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.z
@@ -86398,6 +86439,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stalactite
       objectReference: {fileID: 0}
+    - target: {fileID: 5224857492553510720, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: m_Center.y
+      value: 66
+      objectReference: {fileID: 0}
     - target: {fileID: 5238450210439114853, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -86405,6 +86450,10 @@ PrefabInstance:
     - target: {fileID: 5239620164865819745, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: instantPush
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9173436332130723578, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 69.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -86472,6 +86521,10 @@ PrefabInstance:
       propertyPath: isFireMine
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
       value: MiningStoneWall (5)
@@ -86517,7 +86570,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 61.84
+      value: 64.22
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -86551,6 +86604,10 @@ PrefabInstance:
       propertyPath: isFireMine
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
       value: MiningStoneWall (3)
@@ -86578,6 +86635,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4080679752701108943}
     m_Modifications:
+    - target: {fileID: -7003681724810406307, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: fallDistance
+      value: 57
+      objectReference: {fileID: 0}
+    - target: {fileID: -7003681724810406307, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: fallDuration
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 383150746063710984, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: instantPush
       value: 1
@@ -86592,15 +86657,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.31
+      value: 9.11
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.97
+      value: 51.23
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -32.3
+      value: -29.85
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalRotation.w
@@ -86634,6 +86699,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stalactite (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5224857492553510720, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: m_Center.y
+      value: 52
+      objectReference: {fileID: 0}
     - target: {fileID: 5238450210439114853, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -86641,6 +86710,10 @@ PrefabInstance:
     - target: {fileID: 5239620164865819745, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: instantPush
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9173436332130723578, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 57.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -86780,7 +86853,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 87.51
+      value: 89.44
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -86822,6 +86895,10 @@ PrefabInstance:
       propertyPath: isFireMine
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
       value: MiningStoneWall (4)
@@ -86853,6 +86930,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4080679752701108943}
     m_Modifications:
+    - target: {fileID: -7003681724810406307, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: fallDistance
+      value: 66.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -7003681724810406307, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: fallDuration
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 383150746063710984, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: instantPush
       value: 1
@@ -86871,7 +86956,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 22.85
+      value: 71.48
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.z
@@ -86909,6 +86994,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stalactite (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 5224857492553510720, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: m_Center.y
+      value: 62
+      objectReference: {fileID: 0}
     - target: {fileID: 5238450210439114853, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -86916,6 +87005,10 @@ PrefabInstance:
     - target: {fileID: 5239620164865819745, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: instantPush
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9173436332130723578, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 66.87
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -86983,6 +87076,10 @@ PrefabInstance:
       propertyPath: isFireMine
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
       value: MiningStoneWall (1)
@@ -87020,7 +87117,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.46
+      value: 3.8
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -87057,6 +87154,10 @@ PrefabInstance:
     - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: isFireMine
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
@@ -87095,7 +87196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.03
+      value: -0.3
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -87132,6 +87233,10 @@ PrefabInstance:
     - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: isFireMine
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
@@ -87170,7 +87275,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.92
+      value: 2.65
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -87208,6 +87313,10 @@ PrefabInstance:
       propertyPath: isFireMine
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
       value: MiningStone (4)
@@ -87237,7 +87346,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7003681724810406307, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: fallDistance
-      value: 24
+      value: 79.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -7003681724810406307, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: fallDuration
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 383150746063710984, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: instantPush
@@ -87257,7 +87370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 18.66
+      value: 79.6
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.z
@@ -87295,6 +87408,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stalactite (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5224857492553510720, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: m_Center.y
+      value: 74
+      objectReference: {fileID: 0}
     - target: {fileID: 5238450210439114853, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -87305,7 +87422,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9173436332130723578, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 23.25
+      value: 78.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -87325,6 +87442,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4080679752701108943}
     m_Modifications:
+    - target: {fileID: -7003681724810406307, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: fallDistance
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: -7003681724810406307, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: fallDuration
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 383150746063710984, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: instantPush
       value: 1
@@ -87343,7 +87468,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 18.7
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: m_LocalPosition.z
@@ -87381,6 +87506,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stalactite (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 5224857492553510720, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: m_Center.y
+      value: 28
+      objectReference: {fileID: 0}
     - target: {fileID: 5238450210439114853, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -87388,6 +87517,10 @@ PrefabInstance:
     - target: {fileID: 5239620164865819745, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
       propertyPath: instantPush
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9173436332130723578, guid: 574402beec6dd4c6c9cd5f1519f310fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 32.32
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -87413,7 +87546,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.45
+      value: 1.73
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -87455,6 +87588,10 @@ PrefabInstance:
       propertyPath: isFireMine
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
       value: MiningStoneWall
@@ -87492,7 +87629,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.8699999
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -87529,6 +87666,10 @@ PrefabInstance:
     - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: isFireMine
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
@@ -87605,6 +87746,10 @@ PrefabInstance:
       propertyPath: isFireMine
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
       value: MiningStone (9)
@@ -87679,6 +87824,10 @@ PrefabInstance:
     - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: isFireMine
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
@@ -87755,6 +87904,10 @@ PrefabInstance:
       propertyPath: isFireMine
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
       value: MiningStone
@@ -87792,7 +87945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.07
+      value: 5.63
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -87829,6 +87982,10 @@ PrefabInstance:
     - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: isFireMine
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
@@ -87867,7 +88024,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.01
+      value: 10.27
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -87875,7 +88032,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 53.84
+      value: 54.73
       objectReference: {fileID: 0}
     - target: {fileID: 3066776682129150936, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -87908,6 +88065,10 @@ PrefabInstance:
     - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: isFireMine
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200044289800183658, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
+      propertyPath: doubleDropChance
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4222825508314368103, guid: 8e54b7646df5b495d9ec9e32221f704e, type: 3}
       propertyPath: m_Name
