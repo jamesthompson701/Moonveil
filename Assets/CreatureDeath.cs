@@ -4,7 +4,7 @@ using UnityEngine;
 public class CreatureDeath : StateMachineBehaviour
 {
 
-    [SerializeField] CreatureDefs creatureDefs;
+    [SerializeField] GameObject gameObject;
 
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -26,9 +26,9 @@ public class CreatureDeath : StateMachineBehaviour
         Debug.Log("State exited");
         if (stateInfo.IsName("Death"))
         {
-            creatureDefs = animator.gameObject.GetComponent<CreatureDefs>();
-            Debug.Log("Activated destroy object with script" + creatureDefs);
-            Destroy(creatureDefs.gameObject);
+            gameObject = animator.gameObject;
+            Debug.Log("Activated destroy object with script" + gameObject);
+            Destroy(gameObject);
         }
     }
 

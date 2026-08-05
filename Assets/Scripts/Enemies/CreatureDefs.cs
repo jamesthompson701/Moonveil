@@ -897,7 +897,7 @@ public class CreatureDefs : MonoBehaviour
     {
 
         //if (meleeHitbox) meleeHitbox.enabled = false;
-        if (physicsCollider) physicsCollider.enabled = false;
+        //if (physicsCollider) physicsCollider.enabled = false;
 
         if (dropItem != null)
         {
@@ -935,8 +935,11 @@ public class CreatureDefs : MonoBehaviour
 
         SpellManager2.Instance.NotifyEnemyAggro(!_hasAggro);
 
+
         if (animator == null)
             Destroy(gameObject);
+
+        Destroy(this);
 
         yield return null;
     }
