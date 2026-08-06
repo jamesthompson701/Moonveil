@@ -10,8 +10,11 @@ public class PlayerDamageReceiver : MonoBehaviour
     [SerializeField, Tooltip("Shown for debugging; update your UI as needed.")]
     public float currentHealth = 100f;
 
-    [SerializeField, Tooltip("Invincibility duration in seconds after taking damage.")]
-    private float invincibilityDuration = 2;
+    [SerializeField, Tooltip("Invincibility after taking damage (seconds).")]
+    private float invincibilityDuration = 0.6f;
+
+    [SerializeField, Tooltip("How long the damage flash is shown (seconds).")]
+    private float damageFlashDuration = 0.35f;
 
     // Renderers and materials set in the inspector (kept original names to preserve serialized references)
     public GameObject playerBodyDefault;
@@ -139,7 +142,7 @@ public class PlayerDamageReceiver : MonoBehaviour
         }
 
         // Wait for the configured invincibility duration (visual feedback time)
-        yield return new WaitForSeconds(invincibilityDuration);
+        yield return new WaitForSeconds(damageFlashDuration);
 
         // Restore original materials
         RestoreOriginalMaterials();

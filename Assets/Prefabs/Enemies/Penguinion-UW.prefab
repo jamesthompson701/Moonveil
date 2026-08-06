@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2361415631532571672}
   - component: {fileID: 8143482868559019353}
+  - component: {fileID: 2397790370911162022}
   m_Layer: 8
   m_Name: Attack
   m_TagString: Untagged
@@ -53,6 +54,26 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.2807932
   m_Center: {x: -0.0018310547, y: 0.0018777847, z: 0}
+--- !u!114 &2397790370911162022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1238934478799335845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f810c10614bfb684a83a146b57ed9050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttacks
+  Damage: 20
+  IsMelee: 1
+  damageCooldownSeconds: 0.35
+  targetTag: Player
+  destroyOnHit: 0
+  destroyDelay: 3
+  isPenguinToss: 0
+  penguinionPrefab: {fileID: 0}
 --- !u!1001 &6646295007656533777
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -292,9 +313,6 @@ PrefabInstance:
       addedObject: {fileID: 3248196877286621533}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9044132e4f5b1f34e8cbc549e6329b86, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 847952822812437113}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9044132e4f5b1f34e8cbc549e6329b86, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 3298089255743411010}
   m_SourcePrefab: {fileID: 100100000, guid: 9044132e4f5b1f34e8cbc549e6329b86, type: 3}
 --- !u!1 &5835833651935109696 stripped
@@ -359,8 +377,8 @@ MonoBehaviour:
   roamRadius: 10
   roamArriveDistance: 1
   roamWaitSeconds: 0.25
-  aggroDistance: 50
-  deaggroDistance: 40
+  aggroDistance: 20
+  deaggroDistance: 20
   attackMode: 3
   attackRange: 15
   attackCooldownSeconds: 0.5
@@ -370,6 +388,8 @@ MonoBehaviour:
   projectilePrefab: {fileID: 0}
   projectileSpeed: 40
   chargeSpeed: 20
+  chargeDuration: 0.6
+  chargeRecoverySeconds: 0.4
   arcApexHeight: 3
   contactDamage: 10
   contactTickInterval: 0.5
@@ -416,26 +436,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.2582674
   m_Center: {x: -0.0018310547, y: 1.0821333, z: 0}
---- !u!114 &847952822812437113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5835833651935109696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f810c10614bfb684a83a146b57ed9050, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttacks
-  Damage: 20
-  IsMelee: 1
-  damageCooldownSeconds: 0.35
-  targetTag: Player
-  destroyOnHit: 0
-  destroyDelay: 3
-  isPenguinToss: 0
-  penguinionPrefab: {fileID: 0}
 --- !u!114 &3298089255743411010
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -96,6 +96,12 @@ public class CreatureDefs : MonoBehaviour
     [Tooltip("Speed that chargers launch at the player (m/s).")]
     [SerializeField, Min(0f)] private float chargeSpeed = 14f;
 
+    [Tooltip("How long the charge lunge lasts before recovery (seconds).")]
+    [SerializeField, Min(0.05f)] private float chargeDuration = 0.6f;
+
+    [Tooltip("Recovery time after a charge before the enemy resumes steering (seconds).")]
+    [SerializeField, Min(0f)] private float chargeRecoverySeconds = 0.4f;
+
     [Tooltip("For arc shots: extra height of the arc apex above the higher of start/target (meters).")]
     [SerializeField, Min(0f)] private float arcApexHeight = 3f;
 
@@ -245,7 +251,10 @@ public class CreatureDefs : MonoBehaviour
             meleeHitbox.enabled = false;
 
         // Sets bool thats used to check if we have animator before trying to call it, just to avoid errors
-        hasAnimator = TryGetComponent(out animator);
+        if (!animator) animator = GetComponent<Animator>();
+        if (!animator) animator = GetComponentInChildren<Animator>();
+        hasAnimator = animator != null;
+        if (!hasAnimator) Debug.LogWarning($"{name}: no Animator found.", this);
     }
 
     // Public API to reset health (used when boss fight is canceled)
@@ -579,51 +588,58 @@ public class CreatureDefs : MonoBehaviour
     private IEnumerator AttackRoutine()
     {
         _isAttacking = true;
-
-        if (attackWindupSeconds > 0f)
-            yield return new WaitForSeconds(attackWindupSeconds);
-
-        if (!target)
+        try
         {
+            if (attackWindupSeconds > 0f)
+                yield return new WaitForSeconds(attackWindupSeconds);
+
+            if (!target)
+            {
+                EndAttack();
+                yield break;
+            }
+
+            switch (attackMode)
+            {
+                case AttackMode.Melee:
+                    yield return DoMeleeAttack();
+                    break;
+
+                case AttackMode.ProjectileStraight:
+                    yield return DoStraightProjectile();
+                    break;
+
+                case AttackMode.ProjectileArc:
+                    yield return DoArcProjectile();
+                    break;
+                case AttackMode.Charger:
+                    yield return DoChargeAttack();
+                    break;
+                case AttackMode.Contact:
+                    // Contact is passive; no active animation-driven attack here.
+                    break;
+            }
+        }
+        finally
+        {
+            _nextAttackTime = Time.time + attackCooldownSeconds;
             EndAttack();
-            yield break;
         }
-
-        switch (attackMode)
-        {
-            case AttackMode.Melee:
-                yield return DoMeleeAttack();
-                break;
-
-            case AttackMode.ProjectileStraight:
-                yield return DoStraightProjectile();
-                break;
-
-            case AttackMode.ProjectileArc:
-                yield return DoArcProjectile();
-                break;
-            case AttackMode.Charger:
-                yield return DoChargeAttack();
-                break;
-            case AttackMode.Contact:
-                // Contact is passive; no active animation-driven attack here.
-                break;
-        }
-
-        _nextAttackTime = Time.time + attackCooldownSeconds;
-        EndAttack();
     }
 
     private IEnumerator DoMeleeAttack()
     {
         if (!meleeHitbox) yield break;
 
-        EnemyAttacks ea = meleeHitbox.GetComponent<EnemyAttacks>();
+        EnemyAttacks ea = meleeHitbox.GetComponent<EnemyAttacks>()
+                  ?? meleeHitbox.GetComponentInChildren<EnemyAttacks>()
+                  ?? meleeHitbox.GetComponentInParent<EnemyAttacks>();
         if (ea) ea.ResetPerAttackMemory();
+        else Debug.LogWarning($"{name}: meleeHitbox has no EnemyAttacks component — swing memory will never reset.", this);
 
         meleeHitbox.enabled = true;
         Debug.Log("Melee hitbox = " + meleeHitbox.enabled);
-        if (meleeActiveSeconds > 0f) yield return new WaitForSeconds(meleeActiveSeconds);
+        if (meleeActiveSeconds > 0f) yield return new WaitForSeconds(Mathf.Max(Time.fixedDeltaTime * 2f, meleeActiveSeconds));
         meleeHitbox.enabled = false;
         Debug.Log("Melee hitbox = " + meleeHitbox.enabled);
 
@@ -672,14 +688,32 @@ public class CreatureDefs : MonoBehaviour
     private IEnumerator DoChargeAttack()
     {
         if (!target) yield break;
-        ApplySteering((target.position - transform.position).normalized, 0f);
-        yield return new WaitForSeconds(attackWindupSeconds);
-        Vector3 dir = (target.position - transform.position).normalized;
-        _rb.AddForce(dir * chargeSpeed, ForceMode.Impulse);
-        yield return new WaitForSeconds(1f);
 
-        //Tells Animator to play attack anim
         if (animator != null) animator.SetTrigger("Attack");
+
+        // Hard stop for the telegraph. AttackRoutine already served the windup.
+        if (_rb) { _rb.linearVelocity = Vector3.zero; _rb.angularVelocity = Vector3.zero; }
+
+        if (!target) yield break;
+
+        Vector3 dir = target.position - transform.position;
+        dir.y = 0f;
+        if (dir.sqrMagnitude < 0.0001f) yield break;
+        dir.Normalize();
+
+        // Open the damage window for the lunge.
+        EnemyAttacks ea = meleeHitbox ? meleeHitbox.GetComponentInChildren<EnemyAttacks>() : null;
+        if (ea) ea.ResetPerAttackMemory();
+        if (meleeHitbox) meleeHitbox.enabled = true;
+
+        _rb.AddForce(dir * chargeSpeed, ForceMode.VelocityChange);
+
+        yield return new WaitForSeconds(chargeDuration);
+
+        if (meleeHitbox) meleeHitbox.enabled = false;
+
+        if (chargeRecoverySeconds > 0f)
+            yield return new WaitForSeconds(chargeRecoverySeconds);
     }
 
     private static bool TryComputeBallisticVelocity(Vector3 start, Vector3 end, float apexExtraHeight, out Vector3 initialVelocity)
@@ -1074,5 +1108,23 @@ public class CreatureDefs : MonoBehaviour
             else if (enemyDefault != null)
                 enemyBody.material = enemyDefault;
         }
+    }
+
+    private void OnEnable()
+    {
+        _isAttacking = false;
+        _nextAttackTime = 0f;
+        if (meleeHitbox) meleeHitbox.enabled = false;
+    }
+
+    private void OnDisable()
+    {
+        if (_isAttacking) EndAttack();          // clears flag AND notifies director
+        if (meleeHitbox) meleeHitbox.enabled = false;
+    }
+
+    private void OnDestroy()
+    {
+        if (useAttackDirector && _director) _director.EndAttack(this);
     }
 }

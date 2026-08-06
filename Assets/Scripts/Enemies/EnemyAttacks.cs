@@ -46,58 +46,64 @@ public class EnemyAttacks : MonoBehaviour
         _hitThisSwing.Clear();
     }
 
+    private void OnEnable()
+    {
+        if (IsMelee) _hitThisSwing.Clear();
+    }
+
+    private void Start()
+    {
+        if (!IsMelee && destroyDelay > 0f)
+            Destroy(gameObject, destroyDelay);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        TryHit(other);
-        if (destroyOnHit && (string.IsNullOrWhiteSpace(targetTag) || other.CompareTag(targetTag) || other.CompareTag("Ground")))
+        bool hit = TryHit(other);
+        if (IsMelee) return;                 
+        if (!destroyOnHit) return;
+
+        if (hit || other.CompareTag("Ground"))
         {
             SpawnPenguinion();
             Destroy(gameObject);
         }
-
-        else if (destroyOnHit)
-        {
-            Destroy(gameObject, destroyDelay);
-        }
     }
+
     private void OnTriggerStay(Collider other)
     {
-        TryHit(other);
-        if (destroyOnHit)
-            Destroy(gameObject, destroyDelay);
+        TryHit(other);                       
     }
+
     private void OnCollisionEnter(Collision collision)
     {
-        TryHit(collision.collider);
-        if (destroyOnHit)
-            Destroy(gameObject, destroyDelay);
+        bool hit = TryHit(collision.collider);
+        if (IsMelee || !destroyOnHit) return;
+        if (hit || collision.collider.CompareTag("Ground"))
+        {
+            SpawnPenguinion();
+            Destroy(gameObject);
+        }
     }
 
-    private void TryHit(Collider other)
+    private bool TryHit(Collider other)
     {
-        if (!other) return;
-
-        if (!string.IsNullOrWhiteSpace(targetTag) && !other.CompareTag(targetTag))
-            return;
+        if (!other) return false;
+        if (!string.IsNullOrWhiteSpace(targetTag) && !other.CompareTag(targetTag)) return false;
 
         int targetId = other.transform.root.GetInstanceID();
+        if (IsMelee && _hitThisSwing.Contains(targetId)) return false;
 
-        if (IsMelee && _hitThisSwing.Contains(targetId))
-            return;
-
-        if (_lastHitTime.TryGetValue(targetId, out float last))
-        {
-            if (Time.time - last < damageCooldownSeconds)
-                return;
-        }
+        if (_lastHitTime.TryGetValue(targetId, out float last) &&
+            Time.time - last < damageCooldownSeconds) return false;
 
         PlayerDamageReceiver receiver = other.GetComponentInParent<PlayerDamageReceiver>();
-        if (receiver) receiver.TakeDamage(Damage);
+        if (!receiver) return false;
 
-        Debug.Log("Enemy attack hit " + other.name + " for " + Damage + " damage!");
+        receiver.TakeDamage(Damage);
         _lastHitTime[targetId] = Time.time;
         if (IsMelee) _hitThisSwing.Add(targetId);
-
+        return true;
     }
 
     private void SpawnPenguinion()

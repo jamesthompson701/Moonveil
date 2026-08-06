@@ -33,9 +33,14 @@ public class EnemyAttackDirector : MonoBehaviour
     [SerializeField, Min(0f)] private float randomWeight = 0.35f;
 
     private readonly Dictionary<int, Candidate> _candidates = new Dictionary<int, Candidate>(64);
-    private readonly HashSet<int> _attacking = new HashSet<int>();
     private readonly Dictionary<int, float> _permitUntil = new Dictionary<int, float>(64);
     private readonly Dictionary<int, float> _lastAttackTime = new Dictionary<int, float>(64);
+
+    [Tooltip("Force-release an attack permit if an enemy holds it longer than this (seconds).")]
+    [SerializeField, Min(0.5f)] private float maxAttackHoldSeconds = 5f;
+
+    private readonly Dictionary<int, CreatureDefs> _attacking = new(16);
+    private readonly Dictionary<int, float> _attackStartTime = new(16);
 
     private readonly List<ScoredCandidate> _scored = new List<ScoredCandidate>(64);
 
@@ -112,7 +117,7 @@ public class EnemyAttackDirector : MonoBehaviour
 
         int id = enemy.GetInstanceID();
 
-        if (_attacking.Contains(id)) return true;
+        if (_attacking.ContainsKey(id)) return true;
 
         if (_permitUntil.TryGetValue(id, out float until))
             return Time.time <= until;
@@ -126,7 +131,7 @@ public class EnemyAttackDirector : MonoBehaviour
 
         int id = enemy.GetInstanceID();
 
-        if (_attacking.Contains(id)) return true;
+        if (_attacking.ContainsKey(id)) return true;
 
         if (_attacking.Count >= maxConcurrentAttackers) return false;
         if (Time.time < _nextGlobalAttackStartTime) return false;
@@ -135,7 +140,7 @@ public class EnemyAttackDirector : MonoBehaviour
             return false;
 
         _permitUntil.Remove(id);
-        _attacking.Add(id);
+        _attacking.Add(id, enemy);
         _lastAttackTime[id] = Time.time;
 
         _nextGlobalAttackStartTime = Time.time + minTimeBetweenAttackStarts;
@@ -183,7 +188,7 @@ public class EnemyAttackDirector : MonoBehaviour
             if (!e) continue;
 
             int id = e.GetInstanceID();
-            if (_attacking.Contains(id)) continue;
+            if (_attacking.ContainsKey(id)) continue;
             if (_permitUntil.ContainsKey(id)) continue;
 
             float distance = kvp.Value.Distance;
@@ -235,5 +240,19 @@ public class EnemyAttackDirector : MonoBehaviour
             list.Clear();
             Pool.Push(list);
         }
+    }
+
+    private void CleanupStuckAttackers()
+    {
+        var stale = ListPool<int>.Get();
+        foreach (var kvp in _attacking)
+        {
+            bool gone = !kvp.Value || !kvp.Value.isActiveAndEnabled;
+            bool timedOut = _attackStartTime.TryGetValue(kvp.Key, out float t)
+                            && Time.time - t > maxAttackHoldSeconds;
+            if (gone || timedOut) stale.Add(kvp.Key);
+        }
+        foreach (int id in stale) { _attacking.Remove(id); _attackStartTime.Remove(id); }
+        ListPool<int>.Release(stale);
     }
 }
