@@ -43,8 +43,10 @@ public class TimeManager : MonoBehaviour
 
     //blackout screen
     public Image blackout;
+    public float blackoutOpacity;
     public bool isBlackout;
     public float blackoutTimer;
+    public Color colorRef;
 
     public static TimeManager instance;
 
@@ -102,26 +104,31 @@ public class TimeManager : MonoBehaviour
     {
         time = Time.deltaTime;
         daylightCycleTime = daylightCycleTime + time;
+        colorRef = blackout.color;
 
         if (isBlackout)
         {
             blackoutTimer -= Time.deltaTime;
-            Color colorRef = blackout.color;
-            colorRef.a = 255;
-            blackout.color = colorRef;
 
+            if (blackoutOpacity < 1)
+            {
+                blackoutOpacity = blackoutOpacity + 0.2f;
+            }
             if (blackoutTimer <= 0f)
             {
                 isBlackout = false;
-                blackoutTimer = 0f;
             }
         }
-        else
+        if (!isBlackout)
         {
-            Color colorRef = blackout.color;
-            colorRef.a = 0;
-            blackout.color = colorRef;
+            if (blackoutOpacity > 0)
+            {
+                blackoutOpacity = blackoutOpacity - 0.3f;
+            }
         }
+
+        colorRef.a = blackoutOpacity;
+        blackout.color = colorRef;
 
         //rotate the sky
         switch (timeOfDay)

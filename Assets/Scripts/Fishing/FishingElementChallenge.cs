@@ -53,6 +53,7 @@ public class FishingElementChallenge : MonoBehaviour
 
         if (correct)
         {
+            FishingManager.Instance.HighlightNet(currentRequired);
             successTimer += Time.deltaTime;
             //Debug.Log("Timer: " + successTimer + " | Object: " + gameObject.name + " | Frame: " + Time.frameCount);
 
@@ -62,6 +63,7 @@ public class FishingElementChallenge : MonoBehaviour
             {
                 completed = true;
                 FishingManager.Instance.SuccessFishing();
+                FishingManager.Instance.ClearNets();
                 return;
             }
 
@@ -70,7 +72,10 @@ public class FishingElementChallenge : MonoBehaviour
                 graceTimer = swapGraceTime;
             }
         }
-
+        if (!correct)
+        {
+            FishingManager.Instance.ClearNets();
+        }
         if (graceTimer <= 0f)
         {
             FishingManager.Instance.FailFishing();

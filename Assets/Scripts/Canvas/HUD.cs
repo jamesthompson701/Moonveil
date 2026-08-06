@@ -294,6 +294,7 @@ public class HUD : MonoBehaviour
     public void UpdateDisplay()
     {
         if (lastSelectedSlot == null) return;
+        if (selectedItem == null) return;
         if (lastSelectedSlot.item.item == selectedItem) displayText.text = "" + lastSelectedSlot.item.amount;
     }
     public void UpdateSpellSelection(int choice)

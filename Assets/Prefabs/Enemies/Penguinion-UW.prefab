@@ -348,7 +348,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   animator: {fileID: 0}
-  maxHealth: 80
+  maxHealth: 60
   minSpeed: 4
   maxSpeed: 6
   maxAcceleration: 25
@@ -383,7 +383,7 @@ MonoBehaviour:
   _health: 0
   canAttack: 1
   isPenguinion: 1
-  isBossPenguinion: 1
+  isBossPenguinion: 0
   isBoss: 0
   _burnDps: 10
   _canBurn: 0
@@ -428,7 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f810c10614bfb684a83a146b57ed9050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttacks
-  Damage: 15
+  Damage: 20
   IsMelee: 1
   damageCooldownSeconds: 0.35
   targetTag: Player

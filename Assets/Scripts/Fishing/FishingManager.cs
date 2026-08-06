@@ -427,7 +427,7 @@ public class FishingManager : MonoBehaviour
                 break;
         }
 
-        HighlightNet(element);
+        //HighlightNet(element);
     }
 
     private void ClearRequiredElementUI()
@@ -509,7 +509,7 @@ public class FishingManager : MonoBehaviour
         fishingPromptCoroutine = null;
     }
 
-    void HighlightNet(ElementType active)
+    public void HighlightNet(ElementType active)
     {
         SetNet(activeBiomeUI.fireNet, active == ElementType.Fire, fishingProgress);
         SetNet(activeBiomeUI.waterNet, active == ElementType.Water, fishingProgress);
@@ -540,7 +540,7 @@ public class FishingManager : MonoBehaviour
         sprite.color = c;
     }
 
-    void ClearNets()
+    public void ClearNets()
     {
         SetNet(activeBiomeUI.fireNet, false, 0);
         SetNet(activeBiomeUI.waterNet, false, 0);
@@ -557,6 +557,6 @@ public class FishingManager : MonoBehaviour
             activeBiomeUI.catchProgressBar.value = progress;
         }
 
-        HighlightNet(currentElement);
+        //HighlightNet(currentElement);
     }
 }
